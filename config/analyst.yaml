@@ -3,7 +3,8 @@ schema_version: rationale-v1
 max_tool_rounds: 3
 tool_max_rows: 8
 max_output_tokens: 8000
-concurrency: 5
+# Allow the ranked batch to draft together after the shared-prefix warm-up.
+concurrency: 10
 # Request safety ceiling; latency_target_seconds remains the run performance gate.
 request_timeout_seconds: 120
 sdk_retries: 2
