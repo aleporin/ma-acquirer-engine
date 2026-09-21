@@ -5,7 +5,6 @@ Does not own: Production generation or sampling the source CSV.
 """
 
 from acquirer_engine.evidence.context import EvidenceContext
-
 from acquirer_engine.evidence.pack import build_core_pack
 from acquirer_engine.settings import Settings
 from tests.evidence.test_pack import pack_inputs
@@ -51,7 +50,7 @@ def rationale_payload() -> dict[str, object]:
             },
         ],
         "conviction": {
-            "level": "Medium",
+            "level": "High",
             "justification": "History supports interest, with funding uncertain.",
         },
         "outside_dataset_notes": None,

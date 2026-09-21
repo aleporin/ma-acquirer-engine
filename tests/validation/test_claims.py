@@ -8,11 +8,11 @@ from copy import deepcopy
 from typing import Any
 
 import pytest
-from acquirer_engine.evidence.context import EvidenceContext
-from acquirer_engine.validation.claims import validate_rationale
 
 from acquirer_engine.errors import EvidenceError, ValidationFailure
+from acquirer_engine.evidence.context import EvidenceContext
 from acquirer_engine.settings import Settings
+from acquirer_engine.validation.claims import validate_rationale
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 

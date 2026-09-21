@@ -8,11 +8,11 @@ from copy import deepcopy
 from typing import Any
 
 import pytest
-from acquirer_engine.validation.claims import validate_rationale
-from acquirer_engine.validation.schema import AcquirerRationale
 
 from acquirer_engine.errors import ValidationFailure
 from acquirer_engine.settings import Settings
+from acquirer_engine.validation.claims import validate_rationale
+from acquirer_engine.validation.schema import AcquirerRationale
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
@@ -43,7 +43,7 @@ def test_invalid_rationale_contracts_are_actionable(
     elif change == "no_basis":
         raw["risk_flags"][1]["evidence_ids"] = []
     elif change == "conviction":
-        raw["conviction"]["level"] = "High"
+        raw["conviction"]["level"] = "Low"
     elif change == "extra":
         raw["hidden_section"] = "Unsupported"
     elif change == "too_long":
