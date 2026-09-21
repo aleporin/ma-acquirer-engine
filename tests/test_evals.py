@@ -6,7 +6,6 @@ Does not own: Actual quality metrics or provider calls.
 
 import json
 import socket
-from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -17,11 +16,6 @@ from acquirer_engine.errors import EvaluationError
 from acquirer_engine.settings import LayerSpec
 from evals.harness import evaluate
 from evals.scorecard import LayerResult, RunInfo, Scorecard, read_scorecard, write_scorecard
-
-
-@pytest.fixture
-def run() -> RunInfo:
-    return RunInfo(git_sha="a" * 40, run_id="b" * 32, created_at=datetime(2026, 9, 21, tzinfo=UTC))
 
 
 def test_all_layers_report_not_implemented_without_metrics(deps: Deps, run: RunInfo) -> None:
