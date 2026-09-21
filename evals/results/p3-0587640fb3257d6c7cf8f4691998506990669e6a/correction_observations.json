@@ -1,0 +1,27 @@
+{
+  "scope": "Final reference parser on unchanged archived v3 output; new v4 generation and ten-way live latency remain unmeasured.",
+  "git_sha": "0587640fb3257d6c7cf8f4691998506990669e6a",
+  "source_dirty": false,
+  "replay_run_id": "b2403494b2a74be3a6a5360acbf4a311",
+  "replay_of": "c629b888ae9c49ac806db09b550526c2",
+  "command": "uv run --locked acquirers replay c629b888ae9c49ac806db09b550526c2",
+  "exit_code": 1,
+  "returned_responses": 26,
+  "cost_usd": 0.0,
+  "latency_seconds": 0.08194595808163285,
+  "verified_pages": 4,
+  "claims_total": 155,
+  "claims_verified": 155,
+  "remaining_errors": 15,
+  "verification": {
+    "make test": {
+      "exit_code": 0,
+      "result": "199 passed in 2.36s"
+    },
+    "make lint": {
+      "exit_code": 0,
+      "result": "ruff clean; 146 files formatted; strict mypy clean in 120 files; file/function limits clean"
+    }
+  },
+  "live_gate": "Failed on the last paid observation; requires a new live measurement."
+}
