@@ -23,6 +23,7 @@ from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.page_deps import PageDeps
 from acquirer_engine.llm.recording import RecordedModel
 from acquirer_engine.llm.results import PageAttempt, PageResult
+from acquirer_engine.llm.router import next_route
 from acquirer_engine.llm.tool_state import ToolState
 from acquirer_engine.llm.tools import EvidenceTools
 from acquirer_engine.llm.trace import TraceWriter
@@ -40,6 +41,7 @@ class AnalystServices:
     model: RecordedModel
     tools: EvidenceTools
     trace: TraceWriter
+    sparse_agent: Agent[PageDeps, AcquirerRationale] | None = None
 
 
 def _validate(ctx: RunContext[PageDeps], output: AcquirerRationale) -> AcquirerRationale:
@@ -65,6 +67,8 @@ def build_services(
     mode: ExecutionMode,
     cache_root: Path | None = None,
     archive: ResponseArchive | None = None,
+    escalation_model: Model | None = None,
+    auxiliary_prompts: dict[str, str] | None = None,
 ) -> AnalystServices:
     """Compose an analyst once from its dependencies, never inside a request.
 
@@ -90,9 +94,17 @@ def build_services(
         trace,
         mode=mode,
         archive=archive,
+        escalation_model=escalation_model,
     )
     agent = _build_agent(recorded, deps, prompt)
-    return AnalystServices(agent, recorded, EvidenceTools(rows, config), trace)
+    sparse = (auxiliary_prompts or {}).get("sparse")
+    return AnalystServices(
+        agent,
+        recorded,
+        EvidenceTools(rows, config),
+        trace,
+        _build_agent(recorded, deps, prompt + "\n" + sparse) if sparse else None,
+    )
 
 
 async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
@@ -110,18 +122,33 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
     started = perf_counter()
     attempts: list[PageAttempt] = []
     history = None
+    config = deps.settings.analyst
+    agent = (
+        runtime.sparse_agent if pack.ranking.relevant_deals < config.sparse_relevant_deals else None
+    )
     with runtime.model.scope(pack.ranking.acquirer) as scope:
         while True:
-            outcome = await generate(runtime.agent, deps, state, scope.stage, history)
+            outcome = await generate(agent or runtime.agent, deps, state, scope.stage, history)
             attempts.append(outcome.attempt)
-            if not outcome.repairable or state.generation >= deps.settings.analyst.max_repairs:
+            route = next_route(
+                passed=outcome.attempt.status == "verified",
+                repairable=outcome.repairable,
+                repairs=state.generation,
+                config=config,
+            )
+            runtime.trace.write("route_selected", pack.ranking.acquirer, route=route)
+            if route in {"pass", "banner"}:
                 break
             history = repair_history(outcome.messages, outcome.attempt.errors)
             if history is None:
                 break
             state.generation += 1
-            scope.stage = "repair"
-            deps.logger.warning("repair_attempted", acquirer=pack.ranking.acquirer)
+            scope.stage = "escalation" if route == "escalate" else "repair"
+            scope.role = "escalation" if route == "escalate" else "analyst"
+            deps.logger.warning(
+                "tier_escalated" if route == "escalate" else "repair_attempted",
+                acquirer=pack.ranking.acquirer,
+            )
     return _page_result(pack, deps, state, outcome.output, attempts, started)
 
 
@@ -152,7 +179,9 @@ def _build_agent(
         validation_context=deps.settings.evidence.validation,
         model_settings=model_settings,
         retries={"output": config.output_retries, "tools": config.output_retries},
-        tools=[
+        tools=[]
+        if not config.tools_enabled
+        else [
             bindings.get_comparable_deals,
             bindings.get_sector_stats,
             bindings.get_adjacent_sector_activity,
@@ -177,6 +206,7 @@ def _page_result(
             acquirer=pack.ranking.acquirer,
             acquirer_type=pack.ranking.acquirer_type,
             status=attempts[-1].status,
+            banner="Unverified: " + "; ".join(attempts[-1].errors) if attempts[-1].errors else None,
             rationale=output,
             errors=attempts[-1].errors,
             attempts=attempts,

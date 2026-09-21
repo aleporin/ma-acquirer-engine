@@ -32,6 +32,7 @@ class CallScope:
     acquirer: str
     attempt: int = 0
     stage: str = "analyst"
+    role: str = "analyst"
 
 
 class RecordedModel(Model):
@@ -47,12 +48,15 @@ class RecordedModel(Model):
         *,
         mode: ExecutionMode,
         archive: ResponseArchive | None = None,
+        escalation_model: Model | None = None,
     ) -> None:
         """Inject shared resources and keep page identity in task-local state."""
         super().__init__(profile=wrapped.profile if wrapped else None)
         self.wrapped, self.deps, self.cache, self.ledger = wrapped, deps, cache, ledger
         self.trace, self.mode = trace, mode
         self.archive = archive
+        self.models = {"analyst": wrapped, "escalation": escalation_model}
+        self._attempts: dict[str, int] = {}
         self.first_response = asyncio.Event()
         self._scope: ContextVar[CallScope] = ContextVar("analyst_call_scope")
         self.identity = deps.settings.model_dump_json()
@@ -60,7 +64,7 @@ class RecordedModel(Model):
     @property
     def model_name(self) -> str:
         """Use configured model identity for both replay and live requests."""
-        return self.deps.settings.models.roles["analyst"].model_id
+        return self.deps.settings.models.roles[self._scope.get(CallScope("")).role].model_id
 
     @property
     def system(self) -> str:
@@ -70,7 +74,7 @@ class RecordedModel(Model):
     @contextmanager
     def scope(self, acquirer: str) -> Iterator[CallScope]:
         """Attribute concurrent requests without mutating shared buyer state."""
-        token = self._scope.set(CallScope(acquirer))
+        token = self._scope.set(CallScope(acquirer, self._attempts.get(acquirer, 0)))
         try:
             yield self._scope.get()
         finally:
@@ -96,8 +100,9 @@ class RecordedModel(Model):
         model_request_parameters = compatible_output_parameters(model_request_parameters)
         scope = self._scope.get()
         scope.attempt += 1
+        self._attempts[scope.acquirer] = scope.attempt
         key = request_key(
-            self.identity,
+            self.identity + self.model_name,
             messages,
             {"settings": model_settings, **asdict(model_request_parameters)},
         )
@@ -126,6 +131,7 @@ class RecordedModel(Model):
             duration,
             mode=self.mode,
             stage=scope.stage,
+            model=self.deps.settings.models.roles[scope.role],
         )
         self.deps.logger.info(
             "model_called", **record.model_dump(), tool_calls=len(response.tool_calls)
@@ -145,11 +151,12 @@ class RecordedModel(Model):
                 scope = self._scope.get()
                 return self.archive.load(scope.acquirer, scope.attempt, messages)
             return self.cache.load(key)
-        if self.wrapped is None:
+        wrapped = self.models[self._scope.get().role]
+        if wrapped is None:
             raise LLMInvalidOutput("No model client was injected")
         try:
             async with asyncio.timeout(self.deps.settings.analyst.request_timeout_seconds):
-                response = await self.wrapped.request(messages, settings, parameters)
+                response = await wrapped.request(messages, settings, parameters)
         except TimeoutError as error:
             raise LLMTimeout("Model request timed out") from error
         except ModelHTTPError as error:

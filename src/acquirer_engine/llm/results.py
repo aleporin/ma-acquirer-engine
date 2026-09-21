@@ -33,6 +33,7 @@ class PageResult(BaseModel):
     acquirer: str
     acquirer_type: AcquirerType
     status: Literal["verified", "failed"]
+    banner: str | None = None
     rationale: AcquirerRationale | None = None
     errors: list[str]
     tools: list[str]

@@ -57,6 +57,7 @@ class CostLedger:
         *,
         mode: ExecutionMode,
         stage: str = "analyst",
+        model: ModelSpec | None = None,
     ) -> CallRecord:
         """Record actual normalized usage without double-counting cached input.
 
@@ -75,10 +76,11 @@ class CostLedger:
         uncached = usage.input_tokens - usage.cache_read_tokens - usage.cache_write_tokens
         if uncached < 0 or (mode == "live" and usage.input_tokens + usage.output_tokens == 0):
             raise LLMInvalidOutput("Live response has zero tokens or inconsistent cached usage")
-        cost = self._cost(usage, uncached)
+        spec = model or self.model
+        cost = self._cost(usage, uncached, spec)
         entry = CallRecord(
             acquirer=acquirer,
-            model=self.model.model_id,
+            model=spec.model_id,
             stage=stage,
             attempt=attempt,
             mode=mode,
@@ -92,11 +94,11 @@ class CostLedger:
         self.entries.append(entry)
         return entry
 
-    def _cost(self, usage: RequestUsage, uncached: int) -> float:
+    def _cost(self, usage: RequestUsage, uncached: int, spec: ModelSpec) -> float:
         price = next(
             (
                 p
-                for p in self.model.pricing
+                for p in spec.pricing
                 if p.max_input_tokens is None or usage.input_tokens <= p.max_input_tokens
             ),
             None,

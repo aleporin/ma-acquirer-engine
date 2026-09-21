@@ -25,3 +25,7 @@ class AnalystConfig(BaseModel):
     latency_target_seconds: PositiveFloat
     stability_runs: PositiveInt
     distinct_ngram_words: PositiveInt
+    escalation_enabled: bool = False
+    tools_enabled: bool = True
+    sparse_prompt_file: str | None = None
+    sparse_relevant_deals: NonNegativeInt = 0
