@@ -4,7 +4,8 @@ max_tool_rounds: 3
 tool_max_rows: 8
 max_output_tokens: 4000
 concurrency: 5
-request_timeout_seconds: 20
+# Request safety ceiling; latency_target_seconds remains the run performance gate.
+request_timeout_seconds: 120
 sdk_retries: 2
 # Repair/escalation policy is introduced separately.
 output_retries: 0

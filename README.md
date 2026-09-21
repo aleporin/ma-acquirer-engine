@@ -4,9 +4,9 @@ Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
 structured rationale, usage accounting, and strict replay**. Offline checks pass;
 the first live attempt finished in 49.09 seconds but every draft hit the
-20-second request deadline. No rationale passed validation, so the phase exit
-gate is unmet. Portfolio repair,
-judging, and HTML rendering belong to later phases.
+then-configured 20-second request deadline. No rationale passed validation, so
+the phase exit gate is unmet. Portfolio repair, judging, and HTML rendering
+belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -212,9 +212,13 @@ inside delimited data blocks; they cannot supply application instructions.
 
 The first buyer response warms the shared instruction/tool prefix before the
 remaining buyers start behind a semaphore. Each page has at most three tool
-rounds and four model requests. The request deadline includes SDK retries, which
-use backoff and jitter for transient failures. A failed page records errors and
-does not cancel other buyers; the command exits nonzero if any page fails.
+rounds and four model requests. The request deadline is now 120 seconds, including
+SDK retries with backoff and jitter for transient failures. The run performance
+target remains 60 seconds; a slower completed run still fails that criterion.
+The larger safety ceiling lets slow responses finish for quality measurement;
+it is not evidence that live latency or page quality has improved.
+A failed page records errors and does not cancel other buyers; the command exits
+nonzero if any page fails.
 Phase 3 has no repair loop, escalation, portfolio reviewer, or hard dollar cap.
 
 `runs/ID/run.json` contains page outcomes and per-response usage; `trace.jsonl`
@@ -249,5 +253,5 @@ claim accuracy is unavailable. Layers 3, 5, and 6 fail; layer 2's passing fixtur
 checks do not imply that any live page passed. Five offline repetitions replay
 the available responses at zero new spend and fail at missing draft responses.
 The [attempt details](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/live_attempt.json)
-record these limits explicitly. The timeout configuration needs further work
-before another authorized live measurement can establish the phase exit.
+record these limits explicitly. The increased timeout has only been checked
+offline; another authorized live measurement must establish the phase exit.
