@@ -96,7 +96,7 @@ def validate_rationale(
         for message in _claim_errors(claim, index, config.rounding_tolerance)
     ]
     errors.extend(_reference_errors(page, context, set(index)))
-    errors.extend(scan_numbers(page, set(index)))
+    errors.extend(scan_numbers(page, set(index), config.rounding_tolerance))
     errors.extend(banned_phrases(page, config.banned_phrases))
     if errors:
         raise ValidationFailure(errors)

@@ -5,6 +5,7 @@ Does not own: Repair, evidence validation, client construction, or usage account
 """
 
 from dataclasses import replace
+from typing import Any
 
 from anthropic import transform_schema
 from pydantic import ValidationError
@@ -12,6 +13,32 @@ from pydantic_ai.messages import ModelResponse
 from pydantic_ai.models import ModelRequestParameters
 
 from acquirer_engine.errors import AcquirerEngineError, LLMInvalidOutput
+
+
+def _output_schema(schema: dict[str, Any]) -> dict[str, Any]:
+    schema = transform_schema(schema)
+    risk = schema.get("$defs", {}).get("RiskFlag")
+    if risk is None:
+        return schema
+    choices = []
+    for basis in ("evidence", "judgment"):
+        properties = dict(risk["properties"])
+        properties["basis"] = {"type": "string", "enum": [basis]}
+        if basis == "evidence":
+            properties["evidence_ids"] = {**properties["evidence_ids"], "minItems": 1}
+        else:
+            del properties["evidence_ids"]
+        choices.append(
+            dict(
+                type="object",
+                properties=properties,
+                required=list(properties),
+                additionalProperties=False,
+            )
+        )
+    # Express the cross-field rule in the grammar, not just a field description.
+    schema["$defs"]["RiskFlag"] = {"anyOf": choices}
+    return schema
 
 
 def compatible_output_parameters(parameters: ModelRequestParameters) -> ModelRequestParameters:
@@ -25,7 +52,7 @@ def compatible_output_parameters(parameters: ModelRequestParameters) -> ModelReq
     return replace(
         parameters,
         output_tools=[
-            replace(tool, parameters_json_schema=transform_schema(tool.parameters_json_schema))
+            replace(tool, parameters_json_schema=_output_schema(tool.parameters_json_schema))
             if tool.strict
             else tool
             for tool in parameters.output_tools

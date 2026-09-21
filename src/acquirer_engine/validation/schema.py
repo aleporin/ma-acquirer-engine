@@ -66,7 +66,8 @@ class RiskFlag(Boundary):
         description="Use evidence for an observed fact with references; judgment for an inference."
     )
     evidence_ids: tuple[Text, ...] = Field(
-        description="For basis=evidence, supply known IDs. For basis=judgment, this MUST be []."
+        default=(),
+        description="Supply known IDs for evidence. Omit for judgment; stored as an empty list.",
     )
 
     @model_validator(mode="after")
