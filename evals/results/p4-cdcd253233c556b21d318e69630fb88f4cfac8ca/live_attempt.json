@@ -1,0 +1,46 @@
+{
+  "run_id": "27d4ea6222884beda0aaef558e7490c4",
+  "source_git_sha": "cdcd253233c556b21d318e69630fb88f4cfac8ca",
+  "latency_seconds": 124.65615608403459,
+  "verified_pages": 3,
+  "expected_pages": 10,
+  "parsed_claims": 23,
+  "verified_claims": 23,
+  "returned_responses": 15,
+  "cost_usd": 0.3997664,
+  "failures": {
+    "Ardent Health Services": [
+      "Run USD budget cannot admit another request"
+    ],
+    "UPMC": [
+      "Run USD budget cannot admit another request"
+    ],
+    "Steward Health Care": [
+      "Run USD budget cannot admit another request"
+    ],
+    "Vista Equity": [
+      "Run USD budget cannot admit another request"
+    ],
+    "Blackstone": [
+      "Run USD budget cannot admit another request"
+    ],
+    "GTCR": [
+      "Run USD budget cannot admit another request"
+    ],
+    "New Mountain Capital": [
+      "Run USD budget cannot admit another request"
+    ]
+  },
+  "repair_provider_calls": 0,
+  "escalation_provider_calls": 0,
+  "replay": {
+    "run_id": "25dc9755a5a84ee78d62bc5a271f9457",
+    "returned_responses": 14,
+    "verified_pages": 3,
+    "cost_usd": 0,
+    "review_errors": [
+      "Archived request differs for portfolio, attempt 1"
+    ]
+  },
+  "interpretation": "Budget admission blocked seven drafts; repair effectiveness is unmeasured. Replay retains three verified pages but blocked calls have no archived response; changed errors prevent replaying the reviewer request."
+}
