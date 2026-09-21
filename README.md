@@ -2,11 +2,10 @@
 
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
-structured rationale, usage accounting, and strict replay**. Offline checks pass;
-the live attempts have not yet produced a verified rationale. The first hit the
-request deadline; later attempts exposed truncation and grounding failures.
-All ten drafts now complete, but the latest live run accepted no whole pages. Portfolio
-repair, judging, and HTML rendering belong to later phases.
+structured rationale, usage accounting, and strict replay**. Offline checks pass.
+The recorded live run completed all ten drafts and verified four pages; the six
+remaining pages failed prose coverage, and its 79.47-second duration still fails
+the live gate. Portfolio repair, judging, and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
