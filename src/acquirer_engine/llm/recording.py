@@ -20,6 +20,7 @@ from acquirer_engine.deps import Deps
 from acquirer_engine.errors import LLMError, LLMInvalidOutput, LLMRateLimited, LLMTimeout
 from acquirer_engine.llm.cache import ResponseCache, request_key
 from acquirer_engine.llm.cost import CostLedger, ExecutionMode
+from acquirer_engine.llm.output import compatible_output_parameters, require_complete_response
 from acquirer_engine.llm.trace import TraceWriter
 
 
@@ -88,6 +89,7 @@ class RecordedModel(Model):
         Raises:
             LLMError: Replay fails or a provider request fails.
         """
+        model_request_parameters = compatible_output_parameters(model_request_parameters)
         scope = self._scope.get()
         scope.attempt += 1
         key = request_key(
@@ -115,6 +117,7 @@ class RecordedModel(Model):
             "model_called", **record.model_dump(), tool_calls=len(response.tool_calls)
         )
         self.first_response.set()
+        require_complete_response(response)
         return response
 
     async def _response(

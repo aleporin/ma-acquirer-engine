@@ -2,7 +2,7 @@ prompt_file: analyst_v1.md
 schema_version: rationale-v1
 max_tool_rounds: 3
 tool_max_rows: 8
-max_output_tokens: 4000
+max_output_tokens: 8000
 concurrency: 5
 # Request safety ceiling; latency_target_seconds remains the run performance gate.
 request_timeout_seconds: 120

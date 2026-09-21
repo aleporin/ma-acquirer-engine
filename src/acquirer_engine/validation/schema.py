@@ -62,8 +62,12 @@ class RiskFlag(Boundary):
 
     category: RiskCategory
     description: Text
-    basis: Literal["evidence", "judgment"]
-    evidence_ids: tuple[Text, ...]
+    basis: Literal["evidence", "judgment"] = Field(
+        description="Use evidence for an observed fact with references; judgment for an inference."
+    )
+    evidence_ids: tuple[Text, ...] = Field(
+        description="For basis=evidence, supply known IDs. For basis=judgment, this MUST be []."
+    )
 
     @model_validator(mode="after")
     def validate_basis(self) -> Self:

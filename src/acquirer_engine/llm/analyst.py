@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from time import perf_counter
 
-from pydantic_ai import Agent, RunContext
+from pydantic_ai import Agent, RunContext, ToolOutput
 from pydantic_ai.exceptions import ModelAPIError, UnexpectedModelBehavior, UsageLimitExceeded
 from pydantic_ai.models import Model
 from pydantic_ai.models.anthropic import AnthropicModelSettings
@@ -22,6 +22,7 @@ from acquirer_engine.llm import bindings
 from acquirer_engine.llm.cache import ResponseCache
 from acquirer_engine.llm.cost import CostLedger, ExecutionMode
 from acquirer_engine.llm.framing import data_block
+from acquirer_engine.llm.output import output_errors
 from acquirer_engine.llm.page_deps import PageDeps
 from acquirer_engine.llm.recording import RecordedModel
 from acquirer_engine.llm.results import PageResult
@@ -125,7 +126,7 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
         UsageLimitExceeded,
         OSError,
     ) as error:
-        errors = [str(error) if isinstance(error, AcquirerEngineError) else type(error).__name__]
+        errors = output_errors(error)
     runtime.trace.write(
         "validation_completed", pack.ranking.acquirer, errors=errors, rationale=output
     )
@@ -148,7 +149,7 @@ def _build_agent(
         model_settings["temperature"] = config.temperature
     agent = Agent(
         recorded,
-        output_type=AcquirerRationale,
+        output_type=ToolOutput(AcquirerRationale, strict=True),
         deps_type=PageDeps,
         instructions=lambda ctx: (
             prompt
