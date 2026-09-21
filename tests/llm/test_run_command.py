@@ -46,3 +46,10 @@ def test_replay_writes_failed_page_without_constructing_a_client(
     assert report["mode"] == "replay" and report["pages"][0]["status"] == "failed"
     assert "Replay cache missing" in report["pages"][0]["errors"][0]
     assert report["calls"] == []
+
+
+def test_cli_exposes_explicit_tools_and_reviewer_ablation_flags() -> None:
+    result = CliRunner().invoke(build_app(), ["run", "--help"])
+    assert result.exit_code == 0
+    assert "--no-tools" in result.output
+    assert "--no-reviewer" in result.output
