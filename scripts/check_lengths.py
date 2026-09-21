@@ -10,16 +10,7 @@ import sys
 from collections.abc import Iterable
 from pathlib import Path
 
-import yaml
-from pydantic import BaseModel, ConfigDict, PositiveInt
-
-
-class Limits(BaseModel):
-    """Validated size limits from evaluation configuration."""
-
-    model_config = ConfigDict(extra="forbid", strict=True)
-    max_file_lines: PositiveInt
-    max_function_lines: PositiveInt
+from acquirer_engine.settings import load_settings
 
 
 def check_file(path: Path, file_limit: int, function_limit: int) -> list[str]:
@@ -101,8 +92,7 @@ def repository_violations(root: Path) -> list[str]:
         ValueError: Configuration is invalid.
         subprocess.CalledProcessError: Git discovery fails.
     """
-    config = yaml.safe_load((root / "config/eval.yaml").read_text(encoding="utf-8"))
-    limits = Limits.model_validate(config["quality"])
+    limits = load_settings(root / "config").evaluation.quality
     result = subprocess.run(
         ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
         cwd=root,

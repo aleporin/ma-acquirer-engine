@@ -10,7 +10,8 @@ from shutil import copytree
 import pytest
 import yaml
 
-from acquirer_engine.settings import ConfigError, load_settings
+from acquirer_engine.errors import ConfigError
+from acquirer_engine.settings import load_settings
 
 
 @pytest.fixture

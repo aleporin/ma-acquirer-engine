@@ -1,3 +1,16 @@
+phase: p0
+seed: 42
+prompt_version: not_implemented
 quality:
   max_file_lines: 300
   max_function_lines: 50
+layers:
+  - {id: 0, name: unit_and_property_tests}
+  - {id: 1, name: ranking_backtest}
+  - {id: 2, name: groundedness}
+  - {id: 3, name: distinctiveness}
+  - {id: 4, name: rubric_quality}
+  - {id: 5, name: stability}
+  - {id: 6, name: operations}
+offline_layers: [0, 1, 2, 3, 5, 6]
+ci_layers: [0, 1, 2]

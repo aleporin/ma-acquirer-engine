@@ -1,0 +1,85 @@
+# Standard direct-provider pricing in USD per million tokens.
+# This metadata does not enable calls; every Phase 0 grader is offline.
+roles:
+  analyst:
+    provider: anthropic
+    model_id: claude-sonnet-5
+    as_of: 2026-09-21
+    preview: false
+    source_urls:
+      - https://platform.claude.com/docs/en/models/overview
+      - https://platform.claude.com/docs/en/about-claude/pricing
+    pricing:
+      - max_input_tokens: null
+        input_usd_per_million: 2
+        output_usd_per_million: 10
+        cache_read_usd_per_million: 0.2
+        cache_write_usd_per_million: 2.5
+        cache_write_1h_usd_per_million: 4
+  mechanical:
+    provider: anthropic
+    model_id: claude-haiku-4-5-20251001
+    as_of: 2026-09-21
+    preview: false
+    source_urls:
+      - https://platform.claude.com/docs/en/models/overview
+      - https://platform.claude.com/docs/en/about-claude/pricing
+    pricing:
+      - max_input_tokens: 200000
+        input_usd_per_million: 1
+        output_usd_per_million: 5
+        cache_read_usd_per_million: 0.1
+        cache_write_usd_per_million: 1.25
+        cache_write_1h_usd_per_million: 2
+  escalation:
+    provider: anthropic
+    model_id: claude-opus-5
+    as_of: 2026-09-21
+    preview: false
+    source_urls:
+      - https://platform.claude.com/docs/en/models/overview
+      - https://platform.claude.com/docs/en/about-claude/pricing
+    pricing:
+      - max_input_tokens: null
+        input_usd_per_million: 5
+        output_usd_per_million: 25
+        cache_read_usd_per_million: 0.5
+        cache_write_usd_per_million: 6.25
+        cache_write_1h_usd_per_million: 10
+  judge_a:
+    provider: openai
+    model_id: gpt-5.6-terra
+    as_of: 2026-09-21
+    preview: false
+    source_urls:
+      - https://developers.openai.com/api/docs/models/gpt-5.6-terra
+      - https://developers.openai.com/api/docs/pricing
+    pricing:
+      - max_input_tokens: 272000
+        input_usd_per_million: 2
+        output_usd_per_million: 12
+        cache_read_usd_per_million: 0.2
+        cache_write_usd_per_million: 2.5
+      - max_input_tokens: null
+        input_usd_per_million: 4
+        output_usd_per_million: 18
+        cache_read_usd_per_million: 0.4
+        cache_write_usd_per_million: 5
+  judge_b:
+    provider: google
+    model_id: gemini-3.1-pro-preview
+    as_of: 2026-09-21
+    preview: true
+    source_urls:
+      - https://ai.google.dev/gemini-api/docs/pricing#gemini-3.1-pro-preview
+    pricing:
+      - max_input_tokens: 200000
+        input_usd_per_million: 2
+        output_usd_per_million: 12
+        cache_read_usd_per_million: 0.2
+        cache_storage_usd_per_million_hour: 4.5
+      - max_input_tokens: null
+        input_usd_per_million: 4
+        output_usd_per_million: 18
+        cache_read_usd_per_million: 0.4
+        cache_storage_usd_per_million_hour: 4.5
