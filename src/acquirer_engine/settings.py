@@ -22,6 +22,7 @@ from pydantic import (
 )
 
 from acquirer_engine.errors import ConfigError
+from acquirer_engine.ranking.config import RankingConfig
 
 
 class ConfigModel(BaseModel):
@@ -57,12 +58,6 @@ class ModelsConfig(ConfigModel):
     """Models available to later stages, with no client construction."""
 
     roles: Annotated[dict[str, ModelSpec], Field(min_length=1)]
-
-
-class ScoringConfig(ConfigModel):
-    """Keep weights explicitly unset until ranking is implemented."""
-
-    weights: dict[str, NonNegativeFloat] | None
 
 
 class QualityLimits(ConfigModel):
@@ -114,7 +109,7 @@ class Settings(ConfigModel):
     """The configuration snapshot injected into one run."""
 
     models: ModelsConfig
-    scoring: ScoringConfig
+    scoring: RankingConfig
     evaluation: EvalConfig
 
 
@@ -137,6 +132,6 @@ def load_settings(config_dir: Path) -> Settings:
     """
     return Settings(
         models=_load_yaml(config_dir / "models.yaml", ModelsConfig),
-        scoring=_load_yaml(config_dir / "scoring.yaml", ScoringConfig),
+        scoring=_load_yaml(config_dir / "scoring.yaml", RankingConfig),
         evaluation=_load_yaml(config_dir / "eval.yaml", EvalConfig),
     )

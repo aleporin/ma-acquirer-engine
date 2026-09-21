@@ -26,7 +26,7 @@ def test_loads_all_configuration_without_environment(config_dir: Path) -> None:
     settings = load_settings(config_dir)
     assert settings.evaluation.phase == "p0"
     assert [layer.id for layer in settings.evaluation.layers] == list(range(7))
-    assert settings.scoring.weights is None
+    assert sum(settings.scoring.weights.values()) == pytest.approx(1)
     assert settings.models.roles
     for model in settings.models.roles.values():
         assert model.source_urls

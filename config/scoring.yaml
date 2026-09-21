@@ -1,2 +1,35 @@
-# Ranking weights will be selected with the first backtest.
-weights: null
+# Fixed before evaluating the temporal holdout; no buyer quotas.
+weights:
+  sector_fit: 0.30
+  size_fit: 0.17
+  recency: 0.12
+  completion: 0.12
+  profile_fit: 0.12
+  tag_fit: 0.06
+  geography_fit: 0.08
+  deal_type_fit: 0.03
+size_band: [0.5, 2.0]
+soft_size_band: [0.25, 4.0]
+reference_year: 2024
+recency_half_life: 3.0
+activity_scale: 3.0
+prior_strength: 3.0
+adjacent_discount: 0.45
+coactivity_weight: 0.6
+neutral_value: 0.5
+relevant_similarity: 0.5
+high_score: 0.70
+medium_score: 0.50
+high_min_relevant: 3
+broad_geographies: [National, Multi-Regional]
+weak_deal_types: [Platform Investment, Bolt-on Acquisition]
+multiple_tolerance: 0.10
+margin_tolerance: 1.5
+top_k: 10
+default_target:
+  sector: Healthcare Services
+  deal_size_mm: 200.0
+  geography: Regional
+  ownership: Private
+  margin_quantile: 0.6666666666666666
+  tags: [Margin Improvement, Geographic Expansion]
