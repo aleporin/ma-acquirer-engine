@@ -41,7 +41,14 @@ def _claims(baseline: LayerResult, runs: list[AnalystRun]) -> LayerResult:
     for mode in sorted({run.mode for run in runs}):
         pages = [p for run in runs if run.mode == mode for p in run.pages]
         first = [p.attempts[0] if p.attempts else p for p in pages]
-        for label, outcomes in (("first_pass", first), ("post_repair", pages)):
+        repaired = [
+            next((a for a in reversed(p.attempts) if a.stage != "revision"), p) for p in pages
+        ]
+        for label, outcomes in (
+            ("first_pass", first),
+            ("post_repair", repaired),
+            ("post_review", pages),
+        ):
             count = sum(p.claims_total for p in outcomes)
             if count:
                 metrics[f"{mode}_{label}_claim_rate"] = Metric(
