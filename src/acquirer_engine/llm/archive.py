@@ -4,6 +4,7 @@ Owns: Versioned input snapshots, safe run selection, and immutable snapshot writ
 Does not own: Provider responses, execution, secrets, or historical code checkout.
 """
 
+import json
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
@@ -69,7 +70,11 @@ def save_snapshot(directory: Path, snapshot: RunSnapshot) -> None:
     directory.mkdir(parents=True, exist_ok=True)
     try:
         with (directory / "snapshot.json").open("x", encoding="utf-8") as stream:
-            stream.write(snapshot.model_dump_json(indent=2) + "\n")
+            payload = snapshot.model_dump(mode="json")
+            payload["settings"]["analyst"] = snapshot.settings.analyst.model_dump(
+                mode="json", exclude_unset=True
+            )
+            stream.write(json.dumps(payload, indent=2) + "\n")
     except FileExistsError as error:
         raise LLMInvalidOutput("Archive snapshot already exists; use a new run ID") from error
 
