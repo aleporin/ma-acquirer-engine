@@ -13,6 +13,7 @@ import pytest
 from typer.testing import CliRunner
 
 from acquirer_engine.cli import build_app
+from acquirer_engine.settings import load_settings
 from tests.fixtures.ranking import transaction
 
 
@@ -23,7 +24,8 @@ def test_replay_writes_failed_page_without_constructing_a_client(
     root = tmp_path / "project"
     copytree(source / "config", root / "config")
     (root / "prompts").mkdir()
-    (root / "prompts/analyst_v1.md").write_text("Fixture instructions.")
+    prompt_file = load_settings(root / "config").analyst.prompt_file
+    (root / "prompts" / prompt_file).write_text("Fixture instructions.")
     (root / "data").mkdir()
     row = transaction(sector="Healthcare Services").model_dump() | {
         "sub_sector": "Healthcare Services"
