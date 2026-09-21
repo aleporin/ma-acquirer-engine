@@ -22,8 +22,9 @@ from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("concurrency", [2, 10])
 async def test_first_response_warms_prefix_before_bounded_parallel_requests(
-    deps: Deps, tmp_path: Path
+    deps: Deps, tmp_path: Path, concurrency: int
 ) -> None:
     active = peak = calls = 0
     release = asyncio.Event()
@@ -34,7 +35,7 @@ async def test_first_response_warms_prefix_before_bounded_parallel_requests(
         active += 1
         peak = max(peak, active)
         if calls > 1:
-            if active == 2:
+            if active == concurrency:
                 release.set()
             await asyncio.wait_for(release.wait(), 2)
         returned = any(
@@ -52,12 +53,8 @@ async def test_first_response_warms_prefix_before_bounded_parallel_requests(
         return ModelResponse(parts=[part], usage=RequestUsage(input_tokens=100, output_tokens=20))
 
     context = evidence_context(deps.settings)
-    deps = replace(
-        deps,
-        settings=deps.settings.model_copy(
-            update={"analyst": deps.settings.analyst.model_copy(update={"concurrency": 2})}
-        ),
-    )
+    analyst = deps.settings.analyst.model_copy(update={"concurrency": concurrency})
+    deps = replace(deps, settings=deps.settings.model_copy(update={"analyst": analyst}))
     runtime = build_services(
         deps,
         FunctionModel(respond),
@@ -66,10 +63,12 @@ async def test_first_response_warms_prefix_before_bounded_parallel_requests(
         "Fixture instructions.",
         mode="test",
     )
-    pages = await run_analysts([context.core] * 3, replace(deps, runtime=runtime))
+    pages = await run_analysts([context.core] * (concurrency + 1), replace(deps, runtime=runtime))
     assert all(page.status == "verified" for page in pages)
-    assert peak == 2 and calls == 6
-    assert sorted(entry.attempt for entry in runtime.model.ledger.entries) == [1, 1, 1, 2, 2, 2]
+    assert peak == concurrency and calls == 2 * (concurrency + 1)
+    assert sorted(e.attempt for e in runtime.model.ledger.entries) == sorted(
+        [1, 2] * (concurrency + 1)
+    )
 
 
 @pytest.mark.asyncio
