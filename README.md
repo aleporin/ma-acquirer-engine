@@ -1,8 +1,8 @@
 # M&A Acquirer Engine
 
 Rank likely acquirers from transaction history and measure the ranking against
-held-out deals. The current scope is **Phase 1: data, deterministic ranking, and
-offline evaluation**. Rationale generation and live judging are not implemented.
+held-out deals. The current scope is **Phase 2: ranking, bounded evidence, structured rationale validation,
+and offline evaluation**. Rationale generation and live judging are not implemented.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -45,7 +45,7 @@ detection. Unit-test fixtures reject socket connections.
 | --- | --- |
 | `make test` | Run the complete offline behavioral suite |
 | `make lint` | Check formatting, lint, types, and size limits |
-| `make eval` | Write measured layers 0, 1, and ranking stability in 5; fail on unmet gates |
+| `make eval` | Write measured layers 0–2 and ranking stability in 5; fail on unmet gates |
 | `make eval EVAL_FLAGS=--ci RESULTS=/tmp/ci-results` | Select layers 0–2 for offline CI |
 | `make eval-diff A=before.json B=after.json` | Show metric changes and flag regressions |
 | `make eval-judges` | Report unavailable without making calls |
@@ -105,12 +105,12 @@ group is also removed once, with remaining weights renormalized. Initial weights
 and conviction boundaries were fixed before examining the holdout and have not
 been adjusted to make the measured results pass.
 
-Layer 0 executes isolated data, feature, ranking, and ranking-config tests and
+Layer 0 executes isolated data, feature, ranking, evidence, and validation tests and
 reads their JUnit/coverage artifacts. `make test` covers the complete suite.
 Layer 1 passing means its measurements completed; it does not mean positive lift.
 Layer 5 measures ranking identity and conviction agreement across five runs, plus
 the intermediate two-level gate. Rationale stability remains unimplemented.
-Layers 2, 3, 4, and 6 retain explicit `not_implemented` statuses and empty metrics.
+Layers 3, 4, and 6 retain explicit `not_implemented` statuses and empty metrics.
 
 Each result bundle under [evals/results](evals/results/) contains:
 
@@ -118,6 +118,7 @@ Each result bundle under [evals/results](evals/results/) contains:
 - `backtest.json`: split counts, per-query ranks, baselines, paired intervals, and ablations.
 - `data_quality.json`: measured source discrepancies.
 - `top10.json`: ordered buyers, conviction, and each score's arithmetic.
+- `groundedness.json`: fixture identity, expected errors, and observed verifier outcomes.
 
 Source revision, dirty state, run ID, UTC time, configuration digest, and seed are
 recorded. Committed baselines come from clean source; their source commit precedes
@@ -126,18 +127,54 @@ CI checks the latest tracked ranking snapshot; intentional identity changes need
 a `ranking:` marker in an intervening commit message. CI selects layers 0–2, so
 green CI does not imply the separate Phase 1 conviction exit criterion passed.
 
+## Evidence and rationale validation
+
+A core pack contains only the buyer's eligible own-history rows, score breakdown,
+code-computed conviction, and target assumptions. Stable transaction IDs address
+rows; `stat:<name>:<scope>` IDs address computed numbers. Aggregates use the full
+eligible buyer history even when the displayed rows are truncated. Recent rows
+come first, with transaction IDs breaking ties. The row cap and conservative
+UTF-8 byte bound both apply; fixed context that cannot fit raises `EvidenceError`.
+This bound covers serialized pack content, not prompts, tool schemas, or measured
+provider token usage.
+
+The ordered rationale schema puts internal reasoning first, requires at least two
+categorized risks with evidence or an explicit judgment marker, and applies YAML
+length caps. Validation requires its configuration as Pydantic context. The
+verifier checks every claim's ID, numeric metric, and canonical value. Counts and
+years must match exactly; continuous values allow the configured rounding error.
+Prose numerals must appear in claims, including years and ranges. Currency units
+are normalized to millions; percentages and multiples must use matching metrics.
+Labeled outside notes are excluded from groundedness checks.
+
+Valuation must cite separately retrieved Closed transactions and explicit claims
+for their stated EV/EBITDA and EV/Revenue multiples. Core rows alone cannot satisfy
+that requirement. Conflicting copies of an evidence ID fail instead of overwriting
+facts. Conviction must match the ranker's result.
+
+Layer 2 runs three hand-written valid pages and six planted-invalid pages. Its
+metrics describe those fixtures only: live first-pass and post-repair rates are
+unmeasured. The verifier catches numeric and reference errors; it does not prove
+that prose attaches a valid number to the right subject, that a selected comp is
+economically persuasive, or that a qualitative thesis is true. Those limitations
+remain for later evaluation and human review. The fixtures contain synthetic
+examples, not generated analyst pages.
+
 ## Structure and configuration
 
 `data/` owns validation and quality counts; `features/` owns fitted history;
 `ranking/` owns target profiles, signals, priors, and ordering. `evals/ranking/`
 owns holdout measurement. `evals/phase1.py` composes graders and companion artifacts.
+`evidence/` assembles addressable facts; `validation/` checks structured rationale.
+`evals/grounded.py` executes labeled pages and `evals/phase2.py` adds their results.
 The CLI builds one settings snapshot and logger, passed through minimal `Deps`.
 No provider clients exist in this phase.
 
-PyYAML parses the three configuration files and Pydantic validates them:
+PyYAML parses the four configuration files and Pydantic validates them:
 `models.yaml` records dated provider metadata; `scoring.yaml` contains all tunable
 ranking policy and target assumptions; `eval.yaml` selects layers and controls
-splits, uncertainty, and size limits. Model metadata does not establish account
+splits, uncertainty, and size limits; `evidence.yaml` controls context budgets,
+section lengths, rounding tolerance, and banned phrases. Model metadata does not establish account
 access or tested live behavior. Provider SDKs are deferred until used.
 
 Maintained files stay below 300 lines and Python functions below 50. Generated
