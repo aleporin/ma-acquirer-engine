@@ -102,3 +102,38 @@ def test_replay_rejects_invalid_or_missing_archive_without_current_config(
     result = CliRunner().invoke(build_app(), ["replay", run_id, "--project", str(tmp_path)])
     assert result.exit_code == 1
     assert "archive" in result.output.lower()
+
+
+def test_saved_snapshot_preserves_legacy_execution_policy_fields(
+    deps: Deps, tmp_path: Path
+) -> None:
+    from acquirer_engine.llm.archive import save_snapshot
+    from acquirer_engine.llm.config import AnalystConfig
+
+    snapshot = inputs(deps, "a" * 32)
+    old_fields = {
+        k: v
+        for k, v in deps.settings.analyst.model_dump().items()
+        if k
+        not in {
+            "max_repairs",
+            "tools_enabled",
+            "escalation_enabled",
+            "reviewer_enabled",
+            "sparse_prompt_file",
+            "sparse_relevant_deals",
+            "max_run_usd",
+            "request_overhead_tokens",
+            "run_timeout_seconds",
+            "reviewer_prompt_file",
+            "reviewer_max_output_tokens",
+        }
+    }
+    old = AnalystConfig.model_validate(old_fields)
+    snapshot = snapshot.model_copy(
+        update={"settings": deps.settings.model_copy(update={"analyst": old})}
+    )
+    directory = tmp_path / snapshot.run_id
+    save_snapshot(directory, snapshot)
+    restored = load_snapshot(directory).settings.analyst
+    assert restored.model_dump(exclude_unset=True) == old.model_dump(exclude_unset=True)
