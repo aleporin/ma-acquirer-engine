@@ -1,0 +1,98 @@
+{
+  "run_id": "414912077f22457b8ad1ede8d90174e3",
+  "source_git_sha": "dc5fbd5d4c02270f0ee7438227364dda564c534c",
+  "source_dirty": false,
+  "latency_seconds": 177.8433964580763,
+  "verified_pages": 10,
+  "expected_pages": 10,
+  "first_pass_pages": 7,
+  "first_pass_claims_total": 66,
+  "first_pass_claims_verified": 65,
+  "final_claims_total": 66,
+  "final_claims_verified": 66,
+  "returned_responses": 29,
+  "calls_by_stage": {
+    "analyst": 25,
+    "repair": 3,
+    "reviewer": 1
+  },
+  "cost_usd": 1.0889864,
+  "budget_cap_usd": 3,
+  "repairs": {
+    "Vista Equity": [
+      {
+        "stage": "analyst",
+        "status": "failed",
+        "errors": [
+          "reasoning: stray number 1",
+          "reasoning: stray number 2"
+        ],
+        "claims_total": 5,
+        "claims_verified": 5
+      },
+      {
+        "stage": "repair",
+        "status": "verified",
+        "errors": [],
+        "claims_total": 5,
+        "claims_verified": 5
+      }
+    ],
+    "GTCR": [
+      {
+        "stage": "analyst",
+        "status": "failed",
+        "errors": [
+          "reasoning: stray number 200mm",
+          "reasoning: stray number 2.5",
+          "reasoning: stray number 200mm"
+        ],
+        "claims_total": 6,
+        "claims_verified": 6
+      },
+      {
+        "stage": "repair",
+        "status": "verified",
+        "errors": [],
+        "claims_total": 6,
+        "claims_verified": 6
+      }
+    ],
+    "New Mountain Capital": [
+      {
+        "stage": "analyst",
+        "status": "failed",
+        "errors": [
+          "claims[MA-2022-0377:ebitda_margin_pct]: value mismatch (claimed 16.5, evidence 17.4)"
+        ],
+        "claims_total": 8,
+        "claims_verified": 7
+      },
+      {
+        "stage": "repair",
+        "status": "verified",
+        "errors": [],
+        "claims_total": 8,
+        "claims_verified": 8
+      }
+    ]
+  },
+  "reviewer_approved": 10,
+  "reviewer_revisions": 0,
+  "replay": {
+    "run_id": "413a95bc0c1a4f0d8af47bf802939eaf",
+    "responses": 29,
+    "identical_rationales": true,
+    "identical_validation_attempts": true,
+    "identical_reviewer_verdicts": true,
+    "cost_usd": 0,
+    "latency_seconds": 0.08465645788237453
+  },
+  "limits": [
+    "One successful live observation; no statistical latency distribution.",
+    "The 60-second performance target remains unmet.",
+    "Tools-disabled and reviewer-disabled ablations remain unrun.",
+    "Reviewer approved every page; no quality improvement from review was observed.",
+    "No escalation was needed; its live behavior remains unmeasured."
+  ]
+}
