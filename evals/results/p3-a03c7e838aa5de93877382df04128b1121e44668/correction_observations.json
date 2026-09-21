@@ -1,0 +1,45 @@
+{
+  "scope": "Unchanged analyst_v3 responses under corrected reference scanning; analyst_v4 generation is unmeasured.",
+  "original_run_id": "c629b888ae9c49ac806db09b550526c2",
+  "original_git_sha": "a4bc6ef07dd381bbee37c759becb24b22f42cd39",
+  "replay_run_id": "ced5ac2376d54a56944cd3f942c69e08",
+  "executing_git_sha": "a03c7e838aa5de93877382df04128b1121e44668",
+  "source_dirty": false,
+  "command": "uv run --locked acquirers replay c629b888ae9c49ac806db09b550526c2",
+  "exit_code": 1,
+  "returned_responses": 26,
+  "cost_usd": 0.0,
+  "replay_latency_seconds": 0.08305587503127754,
+  "verified_pages_before": 4,
+  "verified_pages_after": 4,
+  "claims_total": 155,
+  "claims_verified": 155,
+  "errors_before": 23,
+  "errors_after": 15,
+  "removed_errors": [
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20",
+    "acquirer_overview: stray number 20"
+  ],
+  "schedule_projection": [
+    {
+      "concurrency": 5,
+      "projected_seconds": 79.45699970796704
+    },
+    {
+      "concurrency": 10,
+      "projected_seconds": 50.724567249882966
+    }
+  ],
+  "projection_assumptions": "Measured warm-up and per-buyer duration are held fixed; no extra contention, queueing or rate limits. This is not a live latency result.",
+  "validation": {
+    "make_test": "194 passed in 2.30s",
+    "make_lint": "ruff clean, 144 formatted files, mypy clean in 120 files, size checks clean"
+  },
+  "live_gate": "Still failed; a new approved live run is required to measure prompt quality and concurrency."
+}
