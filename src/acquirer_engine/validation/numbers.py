@@ -39,7 +39,7 @@ def scan_numbers(page: AcquirerRationale, evidence_ids: set[str]) -> list[str]:
     """
     errors = []
     pattern = re.compile(
-        r"(?<![\w.])(?P<number>[+−-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:[eE][+-]?\d+)?)"
+        r"(?<![\w.])(?P<number>[+−-]?(?:(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?)"
         r"\s*(?P<unit>percent\b|billion\b|million\b|thousand\b|bn\b|mm\b|[BMKXbmkx%](?!\w))?"
     )
     for path, text in prose_sections(page).items():
