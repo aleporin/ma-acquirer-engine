@@ -4,8 +4,8 @@ Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
 structured rationale, usage accounting, and strict replay**. Offline checks pass;
 the live attempts have not yet produced a verified rationale. The first hit the
-request deadline; the next exposed output truncation and a schema violation.
-Corrections are tested offline, but the phase exit gate remains unmet. Portfolio
+request deadline; later attempts exposed truncation and grounding failures.
+All ten drafts now complete, but the latest live run accepted no whole pages. Portfolio
 repair, judging, and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
@@ -160,6 +160,7 @@ verifier checks every claim's ID, numeric metric, and canonical value. Counts an
 years must match exactly; continuous values allow the configured rounding error.
 Prose numerals must appear in claims, including years and ranges. Currency units
 are normalized to millions; percentages and multiples must use matching metrics.
+Rounding must fit both the displayed precision and the canonical-unit tolerance.
 Labeled outside notes are excluded from groundedness checks.
 
 Valuation must cite separately retrieved Closed transactions and explicit claims
@@ -224,6 +225,8 @@ Phase 3 has no repair loop, escalation, portfolio reviewer, or hard dollar cap.
 The final output tool requests strict structured output with the provider's
 supported schema subset. Full schema, length, risk-reference, and claim checks
 still run locally; unsupported provider constraints remain local requirements.
+The generation schema separates evidence risks, which require references, from
+judgment risks, which omit references. Stored judgments have an empty list.
 The output allowance is 8,000 tokens, and the versioned prompt asks for a concise
 page that leaves room for its claims. Responses that end at the token limit are
 recorded with usage, then rejected explicitly, even if their partial arguments
@@ -266,6 +269,17 @@ record these limits explicitly.
 The [timeout-corrected run](evals/results/p3-4279e443c7084f741a42e19e45f4b0d1722eae7d/summary.md)
 took 84.82 seconds and recorded $1.091577, with no request timeouts. Nine drafts
 hit the previous 4,000-token allowance; the complete draft failed risk-reference
-consistency. None reached claim validation. The larger output allowance, strict
-output request, clearer diagnostics, and concise `analyst_v2` prompt have only
-been checked offline. No live quality or latency improvement is claimed yet.
+consistency. None reached claim validation.
+
+The [complete-draft run](evals/results/p3-4ddbb485649aa018a501ecf5134bcd39685110eb/summary.md)
+used the larger allowance and `analyst_v2`: all ten drafts completed, eight parsed,
+and their 259 explicit numeric claims verified. No whole page passed: two drafts
+failed risk consistency and the rest failed prose-number coverage. It took
+158.81 seconds and cost $1.0650584. Perfect accuracy among parsed claims does not
+mean every numeric statement was covered or that failed schemas were correct.
+
+The [latest offline checks](evals/results/p3-457ef3fd66af275e0263b8579c75091d7dbd6999/summary.md)
+cover exclusive risk alternatives and rounding within written precision. Unedited
+saved drafts lose 82 false-positive errors, but still fail other guardrails.
+`analyst_v3` asks for fewer, individually cited facts; its generation quality and
+latency remain unmeasured. No Phase 3 exit or live quality success is claimed.
