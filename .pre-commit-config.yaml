@@ -17,3 +17,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: size-limits
+        name: file and function length checks
+        entry: uv run --locked python -m scripts.check_lengths
+        language: system
+        pass_filenames: false
+        always_run: true
