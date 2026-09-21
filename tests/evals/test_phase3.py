@@ -57,6 +57,7 @@ def test_live_gate_requires_the_configured_number_of_pages(settings: Settings) -
 def test_repaired_success_does_not_rewrite_first_pass_metrics(deps: Deps, tmp_path: Path) -> None:
     run = observation(deps.settings)
     raw = run.model_dump(mode="json")
+    raw["pages"] = raw["pages"][:1]
     raw["pages"][0]["attempts"] = [
         dict(
             stage="analyst",

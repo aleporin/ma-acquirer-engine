@@ -40,18 +40,23 @@ def _claims(baseline: LayerResult, runs: list[AnalystRun]) -> LayerResult:
     metrics = dict(baseline.metrics)
     for mode in sorted({run.mode for run in runs}):
         pages = [p for run in runs if run.mode == mode for p in run.pages]
-        count = sum(p.claims_total for p in pages)
-        if count:
-            metrics[f"{mode}_first_pass_claim_rate"] = Metric(
-                value=sum(p.claims_verified for p in pages) / count, direction="higher"
-            )
-        if pages:
-            metrics[f"{mode}_first_pass_page_rate"] = Metric(
-                value=sum(p.status == "verified" for p in pages) / len(pages), direction="higher"
-            )
-        metrics[f"{mode}_parsed_claims"] = Metric(value=count, direction="higher")
+        first = [p.attempts[0] if p.attempts else p for p in pages]
+        for label, outcomes in (("first_pass", first), ("post_repair", pages)):
+            count = sum(p.claims_total for p in outcomes)
+            if count:
+                metrics[f"{mode}_{label}_claim_rate"] = Metric(
+                    value=sum(p.claims_verified for p in outcomes) / count, direction="higher"
+                )
+            if outcomes:
+                metrics[f"{mode}_{label}_page_rate"] = Metric(
+                    value=sum(p.status == "verified" for p in outcomes) / len(outcomes),
+                    direction="higher",
+                )
+        metrics[f"{mode}_parsed_claims"] = Metric(
+            value=sum(p.claims_total for p in first), direction="higher"
+        )
         metrics[f"{mode}_pages_without_parsed_claims"] = Metric(
-            value=sum(p.claims_total == 0 for p in pages), direction="lower"
+            value=sum(p.claims_total == 0 for p in first), direction="lower"
         )
     return baseline.model_copy(update={"metrics": metrics})
 

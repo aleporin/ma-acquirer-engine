@@ -59,6 +59,12 @@ def draft_model(*, truncated: bool) -> FunctionModel:
 async def test_rejected_draft_preserves_actionable_error_and_usage(
     deps: Deps, tmp_path: Path, truncated: bool, message: str
 ) -> None:
+    deps = replace(
+        deps,
+        settings=deps.settings.model_copy(
+            update={"analyst": deps.settings.analyst.model_copy(update={"max_repairs": 0})}
+        ),
+    )
     context = evidence_context(deps.settings)
     runtime = build_services(
         deps,
