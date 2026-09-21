@@ -17,6 +17,7 @@ def config() -> BacktestConfig:
         test_end_year=2024,
         bootstrap_samples=50,
         confidence=0.95,
+        test_timeout_seconds=180,
         stability_runs=5,
         minimum_conviction_levels=2,
     )

@@ -90,6 +90,7 @@ class BacktestConfig(BaseModel):
     test_end_year: PositiveInt
     bootstrap_samples: PositiveInt
     confidence: Annotated[float, Field(gt=0, lt=1)]
+    test_timeout_seconds: PositiveInt
     stability_runs: PositiveInt
     minimum_conviction_levels: Annotated[int, Field(ge=1, le=3)]
 

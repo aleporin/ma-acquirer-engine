@@ -62,7 +62,7 @@ def test_ci_selects_only_layers_zero_through_two(project: Path) -> None:
 def test_unavailable_commands_fail_without_provider_access(arguments: list[str]) -> None:
     result = CliRunner().invoke(build_app(), arguments)
     assert result.exit_code == 2
-    assert "Phase 0" in result.output
+    assert "not implemented" in result.output or "offline" in result.output
 
 
 def test_invalid_configuration_has_no_traceback(project: Path) -> None:

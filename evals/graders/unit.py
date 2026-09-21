@@ -78,6 +78,7 @@ def run_tests(project: Path, *, timeout: int) -> UnitReport:
             "tests/data",
             "tests/features",
             "tests/ranking",
+            "tests/test_ranking_config.py",
             "-q",
             "--tb=short",
             f"--junitxml={junit}",

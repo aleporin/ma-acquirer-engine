@@ -14,13 +14,17 @@ from uuid import uuid4
 import typer
 from pydantic import ValidationError
 
+from acquirer_engine.data.loader import load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.settings import load_settings
 from evals.diff import compare_scorecards
+from evals.graders.unit import grade as grade_unit
+from evals.graders.unit import run_tests
 from evals.harness import evaluate
-from evals.scorecard import RunInfo, read_scorecard, write_scorecard
+from evals.phase1 import PreparedEvaluation, prepare_phase1
+from evals.scorecard import RunInfo, Scorecard, read_scorecard, write_scorecard
 
 
 def _git_state(root: Path) -> tuple[str, bool]:
@@ -36,24 +40,47 @@ def _git_state(root: Path) -> tuple[str, bool]:
     return revision, bool(changes.strip())
 
 
+def _produce_scorecard(
+    root: Path, deps: Deps, run: RunInfo, selection: list[int], results: Path
+) -> tuple[Path, Scorecard]:
+    prepared = PreparedEvaluation({}, {})
+    if deps.settings.evaluation.phase == "p1":
+        rows = load_transactions(root / "data/ma_transactions_500.csv")
+        deps.logger.info("csv_loaded", stage="eval", rows=len(rows))
+        config = deps.settings.evaluation
+        report = (
+            run_tests(root, timeout=config.backtest.test_timeout_seconds)
+            if 0 in selection
+            else None
+        )
+        unit = grade_unit(next(layer for layer in config.layers if layer.id == 0), report)
+        prepared = prepare_phase1(rows, deps, unit)
+    card = evaluate(deps, run, selection, graders=prepared.graders)
+    path = write_scorecard(card, results, artifacts=prepared.artifacts)
+    deps.logger.info(
+        "scorecard_written", stage="eval", path=str(path), source_dirty=run.source_dirty
+    )
+    return path, card
+
+
 def run_evaluation(
     project: Annotated[Path, typer.Option(help="Repository root.")] = Path("."),
     results: Annotated[Path | None, typer.Option(help="Alternative results directory.")] = None,
     replay: Annotated[bool, typer.Option("--replay/--fresh")] = True,
     ci: Annotated[bool, typer.Option(help="Select offline CI layers.")] = False,
 ) -> None:
-    """Write a Phase 0 scorecard using only offline stub graders.
+    """Write an offline scorecard and its measured phase artifacts.
 
     Args:
         project: Repository containing configuration and source history.
         results: Optional output root for repeated evaluations.
-        replay: Must remain true during Phase 0.
+        replay: Must remain true while provider integration is unavailable.
         ci: Select layers zero through two.
     Raises:
         typer.Exit: The command is unavailable or evaluation fails.
     """
     if not replay:
-        typer.echo("Phase 0 supports offline replay evaluation only.", err=True)
+        typer.echo("This phase supports offline replay evaluation only.", err=True)
         raise typer.Exit(2)
     try:
         root = project.resolve()
@@ -67,12 +94,14 @@ def run_evaluation(
         ) as log:
             deps = Deps(settings=settings, logger=log)
             selection = settings.evaluation.ci_layers if ci else settings.evaluation.offline_layers
-            card = evaluate(deps, run, selection)
-            path = write_scorecard(card, results or root / "evals/results")
-            log.info("scorecard_written", stage="eval", path=str(path), source_dirty=dirty)
+            path, card = _produce_scorecard(
+                root, deps, run, selection, results or root / "evals/results"
+            )
         typer.echo(f"Scorecard: {path}")
         for layer in card.layers:
             typer.echo(f"Layer {layer.id}: {layer.status}")
+        if any(layer.status == "failed" for layer in card.layers):
+            raise typer.Exit(1)
     except (AcquirerEngineError, OSError, ValidationError) as error:
         typer.echo(f"Evaluation failed: {error}", err=True)
         raise typer.Exit(1) from error
@@ -105,9 +134,9 @@ def run_product(replay: Annotated[bool, typer.Option("--replay/--fresh")] = True
     Args:
         replay: Requested mode; neither mode is implemented yet.
     Raises:
-        typer.Exit: Phase 0 contains no product pipeline.
+        typer.Exit: Rationale generation is not implemented.
     """
-    typer.echo("Phase 0: ranking and rationale generation are not implemented.", err=True)
+    typer.echo("Rationale generation is not implemented; eval writes a ranking snapshot.", err=True)
     raise typer.Exit(2)
 
 
@@ -115,9 +144,9 @@ def eval_judges() -> None:
     """Report that live evaluation is unavailable.
 
     Raises:
-        typer.Exit: Phase 0 contains no live judge implementation.
+        typer.Exit: Live judging is not implemented.
     """
-    typer.echo("Phase 0: live judge evaluation is not implemented.", err=True)
+    typer.echo("Live judge evaluation is not implemented.", err=True)
     raise typer.Exit(2)
 
 

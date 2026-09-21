@@ -112,6 +112,10 @@ def _summary(card: Scorecard) -> str:
     ]
     for layer in sorted(card.layers, key=lambda result: result.id):
         lines.append(f"| {layer.id} | {layer.name} | {layer.selected} | {layer.status} |")
+    lines.extend(["", "| Layer | Metric | Value | Direction |", "| --- | --- | --- | --- |"])
+    for layer in card.layers:
+        for name, metric in sorted(layer.metrics.items()):
+            lines.append(f"| {layer.id} | {name} | {metric.value:.6f} | {metric.direction} |")
     lines.extend(["", "Unimplemented layers have no quality measurements.", ""])
     return "\n".join(lines)
 
