@@ -19,7 +19,7 @@ from evals.scorecard import LayerResult, Metric
 
 @dataclass(frozen=True)
 class UnitReport:
-    """Observed results from one isolated scoring/data test invocation."""
+    """Observed results from one isolated numeric/evidence test invocation."""
 
     total: int
     passed: int
@@ -58,7 +58,7 @@ def read_test_report(junit: Path, coverage: Path, *, exit_code: int) -> UnitRepo
 
 
 def run_tests(project: Path, *, timeout: int) -> UnitReport:
-    """Run data, feature, and ranking tests with network-denying fixtures.
+    """Run data, ranking, and evidence tests with network-denying fixtures.
 
     Args:
         project: Repository containing tests and installed development dependencies.
@@ -78,6 +78,8 @@ def run_tests(project: Path, *, timeout: int) -> UnitReport:
             "tests/data",
             "tests/features",
             "tests/ranking",
+            "tests/evidence",
+            "tests/validation",
             "tests/test_ranking_config.py",
             "-q",
             "--tb=short",
@@ -85,6 +87,8 @@ def run_tests(project: Path, *, timeout: int) -> UnitReport:
             "--cov=acquirer_engine.data",
             "--cov=acquirer_engine.features",
             "--cov=acquirer_engine.ranking",
+            "--cov=acquirer_engine.evidence",
+            "--cov=acquirer_engine.validation",
             "--cov-branch",
             f"--cov-report=json:{coverage}",
         ]

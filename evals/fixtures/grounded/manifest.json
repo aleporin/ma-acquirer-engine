@@ -1,0 +1,38 @@
+[
+  {
+    "name": "good_rounding",
+    "expected_error": null
+  },
+  {
+    "name": "good_units",
+    "expected_error": null
+  },
+  {
+    "name": "good_outside_notes",
+    "expected_error": null
+  },
+  {
+    "name": "bad_wrong_number",
+    "expected_error": "value mismatch"
+  },
+  {
+    "name": "bad_missing_evidence",
+    "expected_error": "unknown evidence"
+  },
+  {
+    "name": "bad_stray_number",
+    "expected_error": "stray number"
+  },
+  {
+    "name": "bad_banned_phrase",
+    "expected_error": "banned phrase"
+  },
+  {
+    "name": "bad_one_risk",
+    "expected_error": "risk_flags"
+  },
+  {
+    "name": "bad_no_comps",
+    "expected_error": "valuation_context"
+  }
+]

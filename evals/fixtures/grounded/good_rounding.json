@@ -1,0 +1,62 @@
+{
+  "reasoning": "Use the own-history activity and separately retrieved valuation comp.",
+  "acquirer_overview": "The buyer has 4 recorded deals.",
+  "strategic_fit_thesis": "Services experience supports a regional integration thesis.",
+  "precedent_activity": [
+    {
+      "transaction_id": "MA-2020-0001",
+      "description": "A Services precedent at $200M EV."
+    }
+  ],
+  "valuation_context": {
+    "summary": "The closed comp has a stated EV/EBITDA of 13.6x and EV/Revenue of 2x.",
+    "comps": [
+      {
+        "evidence_id": "MA-2020-0010"
+      }
+    ]
+  },
+  "risk_flags": [
+    {
+      "category": "integration_complexity",
+      "description": "Operating integration may be difficult.",
+      "basis": "judgment",
+      "evidence_ids": []
+    },
+    {
+      "category": "financing_capacity",
+      "description": "Recorded deal size does not prove funding capacity.",
+      "basis": "evidence",
+      "evidence_ids": [
+        "MA-2020-0001"
+      ]
+    }
+  ],
+  "conviction": {
+    "level": "High",
+    "justification": "History supports interest, with funding uncertain."
+  },
+  "outside_dataset_notes": null,
+  "claims": [
+    {
+      "value": 4,
+      "metric": "deal_count",
+      "evidence_id": "stat:deal_count:Buyer%20A"
+    },
+    {
+      "value": 200,
+      "metric": "deal_size_mm",
+      "evidence_id": "MA-2020-0001"
+    },
+    {
+      "value": 13.6,
+      "metric": "ev_ebitda_multiple",
+      "evidence_id": "MA-2020-0010"
+    },
+    {
+      "value": 2,
+      "metric": "ev_revenue_multiple",
+      "evidence_id": "MA-2020-0010"
+    }
+  ]
+}

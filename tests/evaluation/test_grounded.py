@@ -9,11 +9,11 @@ from pathlib import Path
 from shutil import copytree
 
 import pytest
-from evals.grounded import run_fixture_suite
 
 from acquirer_engine.errors import EvaluationError
 from acquirer_engine.settings import Settings
 from evals.graders.grounded import grade
+from evals.grounded import run_fixture_suite
 
 
 def test_grounded_suite_accepts_three_good_and_rejects_six_bad(settings: Settings) -> None:
@@ -33,14 +33,13 @@ def test_a_bad_fixture_that_slips_through_fails_the_grader(
     root = tmp_path / "fixtures"
     copytree("evals/fixtures/grounded", root)
     page = root / "bad_wrong_number.json"
-    payload = json.loads(page.read_text())
-    payload["claims"][2]["value"] = 13.6
+    payload = json.loads((root / "good_rounding.json").read_text())
     page.write_text(json.dumps(payload))
     report = run_fixture_suite(root, settings.evidence.validation)
     result = grade(settings.evaluation.layers[2], report)
     assert result.status == "failed"
     assert report.negative_rejected == 5
-    assert "bad_wrong_number" in " ".join(result.notes)
+    assert [case.name for case in report.cases if not case.expectation_met] == ["bad_wrong_number"]
 
 
 def test_missing_fixture_is_not_a_passing_empty_suite(settings: Settings, tmp_path: Path) -> None:
