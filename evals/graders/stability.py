@@ -6,6 +6,8 @@ Does not own: Forcing levels or judging rationale stability.
 
 from dataclasses import dataclass
 
+from acquirer_engine.llm.config import AnalystConfig
+from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.settings import LayerSpec
 from evals.scorecard import LayerResult, Metric
 
@@ -45,4 +47,45 @@ def grade(layer: LayerSpec, report: RankingStability | None = None) -> LayerResu
             "conviction_agreement": Metric(value=report.conviction_agreement, direction="higher"),
             "conviction_levels": Metric(value=report.levels, direction="higher"),
         },
+    )
+
+
+def with_validation(
+    ranking: LayerResult, runs: list[AnalystRun], config: AnalystConfig
+) -> LayerResult:
+    """Add all-run page acceptance without hiding inherited ranking failures.
+
+    Args:
+        ranking: Existing ranking stability result.
+        runs: Independent recorded executions, grouped by mode.
+        config: Required repeat count.
+    Returns:
+        Extended measurements; replay repeats never stand for live stochasticity.
+    """
+    metrics = dict(ranking.metrics)
+    failed = ranking.status == "failed"
+    for mode in sorted({run.mode for run in runs}):
+        group = [run for run in runs if run.mode == mode]
+        metrics[f"{mode}_validation_runs"] = Metric(value=len(group), direction="higher")
+        if len(group) != config.stability_runs:
+            continue
+        names = [p.acquirer for p in group[0].pages]
+        same = all([p.acquirer for p in run.pages] == names for run in group)
+        rate = (
+            (
+                sum(
+                    all(run.pages[i].status == "verified" for run in group)
+                    for i in range(len(names))
+                )
+                / len(names)
+            )
+            if same and names
+            else 0
+        )
+        metrics[f"{mode}_validation_pass_{config.stability_runs}"] = Metric(
+            value=rate, direction="higher"
+        )
+        failed |= rate != 1
+    return ranking.model_copy(
+        update={"metrics": metrics, "status": "failed" if failed else "passed"}
     )

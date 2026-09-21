@@ -4,9 +4,9 @@ Owns: Typed per-page and per-run artifacts with observed usage.
 Does not own: Rendering or judging narrative quality.
 """
 
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, NonNegativeInt
+from pydantic import BaseModel, ConfigDict, Field, NonNegativeInt
 
 from acquirer_engine.data.schema import AcquirerType
 from acquirer_engine.llm.cost import CallRecord, ExecutionMode
@@ -32,6 +32,7 @@ class AnalystRun(BaseModel):
     """Observed execution, without confusing replay latency or cost with live results."""
 
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    run_id: Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]
     mode: ExecutionMode
     git_sha: str
     prompt_version: str

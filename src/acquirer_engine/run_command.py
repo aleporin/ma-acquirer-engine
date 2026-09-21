@@ -98,6 +98,7 @@ async def _execute(
     pages = await run_analysts(packs, replace(deps, runtime=services))
     return AnalystRun.model_validate(
         dict(
+            run_id=directory.name,
             mode=mode,
             git_sha=sha,
             prompt_version=deps.settings.evaluation.prompt_version,
