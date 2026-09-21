@@ -22,7 +22,7 @@ from pydantic import (
 )
 
 from acquirer_engine.errors import ConfigError
-from acquirer_engine.ranking.config import RankingConfig
+from acquirer_engine.ranking.config import BacktestConfig, RankingConfig
 
 
 class ConfigModel(BaseModel):
@@ -77,13 +77,14 @@ class LayerSpec(ConfigModel):
 class EvalConfig(ConfigModel):
     """Select offline layers without enabling provider calls."""
 
-    phase: Literal["p0"]
+    phase: Literal["p0", "p1"]
     seed: NonNegativeInt
     prompt_version: Annotated[str, Field(min_length=1)]
     quality: QualityLimits
     layers: list[LayerSpec]
     offline_layers: list[int]
     ci_layers: list[int]
+    backtest: BacktestConfig
 
     @model_validator(mode="after")
     def validate_layers(self) -> Self:

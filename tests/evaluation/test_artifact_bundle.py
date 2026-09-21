@@ -30,5 +30,5 @@ def test_unsafe_or_reserved_artifacts_are_rejected(
 ) -> None:
     card = evaluate(deps, run, [0])
     with pytest.raises(EvaluationError, match="artifact"):
-        write_scorecard(card, tmp_path, artifacts={name: "{}"})
-    assert list(tmp_path.iterdir()) == []
+        write_scorecard(card, tmp_path / "results", artifacts={name: "{}"})
+    assert not (tmp_path / "results").exists()

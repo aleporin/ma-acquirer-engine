@@ -91,6 +91,7 @@ class BacktestConfig(BaseModel):
     bootstrap_samples: PositiveInt
     confidence: Annotated[float, Field(gt=0, lt=1)]
     stability_runs: PositiveInt
+    minimum_conviction_levels: Annotated[int, Field(ge=1, le=3)]
 
     @model_validator(mode="after")
     def ordered_years(self) -> Self:

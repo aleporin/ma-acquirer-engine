@@ -52,7 +52,7 @@ def test_writes_valid_json_and_markdown_in_revision_directory(
 ) -> None:
     card = evaluate(deps, run, deps.settings.evaluation.offline_layers)
     path = write_scorecard(card, tmp_path)
-    assert path == tmp_path / f"p0-{run.git_sha}" / "scorecard.json"
+    assert path == tmp_path / f"{deps.settings.evaluation.phase}-{run.git_sha}" / "scorecard.json"
     assert read_scorecard(path) == card
     summary = path.with_name("summary.md").read_text()
     assert "not_implemented" in summary

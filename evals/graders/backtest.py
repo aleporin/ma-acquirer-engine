@@ -1,19 +1,36 @@
-"""Ranking backtests placeholder.
+"""Expose measured temporal ranking quality as an evaluation layer.
 
-Owns: The unimplemented result for this evaluation layer.
-Does not own: Metric computation or external calls in Phase 0.
+Owns: Translating backtest results into scorecard metrics.
+Does not own: Fitting the ranker or treating weak signal as implementation failure.
 """
 
 from acquirer_engine.settings import LayerSpec
-from evals.scorecard import LayerResult
+from evals.ranking.report import BacktestReport
+from evals.scorecard import LayerResult, Metric
 
 
-def grade(layer: LayerSpec) -> LayerResult:
-    """Report that this layer has no implementation yet.
+def grade(layer: LayerSpec, report: BacktestReport | None = None) -> LayerResult:
+    """Report ranking, baseline, and paired lift measurements.
 
     Args:
-        layer: Configured layer identity.
+        layer: Registered layer identity.
+        report: Completed temporal holdout, absent for the historical stub harness.
     Returns:
-        An explicit stub result without numeric measurements.
+        Measured metrics; passed means measured successfully, not positive lift.
     """
-    return LayerResult(id=layer.id, name=layer.name, selected=True, status="not_implemented")
+    if report is None:
+        return LayerResult(id=layer.id, name=layer.name, selected=True, status="not_implemented")
+    metrics = {
+        f"{method}_{name}": Metric(value=value, direction="higher")
+        for method, values in report.metrics.items()
+        for name, value in values.items()
+    }
+    for method, values in report.lift.items():
+        for name, interval in values.items():
+            for bound, value in interval.model_dump().items():
+                metrics[f"lift_vs_{method}_{name}_{bound}"] = Metric(
+                    value=value, direction="higher"
+                )
+    return LayerResult(
+        id=layer.id, name=layer.name, selected=True, status="passed", metrics=metrics
+    )

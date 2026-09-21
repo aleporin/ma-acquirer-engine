@@ -4,10 +4,9 @@ Owns: Training scope, query attributes, baselines, and cold-start accounting.
 Does not own: Tuning scores from test outcomes.
 """
 
-from evals.ranking.backtest import run_backtest, split_transactions, target_from_transaction
-
 from acquirer_engine.ranking.config import BacktestConfig
 from acquirer_engine.settings import Settings
+from evals.ranking.backtest import run_backtest, split_transactions, target_from_transaction
 from tests.fixtures.ranking import transaction
 
 
@@ -19,6 +18,7 @@ def config() -> BacktestConfig:
         bootstrap_samples=50,
         confidence=0.95,
         stability_runs=5,
+        minimum_conviction_levels=2,
     )
 
 

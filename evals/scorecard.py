@@ -116,17 +116,23 @@ def _summary(card: Scorecard) -> str:
     return "\n".join(lines)
 
 
-def write_scorecard(card: Scorecard, results_dir: Path) -> Path:
+def write_scorecard(
+    card: Scorecard, results_dir: Path, *, artifacts: dict[str, str] | None = None
+) -> Path:
     """Publish JSON and Markdown together without replacing prior results.
 
     Args:
         card: Validated results and provenance.
         results_dir: Parent directory for revision-specific results.
+        artifacts: Related output files published in the same atomic bundle.
     Returns:
         Path to scorecard.json.
     Raises:
         EvaluationError: Results already exist or cannot be written.
     """
+    for name in artifacts or {}:
+        if Path(name).name != name or name in {"", ".", "..", "scorecard.json", "summary.md"}:
+            raise EvaluationError("Invalid supplementary artifact filename")
     directory = results_dir / f"{card.phase}-{card.run.git_sha}"
     if directory.exists():
         raise EvaluationError(f"Scorecard directory already exists: {directory}")
@@ -137,6 +143,8 @@ def write_scorecard(card: Scorecard, results_dir: Path) -> Path:
             staging.mkdir()
             (staging / "scorecard.json").write_text(card.model_dump_json(indent=2) + "\n")
             (staging / "summary.md").write_text(_summary(card), encoding="utf-8")
+            for name, content in (artifacts or {}).items():
+                (staging / name).write_text(content, encoding="utf-8")
             staging.rename(directory)
     except OSError as error:
         raise EvaluationError(f"Could not write scorecard: {directory}") from error

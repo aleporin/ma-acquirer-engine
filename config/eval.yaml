@@ -1,4 +1,4 @@
-phase: p0
+phase: p1
 seed: 42
 prompt_version: not_implemented
 quality:
@@ -14,3 +14,10 @@ layers:
   - {id: 6, name: operations}
 offline_layers: [0, 1, 2, 3, 5, 6]
 ci_layers: [0, 1, 2]
+backtest:
+  train_end_year: 2021
+  test_end_year: 2024
+  bootstrap_samples: 2000
+  confidence: 0.95
+  stability_runs: 5
+  minimum_conviction_levels: 2
