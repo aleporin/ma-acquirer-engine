@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "source_run": "b318ea958f4349a8ac97f648b91e657f",
+      "replay_run": "8ebfd370331a41938da60d5fc0dd1b62",
+      "executing_sha": "3ec91786bc035a6c05c4caa1500c0943632b5303",
+      "prompt": "analyst_v1",
+      "responses": 12,
+      "verified_pages": 0,
+      "latency_seconds": 0.06060708384029567,
+      "cost_usd": 0,
+      "exit_code": 1
+    },
+    {
+      "source_run": "2edac3ffd7bf4fdb96b41fbf3f8fb8f3",
+      "replay_run": "3e892f0aa1d641fe91530ebc998a3d22",
+      "executing_sha": "3ec91786bc035a6c05c4caa1500c0943632b5303",
+      "prompt": "analyst_v1",
+      "responses": 27,
+      "verified_pages": 0,
+      "latency_seconds": 0.0679808750282973,
+      "cost_usd": 0,
+      "exit_code": 1
+    },
+    {
+      "source_run": "6c024f3a09f048a2aafa9c57372c7bef",
+      "replay_run": "31f03960adf74faf9f5cfd98e467e1f3",
+      "executing_sha": "3ec91786bc035a6c05c4caa1500c0943632b5303",
+      "prompt": "analyst_v2",
+      "responses": 25,
+      "verified_pages": 0,
+      "latency_seconds": 0.08243658300489187,
+      "cost_usd": 0,
+      "exit_code": 1
+    }
+  ],
+  "original_archives_unchanged": true,
+  "shared_cache_unchanged": true,
+  "scope": "Current tools and validation over archived inputs and responses; no new generation."
+}
