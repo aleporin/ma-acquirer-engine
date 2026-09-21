@@ -80,3 +80,21 @@ class RankingConfig(BaseModel):
         if self.medium_score >= self.high_score:
             raise ValueError("Conviction thresholds must be ordered")
         return self
+
+
+class BacktestConfig(BaseModel):
+    """Temporal boundaries and deterministic uncertainty settings."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, allow_inf_nan=False)
+    train_end_year: PositiveInt
+    test_end_year: PositiveInt
+    bootstrap_samples: PositiveInt
+    confidence: Annotated[float, Field(gt=0, lt=1)]
+    stability_runs: PositiveInt
+
+    @model_validator(mode="after")
+    def ordered_years(self) -> Self:
+        """Reject an empty or reversed holdout period."""
+        if self.test_end_year <= self.train_end_year:
+            raise ValueError("Test period must follow training")
+        return self
