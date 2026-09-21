@@ -97,12 +97,15 @@ def test_second_eval_preserves_existing_baseline(project: Path) -> None:
     assert path.read_bytes() == original
 
 
-def test_phase_one_writes_measured_bundle_before_failing_quality_gate(
-    project: Path, monkeypatch: pytest.MonkeyPatch
+@pytest.mark.parametrize("phase", ["p1", "p2"])
+def test_measured_bundle_is_written_before_failing_quality_gate(
+    project: Path, monkeypatch: pytest.MonkeyPatch, phase: str
 ) -> None:
     config_path = project / "config/eval.yaml"
     config = yaml.safe_load(config_path.read_text())
-    config["phase"] = "p1"
+    config["phase"] = phase
+    if phase == "p2":
+        copytree(Path(__file__).resolve().parents[1] / "evals/fixtures", project / "evals/fixtures")
     config["backtest"]["bootstrap_samples"] = 50
     config_path.write_text(yaml.safe_dump(config))
     rows = [
@@ -128,3 +131,7 @@ def test_phase_one_writes_measured_bundle_before_failing_quality_gate(
     assert card.layers[1].status == "passed"
     assert card.layers[5].status == "failed"
     assert path.with_name("top10.json").exists()
+
+    if phase == "p2":
+        assert card.layers[2].status == "passed"
+        assert path.with_name("groundedness.json").exists()
