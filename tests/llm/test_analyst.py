@@ -59,6 +59,7 @@ async def test_analyst_fetches_comp_and_returns_verified_rationale(
     assert result.status == "verified", result.errors
     assert result.rationale is not None
     assert result.tools == ["get_comparable_deals"]
+    assert result.claims_total == result.claims_verified == 4
     assert len(runtime.model.ledger.entries) == 2
     assert "tool_returned" in runtime.trace.path.read_text()
 
@@ -73,6 +74,7 @@ async def test_agent_without_comp_tool_output_fails_validation(deps: Deps, tmp_p
     result = await analyze_one(context.core, replace(deps, runtime=runtime))
     assert result.status == "failed"
     assert any("valuation_context" in error for error in result.errors)
+    assert result.claims_total == 4 and result.claims_verified == 2
 
 
 @pytest.mark.asyncio
