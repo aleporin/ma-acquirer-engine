@@ -1,0 +1,207 @@
+{
+  "source_run": "6c024f3a09f048a2aafa9c57372c7bef",
+  "source_prompt": "analyst_v2",
+  "scope": "Saved drafts revalidated locally; no new generation and no edits to draft contents.",
+  "provider_calls": 0,
+  "cost_usd": 0,
+  "verified_pages": 0,
+  "pages": [
+    {
+      "acquirer": "Nordic Capital",
+      "previous_errors": 1,
+      "current_errors": 1,
+      "errors": [
+        "risk_flags.3: Value error, risk requires evidence or judgment with matching references"
+      ]
+    },
+    {
+      "acquirer": "Francisco Partners",
+      "previous_errors": 1,
+      "current_errors": 1,
+      "errors": [
+        "risk_flags.3: Value error, risk requires evidence or judgment with matching references"
+      ]
+    },
+    {
+      "acquirer": "Atrium Health",
+      "previous_errors": 29,
+      "current_errors": 22,
+      "errors": [
+        "reasoning: stray number 336mm",
+        "reasoning: stray number 14.9%",
+        "reasoning: stray number 18.3%",
+        "reasoning: stray number 2023",
+        "reasoning: stray number 2020",
+        "reasoning: stray number 2016",
+        "acquirer_overview: stray number 2016",
+        "acquirer_overview: stray number 2020",
+        "acquirer_overview: stray number 2023",
+        "acquirer_overview: stray number 336mm",
+        "valuation_context: stray number 8",
+        "valuation_context: stray number 100mm",
+        "valuation_context: stray number 350mm",
+        "conviction.justification: stray number 350mm",
+        "precedent_activity.0: stray number 2023",
+        "precedent_activity.1: stray number 2020",
+        "precedent_activity.2: stray number 2016",
+        "precedent_activity.2: stray number 2016",
+        "risk_flags.0: stray number 336mm",
+        "risk_flags.3: stray number 2016",
+        "risk_flags.3: stray number 2020",
+        "risk_flags.3: stray number 2023"
+      ]
+    },
+    {
+      "acquirer": "Ardent Health Services",
+      "previous_errors": 14,
+      "current_errors": 7,
+      "errors": [
+        "reasoning: stray number 2022",
+        "reasoning: stray number 120",
+        "reasoning: stray number 300mm",
+        "reasoning: stray number 3.28x",
+        "valuation_context: stray number 120",
+        "valuation_context: stray number 300mm",
+        "valuation_context: stray number 3.28x"
+      ]
+    },
+    {
+      "acquirer": "UPMC",
+      "previous_errors": 31,
+      "current_errors": 20,
+      "errors": [
+        "reasoning: stray number 2018",
+        "reasoning: stray number 2020",
+        "reasoning: stray number 60mm",
+        "reasoning: stray number 2020",
+        "reasoning: stray number 100",
+        "reasoning: stray number 300mm",
+        "reasoning: stray number 2.45x",
+        "reasoning: stray number 3.28x",
+        "acquirer_overview: stray number 2018",
+        "acquirer_overview: stray number 2020",
+        "acquirer_overview: stray number 2020",
+        "strategic_fit_thesis: stray number 2019",
+        "valuation_context: stray number 100",
+        "valuation_context: stray number 300mm",
+        "valuation_context: stray number 2.45x",
+        "valuation_context: stray number 3.28x",
+        "precedent_activity.0: stray number 2019",
+        "precedent_activity.1: stray number 2020",
+        "precedent_activity.2: stray number 2018",
+        "risk_flags.0: stray number 2020"
+      ]
+    },
+    {
+      "acquirer": "Steward Health Care",
+      "previous_errors": 29,
+      "current_errors": 20,
+      "errors": [
+        "reasoning: stray number 2020",
+        "reasoning: stray number 2023",
+        "reasoning: stray number 100",
+        "reasoning: stray number 400mm",
+        "reasoning: stray number 9.3x",
+        "reasoning: stray number 16.6x",
+        "reasoning: stray number 1.52x",
+        "reasoning: stray number 3.36x",
+        "acquirer_overview: stray number 2020",
+        "acquirer_overview: stray number 2023",
+        "acquirer_overview: stray number 20",
+        "acquirer_overview: stray number 20",
+        "strategic_fit_thesis: stray number 20",
+        "strategic_fit_thesis: stray number 20",
+        "valuation_context: stray number 100",
+        "valuation_context: stray number 400mm",
+        "valuation_context: stray number 9.3x",
+        "valuation_context: stray number 16.6x",
+        "valuation_context: stray number 1.52x",
+        "valuation_context: stray number 3.36x"
+      ]
+    },
+    {
+      "acquirer": "Vista Equity",
+      "previous_errors": 23,
+      "current_errors": 15,
+      "errors": [
+        "reasoning: stray number 2024",
+        "reasoning: stray number 2023",
+        "reasoning: stray number 2021",
+        "reasoning: stray number 2019",
+        "reasoning: stray number 100",
+        "reasoning: stray number 300mm",
+        "acquirer_overview: stray number 2024",
+        "acquirer_overview: stray number 2021",
+        "acquirer_overview: stray number 2023",
+        "acquirer_overview: stray number 2019",
+        "valuation_context: stray number 100",
+        "valuation_context: stray number 300mm",
+        "valuation_context: stray number 9.3x",
+        "valuation_context: stray number 2.3x",
+        "valuation_context: stray number 3.4x"
+      ]
+    },
+    {
+      "acquirer": "Blackstone",
+      "previous_errors": 18,
+      "current_errors": 7,
+      "errors": [
+        "reasoning: stray number 100",
+        "reasoning: stray number 400mm",
+        "valuation_context: stray number 100",
+        "valuation_context: stray number 400mm",
+        "valuation_context: stray number 16.6x",
+        "precedent_activity.3: stray number 54.0mm",
+        "risk_flags.1: stray number 5"
+      ]
+    },
+    {
+      "acquirer": "GTCR",
+      "previous_errors": 24,
+      "current_errors": 15,
+      "errors": [
+        "reasoning: stray number 100",
+        "reasoning: stray number 350mm",
+        "reasoning: stray number 11",
+        "reasoning: stray number 17%",
+        "reasoning: stray number 9.3x",
+        "reasoning: stray number 3.36x",
+        "strategic_fit_thesis: stray number 12.2%",
+        "strategic_fit_thesis: stray number 20.9%",
+        "valuation_context: stray number 100",
+        "valuation_context: stray number 350mm",
+        "valuation_context: stray number 9.3x",
+        "valuation_context: stray number 3.36x",
+        "valuation_context: stray number 11%",
+        "valuation_context: stray number 17%",
+        "risk_flags.2: stray number 4"
+      ]
+    },
+    {
+      "acquirer": "New Mountain Capital",
+      "previous_errors": 39,
+      "current_errors": 19,
+      "errors": [
+        "reasoning: stray number 9",
+        "reasoning: stray number 12",
+        "reasoning: stray number 150",
+        "reasoning: stray number 330mm",
+        "reasoning: stray number 100",
+        "reasoning: stray number 350mm",
+        "reasoning: stray number 9.3x",
+        "reasoning: stray number 1.52x",
+        "reasoning: stray number 3.36x",
+        "acquirer_overview: stray number 4",
+        "strategic_fit_thesis: stray number 150",
+        "strategic_fit_thesis: stray number 330mm",
+        "valuation_context: stray number 100",
+        "valuation_context: stray number 350mm",
+        "valuation_context: stray number 9.3x",
+        "valuation_context: stray number 1.52x",
+        "valuation_context: stray number 3.36x",
+        "precedent_activity.1: stray number 20%",
+        "risk_flags.0: stray number 4"
+      ]
+    }
+  ]
+}
