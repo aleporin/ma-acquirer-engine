@@ -289,11 +289,11 @@ failed risk consistency and the rest failed prose-number coverage. It took
 158.81 seconds and cost $1.0650584. Perfect accuracy among parsed claims does not
 mean every numeric statement was covered or that failed schemas were correct.
 
-The [latest offline checks](evals/results/p3-457ef3fd66af275e0263b8579c75091d7dbd6999/summary.md)
-cover exclusive risk alternatives and rounding within written precision. Unedited
-saved drafts lose 82 false-positive errors, but still fail other guardrails.
-`analyst_v3` asks for fewer, individually cited facts; its generation quality and
-latency remain unmeasured. No Phase 3 exit or live quality success is claimed.
+The [offline corrections](evals/results/p3-457ef3fd66af275e0263b8579c75091d7dbd6999/summary.md)
+cover risk alternatives and rounding; saved drafts lose 82 false positives but still fail.
+The [revised-prompt run](evals/results/p3-a4bc6ef07dd381bbee37c759becb24b22f42cd39/summary.md)
+produced ten schema-valid drafts: four pages passed and all 155 explicit claims verified.
+It took 79.47 seconds and cost $0.952018. Missing prose claims and statistic-ID scan
+errors remain; Phase 3 still fails. Offline replay reproduced all 26 responses for $0.
 
-The [historical replay checks](evals/results/p3-3ec91786bc035a6c05c4caa1500c0943632b5303/summary.md)
-recover all 64 responses for zero new spend, preserving archives and cache. Old drafts still fail.
+Earlier [historical replay checks](evals/results/p3-3ec91786bc035a6c05c4caa1500c0943632b5303/summary.md) recover all 64 responses for $0; old drafts still fail.
