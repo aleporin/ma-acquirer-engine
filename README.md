@@ -56,10 +56,11 @@ detection. Unit-test fixtures reject socket connections.
 | `make run` | Replay cached responses and write structured page outcomes; cache misses fail |
 | `make run RUN_FLAGS=--fresh` | Make paid analyst calls and refresh the response cache |
 | `acquirers eval --analyst-run runs/ID/run.json` | Measure a saved run without provider access |
+| `acquirers runs` | List saved run IDs, outcomes, source, prompt, cost, and latency |
+| `acquirers replay RUN_ID` | Replay one archive with its saved inputs and responses |
 
-The installed `acquirers` command exposes these commands. `eval --fresh` is
-unavailable. To repeat an evaluation at the same revision, supply a new `RESULTS`
-directory; existing baseline directories are never overwritten.
+Evaluation is offline. For repeat evaluations, supply a new `RESULTS` directory;
+existing baseline directories are never overwritten.
 
 ## Ranking and assumptions
 
@@ -241,12 +242,24 @@ prices. A live zero-token response fails. Replay retains historical token counts
 but records zero new spend. Billing for unsuccessful requests without returned
 usage is unknown; the ledger does not invent it.
 
-Fresh execution needs `ANTHROPIC_API_KEY` in the environment. Replay constructs no
-provider client and needs no key. It hashes model/configuration, prompt, schema,
-core evidence, and conversation/tool results. A missing or corrupt entry fails
-explicitly, with no paid fallback. Fresh execution replaces matching cache
-entries. The sample replay cache is a later deliverable, so a fresh checkout
-currently reports cache misses until a live run has populated it.
+Fresh execution needs `ANTHROPIC_API_KEY` in the environment. Default `make run`
+uses only the request cache; misses fail without a paid fallback. Cache identity
+includes configuration, prompt, schema, evidence, and tool results. Fresh execution
+replaces matching cache entries. The portable sample cache is a later deliverable.
+
+Each new run writes `snapshot.json` before model requests: settings, prompt,
+prepared buyer evidence, and tool-query history. No credentials are included.
+`acquirers replay RUN_ID` reads that snapshot and the original trace, independently
+of the current configuration, CSV, prompts, or shared cache. Use the full ID from
+`acquirers runs`. It reruns current tools and validation, checking each conversation
+against the original request before returning its saved response. Missing responses
+and changed conversations fail explicitly. Rejected drafts stay available.
+
+Replay writes a new run with `replay_of`, original source SHA, executing SHA, and
+zero new spend. `source_dirty` marks uncommitted executing code (`*` in the listing).
+Original files are preserved. Outcomes may change with verifier improvements;
+replay does not reproduce old code or measure a new prompt's generation quality.
+Older runs need an input snapshot; reconstructed snapshots are labeled explicitly.
 
 The pinned model does not support temperature; the setting is null and omitted.
 Prose can vary between fresh runs. Only cache replay reproduces a saved response,
@@ -256,13 +269,11 @@ a fake HTTP transport, including a hostile input and full-conversation replay.
 The [Phase 3 offline baseline](evals/results/p3-899731d101d5c18d3b175a572bbbdca781b42d35/summary.md)
 records passing layers 0–2 and the inherited layer-5 shortfall. The subsequent
 [first live scorecard](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/summary.md)
-records ten draft timeouts after successful evidence retrieval. Twelve completed
-responses account for $0.259395; billing for the timed-out requests is unknown.
-Request latency percentiles cover only those returned responses. The full run
-took 49.09 seconds, but produced no completed drafts or parsed claims, so numeric
-claim accuracy is unavailable. Layers 3, 5, and 6 fail; layer 2's passing fixture
-checks do not imply that any live page passed. Five offline repetitions replay
-the available responses at zero new spend and fail at missing draft responses.
+records ten draft timeouts after evidence retrieval. Twelve returned responses
+account for $0.259395; billing for timed-out requests is unknown. The 49.09-second
+run produced no drafts or parsed claims. Layers 3, 5, and 6 fail; passing fixture
+checks do not imply live-page acceptance. Five offline repetitions replayed the
+available responses for no new spend, then failed at missing draft responses.
 The [attempt details](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/live_attempt.json)
 record these limits explicitly.
 
@@ -283,3 +294,6 @@ cover exclusive risk alternatives and rounding within written precision. Unedite
 saved drafts lose 82 false-positive errors, but still fail other guardrails.
 `analyst_v3` asks for fewer, individually cited facts; its generation quality and
 latency remain unmeasured. No Phase 3 exit or live quality success is claimed.
+
+The [historical replay checks](evals/results/p3-3ec91786bc035a6c05c4caa1500c0943632b5303/summary.md)
+recover all 64 responses for zero new spend, preserving archives and cache. Old drafts still fail.
