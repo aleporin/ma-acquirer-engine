@@ -29,7 +29,9 @@ def _claim_errors(
         value = item.model_dump().get(claim.metric)
     if not isinstance(value, (int, float)) or isinstance(value, bool):
         return [f"{prefix}: unknown numeric metric"]
-    discrete = isinstance(value, int) or claim.metric in {"deal_count", "relevant_deals"}
+    discrete = isinstance(value, int) or (
+        claim.metric.endswith("_count") or claim.metric == "relevant_deals"
+    )
     allowed = 0 if discrete else tolerance
     if abs(claim.value - value) > allowed:
         return [f"{prefix}: value mismatch (claimed {claim.value}, evidence {value})"]
@@ -40,7 +42,11 @@ def _reference_errors(
     page: AcquirerRationale, context: EvidenceContext, ids: set[str]
 ) -> list[str]:
     errors = []
-    own = {row.transaction_id for row in context.core.deals}
+    own = {
+        row.transaction_id
+        for row in (*context.core.deals, *context.retrieved_deals)
+        if row.acquirer == context.core.ranking.acquirer
+    }
     for precedent in page.precedent_activity:
         if precedent.transaction_id not in own:
             errors.append(

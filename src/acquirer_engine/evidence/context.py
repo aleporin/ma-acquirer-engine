@@ -17,6 +17,8 @@ class EvidenceContext(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     core: CorePack
     comparable_deals: tuple[Transaction, ...] = ()
+    retrieved_deals: tuple[Transaction, ...] = ()
+    statistics: tuple[Statistic, ...] = ()
 
     def index(self) -> dict[str, Transaction | Statistic]:
         """Resolve IDs only within facts available to this page.
@@ -31,6 +33,8 @@ class EvidenceContext(BaseModel):
             *self.core.deals,
             *self.core.statistics,
             *self.comparable_deals,
+            *self.retrieved_deals,
+            *self.statistics,
         )
         for item in items:
             key = item.transaction_id if isinstance(item, Transaction) else item.evidence_id

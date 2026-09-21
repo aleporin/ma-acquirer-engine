@@ -23,6 +23,7 @@ from pydantic import (
 
 from acquirer_engine.errors import ConfigError
 from acquirer_engine.evidence.config import EvidenceConfig
+from acquirer_engine.llm.config import AnalystConfig
 from acquirer_engine.ranking.config import BacktestConfig, RankingConfig
 
 
@@ -114,6 +115,7 @@ class Settings(ConfigModel):
     scoring: RankingConfig
     evaluation: EvalConfig
     evidence: EvidenceConfig
+    analyst: AnalystConfig
 
 
 def _load_yaml[T: BaseModel](path: Path, schema: type[T]) -> T:
@@ -134,6 +136,7 @@ def load_settings(config_dir: Path) -> Settings:
         ConfigError: A file is missing, malformed, or violates its schema.
     """
     return Settings(
+        analyst=_load_yaml(config_dir / "analyst.yaml", AnalystConfig),
         evidence=_load_yaml(config_dir / "evidence.yaml", EvidenceConfig),
         models=_load_yaml(config_dir / "models.yaml", ModelsConfig),
         scoring=_load_yaml(config_dir / "scoring.yaml", RankingConfig),
