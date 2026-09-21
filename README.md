@@ -1,15 +1,23 @@
 # M&A Acquirer Engine
 
-A command-line project for dataset-grounded acquirer analysis.
+Rank likely acquirers from transaction history and measure the ranking against
+held-out deals. The current scope is **Phase 1: data, deterministic ranking, and
+offline evaluation**. Rationale generation and live judging are not implemented.
 
-**Current scope: Phase 0, scaffold and evaluation harness.** All seven evaluation
-layers report `not_implemented`. There is no ranking or rationale generation yet,
-and a successful evaluation process is not a claim that product quality passes.
+The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
+43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
+lift over both popularity baselines has a 95% interval containing zero. These
+are measurements on synthetic data, not a claim of predictive superiority.
+
+The assignment top ten are stable across five runs, but all receive Medium
+conviction under the initial fixed thresholds. The intermediate requirement of
+two unforced levels is **not met**. Default evaluation writes its results and
+exits nonzero to expose that unmet gate.
 
 ## Setup and commands
 
 Install [uv 0.12.17](https://docs.astral.sh/uv/getting-started/installation/), then
-run these commands from the repository root:
+run from the repository root:
 
 ```sh
 uv sync --locked
@@ -18,11 +26,11 @@ make test
 make eval
 ```
 
-The pinned Python 3.12.14 interpreter is downloaded by uv if needed. Python
-dependencies are locked in `uv.lock`. Initial dependency installation needs
-internet access; the tests and evaluations make no provider calls and need no keys.
+uv downloads the pinned Python 3.12.14 interpreter if needed. Dependencies are
+locked in `uv.lock`. Installation needs internet access; tests and evaluation
+make no provider calls and need no keys.
 
-For development, activate the environment and install standard pre-commit checks:
+For development:
 
 ```sh
 source .venv/bin/activate
@@ -31,97 +39,107 @@ pre-commit run --all-files
 ```
 
 Checks include Ruff, strict mypy, file/function size limits, and private-key
-detection. Tests block socket connections in their process.
+detection. Unit-test fixtures reject socket connections.
 
-| Command | Phase 0 behavior |
+| Command | Behavior |
 | --- | --- |
-| `make test` | Run offline behavioral tests |
+| `make test` | Run the complete offline behavioral suite |
 | `make lint` | Check formatting, lint, types, and size limits |
-| `make eval` | Write the seven-layer stub baseline |
+| `make eval` | Write measured layers 0, 1, and ranking stability in 5; fail on unmet gates |
 | `make eval EVAL_FLAGS=--ci RESULTS=/tmp/ci-results` | Select layers 0–2 for offline CI |
-| `make eval-diff A=before.json B=after.json` | Print metric changes; exit nonzero for regressions |
-| `make eval-judges` | Report unavailable and fail without making calls |
-| `make run` | Report unavailable and fail without making calls |
+| `make eval-diff A=before.json B=after.json` | Show metric changes and flag regressions |
+| `make eval-judges` | Report unavailable without making calls |
+| `make run` | Report that rationale generation is unavailable |
 
-The installed `acquirers` command provides the same `eval`, `eval-diff`,
-`eval-judges`, and `run` commands. Run `uv run acquirers --help` for options.
-Phase 0 rejects `acquirers eval --fresh`.
+The installed `acquirers` command exposes these commands. `eval --fresh` is
+unavailable. To repeat an evaluation at the same revision, supply a new `RESULTS`
+directory; existing baseline directories are never overwritten.
 
-## Evaluation artifacts
+## Ranking and assumptions
 
-An evaluation writes:
+The default target is Healthcare Services, $200M EV, private, and regional. Its
+margin is the sector's upper-tercile boundary in eligible history. The primary
+size band scales with EV (0.5–2x), with a wider declining band (0.25–4x).
+Regional geography has no invented location; National and Multi-Regional buyer
+footprints receive expansion credit.
 
-```text
-evals/results/p0-<full evaluated git SHA>/scorecard.json
-evals/results/p0-<full evaluated git SHA>/summary.md
-runs/<run ID>/log.jsonl
-```
+The loader validates all fields, asserts the redundant sub-sector matches its
+sector, removes that column, and rejects duplicate identities or conflicting
+buyer types. Stated multiples remain canonical. The quality report records 403
+multiple discrepancies, 362 margin discrepancies, 57/52 sponsor/strategic deal-type
+conflicts, ten rumored deals, and 94 expected null close times.
 
-JSON scorecards include the evaluated revision, whether the checkout was dirty,
-run ID, UTC timestamp, configuration digest, seed, prompt version, model metadata,
-layer selection, and results. A scorecard made from dirty source is exploratory;
-committed baselines are generated from clean source.
+Rumored transactions are excluded from fitting. Completion is Closed divided by
+Closed + Withdrawn + Terminated; pending deals do not enter that denominator.
+Valuation summaries use Closed transactions only. Acquirer type is authoritative;
+deal type receives a small scoring weight.
 
-Results are written together and existing revision directories are never
-overwritten. For another run at the same revision, choose a different output root:
+Sector adjacency blends sponsor co-activity cosine with distances between sector
+financial profiles. Adjacent-sector contributions are discounted. Inverse document
+frequency reduces common rationale tags to little or no signal.
 
-```sh
-make eval RESULTS=/tmp/acquirer-eval-repeat
-```
+Each buyer gets bounded sector, size, activity, completion, margin, tag, geography,
+and deal-type signals. Signals shrink toward the empirical mean of that buyer type
+using a configurable prior strength. Weighted contributions sum to the score.
+Names resolve ties; there is no strategic/sponsor quota. Conviction depends on the
+score and relevant-history count, independently of other buyers' assigned levels.
 
-Every scorecard retains all seven layer identities. `selected` distinguishes
-requested offline layers from layers not requested. The default selection is
-0–3 and 5–6; CI selects 0–2. Layer 4 is never called in Phase 0, but remains
-visible as `not_implemented`. Layer 0 is also a stub; actual scaffold tests run
-through `make test`.
+## Evaluation and limits
 
-Unimplemented layers have empty metric dictionaries. Comparisons do not
-interpret missing measurements as zero: they distinguish newly added metrics,
-removed metrics, changed statuses, and direction-aware numeric deltas.
-Configuration changes are labeled so deltas are not mistaken for causal evidence.
+The split is fixed: 358 transactions through 2021 form the training population;
+all 142 transactions from 2022–2024 are test queries. Training removes rumored
+rows before fitting every transform, candidate identity, and prior. There are
+93 eligible historical candidates and 17 test labels absent from that universe.
+Those labels remain misses in every method's denominator.
 
-Baseline history lives under [evals/results](evals/results/). Each baseline has a
-separate `eval(p0):` commit; its source revision precedes the artifact commit.
+Queries use target sector, EV, margin, geography, and prior ownership. Held-out
+buyer names, outcomes, deal types, and post-deal rationale tags are not features.
+Using observed transaction EV still makes this a retrospective test; synthetic
+assignment and sparse histories limit what the scores can demonstrate.
 
-## Structure
+Metrics are recall@10, full-list MRR, and nDCG@10 with one relevant buyer per query.
+Every method uses the same population and candidate universe. Paired bootstrap
+intervals resample transactions with a fixed seed; they are not clustered by
+buyer. Random baseline shuffles use the seed and query identity. Every feature
+group is also removed once, with remaining weights renormalized. Initial weights
+and conviction boundaries were fixed before examining the holdout and have not
+been adjusted to make the measured results pass.
 
-| Module | Responsibility |
-| --- | --- |
-| `src/acquirer_engine/cli.py` | Arguments, run identity, dependency construction, and exit status |
-| `settings.py` | Safe YAML loading and typed configuration |
-| `logging_setup.py` | Isolated JSON logging to stderr and a run file |
-| `deps.py` | Shared settings and logger references |
-| `errors.py` | Typed application failures |
-| `evals/harness.py` | Offline layer selection and scorecard assembly |
-| `evals/graders/` | One explicit placeholder per evaluation layer |
-| `evals/scorecard.py` | Artifact schemas, validated reads, and publication |
-| `evals/diff.py` | Metric and status comparison |
-| `scripts/check_lengths.py` | Maintained-file and Python-function size checks |
+Layer 0 executes isolated data, feature, ranking, and ranking-config tests and
+reads their JUnit/coverage artifacts. `make test` covers the complete suite.
+Layer 1 passing means its measurements completed; it does not mean positive lift.
+Layer 5 measures ranking identity and conviction agreement across five runs, plus
+the intermediate two-level gate. Rationale stability remains unimplemented.
+Layers 2, 3, 4, and 6 retain explicit `not_implemented` statuses and empty metrics.
 
-State is constructed at the command boundary and passed through `Deps`.
-There are no provider clients in this phase. Harness inputs supply run metadata,
-so grading does not read the clock or generate random identifiers.
+Each result bundle under [evals/results](evals/results/) contains:
 
-## Configuration and limits
+- `scorecard.json` and `summary.md`: provenance, selected layers, metrics, and statuses.
+- `backtest.json`: split counts, per-query ranks, baselines, paired intervals, and ablations.
+- `data_quality.json`: measured source discrepancies.
+- `top10.json`: ordered buyers, conviction, and each score's arithmetic.
 
-PyYAML 6.0.3 safely parses YAML; Pydantic validates each boundary and rejects
-unknown configuration keys. The three configuration files are loaded once per run:
+Source revision, dirty state, run ID, UTC time, configuration digest, and seed are
+recorded. Committed baselines come from clean source; their source commit precedes
+the separate `eval(pN):` artifact commit. Logs stay local under `runs/`.
+CI checks the latest tracked ranking snapshot; intentional identity changes need
+a `ranking:` marker in an intervening commit message. CI selects layers 0–2, so
+green CI does not imply the separate Phase 1 conviction exit criterion passed.
 
-- `config/models.yaml`: provider IDs, standard USD token prices, context bands,
-  cache rates, verification dates, and vendor source URLs.
-- `config/scoring.yaml`: explicitly unset ranking weights.
-- `config/eval.yaml`: layer identities, selections, seed, and size limits.
+## Structure and configuration
 
-Model metadata is a dated reference, not proof of account access or stable model
-behavior. One judge identifier is a preview version. No credentials are loaded,
-and no live model behavior has been tested. Provider SDKs and the agent framework
-will be added only when their stages use them.
+`data/` owns validation and quality counts; `features/` owns fitted history;
+`ranking/` owns target profiles, signals, priors, and ordering. `evals/ranking/`
+owns holdout measurement. `evals/phase1.py` composes graders and companion artifacts.
+The CLI builds one settings snapshot and logger, passed through minimal `Deps`.
+No provider clients exist in this phase.
 
-Maintained text files are limited to 300 physical lines and Python functions to
-50, including decorators and docstrings. Generated artifacts, lockfiles, and
-the transaction CSV are exempt. The dataset is copied unchanged; its schema,
-quality checks, ranking assumptions, and backtests belong to the data phase.
+PyYAML parses the three configuration files and Pydantic validates them:
+`models.yaml` records dated provider metadata; `scoring.yaml` contains all tunable
+ranking policy and target assumptions; `eval.yaml` selects layers and controls
+splits, uncertainty, and size limits. Model metadata does not establish account
+access or tested live behavior. Provider SDKs are deferred until used.
 
-GitHub Actions runs lint, tests, and offline evaluation on pushes and pull
-requests. The workflow uploads its scorecard as an artifact. Runtime logs are
-local and ignored by Git; scorecard baselines are committed deliberately.
+Maintained files stay below 300 lines and Python functions below 50. Generated
+artifacts, lockfiles, and the unchanged transaction CSV are exempt. GitHub Actions
+runs lint, tests, and offline CI evaluation and uploads the generated scorecard.
