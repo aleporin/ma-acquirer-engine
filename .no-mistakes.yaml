@@ -1,0 +1,16 @@
+ignore_patterns:
+  - "data/**"
+  - "uv.lock"
+auto_fix:
+  rebase: 0
+  review: 0
+  test: 0
+  document: 0
+  lint: 0
+  ci: 0
+commit:
+  fix_message: "fix: {{.Summary}}"
+test:
+  evidence:
+    store_in_repo: false
+    attach_media: false
