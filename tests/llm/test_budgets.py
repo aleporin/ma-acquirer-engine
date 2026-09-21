@@ -63,18 +63,22 @@ async def test_usd_guard_prevents_a_request_before_model_execution(
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("failure", ["timeout", "429", "tokens"])
+@pytest.mark.parametrize("failure", ["timeout", "deadline", "429", "tokens"])
 async def test_provider_failures_are_not_retried_as_validation_repairs(
     deps: Deps, tmp_path: Path, failure: str
 ) -> None:
-    deps = routing_deps(deps, request_timeout_seconds=0.01)
+    deps = routing_deps(
+        deps,
+        request_timeout_seconds=1 if failure == "deadline" else 0.01,
+        run_timeout_seconds=0.01 if failure == "deadline" else None,
+    )
     context = evidence_context(deps.settings)
     calls = 0
 
     async def failing(messages: list[ModelMessage], info: AgentInfo) -> ModelResponse:
         nonlocal calls
         calls += 1
-        if failure == "timeout":
+        if failure in {"timeout", "deadline"}:
             await asyncio.sleep(1)
         if failure == "429":
             raise ModelHTTPError(429, "fixture")
