@@ -5,8 +5,10 @@ description = "Dataset-grounded acquirer analysis with an offline evaluation har
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "anthropic==1.7.0",
     "pandas==3.0.6",
     "pydantic==2.13.5",
+    "pydantic-ai-slim[anthropic]==2.46.0",
     "PyYAML==6.0.3",
     "structlog==26.1.0",
     "typer==0.27.2",
@@ -30,6 +32,7 @@ dev = [
     "pandas-stubs==3.0.5.260914",
     "pre-commit==4.6.2",
     "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
     "pytest-cov==7.1.0",
     "ruff==0.16.8",
     "types-PyYAML==6.0.12.20260906",
