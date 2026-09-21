@@ -1,0 +1,204 @@
+{
+  "run_id": "2edac3ffd7bf4fdb96b41fbf3f8fb8f3",
+  "source_revision": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+  "prompt_version": "analyst_v1",
+  "mode": "live",
+  "latency_seconds": 84.82302137510851,
+  "request_deadline_seconds": 120.0,
+  "run_latency_target_seconds": 60.0,
+  "max_output_tokens": 4000,
+  "model_requests_started": 27,
+  "model_responses_returned": 27,
+  "request_timeouts": 0,
+  "draft_responses": 10,
+  "truncated_draft_responses": 9,
+  "nontruncated_draft_responses": 1,
+  "schema_accepted_drafts": 0,
+  "verified_pages": 0,
+  "parsed_claims": 0,
+  "first_pass_claim_rate": null,
+  "first_pass_claim_rate_reason": "No draft passed schema validation to reach the claim verifier.",
+  "recorded_response_cost_usd": 1.091577,
+  "cost_scope": "Returned provider usage for all 27 model responses; not an independent billing reconciliation.",
+  "schema_failures": [
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "valuation_context"
+          ],
+          "type": "model_type",
+          "message": "Input should be a valid dictionary or instance of ValuationContext"
+        },
+        {
+          "path": [
+            "risk_flags"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "risk_flags",
+            0
+          ],
+          "type": "value_error",
+          "message": "Value error, risk requires evidence or judgment with matching references"
+        },
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "valuation_context"
+          ],
+          "type": "model_type",
+          "message": "Input should be a valid dictionary or instance of ValuationContext"
+        },
+        {
+          "path": [
+            "risk_flags",
+            0
+          ],
+          "type": "value_error",
+          "message": "Value error, risk requires evidence or judgment with matching references"
+        },
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "tool_call",
+      "schema_errors": [
+        {
+          "path": [
+            "risk_flags",
+            1
+          ],
+          "type": "value_error",
+          "message": "Value error, risk requires evidence or judgment with matching references"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "conviction"
+          ],
+          "type": "model_type",
+          "message": "Input should be a valid dictionary or instance of ConvictionRationale"
+        },
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    },
+    {
+      "finish_reason": "length",
+      "schema_errors": [
+        {
+          "path": [
+            "risk_flags",
+            0,
+            "category"
+          ],
+          "type": "literal_error",
+          "message": "Input should be 'antitrust', 'integration_complexity', 'financing_capacity', 'competitive_process', 'execution_risk', 'portfolio_conflict' or 'fund_cycle'"
+        },
+        {
+          "path": [
+            "claims"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        }
+      ]
+    }
+  ],
+  "replay_repetitions": 5,
+  "replay_responses_per_run": 27,
+  "replay_new_cost_usd": 0,
+  "replay_boundary": "Reproduces the saved responses and validation failures; does not measure fresh generation stability.",
+  "phase_exit_met": false
+}

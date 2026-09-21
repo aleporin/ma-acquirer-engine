@@ -1,0 +1,3197 @@
+{
+  "scope": "recorded_runs; replay does not measure live stochasticity or spend",
+  "runs": [
+    {
+      "run_id": "2edac3ffd7bf4fdb96b41fbf3f8fb8f3",
+      "mode": "live",
+      "git_sha": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+      "prompt_version": "analyst_v1",
+      "latency_seconds": 84.82302137510851,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 41.41840779199265,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_failed_deals",
+            "get_sector_stats"
+          ],
+          "latency_seconds": 41.53732345812023,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 40.563569750171155,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 37.03790049999952,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 37.82621075003408,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 36.047105124918744,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 37.6727729588747,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 42.60828787507489,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 40.59242462506518,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 40.41184579208493,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 12141,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2570,
+          "cost_usd": 0.026957,
+          "latency_ms": 2861.5535830613226
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18021,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.031916,
+          "latency_ms": 1767.970124958083
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 8963,
+          "output_tokens": 197,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.01527,
+          "latency_ms": 2376.7233749385923
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 8929,
+          "output_tokens": 193,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.015162,
+          "latency_ms": 2656.9909169338644
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 9122,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.015008,
+          "latency_ms": 2711.321874987334
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 12245,
+          "output_tokens": 141,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.021274,
+          "latency_ms": 2734.10079209134
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 14217,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.024288,
+          "latency_ms": 1450.9559159632772
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 15002,
+          "output_tokens": 49,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.025868,
+          "latency_ms": 1691.385833080858
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 14014,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.063402,
+          "latency_ms": 34635.80408319831
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 14949,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.065272,
+          "latency_ms": 35140.914167044684
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 18145,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.071664,
+          "latency_ms": 36766.142750158906
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 9250,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.015264,
+          "latency_ms": 1898.2079999987036
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 15130,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.026134,
+          "latency_ms": 1398.782917065546
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 12167,
+          "output_tokens": 195,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.021658,
+          "latency_ms": 2545.5809999257326
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 15125,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.065624,
+          "latency_ms": 36133.68875021115
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 12037,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.020838,
+          "latency_ms": 2545.906125102192
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 17276,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.069926,
+          "latency_ms": 37327.77037494816
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 11982,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.020728,
+          "latency_ms": 2382.2149590123445
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17917,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.031688,
+          "latency_ms": 1886.3985419739038
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 12369,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.021502,
+          "latency_ms": 2361.956249922514
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17862,
+          "output_tokens": 47,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.031568,
+          "latency_ms": 1631.2332088127732
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18249,
+          "output_tokens": 51,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.032382,
+          "latency_ms": 1803.2014169730246
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 15254,
+          "output_tokens": 3818,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.064062,
+          "latency_ms": 32736.65470792912
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18864,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.073102,
+          "latency_ms": 35116.996000055224
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 18726,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.072826,
+          "latency_ms": 38150.89029096998
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 19000,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.073374,
+          "latency_ms": 36561.432084068656
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 19723,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.07482,
+          "latency_ms": 36230.96058308147
+        }
+      ]
+    },
+    {
+      "run_id": "6ca945d2c5bb419bac781499fa0075d2",
+      "mode": "replay",
+      "git_sha": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+      "prompt_version": "analyst_v1",
+      "latency_seconds": 0.22841695812530816,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.06700620800256729,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_failed_deals",
+            "get_sector_stats"
+          ],
+          "latency_seconds": 0.10595233296044171,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10547112487256527,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08022062503732741,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08079016697593033,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.11808825004845858,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08076854213140905,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.11040995898656547,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10159645811654627,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10102704190649092,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12141,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2570,
+          "cost_usd": 0.0,
+          "latency_ms": 5.956917069852352
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18021,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.034207995980978
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12245,
+          "output_tokens": 141,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.665374919772148
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9122,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.2742911502718925
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8963,
+          "output_tokens": 197,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.394082982093096
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8929,
+          "output_tokens": 193,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.304207792505622
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18145,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.7117079850286245
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15002,
+          "output_tokens": 49,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.523584084585309
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14217,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.298415897414088
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14014,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.445708986371756
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14949,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.4552501533180475
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15125,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.807040957733989
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 17276,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.35195879638195
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9250,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6708750780671835
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12167,
+          "output_tokens": 195,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.506708985194564
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12037,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.508041009306908
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15130,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6332501117140055
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18864,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.721166962757707
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12369,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.363584030419588
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 11982,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.522833904251456
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17917,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.272750044241548
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15254,
+          "output_tokens": 3818,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.702666938304901
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18249,
+          "output_tokens": 51,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.520874867215753
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17862,
+          "output_tokens": 47,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.55183389224112
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18726,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.616334034129977
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19723,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.91133302077651
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19000,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.411208840087056
+        }
+      ]
+    },
+    {
+      "run_id": "fdc3dfe511b6491b964bf65f2da251a4",
+      "mode": "replay",
+      "git_sha": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+      "prompt_version": "analyst_v1",
+      "latency_seconds": 0.22696612495929003,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.06619929196313024,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_failed_deals",
+            "get_sector_stats"
+          ],
+          "latency_seconds": 0.10532299987971783,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10472499998286366,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.07976520899683237,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08045100001618266,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.11752283293753862,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.07934312499128282,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.1091744580771774,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10078050009906292,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10030529205687344,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12141,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2570,
+          "cost_usd": 0.0,
+          "latency_ms": 5.931499879807234
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18021,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.868708016350865
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12245,
+          "output_tokens": 141,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.605499958619475
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9122,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.347999976947904
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8963,
+          "output_tokens": 197,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.412749946117401
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8929,
+          "output_tokens": 193,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.231791874393821
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18145,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.619709147140384
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15002,
+          "output_tokens": 49,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.542750004678965
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14014,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.680332891643047
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14217,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.530999973416328
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14949,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.486916052177548
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15125,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6149170268327
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 17276,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.333000095561147
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9250,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.660458002239466
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12167,
+          "output_tokens": 195,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6223750580102205
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12037,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.414415849372745
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15130,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.67070790566504
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18864,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.418082932010293
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 11982,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.581874866038561
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12369,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.551791982725263
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17917,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.3250419441610575
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15254,
+          "output_tokens": 3818,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.679333815351129
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17862,
+          "output_tokens": 47,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.595749942585826
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18249,
+          "output_tokens": 51,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.562332924455404
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18726,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.349292187020183
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19723,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.552832968533039
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19000,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.640707910060883
+        }
+      ]
+    },
+    {
+      "run_id": "6c1bd426f9b74c1a99c938f00a31eba4",
+      "mode": "replay",
+      "git_sha": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+      "prompt_version": "analyst_v1",
+      "latency_seconds": 0.23739666701294482,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.06689124996773899,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_failed_deals",
+            "get_sector_stats"
+          ],
+          "latency_seconds": 0.10787650011479855,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10741695808246732,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08145379112102091,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08211658312939107,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.12559016607701778,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08640137501060963,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.11737145809456706,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10883300006389618,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10831920895725489,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12141,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2570,
+          "cost_usd": 0.0,
+          "latency_ms": 6.09783292748034
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18021,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.724041955545545
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12245,
+          "output_tokens": 141,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.682250019162893
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9122,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.612875102087855
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8963,
+          "output_tokens": 197,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.258958088234067
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8929,
+          "output_tokens": 193,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.5786671582609415
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18145,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.675666965544224
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15002,
+          "output_tokens": 49,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.747833056375384
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14014,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.674042040482163
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14217,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.35120815038681
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14949,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.932333879172802
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15125,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.495457910001278
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 17276,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.920707946643233
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9250,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.160791032016277
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12167,
+          "output_tokens": 195,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.307249888777733
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12037,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.2927918042987585
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15130,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.071540992707014
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18864,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.375417113304138
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 11982,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.768582923337817
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12369,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.883500212803483
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17917,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.054250057786703
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15254,
+          "output_tokens": 3818,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.042999913915992
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17862,
+          "output_tokens": 47,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.757584003731608
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18249,
+          "output_tokens": 51,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.622083088383079
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18726,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.75845898129046
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19723,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.052958080545068
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19000,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.872834008187056
+        }
+      ]
+    },
+    {
+      "run_id": "f9ebb21f1963447bad3bfeed2bbb2259",
+      "mode": "replay",
+      "git_sha": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+      "prompt_version": "analyst_v1",
+      "latency_seconds": 0.22651141695678234,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.06613737507723272,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_failed_deals",
+            "get_sector_stats"
+          ],
+          "latency_seconds": 0.10442012501880527,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.1039593331515789,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.07930787513032556,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.07992045790888369,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.11742212483659387,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08002520794980228,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10952662490308285,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10095045808702707,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.100650625070557,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12141,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2570,
+          "cost_usd": 0.0,
+          "latency_ms": 6.14750012755394
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18021,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.7981249410659075
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12245,
+          "output_tokens": 141,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.845374893397093
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9122,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.30341686680913
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8963,
+          "output_tokens": 197,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.487707909196615
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8929,
+          "output_tokens": 193,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.518334219232202
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18145,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6595830246806145
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15002,
+          "output_tokens": 49,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.765542155131698
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14014,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.390041042119265
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14217,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.584333091974258
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14949,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.438749911263585
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15125,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.698875058442354
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 17276,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.368374986574054
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9250,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.46245789155364
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12167,
+          "output_tokens": 195,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.8666670229285955
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12037,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.544792162254453
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15130,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.69041701965034
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18864,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.526582943275571
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 11982,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.411167163401842
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12369,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.709874909371138
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17917,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.507833790034056
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15254,
+          "output_tokens": 3818,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.5288339499384165
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17862,
+          "output_tokens": 47,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6483750231564045
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18249,
+          "output_tokens": 51,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.60804083943367
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18726,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.440625129267573
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19000,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.5891671217978
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19723,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.487707909196615
+        }
+      ]
+    },
+    {
+      "run_id": "cde584e8a2484f888c6357fc09845ca4",
+      "mode": "replay",
+      "git_sha": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+      "prompt_version": "analyst_v1",
+      "latency_seconds": 0.23466995800845325,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.07035795808769763,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_failed_deals",
+            "get_sector_stats"
+          ],
+          "latency_seconds": 0.10977387498132885,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10946199996396899,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08394291601143777,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08377670915797353,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.12010766589082778,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.08137229084968567,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.1115399170666933,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10278837499208748,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "rationale": null,
+          "errors": [
+            "UnexpectedModelBehavior"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "latency_seconds": 0.10242770914919674,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12141,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2570,
+          "cost_usd": 0.0,
+          "latency_ms": 6.718625081703067
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18021,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.008500000461936
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12245,
+          "output_tokens": 141,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.982583854347467
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9122,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.618792027235031
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8963,
+          "output_tokens": 197,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.366249941289425
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 8929,
+          "output_tokens": 193,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.512000061571598
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18145,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.970499943941832
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14217,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.197707960382104
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15002,
+          "output_tokens": 49,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.828249966725707
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14014,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.453082965686917
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 14949,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.655541783198714
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 17276,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.6367910001426935
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15125,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.582374986261129
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 9250,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.7480421382933855
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12167,
+          "output_tokens": 195,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.776041885837913
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12037,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.347958067432046
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 15130,
+          "output_tokens": 50,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.7251660618931055
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18864,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.536042153835297
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 11982,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.654167151078582
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "replay",
+          "input_tokens": 12369,
+          "output_tokens": 139,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.66233298741281
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17917,
+          "output_tokens": 48,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.437833955511451
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 15254,
+          "output_tokens": 3818,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.587332881987095
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 17862,
+          "output_tokens": 47,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.809375084936619
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "replay",
+          "input_tokens": 18249,
+          "output_tokens": 51,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.632207961753011
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 18726,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.466875154525042
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19000,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 5.85354189388454
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "replay",
+          "input_tokens": 19723,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2570,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0,
+          "latency_ms": 6.057125050574541
+        }
+      ]
+    }
+  ]
+}
