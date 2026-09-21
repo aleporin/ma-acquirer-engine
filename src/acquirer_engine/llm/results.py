@@ -15,6 +15,17 @@ from acquirer_engine.validation.schema import AcquirerRationale
 type RunId = Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]
 
 
+class PageAttempt(BaseModel):
+    """Validation for one generation, retained even after a successful repair."""
+
+    model_config = ConfigDict(extra="forbid")
+    stage: str
+    status: Literal["verified", "failed"]
+    errors: list[str]
+    claims_total: NonNegativeInt
+    claims_verified: NonNegativeInt
+
+
 class PageResult(BaseModel):
     """A page either verifies or retains specific errors for later repair."""
 
@@ -25,6 +36,7 @@ class PageResult(BaseModel):
     rationale: AcquirerRationale | None = None
     errors: list[str]
     tools: list[str]
+    attempts: list[PageAttempt] = Field(default_factory=list)
     latency_seconds: float
     claims_total: NonNegativeInt = 0
     claims_verified: NonNegativeInt = 0

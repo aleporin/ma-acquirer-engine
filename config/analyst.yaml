@@ -14,3 +14,4 @@ temperature: null
 latency_target_seconds: 60
 stability_runs: 5
 distinct_ngram_words: 3
+max_repairs: 1

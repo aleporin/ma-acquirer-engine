@@ -20,6 +20,7 @@ class AnalystConfig(BaseModel):
     request_timeout_seconds: PositiveFloat
     sdk_retries: NonNegativeInt
     output_retries: NonNegativeInt
+    max_repairs: NonNegativeInt = 0
     temperature: float | None
     latency_target_seconds: PositiveFloat
     stability_runs: PositiveInt

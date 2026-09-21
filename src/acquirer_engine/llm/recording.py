@@ -31,6 +31,7 @@ class CallScope:
 
     acquirer: str
     attempt: int = 0
+    stage: str = "analyst"
 
 
 class RecordedModel(Model):
@@ -67,11 +68,11 @@ class RecordedModel(Model):
         return self.deps.settings.models.roles["analyst"].provider
 
     @contextmanager
-    def scope(self, acquirer: str) -> Iterator[None]:
+    def scope(self, acquirer: str) -> Iterator[CallScope]:
         """Attribute concurrent requests without mutating shared buyer state."""
         token = self._scope.set(CallScope(acquirer))
         try:
-            yield
+            yield self._scope.get()
         finally:
             self._scope.reset(token)
 
@@ -104,24 +105,33 @@ class RecordedModel(Model):
             "model_requested",
             scope.acquirer,
             attempt=scope.attempt,
+            stage=scope.stage,
             cache_key=key,
             messages=messages,
         )
         started = perf_counter()
         response = await self._response(key, messages, model_settings, model_request_parameters)
         duration = (perf_counter() - started) * 1000
+        self._record_response(scope, response, duration)
+        return response
+
+    def _record_response(self, scope: CallScope, response: ModelResponse, duration: float) -> None:
         self.trace.write(
             "model_responded", scope.acquirer, attempt=scope.attempt, response=response
         )
         record = self.ledger.record(
-            scope.acquirer, scope.attempt, response.usage, duration, mode=self.mode
+            scope.acquirer,
+            scope.attempt,
+            response.usage,
+            duration,
+            mode=self.mode,
+            stage=scope.stage,
         )
         self.deps.logger.info(
             "model_called", **record.model_dump(), tool_calls=len(response.tool_calls)
         )
         self.first_response.set()
         require_complete_response(response)
-        return response
 
     async def _response(
         self,

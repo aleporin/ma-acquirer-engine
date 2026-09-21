@@ -56,6 +56,7 @@ class CostLedger:
         latency_ms: float,
         *,
         mode: ExecutionMode,
+        stage: str = "analyst",
     ) -> CallRecord:
         """Record actual normalized usage without double-counting cached input.
 
@@ -78,6 +79,7 @@ class CostLedger:
         entry = CallRecord(
             acquirer=acquirer,
             model=self.model.model_id,
+            stage=stage,
             attempt=attempt,
             mode=mode,
             input_tokens=usage.input_tokens,

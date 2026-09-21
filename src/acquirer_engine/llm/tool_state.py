@@ -18,8 +18,9 @@ class ToolState:
 
     core: CorePack
     max_rounds: int
-    rounds: set[int] = field(default_factory=set)
+    rounds: set[tuple[int, int]] = field(default_factory=set)
     results: list[ToolResult] = field(default_factory=list)
+    generation: int = 0
     claims_total: int = 0
     claims_verified: int = 0
 
@@ -32,9 +33,10 @@ class ToolState:
         Raises:
             BudgetExceeded: Another tool round would exceed policy.
         """
-        if step not in self.rounds and len(self.rounds) >= self.max_rounds:
+        key = (self.generation, step)
+        if key not in self.rounds and len(self.rounds) >= self.max_rounds:
             raise BudgetExceeded("Maximum tool rounds exceeded")
-        self.rounds.add(step)
+        self.rounds.add(key)
         self.results.append(result)
 
     def context(self) -> EvidenceContext:

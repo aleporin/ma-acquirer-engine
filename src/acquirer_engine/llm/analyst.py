@@ -9,28 +9,26 @@ from pathlib import Path
 from time import perf_counter
 
 from pydantic_ai import Agent, RunContext, ToolOutput
-from pydantic_ai.exceptions import ModelAPIError, UnexpectedModelBehavior, UsageLimitExceeded
 from pydantic_ai.models import Model
 from pydantic_ai.models.anthropic import AnthropicModelSettings
-from pydantic_ai.usage import UsageLimits
 
 from acquirer_engine.data.schema import Transaction
 from acquirer_engine.deps import Deps
-from acquirer_engine.errors import AcquirerEngineError, ValidationFailure
 from acquirer_engine.evidence.pack import CorePack
 from acquirer_engine.llm import bindings
+from acquirer_engine.llm.attempts import generate
 from acquirer_engine.llm.cache import ResponseCache
 from acquirer_engine.llm.cost import CostLedger, ExecutionMode
 from acquirer_engine.llm.framing import data_block
-from acquirer_engine.llm.output import output_errors
 from acquirer_engine.llm.page_deps import PageDeps
 from acquirer_engine.llm.recording import RecordedModel
-from acquirer_engine.llm.results import PageResult
+from acquirer_engine.llm.results import PageAttempt, PageResult
 from acquirer_engine.llm.tool_state import ToolState
 from acquirer_engine.llm.tools import EvidenceTools
 from acquirer_engine.llm.trace import TraceWriter
 from acquirer_engine.llm.trace_replay import ResponseArchive
 from acquirer_engine.validation.claims import validate_rationale, verified_claim_count
+from acquirer_engine.validation.repair import repair_history
 from acquirer_engine.validation.schema import AcquirerRationale
 
 
@@ -110,34 +108,21 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
     assert runtime is not None
     state = ToolState(pack, deps.settings.analyst.max_tool_rounds)
     started = perf_counter()
-    output: AcquirerRationale | None = None
-    errors: list[str] = []
-    try:
-        with runtime.model.scope(pack.ranking.acquirer):
-            result = await runtime.agent.run(
-                data_block("core_evidence", pack),
-                deps=PageDeps(deps, state),
-                usage_limits=UsageLimits(request_limit=deps.settings.analyst.max_tool_rounds + 1),
-                infer_name=False,
-            )
-            output = result.output
-    except ValidationFailure as error:
-        errors = list(error.errors)
-    except (
-        AcquirerEngineError,
-        ModelAPIError,
-        UnexpectedModelBehavior,
-        UsageLimitExceeded,
-        OSError,
-    ) as error:
-        errors = output_errors(error)
-    runtime.trace.write(
-        "validation_completed", pack.ranking.acquirer, errors=errors, rationale=output
-    )
-    deps.logger.info(
-        "page_validated", stage="analyst", acquirer=pack.ranking.acquirer, passed=not errors
-    )
-    return _page_result(pack, deps, state, output, errors, started)
+    attempts: list[PageAttempt] = []
+    history = None
+    with runtime.model.scope(pack.ranking.acquirer) as scope:
+        while True:
+            outcome = await generate(runtime.agent, deps, state, scope.stage, history)
+            attempts.append(outcome.attempt)
+            if not outcome.repairable or state.generation >= deps.settings.analyst.max_repairs:
+                break
+            history = repair_history(outcome.messages, outcome.attempt.errors)
+            if history is None:
+                break
+            state.generation += 1
+            scope.stage = "repair"
+            deps.logger.warning("repair_attempted", acquirer=pack.ranking.acquirer)
+    return _page_result(pack, deps, state, outcome.output, attempts, started)
 
 
 def _build_agent(
@@ -160,7 +145,7 @@ def _build_agent(
             + "\n"
             + data_block("target_profile", ctx.deps.state.core.target)
             + "\n"
-            + data_block("execution_policy", config)
+            + data_block("execution_policy", config, exclude_unset=True)
             + "\n"
             + data_block("validation_policy", deps.settings.evidence.validation)
         ),
@@ -184,16 +169,17 @@ def _page_result(
     deps: Deps,
     state: ToolState,
     output: AcquirerRationale | None,
-    errors: list[str],
+    attempts: list[PageAttempt],
     started: float,
 ) -> PageResult:
     return PageResult.model_validate(
         dict(
             acquirer=pack.ranking.acquirer,
             acquirer_type=pack.ranking.acquirer_type,
-            status="failed" if errors else "verified",
+            status=attempts[-1].status,
             rationale=output,
-            errors=errors,
+            errors=attempts[-1].errors,
+            attempts=attempts,
             tools=[r.tool for r in state.results],
             latency_seconds=perf_counter() - started,
             claims_total=state.claims_total,
