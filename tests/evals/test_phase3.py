@@ -81,3 +81,39 @@ def test_repaired_success_does_not_rewrite_first_pass_metrics(deps: Deps, tmp_pa
     assert result.metrics["replay_first_pass_page_rate"].value == 0
     assert result.metrics["replay_post_repair_claim_rate"].value == 1
     assert result.metrics["replay_post_repair_page_rate"].value == 1
+
+
+def test_reviewer_failure_cannot_rewrite_post_repair_claim_rate(deps: Deps, tmp_path: Path) -> None:
+    import json
+
+    raw = observation(deps.settings).model_dump(mode="json")
+    raw["pages"] = raw["pages"][:1]
+    raw["pages"][0].update(
+        status="failed",
+        rationale=None,
+        claims_total=4,
+        claims_verified=3,
+        errors=["revision introduced a wrong number"],
+        attempts=[
+            dict(stage="analyst", status="verified", errors=[], claims_total=4, claims_verified=4),
+            dict(
+                stage="revision",
+                status="failed",
+                errors=["wrong number"],
+                claims_total=4,
+                claims_verified=3,
+            ),
+        ],
+    )
+    path = tmp_path / "run.json"
+    path.write_text(json.dumps(raw))
+    baseline = PreparedEvaluation(
+        {2: lambda layer: LayerResult(id=2, name=layer.name, selected=True, status="passed")}, {}
+    )
+    metrics = (
+        prepare_phase3(baseline, [path], deps.settings)
+        .graders[2](LayerSpec(id=2, name="groundedness"))
+        .metrics
+    )
+    assert metrics["replay_post_repair_claim_rate"].value == 1
+    assert metrics["replay_post_review_claim_rate"].value == 0.75
