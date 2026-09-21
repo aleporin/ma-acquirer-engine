@@ -11,13 +11,21 @@ from contextvars import ContextVar
 from dataclasses import asdict, dataclass
 from time import perf_counter
 
+from pydantic import TypeAdapter
 from pydantic_ai.exceptions import ModelHTTPError
 from pydantic_ai.messages import ModelMessage, ModelResponse
 from pydantic_ai.models import Model, ModelRequestParameters
 from pydantic_ai.settings import ModelSettings
 
 from acquirer_engine.deps import Deps
-from acquirer_engine.errors import LLMError, LLMInvalidOutput, LLMRateLimited, LLMTimeout
+from acquirer_engine.errors import (
+    BudgetExceeded,
+    LLMError,
+    LLMInvalidOutput,
+    LLMRateLimited,
+    LLMTimeout,
+)
+from acquirer_engine.llm.budget import RunBudget, request_bound
 from acquirer_engine.llm.cache import ResponseCache, request_key
 from acquirer_engine.llm.cost import CostLedger, ExecutionMode
 from acquirer_engine.llm.output import compatible_output_parameters, require_complete_response
@@ -55,6 +63,7 @@ class RecordedModel(Model):
         self.wrapped, self.deps, self.cache, self.ledger = wrapped, deps, cache, ledger
         self.trace, self.mode = trace, mode
         self.archive = archive
+        self.budget = RunBudget(deps.settings.analyst.max_run_usd if mode == "live" else None)
         self.models = {"analyst": wrapped, "escalation": escalation_model}
         self._attempts: dict[str, int] = {}
         self.first_response = asyncio.Event()
@@ -115,12 +124,17 @@ class RecordedModel(Model):
             messages=messages,
         )
         started = perf_counter()
-        response = await self._response(key, messages, model_settings, model_request_parameters)
-        duration = (perf_counter() - started) * 1000
-        self._record_response(scope, response, duration)
+        estimate = self._estimate(messages, model_request_parameters)
+        async with self.budget.claim(estimate) as charge:
+            response = await self._response(key, messages, model_settings, model_request_parameters)
+            duration = (perf_counter() - started) * 1000
+            charge.actual = self._record_response(scope, response, duration)
+        require_complete_response(response)
+        if response.usage.output_tokens > self.deps.settings.analyst.max_output_tokens:
+            raise BudgetExceeded("Response exceeds configured output token limit")
         return response
 
-    def _record_response(self, scope: CallScope, response: ModelResponse, duration: float) -> None:
+    def _record_response(self, scope: CallScope, response: ModelResponse, duration: float) -> float:
         self.trace.write(
             "model_responded", scope.acquirer, attempt=scope.attempt, response=response
         )
@@ -137,7 +151,19 @@ class RecordedModel(Model):
             "model_called", **record.model_dump(), tool_calls=len(response.tool_calls)
         )
         self.first_response.set()
-        require_complete_response(response)
+        return record.cost_usd
+
+    def _estimate(self, messages: list[ModelMessage], parameters: ModelRequestParameters) -> float:
+        if self.mode != "live" or self.budget.limit is None:
+            return 0
+        encoded = TypeAdapter(list[ModelMessage]).dump_json(messages)
+        config = self.deps.settings.analyst
+        return request_bound(
+            self.deps.settings.models.roles[self._scope.get().role],
+            len(encoded) + len(str(asdict(parameters)).encode()) + config.request_overhead_tokens,
+            config.max_output_tokens,
+            config.sdk_retries,
+        )
 
     async def _response(
         self,

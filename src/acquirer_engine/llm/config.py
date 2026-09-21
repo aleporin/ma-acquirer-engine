@@ -29,3 +29,6 @@ class AnalystConfig(BaseModel):
     tools_enabled: bool = True
     sparse_prompt_file: str | None = None
     sparse_relevant_deals: NonNegativeInt = 0
+    max_run_usd: PositiveFloat | None = None
+    request_overhead_tokens: NonNegativeInt = 0
+    run_timeout_seconds: PositiveFloat | None = None
