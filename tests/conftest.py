@@ -41,7 +41,16 @@ def settings() -> Settings:
 def deps(settings: Settings, tmp_path: Path) -> Iterator[Deps]:
     """Inject one isolated logger and settings snapshot per test."""
     with run_logger(tmp_path, "test-run", "a" * 40, "not_implemented", io.StringIO()) as log:
-        yield Deps(settings=settings, logger=log)
+        analyst = settings.analyst.model_copy(
+            update={
+                "sparse_prompt_file": None,
+                "sparse_relevant_deals": 0,
+                "reviewer_enabled": False,
+                "max_repairs": 0,
+                "max_run_usd": None,
+            }
+        )
+        yield Deps(settings=settings.model_copy(update={"analyst": analyst}), logger=log)
 
 
 @pytest.fixture

@@ -20,13 +20,12 @@ from pydantic import ValidationError
 from acquirer_engine.data.loader import load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
+from acquirer_engine.inspect_commands import eval_diff, show_runs
 from acquirer_engine.llm.archive import load_snapshot, run_directory
 from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.run_command import execute_replay, execute_run
-from acquirer_engine.run_history import list_runs
 from acquirer_engine.settings import load_settings
-from evals.diff import compare_scorecards
 from evals.graders.unit import grade as grade_unit
 from evals.graders.unit import run_tests
 from evals.harness import evaluate
@@ -34,7 +33,7 @@ from evals.phase1 import PreparedEvaluation, prepare_phase1
 from evals.phase2 import prepare_phase2
 from evals.phase3 import prepare_phase3
 from evals.ranking.snapshot import verify_snapshot
-from evals.scorecard import RunInfo, Scorecard, read_scorecard, write_scorecard
+from evals.scorecard import RunInfo, Scorecard, write_scorecard
 
 
 def _git_state(root: Path) -> tuple[str, bool]:
@@ -131,30 +130,13 @@ def run_evaluation(
         raise typer.Exit(1) from error
 
 
-def eval_diff(before: Path, after: Path) -> None:
-    """Print scorecard changes and exit nonzero for regressions.
-
-    Args:
-        before: Earlier scorecard JSON path.
-        after: Later scorecard JSON path.
-    Raises:
-        typer.Exit: A scorecard is invalid or a regression is found.
-    """
-    try:
-        report = compare_scorecards(read_scorecard(before), read_scorecard(after))
-    except AcquirerEngineError as error:
-        typer.echo(str(error), err=True)
-        raise typer.Exit(1) from error
-    for line in report.lines:
-        typer.echo(line)
-    if report.regressions:
-        typer.echo(f"Regressions: {len(report.regressions)}")
-        raise typer.Exit(1)
-
-
 def run_product(
     project: Annotated[Path, typer.Option(help="Repository root.")] = Path("."),
     replay: Annotated[bool, typer.Option("--replay/--fresh")] = True,
+    no_tools: Annotated[bool, typer.Option(help="Disable evidence tools for ablation.")] = False,
+    no_reviewer: Annotated[
+        bool, typer.Option(help="Disable portfolio review for ablation.")
+    ] = False,
 ) -> None:
     """Write structured rationale outcomes for the ranked assignment target.
 
@@ -167,6 +149,16 @@ def run_product(
     try:
         root = project.resolve()
         settings = load_settings(root / "config")
+        settings = settings.model_copy(
+            update={
+                "analyst": settings.analyst.model_copy(
+                    update={
+                        "tools_enabled": settings.analyst.tools_enabled and not no_tools,
+                        "reviewer_enabled": settings.analyst.reviewer_enabled and not no_reviewer,
+                    }
+                )
+            }
+        )
         sha, dirty = _git_state(root)
         run_id = uuid4().hex
         directory = root / "runs" / run_id
@@ -194,7 +186,9 @@ def _show_run(directory: Path, report: AnalystRun) -> None:
     typer.echo(f"Run: {directory / 'run.json'}")
     verified = sum(page.status == "verified" for page in report.pages)
     typer.echo(f"Verified pages: {verified}/{len(report.pages)}")
-    if verified != len(report.pages):
+    if report.review and report.review.errors:
+        typer.echo("Reviewer failed: " + "; ".join(report.review.errors), err=True)
+    if verified != len(report.pages) or (report.review and report.review.errors):
         raise typer.Exit(1)
 
 
@@ -238,27 +232,6 @@ def replay_product(
         _show_run(directory, report)
     except (AcquirerEngineError, OSError) as error:
         typer.echo(f"Replay failed: {error}", err=True)
-        raise typer.Exit(1) from error
-
-
-def show_runs(
-    project: Annotated[Path, typer.Option(help="Repository root.")] = Path("."),
-) -> None:
-    """List saved outcomes, sources, prompt versions, cost, and latency."""
-    try:
-        typer.echo(
-            "RUN ID                            MODE    PAGES  USD       SECONDS  SOURCE    PROMPT"
-        )
-        for run in list_runs(project.resolve()):
-            passed = sum(page.status == "verified" for page in run.pages)
-            cost = sum(call.cost_usd for call in run.calls)
-            typer.echo(
-                f"{run.run_id}  {run.mode:6}  {passed}/{len(run.pages):<3}  {cost:.6f}  "
-                f"{run.latency_seconds:7.3f}  {run.git_sha[:8]}{'*' if run.source_dirty else ''}  "
-                f"{run.prompt_version}" + (f"  replay_of={run.replay_of}" if run.replay_of else "")
-            )
-    except (AcquirerEngineError, OSError) as error:
-        typer.echo(f"History failed: {error}", err=True)
         raise typer.Exit(1) from error
 
 

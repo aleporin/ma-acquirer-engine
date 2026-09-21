@@ -14,4 +14,14 @@ temperature: null
 latency_target_seconds: 60
 stability_runs: 5
 distinct_ngram_words: 3
-max_repairs: 1
+max_repairs: 2
+escalation_enabled: true
+tools_enabled: true
+sparse_prompt_file: analyst_sparse_v1.md
+sparse_relevant_deals: 3
+reviewer_enabled: true
+reviewer_prompt_file: reviewer_v1.md
+reviewer_max_output_tokens: 2048
+max_run_usd: 1.0
+request_overhead_tokens: 1024
+run_timeout_seconds: 300

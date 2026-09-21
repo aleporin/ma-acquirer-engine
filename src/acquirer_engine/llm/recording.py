@@ -83,9 +83,10 @@ class RecordedModel(Model):
         return self.deps.settings.models.roles["analyst"].provider
 
     @contextmanager
-    def scope(self, acquirer: str) -> Iterator[CallScope]:
+    def scope(self, acquirer: str, *, resume: bool = False) -> Iterator[CallScope]:
         """Attribute concurrent requests without mutating shared buyer state."""
-        token = self._scope.set(CallScope(acquirer, self._attempts.get(acquirer, 0)))
+        attempt = self._attempts.get(acquirer, 0) if resume else 0
+        token = self._scope.set(CallScope(acquirer, attempt))
         try:
             yield self._scope.get()
         finally:

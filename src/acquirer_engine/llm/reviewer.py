@@ -141,7 +141,7 @@ async def _revise(page: PageResult, verdict: ReviewVerdict, deps: Deps) -> PageR
         if state.core.ranking.relevant_deals < deps.settings.analyst.sparse_relevant_deals
         else None
     )
-    with runtime.model.scope(page.acquirer) as scope:
+    with runtime.model.scope(page.acquirer, resume=True) as scope:
         scope.stage = "revision"
         outcome = await generate(agent or runtime.agent, deps, state, "revision", history)
     return page.model_copy(

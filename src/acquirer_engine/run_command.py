@@ -76,6 +76,7 @@ async def execute_run(
         settings=deps.settings,
         source_dirty=source_dirty,
         prompt=prompt,
+        auxiliary_prompts=_load_prompts(root, deps),
         history=history,
         packs=tuple(packs),
     )
@@ -84,13 +85,35 @@ async def execute_run(
             snapshot, directory, deps, mode="replay", cache_root=root / "cache"
         )
     async with create_client(deps.settings.analyst) as client:
-        model = AnthropicModel(
-            deps.settings.models.roles["analyst"].model_id,
-            provider=AnthropicProvider(anthropic_client=client),
+        provider = AnthropicProvider(anthropic_client=client)
+        model = AnthropicModel(deps.settings.models.roles["analyst"].model_id, provider=provider)
+        escalation = (
+            AnthropicModel(deps.settings.models.roles["escalation"].model_id, provider=provider)
+            if deps.settings.analyst.escalation_enabled
+            else None
         )
         return await execute_prepared(
-            snapshot, directory, deps, model=model, mode="live", cache_root=root / "cache"
+            snapshot,
+            directory,
+            deps,
+            model=model,
+            mode="live",
+            escalation_model=escalation,
+            cache_root=root / "cache",
         )
+
+
+def _load_prompts(root: Path, deps: Deps) -> dict[str, str]:
+    config = deps.settings.analyst
+    files = {
+        "sparse": config.sparse_prompt_file,
+        "reviewer": config.reviewer_prompt_file if config.reviewer_enabled else None,
+    }
+    return {
+        role: (root / "prompts" / name).read_text(encoding="utf-8")
+        for role, name in files.items()
+        if name
+    }
 
 
 async def execute_prepared(
