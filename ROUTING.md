@@ -1,8 +1,12 @@
 # Routing, repair, and replay
 
-Phase 4 adds bounded recovery and portfolio review. Its live exit is unmeasured
-until a fresh full run and both ablations are recorded. The latest historical
-live baseline remains seven verified pages out of ten; it predates these routes.
+The [latest live measurement](evals/results/p4-dc5fbd5d4c02270f0ee7438227364dda564c534c/summary.md)
+produced ten verified pages after three successful repairs: 66/66 claims matched,
+177.84 seconds, and $1.09 in returned usage under a $3 admission cap. Replay
+reproduced all 29 responses, page outcomes, and reviewer verdicts for no new cost.
+The earlier $1 cap blocked seven drafts. Both measurements remain in the history.
+The 60-second performance target and the two live ablations remain incomplete.
+The reviewer approved all pages, so this run demonstrates no improvement from review.
 
 A page follows `analyst -> repair -> escalation -> unverified banner` when each
 validation attempt fails. Success ends recovery immediately. Schema and evidence

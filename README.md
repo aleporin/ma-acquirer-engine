@@ -2,9 +2,9 @@
 
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 4: bounded repair, escalation,
-sparse-evidence routing, portfolio review, and replay**. Live Phase 4 validation
-is pending. The latest historical run verified seven of ten pages in 64.40 seconds;
-it predates the new recovery routes. See [routing and controls](ROUTING.md).
+sparse-evidence routing, portfolio review, and replay**. The latest live run
+verified ten pages after three repairs, with 66/66 numeric claims, in 177.84 seconds
+for $1.09. Speed and ablation gates remain open. See [routing and controls](ROUTING.md).
 Judging and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
@@ -296,4 +296,4 @@ It took 79.47 seconds and cost $0.952018. Missing prose claims and statistic-ID 
 errors remain; Phase 3 still fails. Offline replay reproduced all 26 responses for $0.
 
 The [v4 live scorecard](evals/results/p3-50493691575df8de6a7f75de41c891ae5c0f4340/summary.md) records 7/10 verified pages, 63/63 parsed claims, 64.40 seconds, and $0.8681912.
-Missing risks, missing claims, and wrong precedent ownership remain. Replay reproduces all 25 responses for $0; no live gate pass is claimed.
+That historical run failed risk, claim, and precedent checks. Replay reproduces its 25 responses for $0.
