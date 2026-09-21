@@ -93,6 +93,8 @@ async def test_provider_failures_are_not_retried_as_validation_repairs(
     page = await analyze_one(context.core, replace(deps, runtime=runtime))
     assert page.status == "failed"
     assert calls == 1 and len(page.attempts) == 1
+    if failure == "deadline":
+        assert "Run deadline" in " ".join(page.errors)
     if failure == "tokens":
         assert "token" in " ".join(page.errors).lower()
         assert len(runtime.model.ledger.entries) == 1
