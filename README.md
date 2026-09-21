@@ -3,8 +3,8 @@
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
 structured rationale, usage accounting, and strict replay**. Offline checks pass.
-The recorded live run completed all ten drafts and verified four pages; the six
-remaining pages failed prose coverage, and its 79.47-second duration still fails
+The latest live run returned ten drafts, nine parsed, and seven pages verified;
+the three failed schema or evidence checks, and its 64.40-second duration still fails
 the live gate. Portfolio repair, judging, and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
@@ -295,4 +295,5 @@ produced ten schema-valid drafts: four pages passed and all 155 explicit claims 
 It took 79.47 seconds and cost $0.952018. Missing prose claims and statistic-ID scan
 errors remain; Phase 3 still fails. Offline replay reproduced all 26 responses for $0.
 
-The [next correction](evals/results/p3-a03c7e838aa5de93877382df04128b1121e44668/summary.md) removes eight statistic-ID scan errors; old drafts still pass 4/10. The shorter `analyst_v4` prompt and concurrency ten await live measurement.
+The [v4 live scorecard](evals/results/p3-50493691575df8de6a7f75de41c891ae5c0f4340/summary.md) records 7/10 verified pages, 63/63 parsed claims, 64.40 seconds, and $0.8681912.
+Missing risks, missing claims, and wrong precedent ownership remain. Replay reproduces all 25 responses for $0; no live gate pass is claimed.
