@@ -5,9 +5,9 @@ Does not own: Judging numeric score improvements.
 """
 
 import pytest
-from evals.ranking.snapshot import check_snapshot
 
 from acquirer_engine.errors import EvaluationError
+from evals.ranking.snapshot import check_snapshot
 
 
 def test_identical_ranked_names_pass() -> None:

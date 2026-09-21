@@ -5,9 +5,10 @@ Does not own: Fitting the empirical type prior.
 """
 
 import pytest
-from acquirer_engine.ranking.shrinkage import shrink
 from hypothesis import given
 from hypothesis import strategies as st
+
+from acquirer_engine.ranking.shrinkage import shrink
 
 
 def test_single_observation_is_pulled_toward_type_prior() -> None:

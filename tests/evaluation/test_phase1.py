@@ -7,11 +7,10 @@ Does not own: Running live providers or tuning quality targets.
 import json
 from pathlib import Path
 
-from evals.phase1 import prepare_phase1
-
 from acquirer_engine.deps import Deps
 from acquirer_engine.settings import LayerSpec
 from evals.graders.unit import read_test_report
+from evals.phase1 import prepare_phase1
 from evals.scorecard import LayerResult, Metric
 from tests.fixtures.ranking import transaction
 

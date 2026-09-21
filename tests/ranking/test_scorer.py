@@ -5,13 +5,13 @@ Does not own: Claims about predictive quality.
 """
 
 import pytest
-from acquirer_engine.ranking.conviction import conviction
-from acquirer_engine.ranking.scorer import rank_acquirers
 from hypothesis import HealthCheck, given
 from hypothesis import settings as property_settings
 from hypothesis import strategies as st
 
 from acquirer_engine.features.acquirer import fit_features
+from acquirer_engine.ranking.conviction import conviction
+from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.ranking.target import TargetProfile
 from acquirer_engine.settings import Settings
 from tests.fixtures.ranking import transaction

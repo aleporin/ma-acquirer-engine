@@ -8,8 +8,9 @@ from pathlib import Path
 
 import pytest
 import yaml
-from acquirer_engine.ranking.config import RankingConfig
 from pydantic import ValidationError
+
+from acquirer_engine.ranking.config import RankingConfig
 
 
 def policy_data() -> dict[str, object]:
