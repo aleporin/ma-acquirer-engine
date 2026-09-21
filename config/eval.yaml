@@ -1,6 +1,6 @@
-phase: p2
+phase: p3
 seed: 42
-prompt_version: not_implemented
+prompt_version: analyst_v1
 quality:
   max_file_lines: 300
   max_function_lines: 50

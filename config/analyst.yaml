@@ -8,7 +8,7 @@ request_timeout_seconds: 20
 sdk_retries: 2
 # Repair/escalation policy is introduced separately.
 output_retries: 0
-temperature: 0
+temperature: null
 latency_target_seconds: 60
 stability_runs: 5
 distinct_ngram_words: 3

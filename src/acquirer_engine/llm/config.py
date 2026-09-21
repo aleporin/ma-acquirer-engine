@@ -20,7 +20,7 @@ class AnalystConfig(BaseModel):
     request_timeout_seconds: PositiveFloat
     sdk_retries: NonNegativeInt
     output_retries: NonNegativeInt
-    temperature: float
+    temperature: float | None
     latency_target_seconds: PositiveFloat
     stability_runs: PositiveInt
     distinct_ngram_words: PositiveInt

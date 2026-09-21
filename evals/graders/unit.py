@@ -58,7 +58,7 @@ def read_test_report(junit: Path, coverage: Path, *, exit_code: int) -> UnitRepo
 
 
 def run_tests(project: Path, *, timeout: int) -> UnitReport:
-    """Run data, ranking, and evidence tests with network-denying fixtures.
+    """Run numeric, evidence, and analyst tests with network-denying fixtures.
 
     Args:
         project: Repository containing tests and installed development dependencies.
@@ -80,6 +80,7 @@ def run_tests(project: Path, *, timeout: int) -> UnitReport:
             "tests/ranking",
             "tests/evidence",
             "tests/validation",
+            "tests/llm",
             "tests/test_ranking_config.py",
             "-q",
             "--tb=short",
@@ -89,6 +90,7 @@ def run_tests(project: Path, *, timeout: int) -> UnitReport:
             "--cov=acquirer_engine.ranking",
             "--cov=acquirer_engine.evidence",
             "--cov=acquirer_engine.validation",
+            "--cov=acquirer_engine.llm",
             "--cov-branch",
             f"--cov-report=json:{coverage}",
         ]

@@ -141,10 +141,11 @@ def _build_agent(
     config = deps.settings.analyst
     model_settings = AnthropicModelSettings(
         max_tokens=config.max_output_tokens,
-        temperature=config.temperature,
         anthropic_cache_instructions=True,
         anthropic_cache_tool_definitions=True,
     )
+    if config.temperature is not None:
+        model_settings["temperature"] = config.temperature
     agent = Agent(
         recorded,
         output_type=AcquirerRationale,
