@@ -1,6 +1,6 @@
 """Find prose numerals lacking a matching explicit claim.
 
-Owns: Numeric syntax, canonical unit conversion, and inline row references.
+Owns: Numeric syntax, canonical unit conversion, and inline evidence references.
 Does not own: Semantic interpretation of prose or truth of claims.
 """
 
@@ -37,6 +37,23 @@ def _matches(number: str, unit: str, claim: Claim, tolerance: float) -> bool:
     return difference <= min(Decimal(str(tolerance)), half_unit)
 
 
+def _strip_references(text: str, evidence_ids: set[str], path: str) -> tuple[str, list[str]]:
+    errors = []
+
+    def replace(match: re.Match[str]) -> str:
+        reference = match.group()
+        # A terminal full stop can be punctuation or part of an exact known ID.
+        if reference not in evidence_ids:
+            reference = reference.rstrip(".!?")
+        if reference not in evidence_ids:
+            errors.append(f"{path}: unknown evidence {reference}")
+        return " "
+
+    # Consume an entire stat token so a known prefix cannot hide an unknown ID.
+    pattern = r"MA-\d{4}-\d{4}|stat:[^\s,;()\[\]{}<>\"'`]+"
+    return re.sub(pattern, replace, text), errors
+
+
 def scan_numbers(page: AcquirerRationale, evidence_ids: set[str], tolerance: float) -> list[str]:
     """Check numerals including years, ranges, percentages, and multiples.
 
@@ -53,10 +70,8 @@ def scan_numbers(page: AcquirerRationale, evidence_ids: set[str], tolerance: flo
         r"\s*(?P<unit>percent\b|billion\b|million\b|thousand\b|bn\b|mm\b|[BMKXbmkx%](?!\w))?"
     )
     for path, text in prose_sections(page).items():
-        for reference in re.findall(r"MA-\d{4}-\d{4}", text):
-            if reference not in evidence_ids:
-                errors.append(f"{path}: unknown evidence {reference}")
-        text = re.sub(r"MA-\d{4}-\d{4}", "", text)
+        text, reference_errors = _strip_references(text, evidence_ids, path)
+        errors.extend(reference_errors)
         # In an unsigned range the dash separates endpoints, not a negative sign.
         text = re.sub(r"(?<=\d)([%xX]?)\s*[-–]\s*(?=\d)", r"\1 to ", text)
         for match in pattern.finditer(text):
