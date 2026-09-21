@@ -1,9 +1,10 @@
-"""Expose offline evaluation commands.
+"""Expose analysis and offline evaluation commands.
 
 Owns: Argument parsing, dependency construction, and process exit status.
-Does not own: Ranking, rationale generation, or live provider access.
+Does not own: Ranking, rationale generation, or provider retry policy.
 """
 
+import asyncio
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -12,12 +13,14 @@ from typing import Annotated
 from uuid import uuid4
 
 import typer
+from anthropic import AnthropicError
 from pydantic import ValidationError
 
 from acquirer_engine.data.loader import load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
 from acquirer_engine.logging_setup import run_logger
+from acquirer_engine.run_command import execute_run
 from acquirer_engine.settings import load_settings
 from evals.diff import compare_scorecards
 from evals.graders.unit import grade as grade_unit
@@ -133,16 +136,44 @@ def eval_diff(before: Path, after: Path) -> None:
         raise typer.Exit(1)
 
 
-def run_product(replay: Annotated[bool, typer.Option("--replay/--fresh")] = True) -> None:
-    """Report that product execution is unavailable in this phase.
+def run_product(
+    project: Annotated[Path, typer.Option(help="Repository root.")] = Path("."),
+    replay: Annotated[bool, typer.Option("--replay/--fresh")] = True,
+) -> None:
+    """Write structured rationale outcomes for the ranked assignment target.
 
     Args:
-        replay: Requested mode; neither mode is implemented yet.
+        project: Repository containing data, prompt, configuration, and cache.
+        replay: Read cached responses only; fresh permits paid model calls.
     Raises:
-        typer.Exit: Rationale generation is not implemented.
+        typer.Exit: Input preparation or one or more pages failed.
     """
-    typer.echo("Rationale generation is not implemented; eval writes a ranking snapshot.", err=True)
-    raise typer.Exit(2)
+    try:
+        root = project.resolve()
+        settings = load_settings(root / "config")
+        sha, _ = _git_state(root)
+        run_id = uuid4().hex
+        directory = root / "runs" / run_id
+        with run_logger(
+            root / "runs",
+            run_id,
+            sha,
+            settings.evaluation.prompt_version,
+            sys.stderr,
+            mode="replay" if replay else "live",
+        ) as log:
+            report = asyncio.run(
+                execute_run(root, directory, Deps(settings, log), sha, replay=replay)
+            )
+        typer.echo(f"Run: {directory / 'run.json'}")
+        verified = sum(page.status == "verified" for page in report.pages)
+        typer.echo(f"Verified pages: {verified}/{len(report.pages)}")
+        if verified != len(report.pages):
+            raise typer.Exit(1)
+    except (AcquirerEngineError, OSError, ValidationError, AnthropicError) as error:
+        message = type(error).__name__ if isinstance(error, AnthropicError) else str(error)
+        typer.echo(f"Run failed: {message}", err=True)
+        raise typer.Exit(1) from error
 
 
 def eval_judges() -> None:

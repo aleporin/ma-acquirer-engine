@@ -21,6 +21,8 @@ def run_logger(
     git_sha: str,
     prompt_version: str,
     stream: TextIO,
+    *,
+    mode: str = "replay",
 ) -> Iterator[BoundLogger]:
     """Bind run context and close owned log handlers on exit.
 
@@ -30,6 +32,7 @@ def run_logger(
         git_sha: Evaluated source revision.
         prompt_version: Configured prompt version or unimplemented marker.
         stream: Destination for stderr events.
+        mode: Execution mode; replay is the offline default.
     Yields:
         A run-scoped logger; binding task context leaves it unchanged.
     Raises:
@@ -51,7 +54,7 @@ def run_logger(
             wrapper_class=BoundLogger,
             processors=[structlog.stdlib.add_log_level, structlog.processors.JSONRenderer()],
         ),
-    ).bind(run_id=run_id, git_sha=git_sha, prompt_version=prompt_version, mode="replay")
+    ).bind(run_id=run_id, git_sha=git_sha, prompt_version=prompt_version, mode=mode)
     try:
         yield logger
     finally:

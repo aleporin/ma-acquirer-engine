@@ -1,6 +1,7 @@
 UV ?= uv
 RESULTS ?=
 EVAL_FLAGS ?=
+RUN_FLAGS ?= --replay
 
 .PHONY: test lint eval eval-judges eval-diff run
 
@@ -23,4 +24,4 @@ eval-diff:
 	$(UV) run --locked acquirers eval-diff "$(A)" "$(B)"
 
 run:
-	$(UV) run --locked acquirers run --replay
+	$(UV) run --locked acquirers run $(RUN_FLAGS)
