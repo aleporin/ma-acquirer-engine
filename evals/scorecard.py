@@ -32,6 +32,7 @@ class RunInfo(Record):
     """Identity of the evaluated code and the invocation."""
 
     git_sha: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
+    source_dirty: bool = False
     run_id: Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]
     created_at: AwareDatetime
 
@@ -102,6 +103,7 @@ def _summary(card: Scorecard) -> str:
         f"# {card.phase} evaluation",
         "",
         f"Evaluated revision: {card.run.git_sha}",
+        f"Source dirty: {card.run.source_dirty}",
         f"Run: {card.run.run_id} | Mode: {card.mode} | Seed: {card.seed}",
         f"Configuration SHA-256: {card.config_sha256}",
         "",
