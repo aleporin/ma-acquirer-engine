@@ -20,7 +20,9 @@ def percentile(values: list[float], fraction: float) -> float:
     return ordered[low] + (ordered[min(low + 1, len(ordered) - 1)] - ordered[low]) * (index - low)
 
 
-def _metrics(runs: list[AnalystRun], config: AnalystConfig) -> dict[str, Metric]:
+def _metrics(
+    runs: list[AnalystRun], config: AnalystConfig, expected_pages: int | None
+) -> dict[str, Metric]:
     calls = [call for run in runs for call in run.calls]
     pages = [page for run in runs for page in run.pages]
     values = {
@@ -44,7 +46,7 @@ def _metrics(runs: list[AnalystRun], config: AnalystConfig) -> dict[str, Metric]
         values["gate_met"] = float(
             all(
                 run.latency_seconds < config.latency_target_seconds
-                and bool(run.pages)
+                and len(run.pages) == expected_pages
                 and all(p.status == "verified" for p in run.pages)
                 and sum(c.cost_usd for c in run.calls) > 0
                 for run in runs
@@ -60,7 +62,11 @@ def _metrics(runs: list[AnalystRun], config: AnalystConfig) -> dict[str, Metric]
 
 
 def grade(
-    layer: LayerSpec, runs: list[AnalystRun] | None = None, config: AnalystConfig | None = None
+    layer: LayerSpec,
+    runs: list[AnalystRun] | None = None,
+    config: AnalystConfig | None = None,
+    *,
+    expected_pages: int | None = None,
 ) -> LayerResult:
     """Report observed operations; live gate failure stays visible.
 
@@ -68,6 +74,7 @@ def grade(
         layer: Registered layer identity.
         runs: Stored observations; never new provider calls.
         config: Shared latency target.
+        expected_pages: Required candidate count for the live exit gate.
     Returns:
         Mode-prefixed metrics, or an unmeasured stub when no run exists.
     """
@@ -76,7 +83,9 @@ def grade(
     metrics = {
         f"{mode}_{name}": metric
         for mode in sorted({run.mode for run in runs})
-        for name, metric in _metrics([r for r in runs if r.mode == mode], config).items()
+        for name, metric in _metrics(
+            [r for r in runs if r.mode == mode], config, expected_pages
+        ).items()
     }
     failed = "live_gate_met" in metrics and metrics["live_gate_met"].value == 0
     return LayerResult(
