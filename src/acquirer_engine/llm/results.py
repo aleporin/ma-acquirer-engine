@@ -61,3 +61,5 @@ class AnalystRun(BaseModel):
     before_review: list[PageResult] = Field(default_factory=list)
     review: ReviewResult | None = None
     uncertain_cost_bound_usd: float = 0
+    tools_enabled: bool = True
+    reviewer_enabled: bool = False

@@ -79,7 +79,7 @@ class LayerSpec(ConfigModel):
 class EvalConfig(ConfigModel):
     """Select offline layers without enabling provider calls."""
 
-    phase: Literal["p0", "p1", "p2", "p3"]
+    phase: Literal["p0", "p1", "p2", "p3", "p4"]
     seed: NonNegativeInt
     prompt_version: Annotated[str, Field(min_length=1)]
     quality: QualityLimits

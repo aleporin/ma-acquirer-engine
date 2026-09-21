@@ -193,6 +193,8 @@ def _run_result(
         dict(
             run_id=snapshot.run_id,
             mode=mode,
+            tools_enabled=snapshot.settings.analyst.tools_enabled,
+            reviewer_enabled=snapshot.settings.analyst.reviewer_enabled,
             git_sha=snapshot.git_sha,
             source_dirty=snapshot.source_dirty,
             replay_of=replay_of.run_id if replay_of else None,

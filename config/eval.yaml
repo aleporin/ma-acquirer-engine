@@ -1,6 +1,6 @@
-phase: p3
+phase: p4
 seed: 42
-prompt_version: analyst_v4
+prompt_version: analyst_v4+sparse_v1+reviewer_v1
 quality:
   max_file_lines: 300
   max_function_lines: 50

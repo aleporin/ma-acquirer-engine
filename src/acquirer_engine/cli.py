@@ -32,6 +32,7 @@ from evals.harness import evaluate
 from evals.phase1 import PreparedEvaluation, prepare_phase1
 from evals.phase2 import prepare_phase2
 from evals.phase3 import prepare_phase3
+from evals.phase4 import prepare_phase4
 from evals.ranking.snapshot import verify_snapshot
 from evals.scorecard import RunInfo, Scorecard, write_scorecard
 
@@ -58,7 +59,7 @@ def _produce_scorecard(
     analyst_runs: list[Path] | None = None,
 ) -> tuple[Path, Scorecard]:
     prepared = PreparedEvaluation({}, {})
-    if deps.settings.evaluation.phase in {"p1", "p2", "p3"}:
+    if deps.settings.evaluation.phase in {"p1", "p2", "p3", "p4"}:
         rows = load_transactions(root / "data/ma_transactions_500.csv")
         deps.logger.info("csv_loaded", stage="eval", rows=len(rows))
         config = deps.settings.evaluation
@@ -70,10 +71,12 @@ def _produce_scorecard(
         unit = grade_unit(next(layer for layer in config.layers if layer.id == 0), report)
         prepared = prepare_phase1(rows, deps, unit)
         verify_snapshot(root, prepared.artifacts["top10.json"])
-    if deps.settings.evaluation.phase in {"p2", "p3"}:
+    if deps.settings.evaluation.phase in {"p2", "p3", "p4"}:
         prepared = prepare_phase2(prepared, root, deps.settings.evidence.validation)
     if deps.settings.evaluation.phase == "p3":
         prepared = prepare_phase3(prepared, analyst_runs or [], deps.settings)
+    if deps.settings.evaluation.phase == "p4":
+        prepared = prepare_phase4(prepared, analyst_runs or [], deps.settings)
     card = evaluate(deps, run, selection, graders=prepared.graders)
     path = write_scorecard(card, results, artifacts=prepared.artifacts)
     deps.logger.info(
