@@ -3,7 +3,9 @@
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
 structured rationale, usage accounting, and strict replay**. Offline checks pass;
-the first live run and its phase exit measurements are pending. Portfolio repair,
+the first live attempt finished in 49.09 seconds but every draft hit the
+20-second request deadline. No rationale passed validation, so the phase exit
+gate is unmet. Portfolio repair,
 judging, and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
@@ -236,6 +238,16 @@ Prose can vary between fresh runs. Only cache replay reproduces a saved response
 and replay still executes tools and validation. Unit tests use local models and
 a fake HTTP transport, including a hostile input and full-conversation replay.
 
-The current [Phase 3 offline scorecard](evals/results/p3-899731d101d5c18d3b175a572bbbdca781b42d35/summary.md)
-records passing layers 0–2 and the inherited layer-5 shortfall. It is not evidence
-that the prompt meets live quality, cost, or latency targets.
+The [Phase 3 offline baseline](evals/results/p3-899731d101d5c18d3b175a572bbbdca781b42d35/summary.md)
+records passing layers 0–2 and the inherited layer-5 shortfall. The subsequent
+[first live scorecard](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/summary.md)
+records ten draft timeouts after successful evidence retrieval. Twelve completed
+responses account for $0.259395; billing for the timed-out requests is unknown.
+Request latency percentiles cover only those returned responses. The full run
+took 49.09 seconds, but produced no completed drafts or parsed claims, so numeric
+claim accuracy is unavailable. Layers 3, 5, and 6 fail; layer 2's passing fixture
+checks do not imply that any live page passed. Five offline repetitions replay
+the available responses at zero new spend and fail at missing draft responses.
+The [attempt details](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/live_attempt.json)
+record these limits explicitly. The timeout configuration needs further work
+before another authorized live measurement can establish the phase exit.
