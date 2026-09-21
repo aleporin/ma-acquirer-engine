@@ -1,0 +1,30 @@
+{
+  "run_id": "b318ea958f4349a8ac97f648b91e657f",
+  "source_revision": "19f341aed6cdbf7125ab7bea09711ed19b9b555e",
+  "prompt_version": "analyst_v1",
+  "mode": "live",
+  "latency_seconds": 49.086368249962106,
+  "candidate_outcomes": 10,
+  "completed_drafts": 0,
+  "verified_pages": 0,
+  "parsed_claims": 0,
+  "first_pass_claim_rate": null,
+  "first_pass_claim_rate_reason": "No completed draft reached schema or claim validation.",
+  "model_requests_started": 22,
+  "model_responses_returned": 12,
+  "request_timeouts": 10,
+  "request_deadline_seconds": 20,
+  "recorded_response_cost_usd": 0.259395,
+  "cost_completeness": "Only returned usage is counted; timed-out requests may incur additional billing.",
+  "latency_measurement_scope": "Scorecard request percentiles cover returned responses only; run latency includes timeouts.",
+  "tool_calls": {
+    "get_comparable_deals": 10,
+    "get_sector_stats": 10,
+    "get_failed_deals": 9
+  },
+  "replay_repetitions": 5,
+  "replay_responses_per_run": 12,
+  "replay_new_cost_usd": 0,
+  "replay_boundary": "Completed responses replay; absent timed-out drafts become cache misses, not recreated provider timeouts.",
+  "phase_exit_met": false
+}
