@@ -32,3 +32,6 @@ class AnalystConfig(BaseModel):
     max_run_usd: PositiveFloat | None = None
     request_overhead_tokens: NonNegativeInt = 0
     run_timeout_seconds: PositiveFloat | None = None
+    reviewer_enabled: bool = False
+    reviewer_prompt_file: str | None = None
+    reviewer_max_output_tokens: PositiveInt | None = None

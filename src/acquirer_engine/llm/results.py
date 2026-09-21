@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field, NonNegativeInt
 
 from acquirer_engine.data.schema import AcquirerType
 from acquirer_engine.llm.cost import CallRecord, ExecutionMode
+from acquirer_engine.llm.review_schema import ReviewResult
 from acquirer_engine.validation.schema import AcquirerRationale
 
 type RunId = Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]
@@ -57,3 +58,6 @@ class AnalystRun(BaseModel):
     latency_seconds: float
     pages: list[PageResult]
     calls: list[CallRecord]
+    before_review: list[PageResult] = Field(default_factory=list)
+    review: ReviewResult | None = None
+    uncertain_cost_bound_usd: float = 0

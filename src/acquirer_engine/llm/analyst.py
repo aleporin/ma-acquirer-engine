@@ -4,7 +4,7 @@ Owns: Agent construction, output validation, and per-page failure isolation.
 Does not own: Ranking, portfolio review, escalation, or client construction.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from time import perf_counter
 
@@ -23,7 +23,10 @@ from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.page_deps import PageDeps
 from acquirer_engine.llm.recording import RecordedModel
 from acquirer_engine.llm.results import PageAttempt, PageResult
+from acquirer_engine.llm.review_schema import PortfolioVerdicts
+from acquirer_engine.llm.reviewer import build_reviewer
 from acquirer_engine.llm.router import next_route
+from acquirer_engine.llm.session import PageSession
 from acquirer_engine.llm.tool_state import ToolState
 from acquirer_engine.llm.tools import EvidenceTools
 from acquirer_engine.llm.trace import TraceWriter
@@ -42,6 +45,8 @@ class AnalystServices:
     tools: EvidenceTools
     trace: TraceWriter
     sparse_agent: Agent[PageDeps, AcquirerRationale] | None = None
+    reviewer: Agent[tuple[str, ...], PortfolioVerdicts] | None = None
+    sessions: dict[str, PageSession] = field(default_factory=dict)
 
 
 def _validate(ctx: RunContext[PageDeps], output: AcquirerRationale) -> AcquirerRationale:
@@ -70,21 +75,22 @@ def build_services(
     escalation_model: Model | None = None,
     auxiliary_prompts: dict[str, str] | None = None,
 ) -> AnalystServices:
-    """Compose an analyst once from its dependencies, never inside a request.
+    """Compose all agents and shared execution resources before fan-out.
 
     Args:
-        deps: Shared configuration and logger.
-        model: One provider model, test model, or no model for replay.
-        rows: Eligible run history used by evidence queries.
-        root: Local run artifact directory.
-        prompt: Versioned instructions read at the command boundary.
-        mode: Live, test, or strictly cache-only replay.
-        cache_root: Shared response cache location.
-        archive: Original run's responses for historical replay.
+        deps: Loaded configuration and logger.
+        model: Injected analyst model, or None for replay.
+        rows: Eligible evidence history.
+        root: Artifact directory.
+        prompt: Primary instructions.
+        mode: Live, replay, or test execution.
+        cache_root: Shared response store.
+        archive: Historical response source.
+        escalation_model: Injected higher-tier model.
+        auxiliary_prompts: Frozen sparse and reviewer instructions.
     Returns:
-        One agent, recording boundary, query service, and trace sink.
+        Agents sharing one recording, cost, and evidence boundary.
     """
-    config = deps.settings.analyst
     trace = TraceWriter(root / "trace.jsonl")
     recorded = RecordedModel(
         model,
@@ -96,14 +102,32 @@ def build_services(
         archive=archive,
         escalation_model=escalation_model,
     )
-    agent = _build_agent(recorded, deps, prompt)
-    sparse = (auxiliary_prompts or {}).get("sparse")
+    return _agents(recorded, deps, rows, prompt, auxiliary_prompts or {})
+
+
+def _agents(
+    recorded: RecordedModel,
+    deps: Deps,
+    rows: tuple[Transaction, ...],
+    prompt: str,
+    auxiliary: dict[str, str],
+) -> AnalystServices:
+    config = deps.settings.analyst
+    sparse, review = auxiliary.get("sparse"), auxiliary.get("reviewer")
+    reviewer = (
+        build_reviewer(
+            recorded, review, config.reviewer_max_output_tokens or config.max_output_tokens
+        )
+        if review
+        else None
+    )
     return AnalystServices(
-        agent,
+        _build_agent(recorded, deps, prompt),
         recorded,
         EvidenceTools(rows, config),
-        trace,
+        recorded.trace,
         _build_agent(recorded, deps, prompt + "\n" + sparse) if sparse else None,
+        reviewer,
     )
 
 
@@ -149,6 +173,7 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
                 "tier_escalated" if route == "escalate" else "repair_attempted",
                 acquirer=pack.ranking.acquirer,
             )
+    runtime.sessions[pack.ranking.acquirer] = PageSession(state, outcome.messages)
     return _page_result(pack, deps, state, outcome.output, attempts, started)
 
 

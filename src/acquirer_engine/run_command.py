@@ -24,6 +24,8 @@ from acquirer_engine.llm.client import create_client
 from acquirer_engine.llm.cost import ExecutionMode
 from acquirer_engine.llm.pipeline import run_analysts
 from acquirer_engine.llm.results import AnalystRun, PageResult
+from acquirer_engine.llm.review_schema import ReviewResult
+from acquirer_engine.llm.reviewer import review_portfolio
 from acquirer_engine.llm.trace_replay import ResponseArchive
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.ranking.target import assignment_target
@@ -101,18 +103,19 @@ async def execute_prepared(
     cache_root: Path | None = None,
     archive: ResponseArchive | None = None,
     replay_of: RunSnapshot | None = None,
+    escalation_model: Model | None = None,
 ) -> AnalystRun:
     """Persist frozen inputs, then execute with injected model or archived responses.
 
     Args:
-        snapshot: Actual input values used for this execution.
-        directory: New output directory, independent of any source archive.
-        deps: Logger and shared resources; settings are bound to the snapshot.
+        snapshot: Frozen inputs.
+        directory: New artifact directory.
+        deps: Logger and run resources.
         mode: Live, test, or strictly offline replay.
         model: One injected provider or offline test model.
-        cache_root: Optional shared request cache.
-        archive: Original exchanges for replay by run ID.
-        replay_of: Source identity, distinct from this execution's revision.
+        cache_root, archive: Response sources.
+        replay_of: Historical lineage.
+        escalation_model: Injected higher-tier model.
     Returns:
         Persisted outcomes and usage; rejected responses remain in the trace.
     """
@@ -128,9 +131,29 @@ async def execute_prepared(
         mode=mode,
         cache_root=cache_root,
         archive=archive,
+        escalation_model=escalation_model,
+        auxiliary_prompts=snapshot.auxiliary_prompts,
     )
     pages = await run_analysts(list(snapshot.packs), replace(deps, runtime=services))
-    result = _run_result(snapshot, mode, services, pages, perf_counter() - started, replay_of)
+    final, review = await review_portfolio(pages, replace(deps, runtime=services))
+    result = _run_result(snapshot, mode, services, final, perf_counter() - started, replay_of)
+    return _save_report(directory, result, pages, review, services.model.budget.uncertain)
+
+
+def _save_report(
+    directory: Path,
+    result: AnalystRun,
+    original: list[PageResult],
+    review: ReviewResult | None,
+    uncertain_cost: float,
+) -> AnalystRun:
+    result = result.model_copy(
+        update={
+            "before_review": original if review else [],
+            "review": review,
+            "uncertain_cost_bound_usd": uncertain_cost,
+        }
+    )
     (directory / "run.json").write_text(result.model_dump_json(indent=2) + "\n", encoding="utf-8")
     return result
 

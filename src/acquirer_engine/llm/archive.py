@@ -29,6 +29,7 @@ class RunSnapshot(BaseModel):
     input_source: Literal["captured", "reconstructed"] = "captured"
     settings: Settings
     prompt: str
+    auxiliary_prompts: dict[str, str] = Field(default_factory=dict)
     history: tuple[Transaction, ...]
     packs: tuple[CorePack, ...]
 
