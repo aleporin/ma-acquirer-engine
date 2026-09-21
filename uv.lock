@@ -380,6 +380,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "anthropic" },
+    { name = "httpx2" },
     { name = "pandas" },
     { name = "pydantic" },
     { name = "pydantic-ai-slim", extra = ["anthropic"] },
@@ -404,6 +405,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "anthropic", specifier = "==1.7.0" },
+    { name = "httpx2", specifier = "==2.13.0" },
     { name = "pandas", specifier = "==3.0.6" },
     { name = "pydantic", specifier = "==2.13.5" },
     { name = "pydantic-ai-slim", extras = ["anthropic"], specifier = "==2.46.0" },
