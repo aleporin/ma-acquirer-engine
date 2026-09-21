@@ -101,3 +101,19 @@ def validate_rationale(
     if errors:
         raise ValidationFailure(errors)
     return page
+
+
+def verified_claim_count(
+    page: AcquirerRationale, context: EvidenceContext, config: ValidationConfig
+) -> int:
+    """Count true numeric claims independently of whole-page acceptance.
+
+    Args:
+        page: Schema-valid draft, including drafts later rejected by guardrails.
+        context: Only evidence actually available to this draft.
+        config: Shared numeric rounding policy.
+    Returns:
+        Claims whose reference, metric, and value all verify.
+    """
+    index = context.index()
+    return sum(not _claim_errors(claim, index, config.rounding_tolerance) for claim in page.claims)

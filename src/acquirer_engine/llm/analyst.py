@@ -28,7 +28,7 @@ from acquirer_engine.llm.results import PageResult
 from acquirer_engine.llm.tool_state import ToolState
 from acquirer_engine.llm.tools import EvidenceTools
 from acquirer_engine.llm.trace import TraceWriter
-from acquirer_engine.validation.claims import validate_rationale
+from acquirer_engine.validation.claims import validate_rationale, verified_claim_count
 from acquirer_engine.validation.schema import AcquirerRationale
 
 
@@ -43,6 +43,13 @@ class AnalystServices:
 
 
 def _validate(ctx: RunContext[PageDeps], output: AcquirerRationale) -> AcquirerRationale:
+    state = ctx.deps.state
+    config = ctx.deps.shared.settings.evidence.validation
+    state.claims_total = len(output.claims)
+    state.claims_verified = verified_claim_count(output, state.context(), config)
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    runtime.trace.write("draft_received", state.core.ranking.acquirer, rationale=output)
     return validate_rationale(
         output.model_dump(), ctx.deps.state.context(), ctx.deps.shared.settings.evidence.validation
     )
@@ -171,11 +178,14 @@ def _page_result(
     return PageResult.model_validate(
         dict(
             acquirer=pack.ranking.acquirer,
+            acquirer_type=pack.ranking.acquirer_type,
             status="failed" if errors else "verified",
             rationale=output,
             errors=errors,
             tools=[r.tool for r in state.results],
             latency_seconds=perf_counter() - started,
+            claims_total=state.claims_total,
+            claims_verified=state.claims_verified,
         ),
         context=deps.settings.evidence.validation,
     )

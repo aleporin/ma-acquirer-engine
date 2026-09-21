@@ -6,8 +6,9 @@ Does not own: Rendering or judging narrative quality.
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, NonNegativeInt
 
+from acquirer_engine.data.schema import AcquirerType
 from acquirer_engine.llm.cost import CallRecord, ExecutionMode
 from acquirer_engine.validation.schema import AcquirerRationale
 
@@ -17,11 +18,14 @@ class PageResult(BaseModel):
 
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     acquirer: str
+    acquirer_type: AcquirerType
     status: Literal["verified", "failed"]
     rationale: AcquirerRationale | None = None
     errors: list[str]
     tools: list[str]
     latency_seconds: float
+    claims_total: NonNegativeInt = 0
+    claims_verified: NonNegativeInt = 0
 
 
 class AnalystRun(BaseModel):

@@ -20,6 +20,8 @@ class ToolState:
     max_rounds: int
     rounds: set[int] = field(default_factory=set)
     results: list[ToolResult] = field(default_factory=list)
+    claims_total: int = 0
+    claims_verified: int = 0
 
     def record(self, step: int, result: ToolResult) -> None:
         """Add only results within the bounded tool loop.
