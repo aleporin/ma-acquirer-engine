@@ -98,3 +98,29 @@ async def test_provider_failures_are_not_retried_as_validation_repairs(
     if failure == "tokens":
         assert "token" in " ".join(page.errors).lower()
         assert len(runtime.model.ledger.entries) == 1
+
+
+@pytest.mark.asyncio
+async def test_small_reviewer_request_reserves_its_own_output_limit(
+    deps: Deps, tmp_path: Path
+) -> None:
+    from pydantic_ai.messages import ModelRequest, TextPart, UserPromptPart
+    from pydantic_ai.models import ModelRequestParameters
+
+    deps = routing_deps(deps, max_run_usd=0.01, sdk_retries=0, request_overhead_tokens=0)
+
+    async def answer(messages: list[ModelMessage], info: AgentInfo) -> ModelResponse:
+        return ModelResponse(
+            parts=[TextPart("OK")], usage=RequestUsage(input_tokens=20, output_tokens=1)
+        )
+
+    runtime = build_services(deps, FunctionModel(answer), (), tmp_path, "Fixture.", mode="live")
+    with runtime.model.scope("portfolio") as scope:
+        scope.stage = "reviewer"
+        result = await runtime.model.request(
+            [ModelRequest(parts=[UserPromptPart("Check")])],
+            {"max_tokens": 2},
+            ModelRequestParameters(),
+        )
+    assert result.usage.output_tokens == 1
+    assert runtime.model.ledger.cost_usd < 0.01
