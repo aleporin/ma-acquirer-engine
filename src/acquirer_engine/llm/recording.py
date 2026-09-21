@@ -62,6 +62,8 @@ class RecordedModel(Model):
         super().__init__(profile=wrapped.profile if wrapped else None)
         self.wrapped, self.deps, self.cache, self.ledger = wrapped, deps, cache, ledger
         self.trace, self.mode = trace, mode
+        seconds = deps.settings.analyst.run_timeout_seconds
+        self.deadline = perf_counter() + seconds if seconds is not None else None
         self.archive = archive
         self.budget = RunBudget(deps.settings.analyst.max_run_usd if mode == "live" else None)
         self.models = {"analyst": wrapped, "escalation": escalation_model}
@@ -90,6 +92,20 @@ class RecordedModel(Model):
             self._scope.reset(token)
 
     async def request(
+        self,
+        messages: list[ModelMessage],
+        model_settings: ModelSettings | None,
+        model_request_parameters: ModelRequestParameters,
+    ) -> ModelResponse:
+        """Apply the run deadline to admission and execution, including budget waits."""
+        remaining = None if self.deadline is None else max(0, self.deadline - perf_counter())
+        try:
+            async with asyncio.timeout(remaining):
+                return await self._request(messages, model_settings, model_request_parameters)
+        except TimeoutError as error:
+            raise LLMTimeout("Run deadline exceeded") from error
+
+    async def _request(
         self,
         messages: list[ModelMessage],
         model_settings: ModelSettings | None,
