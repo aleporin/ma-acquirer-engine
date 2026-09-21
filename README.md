@@ -1,8 +1,10 @@
 # M&A Acquirer Engine
 
 Rank likely acquirers from transaction history and measure the ranking against
-held-out deals. The current scope is **Phase 2: ranking, bounded evidence, structured rationale validation,
-and offline evaluation**. Rationale generation and live judging are not implemented.
+held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
+structured rationale, usage accounting, and strict replay**. Offline checks pass;
+the first live run and its phase exit measurements are pending. Portfolio repair,
+judging, and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -49,7 +51,9 @@ detection. Unit-test fixtures reject socket connections.
 | `make eval EVAL_FLAGS=--ci RESULTS=/tmp/ci-results` | Select layers 0–2 for offline CI |
 | `make eval-diff A=before.json B=after.json` | Show metric changes and flag regressions |
 | `make eval-judges` | Report unavailable without making calls |
-| `make run` | Report that rationale generation is unavailable |
+| `make run` | Replay cached responses and write structured page outcomes; cache misses fail |
+| `make run RUN_FLAGS=--fresh` | Make paid analyst calls and refresh the response cache |
+| `acquirers eval --analyst-run runs/ID/run.json` | Measure a saved run without provider access |
 
 The installed `acquirers` command exposes these commands. `eval --fresh` is
 unavailable. To repeat an evaluation at the same revision, supply a new `RESULTS`
@@ -105,12 +109,21 @@ group is also removed once, with remaining weights renormalized. Initial weights
 and conviction boundaries were fixed before examining the holdout and have not
 been adjusted to make the measured results pass.
 
-Layer 0 executes isolated data, feature, ranking, evidence, and validation tests and
+Layer 0 executes isolated data, feature, ranking, evidence, validation, and analyst tests and
 reads their JUnit/coverage artifacts. `make test` covers the complete suite.
 Layer 1 passing means its measurements completed; it does not mean positive lift.
 Layer 5 measures ranking identity and conviction agreement across five runs, plus
-the intermediate two-level gate. Rationale stability remains unimplemented.
-Layers 3, 4, and 6 retain explicit `not_implemented` statuses and empty metrics.
+the intermediate two-level gate. With saved analyst runs, it also measures the
+fraction of buyers whose pages validate in all five executions. Repeat
+`--analyst-run` for each distinct artifact; duplicate run IDs are rejected.
+Replay repetition measures reproducibility, not live model stochasticity.
+
+Layer 3 measures pairwise word-ngram Jaccard similarity on accepted pages. A
+passing status means measurement completed, not that prose quality is established.
+Name-masked identification and the layer 4 rubric judges remain deferred.
+Layer 6 records observed tokens, cache usage, USD, empirical latency percentiles,
+and tool-selection rates by buyer type. Every metric is prefixed by execution
+mode. With no supplied run artifacts, layers 3 and 6 remain unmeasured stubs.
 
 Each result bundle under [evals/results](evals/results/) contains:
 
@@ -152,9 +165,11 @@ for their stated EV/EBITDA and EV/Revenue multiples. Core rows alone cannot sati
 that requirement. Conflicting copies of an evidence ID fail instead of overwriting
 facts. Conviction must match the ranker's result.
 
-Layer 2 runs three hand-written valid pages and six planted-invalid pages. Its
-metrics describe those fixtures only: live first-pass and post-repair rates are
-unmeasured. The verifier catches numeric and reference errors; it does not prove
+Layer 2 runs three hand-written valid pages and six planted-invalid pages. Saved
+analyst runs add first-pass numeric claim and whole-page acceptance rates; they
+do not replace the fixture results. A schema failure has no parsed claims and is
+reported separately, never counted as a perfect claim rate. Post-repair rates are
+deferred. The verifier catches numeric and reference errors; it does not prove
 that prose attaches a valid number to the right subject, that a selected comp is
 economically persuasive, or that a qualitative thesis is true. Those limitations
 remain for later evaluation and human review. The fixtures contain synthetic
@@ -167,16 +182,60 @@ examples, not generated analyst pages.
 owns holdout measurement. `evals/phase1.py` composes graders and companion artifacts.
 `evidence/` assembles addressable facts; `validation/` checks structured rationale.
 `evals/grounded.py` executes labeled pages and `evals/phase2.py` adds their results.
-The CLI builds one settings snapshot and logger, passed through minimal `Deps`.
-No provider clients exist in this phase.
+The CLI builds one settings snapshot and logger. A fresh run owns one SDK client,
+agent, cost ledger, cache, and trace writer, passed through `Deps`. Each buyer owns
+only its tool evidence and validation state. `llm/` contains those boundaries;
+`evals/phase3.py` measures saved run artifacts without contacting providers.
 
-PyYAML parses the four configuration files and Pydantic validates them:
+PyYAML parses five configuration files and Pydantic validates them:
 `models.yaml` records dated provider metadata; `scoring.yaml` contains all tunable
 ranking policy and target assumptions; `eval.yaml` selects layers and controls
 splits, uncertainty, and size limits; `evidence.yaml` controls context budgets,
-section lengths, rounding tolerance, and banned phrases. Model metadata does not establish account
-access or tested live behavior. Provider SDKs are deferred until used.
+section lengths, rounding tolerance, and banned phrases. `analyst.yaml` controls
+tool rounds, rows, output tokens, concurrency, timeouts, and measurement policy.
+Model metadata does not establish account access or tested live behavior.
 
 Maintained files stay below 300 lines and Python functions below 50. Generated
 artifacts, lockfiles, and the unchanged transaction CSV are exempt. GitHub Actions
 runs lint, tests, and offline CI evaluation and uploads the generated scorecard.
+
+## Analyst execution
+
+This is a workflow with a bounded agent stage: code ranks the buyers, each analyst
+chooses evidence tools, and code verifies the output. Five typed queries expose
+comps, sector benchmarks, adjacent activity, sponsor platforms, and failed deals.
+Returned rows are capped, with truncation explicit. Only actual tool returns
+enter the verifier's retrieval context. Dataset strings are cleaned and escaped
+inside delimited data blocks; they cannot supply application instructions.
+
+The first buyer response warms the shared instruction/tool prefix before the
+remaining buyers start behind a semaphore. Each page has at most three tool
+rounds and four model requests. The request deadline includes SDK retries, which
+use backoff and jitter for transient failures. A failed page records errors and
+does not cancel other buyers; the command exits nonzero if any page fails.
+Phase 3 has no repair loop, escalation, portfolio reviewer, or hard dollar cap.
+
+`runs/ID/run.json` contains page outcomes and per-response usage; `trace.jsonl`
+retains full model/tool observations for local inspection. Structured diagnostics
+go to stderr and `log.jsonl`, without raw CSV rows or prompts at info level.
+`attempt` numbers framework requests within a page, not hidden SDK HTTP attempts.
+The ledger subtracts cache reads/writes from total input before applying dated
+prices. A live zero-token response fails. Replay retains historical token counts
+but records zero new spend. Billing for unsuccessful requests without returned
+usage is unknown; the ledger does not invent it.
+
+Fresh execution needs `ANTHROPIC_API_KEY` in the environment. Replay constructs no
+provider client and needs no key. It hashes model/configuration, prompt, schema,
+core evidence, and conversation/tool results. A missing or corrupt entry fails
+explicitly, with no paid fallback. Fresh execution replaces matching cache
+entries. The sample replay cache is a later deliverable, so a fresh checkout
+currently reports cache misses until a live run has populated it.
+
+The pinned model does not support temperature; the setting is null and omitted.
+Prose can vary between fresh runs. Only cache replay reproduces a saved response,
+and replay still executes tools and validation. Unit tests use local models and
+a fake HTTP transport, including a hostile input and full-conversation replay.
+
+The current [Phase 3 offline scorecard](evals/results/p3-899731d101d5c18d3b175a572bbbdca781b42d35/summary.md)
+records passing layers 0–2 and the inherited layer-5 shortfall. It is not evidence
+that the prompt meets live quality, cost, or latency targets.
