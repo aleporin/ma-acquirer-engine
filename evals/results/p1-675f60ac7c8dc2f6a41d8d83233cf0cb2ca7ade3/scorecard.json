@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "phase": "p1",
+  "mode": "replay",
+  "run": {
+    "git_sha": "675f60ac7c8dc2f6a41d8d83233cf0cb2ca7ade3",
+    "source_dirty": false,
+    "run_id": "76d7a909925f4b65b27a4492a8afbadc",
+    "created_at": "2026-09-21T18:34:06.599335Z"
+  },
+  "seed": 42,
+  "prompt_version": "not_implemented",
+  "config_sha256": "dcc5dbdc4347f9c49192301f9281a96c5047d70824953cd5308d00d60789cf12",
+  "models": {
+    "roles": {
+      "analyst": {
+        "provider": "anthropic",
+        "model_id": "claude-sonnet-5",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://platform.claude.com/docs/en/models/overview",
+          "https://platform.claude.com/docs/en/about-claude/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 2.0,
+            "output_usd_per_million": 10.0,
+            "cache_read_usd_per_million": 0.2,
+            "cache_write_usd_per_million": 2.5,
+            "cache_write_1h_usd_per_million": 4.0,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "mechanical": {
+        "provider": "anthropic",
+        "model_id": "claude-haiku-4-5-20251001",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://platform.claude.com/docs/en/models/overview",
+          "https://platform.claude.com/docs/en/about-claude/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": 200000,
+            "input_usd_per_million": 1.0,
+            "output_usd_per_million": 5.0,
+            "cache_read_usd_per_million": 0.1,
+            "cache_write_usd_per_million": 1.25,
+            "cache_write_1h_usd_per_million": 2.0,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "escalation": {
+        "provider": "anthropic",
+        "model_id": "claude-opus-5",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://platform.claude.com/docs/en/models/overview",
+          "https://platform.claude.com/docs/en/about-claude/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 5.0,
+            "output_usd_per_million": 25.0,
+            "cache_read_usd_per_million": 0.5,
+            "cache_write_usd_per_million": 6.25,
+            "cache_write_1h_usd_per_million": 10.0,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "judge_a": {
+        "provider": "openai",
+        "model_id": "gpt-5.6-terra",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+          "https://developers.openai.com/api/docs/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": 272000,
+            "input_usd_per_million": 2.0,
+            "output_usd_per_million": 12.0,
+            "cache_read_usd_per_million": 0.2,
+            "cache_write_usd_per_million": 2.5,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": null
+          },
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 4.0,
+            "output_usd_per_million": 18.0,
+            "cache_read_usd_per_million": 0.4,
+            "cache_write_usd_per_million": 5.0,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "judge_b": {
+        "provider": "google",
+        "model_id": "gemini-3.1-pro-preview",
+        "as_of": "2026-09-21",
+        "preview": true,
+        "source_urls": [
+          "https://ai.google.dev/gemini-api/docs/pricing#gemini-3.1-pro-preview"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": 200000,
+            "input_usd_per_million": 2.0,
+            "output_usd_per_million": 12.0,
+            "cache_read_usd_per_million": 0.2,
+            "cache_write_usd_per_million": null,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": 4.5
+          },
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 4.0,
+            "output_usd_per_million": 18.0,
+            "cache_read_usd_per_million": 0.4,
+            "cache_write_usd_per_million": null,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": 4.5
+          }
+        ]
+      }
+    }
+  },
+  "requested_layers": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    6
+  ],
+  "layers": [
+    {
+      "id": 0,
+      "name": "unit_and_property_tests",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "tests": {
+          "value": 33.0,
+          "direction": "higher"
+        },
+        "pass_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "coverage": {
+          "value": 0.9686684073107049,
+          "direction": "higher"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "name": "ranking_backtest",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "global_popularity_recall_at_k": {
+          "value": 0.4084507042253521,
+          "direction": "higher"
+        },
+        "global_popularity_mrr": {
+          "value": 0.12638088710953088,
+          "direction": "higher"
+        },
+        "global_popularity_ndcg_at_k": {
+          "value": 0.17608466439481535,
+          "direction": "higher"
+        },
+        "sector_popularity_recall_at_k": {
+          "value": 0.43661971830985913,
+          "direction": "higher"
+        },
+        "sector_popularity_mrr": {
+          "value": 0.13661683119492465,
+          "direction": "higher"
+        },
+        "sector_popularity_ndcg_at_k": {
+          "value": 0.1819267449000178,
+          "direction": "higher"
+        },
+        "random_recall_at_k": {
+          "value": 0.1267605633802817,
+          "direction": "higher"
+        },
+        "random_mrr": {
+          "value": 0.06700699766553846,
+          "direction": "higher"
+        },
+        "random_ndcg_at_k": {
+          "value": 0.06672387863358178,
+          "direction": "higher"
+        },
+        "ranker_recall_at_k": {
+          "value": 0.38028169014084506,
+          "direction": "higher"
+        },
+        "ranker_mrr": {
+          "value": 0.17108930221607932,
+          "direction": "higher"
+        },
+        "ranker_ndcg_at_k": {
+          "value": 0.197307251757508,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_recall_at_k_mean": {
+          "value": -0.028169014084507043,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_recall_at_k_low": {
+          "value": -0.14788732394366197,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_recall_at_k_high": {
+          "value": 0.08450704225352113,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_mrr_mean": {
+          "value": 0.04470841510654842,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_mrr_low": {
+          "value": -0.0049371090904894496,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_mrr_high": {
+          "value": 0.09168507308728034,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_ndcg_at_k_mean": {
+          "value": 0.021222587362692627,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_ndcg_at_k_low": {
+          "value": -0.0445304209175144,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_ndcg_at_k_high": {
+          "value": 0.08283667454796181,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_recall_at_k_mean": {
+          "value": -0.056338028169014086,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_recall_at_k_low": {
+          "value": -0.14084507042253522,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_recall_at_k_high": {
+          "value": 0.028169014084507043,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_mrr_mean": {
+          "value": 0.03447247102115465,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_mrr_low": {
+          "value": -0.0007859508326069838,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_mrr_high": {
+          "value": 0.06992239362359508,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_ndcg_at_k_mean": {
+          "value": 0.015380506857490163,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_ndcg_at_k_low": {
+          "value": -0.025535825634574075,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_ndcg_at_k_high": {
+          "value": 0.056517293980292094,
+          "direction": "higher"
+        },
+        "lift_vs_random_recall_at_k_mean": {
+          "value": 0.2535211267605634,
+          "direction": "higher"
+        },
+        "lift_vs_random_recall_at_k_low": {
+          "value": 0.1619718309859155,
+          "direction": "higher"
+        },
+        "lift_vs_random_recall_at_k_high": {
+          "value": 0.34507042253521125,
+          "direction": "higher"
+        },
+        "lift_vs_random_mrr_mean": {
+          "value": 0.10408230455054084,
+          "direction": "higher"
+        },
+        "lift_vs_random_mrr_low": {
+          "value": 0.055661411139537084,
+          "direction": "higher"
+        },
+        "lift_vs_random_mrr_high": {
+          "value": 0.15428155866799823,
+          "direction": "higher"
+        },
+        "lift_vs_random_ndcg_at_k_mean": {
+          "value": 0.1305833731239262,
+          "direction": "higher"
+        },
+        "lift_vs_random_ndcg_at_k_low": {
+          "value": 0.07321292698527426,
+          "direction": "higher"
+        },
+        "lift_vs_random_ndcg_at_k_high": {
+          "value": 0.18767325897122944,
+          "direction": "higher"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "groundedness",
+      "selected": true,
+      "status": "not_implemented",
+      "metrics": {}
+    },
+    {
+      "id": 3,
+      "name": "distinctiveness",
+      "selected": true,
+      "status": "not_implemented",
+      "metrics": {}
+    },
+    {
+      "id": 4,
+      "name": "rubric_quality",
+      "selected": false,
+      "status": "not_implemented",
+      "metrics": {}
+    },
+    {
+      "id": 5,
+      "name": "stability",
+      "selected": true,
+      "status": "failed",
+      "metrics": {
+        "top_k_identity": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "conviction_agreement": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "conviction_levels": {
+          "value": 1.0,
+          "direction": "higher"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "operations",
+      "selected": true,
+      "status": "not_implemented",
+      "metrics": {}
+    }
+  ]
+}
