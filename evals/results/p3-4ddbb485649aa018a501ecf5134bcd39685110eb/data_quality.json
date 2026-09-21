@@ -1,0 +1,10 @@
+{
+  "rows": 500,
+  "acquirers": 107,
+  "multiple_mismatches": 403,
+  "margin_mismatches": 362,
+  "sponsor_deal_type_conflicts": 57,
+  "strategic_deal_type_conflicts": 52,
+  "rumored": 10,
+  "null_days_to_close": 94
+}
