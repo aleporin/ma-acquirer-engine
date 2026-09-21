@@ -15,6 +15,7 @@ from pydantic_ai.usage import RequestUsage
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.llm.analyst import build_services
+from acquirer_engine.llm.results import PageResult
 from acquirer_engine.llm.pipeline import run_analysts
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
@@ -88,3 +89,46 @@ async def test_first_page_failure_does_not_block_later_pages(deps: Deps, tmp_pat
     )
     pages = await run_analysts([bad, context.core], replace(deps, runtime=runtime))
     assert [page.status for page in pages] == ["failed", "verified"]
+
+
+@pytest.mark.asyncio
+async def test_failed_warmup_stays_serial_until_a_response(
+    deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import acquirer_engine.llm.pipeline as pipeline
+
+    context = evidence_context(deps.settings)
+    names = ["First", "Second", "Third", "Fourth"]
+    packs = [
+        context.core.model_copy(
+            update={"ranking": context.core.ranking.model_copy(update={"acquirer": name})}
+        )
+        for name in names
+    ]
+    runtime = build_services(
+        deps, None, context.core.deals, tmp_path, "Fixture instructions.", mode="replay"
+    )
+    active = peak = 0
+    active_before_response = 0
+
+    async def scheduled(pack: object, _: Deps) -> PageResult:
+        nonlocal active, active_before_response, peak
+        active += 1
+        peak = max(peak, active)
+        name = pack.ranking.acquirer
+        if name == "First":
+            active -= 1
+            return PageResult.model_construct(acquirer=name, status="failed")
+        if name == "Second":
+            await asyncio.sleep(0)
+            active_before_response = active
+            runtime.model.first_response.set()
+        await asyncio.sleep(0)
+        active -= 1
+        return PageResult.model_construct(acquirer=name, status="verified")
+
+    monkeypatch.setattr(pipeline, "analyze_one", scheduled)
+    pages = await run_analysts(packs, replace(deps, runtime=runtime))
+    assert [page.status for page in pages] == ["failed", "verified", "verified", "verified"]
+    assert active_before_response == 1
+    assert peak == 2
