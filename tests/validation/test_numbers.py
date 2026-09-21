@@ -85,3 +85,42 @@ def test_rounding_preserves_units_precision_and_discrete_facts(
     else:
         with pytest.raises(ValidationFailure, match="stray number"):
             validate_rationale(raw, context, settings.evidence.validation)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Observed activity (stat:deal_count:Buyer%20A).",
+        "Observed activity: stat:deal_count:Buyer%20A.",
+        "Observed activity [stat:deal_count:Buyer%20A]; scope is limited.",
+    ],
+)
+def test_known_statistic_reference_is_not_a_prose_number(settings: Settings, text: str) -> None:
+    raw = rationale_payload()
+    raw["acquirer_overview"] = text
+    validate_rationale(raw, evidence_context(settings), settings.evidence.validation)
+
+
+@pytest.mark.parametrize(
+    "reference",
+    [
+        "stat:missing:Buyer%20A",
+        "stat:deal_count:Buyer%20A:999",
+        "stat:deal_count:Buyer%20A/999",
+    ],
+)
+def test_unknown_statistic_reference_is_rejected_as_a_whole(
+    settings: Settings, reference: str
+) -> None:
+    raw = rationale_payload()
+    raw["acquirer_overview"] = f"Observed activity ({reference})."
+    with pytest.raises(ValidationFailure, match=f"unknown evidence {reference}"):
+        validate_rationale(raw, evidence_context(settings), settings.evidence.validation)
+
+
+def test_known_reference_does_not_hide_an_adjacent_unclaimed_value(settings: Settings) -> None:
+    raw = rationale_payload()
+    raw["acquirer_overview"] = "Activity (stat:deal_count:Buyer%20A) is 999%."
+    with pytest.raises(ValidationFailure, match="stray number 999%") as error:
+        validate_rationale(raw, evidence_context(settings), settings.evidence.validation)
+    assert error.value.errors == ("acquirer_overview: stray number 999%",)
