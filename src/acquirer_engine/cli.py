@@ -5,6 +5,7 @@ Does not own: Ranking, rationale generation, or provider retry policy.
 """
 
 import asyncio
+import os
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -213,7 +214,8 @@ def build_app() -> typer.Typer:
 
 
 def main() -> None:
-    """Dispatch the installed command."""
+    """Dispatch the installed command with machine-readable diagnostics."""
+    os.environ["PYDANTIC_AI_NO_BANNER"] = "1"
     build_app()()
 
 
