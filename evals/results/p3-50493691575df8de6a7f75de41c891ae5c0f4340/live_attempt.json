@@ -1,0 +1,92 @@
+{
+  "scope": "One approved analyst_v4 live observation and one exact-response replay; not a repeated-run quality or latency distribution.",
+  "git_sha": "50493691575df8de6a7f75de41c891ae5c0f4340",
+  "source_dirty": false,
+  "prompt_version": "analyst_v4",
+  "commands": [
+    {
+      "command": "UV_ENV_FILE=.env make run RUN_FLAGS=--fresh",
+      "exit_code": 2,
+      "run_id": "d3f3041238924e228b357de320182dee"
+    },
+    {
+      "command": "uv run --locked acquirers replay d3f3041238924e228b357de320182dee",
+      "exit_code": 1,
+      "run_id": "0e010dcfdbcd4b2fa1195f37f3b936a8"
+    },
+    {
+      "command": "make eval EVAL_FLAGS=\"--analyst-run runs/d3f3041238924e228b357de320182dee/run.json --analyst-run runs/0e010dcfdbcd4b2fa1195f37f3b936a8/run.json\"",
+      "exit_code": 2
+    }
+  ],
+  "live": {
+    "requests": 25,
+    "responses": 25,
+    "schema_valid_drafts": 9,
+    "verified_pages": 7,
+    "claims_total": 63,
+    "claims_verified": 63,
+    "cost_usd": 0.8681912,
+    "latency_seconds": 64.39639016706496,
+    "length_limited_responses": 0,
+    "failed_pages": [
+      {
+        "buyer": "Nordic Capital",
+        "errors": [
+          "risk_flags: Tuple should have at least 2 items after validation, not 0"
+        ]
+      },
+      {
+        "buyer": "Ardent Health Services",
+        "errors": [
+          "reasoning: stray number 150mm",
+          "reasoning: stray number 200mm",
+          "strategic_fit_thesis: stray number 200mm"
+        ]
+      },
+      {
+        "buyer": "New Mountain Capital",
+        "errors": [
+          "precedent_activity: unknown own-history evidence MA-2018-0470"
+        ]
+      }
+    ]
+  },
+  "timing": {
+    "warmup_seconds": 2.2547923331148922,
+    "slowest_requests": [
+      {
+        "buyer": "Vista Equity",
+        "attempt": 2,
+        "latency_seconds": 57.65464504202828,
+        "output_tokens": 2199
+      },
+      {
+        "buyer": "GTCR",
+        "attempt": 3,
+        "latency_seconds": 57.51514083403163,
+        "output_tokens": 2028
+      },
+      {
+        "buyer": "Nordic Capital",
+        "attempt": 3,
+        "latency_seconds": 34.71738933282904,
+        "output_tokens": 1543
+      }
+    ],
+    "interpretation": "Two final requests took about 57 seconds. Prior duration assumptions did not hold; the trace does not establish the cause."
+  },
+  "replay": {
+    "run_id": "0e010dcfdbcd4b2fa1195f37f3b936a8",
+    "responses": 25,
+    "cost_usd": 0.0,
+    "latency_seconds": 0.06880249991081655,
+    "all_page_outcomes_match": true
+  },
+  "proof_limits": [
+    "One schema-invalid draft has no parsed claim measurement.",
+    "Explicit claim accuracy does not cover missing prose claims or wrong precedent ownership.",
+    "Prompt, parser, and concurrency changed together; this observation does not isolate their causal effects.",
+    "Phase 3 live gate still fails page acceptance and latency."
+  ]
+}
