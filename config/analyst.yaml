@@ -22,6 +22,6 @@ sparse_relevant_deals: 3
 reviewer_enabled: true
 reviewer_prompt_file: reviewer_v1.md
 reviewer_max_output_tokens: 2048
-max_run_usd: 1.0
+max_run_usd: 3.0
 request_overhead_tokens: 1024
 run_timeout_seconds: 300
