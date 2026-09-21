@@ -1,0 +1,56 @@
+{
+  "scope": "One fresh analyst_v3 run and one offline replay; no live repetition or semantic judge measurement.",
+  "source_git_sha": "a4bc6ef07dd381bbee37c759becb24b22f42cd39",
+  "source_dirty": false,
+  "environment": "Python 3.12.14; uv 0.12.17; locked project dependencies",
+  "commands": [
+    {
+      "command": "UV_ENV_FILE=.env make run RUN_FLAGS=--fresh",
+      "exit_code": 2,
+      "run_id": "c629b888ae9c49ac806db09b550526c2"
+    },
+    {
+      "command": "uv run --locked acquirers replay c629b888ae9c49ac806db09b550526c2",
+      "exit_code": 1,
+      "run_id": "af6d9185b7b44cfeb35b1a9a873ea02a"
+    },
+    {
+      "command": "make eval EVAL_FLAGS=\"--analyst-run runs/c629b888ae9c49ac806db09b550526c2/run.json --analyst-run runs/af6d9185b7b44cfeb35b1a9a873ea02a/run.json\"",
+      "exit_code": 2
+    }
+  ],
+  "live": {
+    "requested": 26,
+    "returned": 26,
+    "schema_valid_drafts": 10,
+    "length_limited_responses": 0,
+    "verified_pages": 4,
+    "claims_verified": 155,
+    "claims_total": 155,
+    "validation_errors": 23,
+    "latency_seconds": 79.46873779082671,
+    "recorded_cost_usd": 0.952018
+  },
+  "diagnosis": {
+    "known_stat_reference_scan_false_positives": 8,
+    "remaining_prose_numbers_without_matching_claims": 15,
+    "confirmed_by": "Replacing only four known statistic-reference strings in one in-memory draft removes eight scans of URL-encoded spaces (%20); the three valuation errors remain. Original artifacts and source are unmodified.",
+    "page_acceptance_after_reference_only_diagnostic": "Unchanged: four verified pages; all six rejected pages retain errors.",
+    "latency": "The first shared-prefix response took 16.004 seconds; draft requests took 22.520 to 30.588 seconds under concurrency five. A faster live result has not been demonstrated."
+  },
+  "replay": {
+    "run_id": "af6d9185b7b44cfeb35b1a9a873ea02a",
+    "replay_of": "c629b888ae9c49ac806db09b550526c2",
+    "responses": 26,
+    "cost_usd": 0.0,
+    "latency_seconds": 0.07513345894403756,
+    "all_page_outcomes_match": true
+  },
+  "proof_limits": [
+    "Explicit claim accuracy is not coverage of every prose number or semantic truth.",
+    "Distinctiveness uses only the four verified pages (six pairs).",
+    "Single-run p95 is not a measured population latency distribution.",
+    "Phase 3 still fails: fewer than ten verified pages and latency exceeds sixty seconds.",
+    "Ranking conviction diversity is an inherited Phase 1 failure."
+  ]
+}
