@@ -151,7 +151,13 @@ def _build_agent(
         output_type=AcquirerRationale,
         deps_type=PageDeps,
         instructions=lambda ctx: (
-            prompt + "\n" + data_block("target_profile", ctx.deps.state.core.target)
+            prompt
+            + "\n"
+            + data_block("target_profile", ctx.deps.state.core.target)
+            + "\n"
+            + data_block("execution_policy", config)
+            + "\n"
+            + data_block("validation_policy", deps.settings.evidence.validation)
         ),
         validation_context=deps.settings.evidence.validation,
         model_settings=model_settings,
