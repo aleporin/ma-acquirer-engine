@@ -296,4 +296,4 @@ produced ten schema-valid drafts: four pages passed and all 155 explicit claims 
 It took 79.47 seconds and cost $0.952018. Missing prose claims and statistic-ID scan
 errors remain; Phase 3 still fails. Offline replay reproduced all 26 responses for $0.
 
-Earlier [historical replay checks](evals/results/p3-3ec91786bc035a6c05c4caa1500c0943632b5303/summary.md) recover all 64 responses for $0; old drafts still fail.
+The [next correction](evals/results/p3-a03c7e838aa5de93877382df04128b1121e44668/summary.md) removes eight statistic-ID scan errors; old drafts still pass 4/10. The shorter `analyst_v4` prompt and concurrency ten await live measurement.
