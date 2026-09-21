@@ -39,6 +39,7 @@ class AnalystRun(BaseModel):
     source_git_sha: str | None = None
     mode: ExecutionMode
     git_sha: str
+    source_dirty: bool = False
     prompt_version: str
     latency_seconds: float
     pages: list[PageResult]

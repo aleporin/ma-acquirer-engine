@@ -167,7 +167,7 @@ def run_product(
     try:
         root = project.resolve()
         settings = load_settings(root / "config")
-        sha, _ = _git_state(root)
+        sha, dirty = _git_state(root)
         run_id = uuid4().hex
         directory = root / "runs" / run_id
         with run_logger(
@@ -179,7 +179,9 @@ def run_product(
             mode="replay" if replay else "live",
         ) as log:
             report = asyncio.run(
-                execute_run(root, directory, Deps(settings, log), sha, replay=replay)
+                execute_run(
+                    root, directory, Deps(settings, log), sha, replay=replay, source_dirty=dirty
+                )
             )
         _show_run(directory, report)
     except (AcquirerEngineError, OSError, ValidationError, AnthropicError) as error:
@@ -212,7 +214,7 @@ def replay_product(
         root = project.resolve()
         source = run_directory(root, run_id)
         snapshot = load_snapshot(source)
-        sha, _ = _git_state(root)
+        sha, dirty = _git_state(root)
         new_id = uuid4().hex
         directory = root / "runs" / new_id
         with run_logger(
@@ -224,7 +226,14 @@ def replay_product(
             mode="replay",
         ) as log:
             report = asyncio.run(
-                execute_replay(source, directory, snapshot, Deps(snapshot.settings, log), sha)
+                execute_replay(
+                    source,
+                    directory,
+                    snapshot,
+                    Deps(snapshot.settings, log),
+                    sha,
+                    source_dirty=dirty,
+                )
             )
         _show_run(directory, report)
     except (AcquirerEngineError, OSError) as error:
@@ -245,8 +254,8 @@ def show_runs(
             cost = sum(call.cost_usd for call in run.calls)
             typer.echo(
                 f"{run.run_id}  {run.mode:6}  {passed}/{len(run.pages):<3}  {cost:.6f}  "
-                f"{run.latency_seconds:7.3f}  {run.git_sha[:8]}  {run.prompt_version}"
-                + (f"  replay_of={run.replay_of}" if run.replay_of else "")
+                f"{run.latency_seconds:7.3f}  {run.git_sha[:8]}{'*' if run.source_dirty else ''}  "
+                f"{run.prompt_version}" + (f"  replay_of={run.replay_of}" if run.replay_of else "")
             )
     except (AcquirerEngineError, OSError) as error:
         typer.echo(f"History failed: {error}", err=True)

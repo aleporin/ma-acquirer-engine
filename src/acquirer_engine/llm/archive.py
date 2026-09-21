@@ -24,6 +24,7 @@ class RunSnapshot(BaseModel):
     version: Literal[1] = 1
     run_id: RunId
     git_sha: str
+    source_dirty: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     input_source: Literal["captured", "reconstructed"] = "captured"
     settings: Settings

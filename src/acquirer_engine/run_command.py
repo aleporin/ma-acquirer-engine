@@ -53,7 +53,7 @@ def prepare_inputs(root: Path, deps: Deps) -> tuple[tuple[Transaction, ...], lis
 
 
 async def execute_run(
-    root: Path, directory: Path, deps: Deps, sha: str, *, replay: bool
+    root: Path, directory: Path, deps: Deps, sha: str, *, replay: bool, source_dirty: bool = False
 ) -> AnalystRun:
     """Execute replay without a client, or own one client for an explicitly fresh run.
 
@@ -72,6 +72,7 @@ async def execute_run(
         run_id=directory.name,
         git_sha=sha,
         settings=deps.settings,
+        source_dirty=source_dirty,
         prompt=prompt,
         history=history,
         packs=tuple(packs),
@@ -147,6 +148,7 @@ def _run_result(
             run_id=snapshot.run_id,
             mode=mode,
             git_sha=snapshot.git_sha,
+            source_dirty=snapshot.source_dirty,
             replay_of=replay_of.run_id if replay_of else None,
             source_git_sha=replay_of.git_sha if replay_of else None,
             prompt_version=snapshot.settings.evaluation.prompt_version,
@@ -159,7 +161,13 @@ def _run_result(
 
 
 async def execute_replay(
-    source: Path, directory: Path, snapshot: RunSnapshot, deps: Deps, sha: str
+    source: Path,
+    directory: Path,
+    snapshot: RunSnapshot,
+    deps: Deps,
+    sha: str,
+    *,
+    source_dirty: bool = False,
 ) -> AnalystRun:
     """Replay original inputs and responses through the current tools and verifier.
 
@@ -174,7 +182,12 @@ async def execute_replay(
     """
     archive = ResponseArchive.from_trace(source / "trace.jsonl")
     current = snapshot.model_copy(
-        update={"run_id": directory.name, "git_sha": sha, "created_at": datetime.now(UTC)}
+        update={
+            "run_id": directory.name,
+            "git_sha": sha,
+            "source_dirty": source_dirty,
+            "created_at": datetime.now(UTC),
+        }
     )
     return await execute_prepared(
         current, directory, deps, mode="replay", archive=archive, replay_of=snapshot

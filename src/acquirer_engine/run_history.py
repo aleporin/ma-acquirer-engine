@@ -32,6 +32,7 @@ class RunSummary(BaseModel):
     run_id: RunId
     mode: ExecutionMode
     git_sha: str
+    source_dirty: bool = False
     prompt_version: str
     latency_seconds: NonNegativeFloat
     replay_of: RunId | None = None
