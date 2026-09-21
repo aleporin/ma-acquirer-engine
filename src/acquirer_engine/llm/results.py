@@ -12,6 +12,8 @@ from acquirer_engine.data.schema import AcquirerType
 from acquirer_engine.llm.cost import CallRecord, ExecutionMode
 from acquirer_engine.validation.schema import AcquirerRationale
 
+type RunId = Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]
+
 
 class PageResult(BaseModel):
     """A page either verifies or retains specific errors for later repair."""
@@ -32,7 +34,9 @@ class AnalystRun(BaseModel):
     """Observed execution, without confusing replay latency or cost with live results."""
 
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
-    run_id: Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]
+    run_id: RunId
+    replay_of: RunId | None = None
+    source_git_sha: str | None = None
     mode: ExecutionMode
     git_sha: str
     prompt_version: str

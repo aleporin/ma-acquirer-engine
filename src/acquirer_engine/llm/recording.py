@@ -22,6 +22,7 @@ from acquirer_engine.llm.cache import ResponseCache, request_key
 from acquirer_engine.llm.cost import CostLedger, ExecutionMode
 from acquirer_engine.llm.output import compatible_output_parameters, require_complete_response
 from acquirer_engine.llm.trace import TraceWriter
+from acquirer_engine.llm.trace_replay import ResponseArchive
 
 
 @dataclass
@@ -44,11 +45,13 @@ class RecordedModel(Model):
         trace: TraceWriter,
         *,
         mode: ExecutionMode,
+        archive: ResponseArchive | None = None,
     ) -> None:
         """Inject shared resources and keep page identity in task-local state."""
         super().__init__(profile=wrapped.profile if wrapped else None)
         self.wrapped, self.deps, self.cache, self.ledger = wrapped, deps, cache, ledger
         self.trace, self.mode = trace, mode
+        self.archive = archive
         self.first_response = asyncio.Event()
         self._scope: ContextVar[CallScope] = ContextVar("analyst_call_scope")
         self.identity = deps.settings.model_dump_json()
@@ -128,6 +131,9 @@ class RecordedModel(Model):
         parameters: ModelRequestParameters,
     ) -> ModelResponse:
         if self.mode == "replay":
+            if self.archive is not None:
+                scope = self._scope.get()
+                return self.archive.load(scope.acquirer, scope.attempt, messages)
             return self.cache.load(key)
         if self.wrapped is None:
             raise LLMInvalidOutput("No model client was injected")

@@ -20,8 +20,11 @@ from pydantic import ValidationError
 from acquirer_engine.data.loader import load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
+from acquirer_engine.llm.archive import load_snapshot, run_directory
+from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.logging_setup import run_logger
-from acquirer_engine.run_command import execute_run
+from acquirer_engine.run_command import execute_replay, execute_run
+from acquirer_engine.run_history import list_runs
 from acquirer_engine.settings import load_settings
 from evals.diff import compare_scorecards
 from evals.graders.unit import grade as grade_unit
@@ -178,14 +181,75 @@ def run_product(
             report = asyncio.run(
                 execute_run(root, directory, Deps(settings, log), sha, replay=replay)
             )
-        typer.echo(f"Run: {directory / 'run.json'}")
-        verified = sum(page.status == "verified" for page in report.pages)
-        typer.echo(f"Verified pages: {verified}/{len(report.pages)}")
-        if verified != len(report.pages):
-            raise typer.Exit(1)
+        _show_run(directory, report)
     except (AcquirerEngineError, OSError, ValidationError, AnthropicError) as error:
         message = type(error).__name__ if isinstance(error, AnthropicError) else str(error)
         typer.echo(f"Run failed: {message}", err=True)
+        raise typer.Exit(1) from error
+
+
+def _show_run(directory: Path, report: AnalystRun) -> None:
+    typer.echo(f"Run: {directory / 'run.json'}")
+    verified = sum(page.status == "verified" for page in report.pages)
+    typer.echo(f"Verified pages: {verified}/{len(report.pages)}")
+    if verified != len(report.pages):
+        raise typer.Exit(1)
+
+
+def replay_product(
+    run_id: str,
+    project: Annotated[Path, typer.Option(help="Repository root.")] = Path("."),
+) -> None:
+    """Replay a saved run through current validation, without provider access.
+
+    Args:
+        run_id: Full historical run ID shown by the runs command.
+        project: Repository containing the selected archive.
+    Raises:
+        typer.Exit: The archive is unavailable or a replayed page fails.
+    """
+    try:
+        root = project.resolve()
+        source = run_directory(root, run_id)
+        snapshot = load_snapshot(source)
+        sha, _ = _git_state(root)
+        new_id = uuid4().hex
+        directory = root / "runs" / new_id
+        with run_logger(
+            root / "runs",
+            new_id,
+            sha,
+            snapshot.settings.evaluation.prompt_version,
+            sys.stderr,
+            mode="replay",
+        ) as log:
+            report = asyncio.run(
+                execute_replay(source, directory, snapshot, Deps(snapshot.settings, log), sha)
+            )
+        _show_run(directory, report)
+    except (AcquirerEngineError, OSError) as error:
+        typer.echo(f"Replay failed: {error}", err=True)
+        raise typer.Exit(1) from error
+
+
+def show_runs(
+    project: Annotated[Path, typer.Option(help="Repository root.")] = Path("."),
+) -> None:
+    """List saved outcomes, sources, prompt versions, cost, and latency."""
+    try:
+        typer.echo(
+            "RUN ID                            MODE    PAGES  USD       SECONDS  SOURCE    PROMPT"
+        )
+        for run in list_runs(project.resolve()):
+            passed = sum(page.status == "verified" for page in run.pages)
+            cost = sum(call.cost_usd for call in run.calls)
+            typer.echo(
+                f"{run.run_id}  {run.mode:6}  {passed}/{len(run.pages):<3}  {cost:.6f}  "
+                f"{run.latency_seconds:7.3f}  {run.git_sha[:8]}  {run.prompt_version}"
+                + (f"  replay_of={run.replay_of}" if run.replay_of else "")
+            )
+    except (AcquirerEngineError, OSError) as error:
+        typer.echo(f"History failed: {error}", err=True)
         raise typer.Exit(1) from error
 
 
@@ -210,6 +274,8 @@ def build_app() -> typer.Typer:
     app.command("eval-diff")(eval_diff)
     app.command("eval-judges")(eval_judges)
     app.command("run")(run_product)
+    app.command("replay")(replay_product)
+    app.command("runs")(show_runs)
     return app
 
 

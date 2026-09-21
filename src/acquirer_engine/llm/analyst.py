@@ -29,6 +29,7 @@ from acquirer_engine.llm.results import PageResult
 from acquirer_engine.llm.tool_state import ToolState
 from acquirer_engine.llm.tools import EvidenceTools
 from acquirer_engine.llm.trace import TraceWriter
+from acquirer_engine.llm.trace_replay import ResponseArchive
 from acquirer_engine.validation.claims import validate_rationale, verified_claim_count
 from acquirer_engine.validation.schema import AcquirerRationale
 
@@ -65,6 +66,7 @@ def build_services(
     *,
     mode: ExecutionMode,
     cache_root: Path | None = None,
+    archive: ResponseArchive | None = None,
 ) -> AnalystServices:
     """Compose an analyst once from its dependencies, never inside a request.
 
@@ -76,6 +78,7 @@ def build_services(
         prompt: Versioned instructions read at the command boundary.
         mode: Live, test, or strictly cache-only replay.
         cache_root: Shared response cache location.
+        archive: Original run's responses for historical replay.
     Returns:
         One agent, recording boundary, query service, and trace sink.
     """
@@ -88,6 +91,7 @@ def build_services(
         CostLedger(deps.settings.models.roles["analyst"]),
         trace,
         mode=mode,
+        archive=archive,
     )
     agent = _build_agent(recorded, deps, prompt)
     return AnalystServices(agent, recorded, EvidenceTools(rows, config), trace)

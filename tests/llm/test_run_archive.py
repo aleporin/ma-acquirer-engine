@@ -6,11 +6,9 @@ Does not own: Provider quality or reproducing old verifier implementations.
 
 import asyncio
 import json
-from importlib import import_module
 from inspect import isawaitable
 from pathlib import Path
 from shutil import rmtree
-from typing import Any
 
 import pytest
 from pydantic_ai.messages import ModelMessage, ModelResponse
@@ -19,16 +17,13 @@ from typer.testing import CliRunner
 
 from acquirer_engine.cli import build_app
 from acquirer_engine.deps import Deps
+from acquirer_engine.llm.archive import RunSnapshot, load_snapshot
+from acquirer_engine.run_command import execute_prepared
 from tests.fixtures.rationale import evidence_context
 from tests.llm.test_analyst import tool_model
 
-# Deferred lookup lets the test-first commit type-check before these interfaces exist.
-RunSnapshot = import_module("acquirer_engine.llm.archive").RunSnapshot
-load_snapshot = import_module("acquirer_engine.llm.archive").load_snapshot
-execute_prepared = import_module("acquirer_engine.run_command").execute_prepared
 
-
-def inputs(deps: Deps, run_id: str) -> Any:
+def inputs(deps: Deps, run_id: str) -> RunSnapshot:
     context = evidence_context(deps.settings)
     return RunSnapshot(
         run_id=run_id,
