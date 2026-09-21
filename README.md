@@ -1,11 +1,11 @@
 # M&A Acquirer Engine
 
 Rank likely acquirers from transaction history and measure the ranking against
-held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
-structured rationale, usage accounting, and strict replay**. Offline checks pass.
-The latest live run returned ten drafts, nine parsed, and seven pages verified;
-the three failed schema or evidence checks, and its 64.40-second duration still fails
-the live gate. Portfolio repair, judging, and HTML rendering belong to later phases.
+held-out deals. The current scope is **Phase 4: bounded repair, escalation,
+sparse-evidence routing, portfolio review, and replay**. Live Phase 4 validation
+is pending. The latest historical run verified seven of ten pages in 64.40 seconds;
+it predates the new recovery routes. See [routing and controls](ROUTING.md).
+Judging and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -220,7 +220,7 @@ The larger safety ceiling lets slow responses finish for quality measurement;
 it is not evidence that live latency or page quality has improved.
 A failed page records errors and does not cancel other buyers; the command exits
 nonzero if any page fails.
-Phase 3 has no repair loop, escalation, portfolio reviewer, or hard dollar cap.
+Phase 4 adds recovery, portfolio review, and a conservative configured USD cap.
 
 The final output tool requests strict structured output with the provider's
 supported schema subset. Full schema, length, risk-reference, and claim checks
