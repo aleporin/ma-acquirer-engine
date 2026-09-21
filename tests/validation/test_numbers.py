@@ -124,3 +124,35 @@ def test_known_reference_does_not_hide_an_adjacent_unclaimed_value(settings: Set
     with pytest.raises(ValidationFailure, match="stray number 999%") as error:
         validate_rationale(raw, evidence_context(settings), settings.evidence.validation)
     assert error.value.errors == ("acquirer_overview: stray number 999%",)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Prior deal (MA-2020-0001).",
+        "Prior deal: MA-2020-0001!",
+    ],
+)
+def test_known_transaction_reference_allows_sentence_punctuation(
+    settings: Settings, text: str
+) -> None:
+    raw = rationale_payload()
+    raw["acquirer_overview"] = text
+    validate_rationale(raw, evidence_context(settings), settings.evidence.validation)
+
+
+@pytest.mark.parametrize(
+    "reference",
+    [
+        "MA-2020-0001-extra",
+        "MA-2020-00011",
+        "MA-9999-0001",
+    ],
+)
+def test_unknown_transaction_reference_is_rejected_as_a_whole(
+    settings: Settings, reference: str
+) -> None:
+    raw = rationale_payload()
+    raw["acquirer_overview"] = f"Prior deal ({reference})."
+    with pytest.raises(ValidationFailure, match=f"unknown evidence {reference}"):
+        validate_rationale(raw, evidence_context(settings), settings.evidence.validation)

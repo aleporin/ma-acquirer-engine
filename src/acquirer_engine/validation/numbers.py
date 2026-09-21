@@ -49,8 +49,8 @@ def _strip_references(text: str, evidence_ids: set[str], path: str) -> tuple[str
             errors.append(f"{path}: unknown evidence {reference}")
         return " "
 
-    # Consume an entire stat token so a known prefix cannot hide an unknown ID.
-    pattern = r"MA-\d{4}-\d{4}|stat:[^\s,;()\[\]{}<>\"'`]+"
+    # Consume an entire reference token so a known prefix cannot hide an unknown ID.
+    pattern = r"(?:MA-|stat:)[^\s,;()\[\]{}<>\"'`]+"
     return re.sub(pattern, replace, text), errors
 
 
