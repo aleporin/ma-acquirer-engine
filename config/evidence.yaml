@@ -1,0 +1,18 @@
+pack:
+  max_rows: 12
+  # UTF-8 bytes conservatively bound byte-tokenized model input tokens.
+  max_tokens: 16000
+validation:
+  rounding_tolerance: 0.051
+  reasoning_chars: 4000
+  section_chars: 1600
+  item_chars: 600
+  outside_notes_chars: 1000
+  max_precedents: 6
+  max_comps: 8
+  max_risks: 5
+  max_claims: 80
+  banned_phrases:
+    - leading healthcare company
+    - track record of strategic acquisitions
+    - well positioned

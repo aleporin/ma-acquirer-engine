@@ -22,6 +22,7 @@ from pydantic import (
 )
 
 from acquirer_engine.errors import ConfigError
+from acquirer_engine.evidence.config import EvidenceConfig
 from acquirer_engine.ranking.config import BacktestConfig, RankingConfig
 
 
@@ -112,6 +113,7 @@ class Settings(ConfigModel):
     models: ModelsConfig
     scoring: RankingConfig
     evaluation: EvalConfig
+    evidence: EvidenceConfig
 
 
 def _load_yaml[T: BaseModel](path: Path, schema: type[T]) -> T:
@@ -125,13 +127,14 @@ def load_settings(config_dir: Path) -> Settings:
     """Read each YAML file once and return a validated snapshot.
 
     Args:
-        config_dir: Directory containing the three configuration files.
+        config_dir: Directory containing the configuration files.
     Returns:
         Validated configuration, without reading environment variables.
     Raises:
         ConfigError: A file is missing, malformed, or violates its schema.
     """
     return Settings(
+        evidence=_load_yaml(config_dir / "evidence.yaml", EvidenceConfig),
         models=_load_yaml(config_dir / "models.yaml", ModelsConfig),
         scoring=_load_yaml(config_dir / "scoring.yaml", RankingConfig),
         evaluation=_load_yaml(config_dir / "eval.yaml", EvalConfig),
