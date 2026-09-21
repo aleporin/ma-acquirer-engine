@@ -57,8 +57,9 @@ async def test_snapshot_is_written_before_the_first_model_request(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("source_dirty", [False, True])
 async def test_cli_replays_original_inputs_with_no_current_files_or_cache(
-    deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, source_dirty: bool
 ) -> None:
     original = tmp_path / "runs" / ("b" * 32)
     snapshot = inputs(deps, original.name)
@@ -67,7 +68,7 @@ async def test_cli_replays_original_inputs_with_no_current_files_or_cache(
     rmtree(original / "cache")
     (tmp_path / "config").mkdir()
     (tmp_path / "config/analyst.yaml").write_text("invalid: current configuration")
-    monkeypatch.setattr("acquirer_engine.cli._git_state", lambda _: ("c" * 40, False))
+    monkeypatch.setattr("acquirer_engine.cli._git_state", lambda _: ("c" * 40, source_dirty))
 
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Historical replay must not construct a provider client")
@@ -80,6 +81,8 @@ async def test_cli_replays_original_inputs_with_no_current_files_or_cache(
     paths = [p for p in (tmp_path / "runs").glob("*/run.json") if p.parent != original]
     report = json.loads(paths[0].read_text())
     assert report["mode"] == "replay" and report["replay_of"] == original.name
+    assert report.get("source_dirty") is source_dirty
+    assert load_snapshot(paths[0].parent).model_dump().get("source_dirty") is source_dirty
     assert report["git_sha"] == "c" * 40 and report["source_git_sha"] == "a" * 40
     assert report["prompt_version"] == snapshot.settings.evaluation.prompt_version
     assert baseline.pages[0].rationale is not None
