@@ -1,0 +1,3 @@
+quality:
+  max_file_lines: 300
+  max_function_lines: 50
