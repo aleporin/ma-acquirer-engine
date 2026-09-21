@@ -23,7 +23,7 @@ def test_replay_writes_failed_page_without_constructing_a_client(
     source = Path(__file__).resolve().parents[2]
     root = tmp_path / "project"
     copytree(source / "config", root / "config")
-    (root / "prompts").mkdir()
+    copytree(source / "prompts", root / "prompts")
     prompt_file = load_settings(root / "config").analyst.prompt_file
     (root / "prompts" / prompt_file).write_text("Fixture instructions.")
     (root / "data").mkdir()
@@ -40,12 +40,17 @@ def test_replay_writes_failed_page_without_constructing_a_client(
         raise AssertionError("Replay must not construct a provider client")
 
     monkeypatch.setattr("acquirer_engine.run_command.create_client", no_client)
-    result = CliRunner().invoke(build_app(), ["run", "--project", str(root), "--replay"])
+    result = CliRunner().invoke(
+        build_app(), ["run", "--project", str(root), "--replay", "--no-tools", "--no-reviewer"]
+    )
     assert result.exit_code == 1, result.output
     report = json.loads(next((root / "runs").glob("*/run.json")).read_text())
     assert report["mode"] == "replay" and report["pages"][0]["status"] == "failed"
     assert "Replay cache missing" in report["pages"][0]["errors"][0]
     assert report["calls"] == []
+    snapshot = json.loads(next((root / "runs").glob("*/snapshot.json")).read_text())
+    assert snapshot["settings"]["analyst"]["tools_enabled"] is False
+    assert snapshot["settings"]["analyst"]["reviewer_enabled"] is False
 
 
 def test_cli_exposes_explicit_tools_and_reviewer_ablation_flags() -> None:
