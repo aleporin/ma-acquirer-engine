@@ -4,15 +4,19 @@ Owns: Offline command behavior, artifact paths, and exit statuses.
 Does not own: Model integration or Git's revision algorithms.
 """
 
+import csv
 import json
 from pathlib import Path
 from shutil import copytree
 
 import pytest
+import yaml
 from typer.testing import CliRunner
 
 from acquirer_engine.cli import build_app
+from evals.graders.unit import UnitReport
 from evals.scorecard import read_scorecard
+from tests.fixtures.ranking import transaction
 
 
 @pytest.fixture
@@ -20,6 +24,10 @@ def project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     root = tmp_path / "project"
     source = Path(__file__).resolve().parents[1] / "config"
     copytree(source, root / "config")
+    path = root / "config/eval.yaml"
+    config = yaml.safe_load(path.read_text())
+    config["phase"] = "p0"
+    path.write_text(yaml.safe_dump(config))
     monkeypatch.setattr("acquirer_engine.cli._git_state", lambda root: ("a" * 40, False))
     return root
 
@@ -87,3 +95,36 @@ def test_second_eval_preserves_existing_baseline(project: Path) -> None:
     result = runner.invoke(build_app(), arguments)
     assert result.exit_code == 1
     assert path.read_bytes() == original
+
+
+def test_phase_one_writes_measured_bundle_before_failing_quality_gate(
+    project: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config_path = project / "config/eval.yaml"
+    config = yaml.safe_load(config_path.read_text())
+    config["phase"] = "p1"
+    config["backtest"]["bootstrap_samples"] = 50
+    config_path.write_text(yaml.safe_dump(config))
+    rows = [
+        transaction(1, sector="Healthcare Services"),
+        transaction(2, deal_year=2022, sector="Healthcare Services"),
+    ]
+    (project / "data").mkdir()
+    values = [row.model_dump() | {"sub_sector": row.sector} for row in rows]
+    with (project / "data/ma_transactions_500.csv").open("w") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(values[0]))
+        writer.writeheader()
+        writer.writerows(values)
+    monkeypatch.setattr(
+        "acquirer_engine.cli.run_tests",
+        lambda *args, **kwargs: UnitReport(4, 4, 0, 0, 0.8, 0),
+        raising=False,
+    )
+    result = CliRunner().invoke(build_app(), ["eval", "--project", str(project)])
+    assert result.exit_code == 1, result.output
+    path = next((project / "evals/results").glob("*/scorecard.json"))
+    card = read_scorecard(path)
+    assert card.layers[0].metrics["coverage"].value == 0.8
+    assert card.layers[1].status == "passed"
+    assert card.layers[5].status == "failed"
+    assert path.with_name("top10.json").exists()
