@@ -141,13 +141,16 @@ class RecordedModel(Model):
             messages=messages,
         )
         started = perf_counter()
-        estimate = self._estimate(messages, model_request_parameters)
+        tokens = (model_settings or {}).get(
+            "max_tokens"
+        ) or self.deps.settings.analyst.max_output_tokens
+        estimate = self._estimate(messages, model_request_parameters, tokens)
         async with self.budget.claim(estimate) as charge:
             response = await self._response(key, messages, model_settings, model_request_parameters)
             duration = (perf_counter() - started) * 1000
             charge.actual = self._record_response(scope, response, duration)
         require_complete_response(response)
-        if response.usage.output_tokens > self.deps.settings.analyst.max_output_tokens:
+        if response.usage.output_tokens > tokens:
             raise BudgetExceeded("Response exceeds configured output token limit")
         return response
 
@@ -170,7 +173,9 @@ class RecordedModel(Model):
         self.first_response.set()
         return record.cost_usd
 
-    def _estimate(self, messages: list[ModelMessage], parameters: ModelRequestParameters) -> float:
+    def _estimate(
+        self, messages: list[ModelMessage], parameters: ModelRequestParameters, output_tokens: int
+    ) -> float:
         if self.mode != "live" or self.budget.limit is None:
             return 0
         encoded = TypeAdapter(list[ModelMessage]).dump_json(messages)
@@ -178,7 +183,7 @@ class RecordedModel(Model):
         return request_bound(
             self.deps.settings.models.roles[self._scope.get().role],
             len(encoded) + len(str(asdict(parameters)).encode()) + config.request_overhead_tokens,
-            config.max_output_tokens,
+            output_tokens,
             config.sdk_retries,
         )
 
