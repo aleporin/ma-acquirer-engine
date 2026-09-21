@@ -1,0 +1,36 @@
+"""Represent verified pages and explicit failed-page outcomes.
+
+Owns: Typed per-page and per-run artifacts with observed usage.
+Does not own: Rendering or judging narrative quality.
+"""
+
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict
+
+from acquirer_engine.llm.cost import CallRecord, ExecutionMode
+from acquirer_engine.validation.schema import AcquirerRationale
+
+
+class PageResult(BaseModel):
+    """A page either verifies or retains specific errors for later repair."""
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    acquirer: str
+    status: Literal["verified", "failed"]
+    rationale: AcquirerRationale | None = None
+    errors: list[str]
+    tools: list[str]
+    latency_seconds: float
+
+
+class AnalystRun(BaseModel):
+    """Observed execution, without confusing replay latency or cost with live results."""
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    mode: ExecutionMode
+    git_sha: str
+    prompt_version: str
+    latency_seconds: float
+    pages: list[PageResult]
+    calls: list[CallRecord]

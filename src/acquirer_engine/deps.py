@@ -5,10 +5,14 @@ Does not own: Dependency construction or future provider resources.
 """
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from structlog.stdlib import BoundLogger
 
 from acquirer_engine.settings import Settings
+
+if TYPE_CHECKING:
+    from acquirer_engine.llm.analyst import AnalystServices
 
 
 @dataclass(frozen=True)
@@ -17,3 +21,4 @@ class Deps:
 
     settings: Settings
     logger: BoundLogger
+    runtime: "AnalystServices | None" = None
