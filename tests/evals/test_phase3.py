@@ -52,3 +52,31 @@ def test_live_gate_requires_the_configured_number_of_pages(settings: Settings) -
     )
     assert result.metrics["live_gate_met"].value == 0
     assert result.status == "failed"
+
+
+def test_repaired_success_does_not_rewrite_first_pass_metrics(deps: Deps, tmp_path: Path) -> None:
+    run = observation(deps.settings)
+    raw = run.model_dump(mode="json")
+    raw["pages"][0]["attempts"] = [
+        dict(
+            stage="analyst",
+            status="failed",
+            errors=["wrong value"],
+            claims_total=4,
+            claims_verified=3,
+        ),
+        dict(stage="repair", status="verified", errors=[], claims_total=4, claims_verified=4),
+    ]
+    import json
+
+    path = tmp_path / "run.json"
+    path.write_text(json.dumps(raw))
+    baseline = PreparedEvaluation(
+        {2: lambda layer: LayerResult(id=2, name=layer.name, selected=True, status="passed")}, {}
+    )
+    combined = prepare_phase3(baseline, [path], deps.settings)
+    result = combined.graders[2](LayerSpec(id=2, name="groundedness"))
+    assert result.metrics["replay_first_pass_claim_rate"].value == 0.75
+    assert result.metrics["replay_first_pass_page_rate"].value == 0
+    assert result.metrics["replay_post_repair_claim_rate"].value == 1
+    assert result.metrics["replay_post_repair_page_rate"].value == 1
