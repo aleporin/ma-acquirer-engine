@@ -32,6 +32,10 @@ def provider_response(model: str, *, final: bool) -> httpx2.Response:
             "geography": None,
         }
     )
+    if final:
+        risks = args["risk_flags"]
+        assert isinstance(risks, list)
+        risks[0].pop("evidence_ids")
     return httpx2.Response(
         200,
         json={
@@ -89,3 +93,17 @@ async def test_provider_receives_strict_compatible_output_schema(
         assert transform_schema(schema) == schema
         assert next(iter(schema["properties"])) == "reasoning"
         assert request["max_tokens"] == deps.settings.analyst.max_output_tokens
+        assert_risk_choices(schema)
+
+
+def assert_risk_choices(schema: dict[str, Any]) -> None:
+    """Inspect the emitted protocol's two mutually exclusive risk alternatives."""
+    risks = schema["$defs"]["RiskFlag"]["anyOf"]
+    choices = {risk["properties"]["basis"]["enum"][0]: risk for risk in risks}
+    assert set(choices) == {"evidence", "judgment"}
+    for risk in choices.values():
+        assert risk["additionalProperties"] is False
+        assert set(risk["required"]) == set(risk["properties"])
+    evidence = choices["evidence"]["properties"]["evidence_ids"]
+    assert evidence["type"] == "array" and evidence["minItems"] == 1
+    assert "evidence_ids" not in choices["judgment"]["properties"]

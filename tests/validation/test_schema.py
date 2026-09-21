@@ -12,12 +12,19 @@ import pytest
 from acquirer_engine.errors import ValidationFailure
 from acquirer_engine.settings import Settings
 from acquirer_engine.validation.claims import validate_rationale
-from acquirer_engine.validation.schema import AcquirerRationale
+from acquirer_engine.validation.schema import AcquirerRationale, RiskFlag
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
 def test_reasoning_is_first_in_the_output_schema() -> None:
     assert next(iter(AcquirerRationale.model_json_schema()["properties"])) == "reasoning"
+
+
+def test_judgment_without_references_serializes_as_an_empty_list() -> None:
+    risk = RiskFlag.model_validate(
+        dict(category="fund_cycle", description="Fund timing is unknown.", basis="judgment")
+    )
+    assert risk.model_dump(mode="json")["evidence_ids"] == []
 
 
 @pytest.mark.parametrize(
