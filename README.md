@@ -3,10 +3,10 @@
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 3: a tool-using analyst, validated
 structured rationale, usage accounting, and strict replay**. Offline checks pass;
-the first live attempt finished in 49.09 seconds but every draft hit the
-then-configured 20-second request deadline. No rationale passed validation, so
-the phase exit gate is unmet. Portfolio repair, judging, and HTML rendering
-belong to later phases.
+the live attempts have not yet produced a verified rationale. The first hit the
+request deadline; the next exposed output truncation and a schema violation.
+Corrections are tested offline, but the phase exit gate remains unmet. Portfolio
+repair, judging, and HTML rendering belong to later phases.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -221,6 +221,14 @@ A failed page records errors and does not cancel other buyers; the command exits
 nonzero if any page fails.
 Phase 3 has no repair loop, escalation, portfolio reviewer, or hard dollar cap.
 
+The final output tool requests strict structured output with the provider's
+supported schema subset. Full schema, length, risk-reference, and claim checks
+still run locally; unsupported provider constraints remain local requirements.
+The output allowance is 8,000 tokens, and the versioned prompt asks for a concise
+page that leaves room for its claims. Responses that end at the token limit are
+recorded with usage, then rejected explicitly, even if their partial arguments
+can be parsed. Schema failures retain field-level reasons without raw inputs.
+
 `runs/ID/run.json` contains page outcomes and per-response usage; `trace.jsonl`
 retains full model/tool observations for local inspection. Structured diagnostics
 go to stderr and `log.jsonl`, without raw CSV rows or prompts at info level.
@@ -253,5 +261,11 @@ claim accuracy is unavailable. Layers 3, 5, and 6 fail; layer 2's passing fixtur
 checks do not imply that any live page passed. Five offline repetitions replay
 the available responses at zero new spend and fail at missing draft responses.
 The [attempt details](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/live_attempt.json)
-record these limits explicitly. The increased timeout has only been checked
-offline; another authorized live measurement must establish the phase exit.
+record these limits explicitly.
+
+The [timeout-corrected run](evals/results/p3-4279e443c7084f741a42e19e45f4b0d1722eae7d/summary.md)
+took 84.82 seconds and recorded $1.091577, with no request timeouts. Nine drafts
+hit the previous 4,000-token allowance; the complete draft failed risk-reference
+consistency. None reached claim validation. The larger output allowance, strict
+output request, clearer diagnostics, and concise `analyst_v2` prompt have only
+been checked offline. No live quality or latency improvement is claimed yet.
