@@ -32,14 +32,24 @@ async def run_analysts(packs: list[CorePack], deps: Deps) -> list[PageResult]:
         async with semaphore:
             return await analyze_one(pack, deps)
 
-    first = asyncio.create_task(bounded(packs[0]))
-    warm = asyncio.create_task(runtime.model.first_response.wait())
-    try:
-        await asyncio.wait((first, warm), return_when=asyncio.FIRST_COMPLETED)
-        return list(await asyncio.gather(first, *(bounded(pack) for pack in packs[1:])))
-    finally:
-        warm.cancel()
-        await asyncio.gather(warm, return_exceptions=True)
-        if not first.done():
-            first.cancel()
-            await asyncio.gather(first, return_exceptions=True)
+    results: list[PageResult] = []
+    index = 0
+    while index < len(packs):
+        current = asyncio.create_task(bounded(packs[index]))
+        warm = asyncio.create_task(runtime.model.first_response.wait())
+        try:
+            await asyncio.wait((current, warm), return_when=asyncio.FIRST_COMPLETED)
+            if runtime.model.first_response.is_set():
+                return [
+                    *results,
+                    *await asyncio.gather(current, *(bounded(pack) for pack in packs[index + 1 :])),
+                ]
+            results.append(await current)
+            index += 1
+        finally:
+            warm.cancel()
+            await asyncio.gather(warm, return_exceptions=True)
+            if not current.done():
+                current.cancel()
+                await asyncio.gather(current, return_exceptions=True)
+    return results

@@ -14,9 +14,10 @@ from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
 from acquirer_engine.deps import Deps
+from acquirer_engine.evidence.pack import CorePack
 from acquirer_engine.llm.analyst import build_services
-from acquirer_engine.llm.results import PageResult
 from acquirer_engine.llm.pipeline import run_analysts
+from acquirer_engine.llm.results import PageResult
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
@@ -111,7 +112,7 @@ async def test_failed_warmup_stays_serial_until_a_response(
     active = peak = 0
     active_before_response = 0
 
-    async def scheduled(pack: object, _: Deps) -> PageResult:
+    async def scheduled(pack: CorePack, _: Deps) -> PageResult:
         nonlocal active, active_before_response, peak
         active += 1
         peak = max(peak, active)
