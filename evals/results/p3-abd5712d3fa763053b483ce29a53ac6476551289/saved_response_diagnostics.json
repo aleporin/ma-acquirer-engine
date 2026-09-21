@@ -1,0 +1,84 @@
+{
+  "scope": "revalidation of fixed captured responses; not new prompt generation",
+  "captured_run_id": "2edac3ffd7bf4fdb96b41fbf3f8fb8f3",
+  "captured_source_revision": "4279e443c7084f741a42e19e45f4b0d1722eae7d",
+  "captured_prompt_version": "analyst_v1",
+  "validation_revision": "8a0f1b7ebb6565c64060fffa903d6c77943636e2",
+  "responses_reprocessed": 27,
+  "new_cost_usd": 0,
+  "truncated_draft_errors": 9,
+  "specific_schema_errors": 1,
+  "verified_pages": 0,
+  "pages": [
+    {
+      "page_index": 1,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 2,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 3,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 4,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 5,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 6,
+      "status": "failed",
+      "errors": [
+        "risk_flags.1: Value error, risk requires evidence or judgment with matching references"
+      ]
+    },
+    {
+      "page_index": 7,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 8,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 9,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    },
+    {
+      "page_index": 10,
+      "status": "failed",
+      "errors": [
+        "Model response reached the output token limit; draft is incomplete"
+      ]
+    }
+  ]
+}
