@@ -96,14 +96,14 @@ def test_second_eval_preserves_existing_baseline(project: Path) -> None:
     assert path.read_bytes() == original
 
 
-@pytest.mark.parametrize("phase", ["p1", "p2", "p6"])
+@pytest.mark.parametrize("phase", ["p1", "p2", "p6", "p7"])
 def test_measured_bundle_reports_uniform_conviction_as_a_diagnostic(
     project: Path, monkeypatch: pytest.MonkeyPatch, phase: str
 ) -> None:
     config_path = project / "config/eval.yaml"
     config = yaml.safe_load(config_path.read_text())
     config["phase"] = phase
-    if phase in {"p2", "p6"}:
+    if phase in {"p2", "p6", "p7"}:
         copytree(Path(__file__).resolve().parents[1] / "evals/fixtures", project / "evals/fixtures")
     config["backtest"]["bootstrap_samples"] = 50
     config_path.write_text(yaml.safe_dump(config))
@@ -132,6 +132,6 @@ def test_measured_bundle_reports_uniform_conviction_as_a_diagnostic(
     assert card.layers[5].metrics["conviction_diversity_target_met"].value == 0
     assert path.with_name("top10.json").exists()
 
-    if phase in {"p2", "p6"}:
+    if phase in {"p2", "p6", "p7"}:
         assert card.layers[2].status == "passed"
         assert path.with_name("groundedness.json").exists()
