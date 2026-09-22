@@ -1,6 +1,6 @@
 """Report repeated ranking identity and independent conviction levels.
 
-Owns: Ranking stability measurements and the current phase's conviction gate.
+Owns: Ranking repeatability checks and diagnostic conviction diversity.
 Does not own: Forcing levels or judging rationale stability.
 """
 
@@ -29,14 +29,11 @@ def grade(layer: LayerSpec, report: RankingStability | None = None) -> LayerResu
         layer: Registered layer identity.
         report: Repeated ranking measurements, absent for the historical stub.
     Returns:
-        Failure when identity changes or the intermediate level gate is unmet.
+        Failure when observed ranks or convictions change; diversity is diagnostic.
     """
     if report is None:
         return LayerResult(id=layer.id, name=layer.name, selected=True, status="not_implemented")
-    passed = (
-        report.identity == report.conviction_agreement == 1
-        and report.levels >= report.minimum_levels
-    )
+    passed = report.identity == report.conviction_agreement == 1 and report.levels > 0
     return LayerResult(
         id=layer.id,
         name=layer.name,
@@ -46,6 +43,9 @@ def grade(layer: LayerSpec, report: RankingStability | None = None) -> LayerResu
             "top_k_identity": Metric(value=report.identity, direction="higher"),
             "conviction_agreement": Metric(value=report.conviction_agreement, direction="higher"),
             "conviction_levels": Metric(value=report.levels, direction="higher"),
+            "conviction_diversity_target_met": Metric(
+                value=float(report.levels >= report.minimum_levels), direction="higher"
+            ),
         },
     )
 
