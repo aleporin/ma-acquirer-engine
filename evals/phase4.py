@@ -38,7 +38,7 @@ def _routing_metrics(runs: list[AnalystRun]) -> dict[str, Metric]:
         name: Metric(
             value=value,
             direction="lower"
-            if "cost" in name or "escalation" in name or "flag_rate" in name
+            if any(term in name for term in ("cost", "escalation", "flag_rate", "termination"))
             else "higher",
         )
         for name, value in values.items()

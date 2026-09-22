@@ -62,6 +62,13 @@ class ArchivedFailure(BaseModel):
     failure: RequestFailure
 
 
+class ArchivedValidation(BaseModel):
+    """Validation records can establish the cause of legacy missing responses."""
+
+    acquirer: str
+    attempt: PageAttempt
+
+
 class ArchivedRequest(BaseModel):
     """Only the request fields needed for deterministic conversation matching."""
 
@@ -166,9 +173,9 @@ def _record_event(exchanges: dict[tuple[str, int], Exchange], event: dict[str, o
             raise ValueError("Orphan or duplicate archived failure")
         exchanges[key].failure = failed.failure
     elif event.get("event") == "validation_completed":
-        attempt = PageAttempt.model_validate(event["attempt"])
-        if attempt.status == "failed" and attempt.claims_total == 0:
-            _restore_failure(exchanges, str(event["acquirer"]), attempt.errors)
+        validation = ArchivedValidation.model_validate(event)
+        if validation.attempt.status == "failed" and validation.attempt.claims_total == 0:
+            _restore_failure(exchanges, validation.acquirer, validation.attempt.errors)
 
 
 def _restore_failure(
