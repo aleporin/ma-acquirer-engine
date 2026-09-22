@@ -6,12 +6,24 @@ Does not own: Claims that exploratory results establish predictive lift.
 
 from importlib import import_module
 
+import pytest
+
+from acquirer_engine.errors import EvaluationError
 from acquirer_engine.ranking.features import fit_features
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.settings import Settings
 from evals.ranking.backtest import target_from_transaction
 from tests.evaluation.test_weighting import module_and_policy
 from tests.fixtures.ranking import transaction
+
+
+@pytest.mark.parametrize("name", ["global_popularity", "sector_popularity", "random", "shared"])
+def test_hypotheses_cannot_replace_comparison_methods(settings: Settings, name: str) -> None:
+    module, policy = module_and_policy()
+    experiment = import_module("evals.ranking.experiment")
+    candidate = module.shared_candidate(settings.scoring).model_copy(update={"name": name})
+    with pytest.raises(EvaluationError, match="reserved"):
+        experiment.variants([candidate], settings.scoring, policy)
 
 
 def test_shared_control_preserves_production_order(settings: Settings) -> None:
