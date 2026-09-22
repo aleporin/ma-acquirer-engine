@@ -47,7 +47,7 @@ def _reference_errors(
     errors = []
     own = {
         row.transaction_id
-        for row in (*context.core.deals, *context.retrieved_deals)
+        for row in (*context.core.deals, *context.retrieved_deals, *context.comparable_deals)
         if row.acquirer == context.core.ranking.acquirer
     }
     for precedent in page.precedent_activity:
