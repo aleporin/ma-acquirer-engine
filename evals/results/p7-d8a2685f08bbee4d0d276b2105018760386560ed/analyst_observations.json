@@ -1,0 +1,1493 @@
+{
+  "scope": "recorded_runs; replay does not measure live stochasticity or spend",
+  "runs": [
+    {
+      "run_id": "ca0903399c9e443bb5af548ca10162a3",
+      "replay_of": null,
+      "source_git_sha": null,
+      "mode": "live",
+      "git_sha": "d8a2685f08bbee4d0d276b2105018760386560ed",
+      "source_dirty": false,
+      "prompt_version": "analyst_v8+sparse_v1+reviewer_v1",
+      "latency_seconds": 47.93439433397725,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Nordic Capital has repeatedly closed Healthcare Services transactions as a financial sponsor, including deals with geographic expansion themes, which supports credible interest in a regional privately held target of this size. The main limitation is that the buyer's healthcare services activity clusters at both much smaller and much larger transaction sizes, and the proposed margin improvement theme is a hypothesis that diligence must test.",
+            "acquirer_overview": "Nordic Capital is a financial sponsor with 24 recorded transactions in the dataset, spanning healthcare services, physician groups, dental, behavioral health and medical devices. That breadth of recorded activity indicates a sustained healthcare orientation, though past activity does not establish current acquisition intent or available capital.",
+            "strategic_fit_thesis": "The target sits squarely in a sector where this sponsor has closed several transactions, and its recorded geographic expansion theme echoes rationales the sponsor has attached to prior healthcare deals. Fit is moderate rather than strong: the sponsor's healthcare services transactions cluster away from this target's enterprise value, and the margin improvement theme is an untested hypothesis requiring operational diligence rather than an observed condition.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2016-0469",
+                "description": "Pioneer Ambulatory Care, a closed Healthcare Services platform investment, shows the sponsor establishing a platform in the exact target sector with a geographic expansion theme."
+              },
+              {
+                "transaction_id": "MA-2023-0466",
+                "description": "Harbor Medical Center, a closed Healthcare Services leveraged buyout, demonstrates recent sector activity at substantially larger scale, relevant to how a sector position might be built out."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) was a Healthcare Services minority investment priced at 11.2x EV/EBITDA and 3.0x EV/Revenue, with an earnout financing structure. Evergreen Care Solutions (MA-2021-0195) was a Healthcare Services bolt-on acquisition at 14.6x EV/EBITDA and 2.45x EV/Revenue. Comparability is limited: a minority investment does not price a controlling position and its earnout defers part of consideration, while a bolt-on acquisition can reflect an existing owner's synergy assumptions rather than a standalone valuation, and the target's own transaction structure is not specified.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "competitive_process",
+                "description": "Both selected comparable healthcare services processes drew multiple bidders, so a competitive auction for this asset could raise entry pricing and compress sponsor returns.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2022-0350",
+                  "MA-2021-0195"
+                ]
+              },
+              {
+                "category": "execution_risk",
+                "description": "The margin improvement theme is a proposed thesis rather than an observed operating condition, so diligence must establish whether cost or revenue levers actually exist before underwriting any uplift.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "financing_capacity",
+                "description": "The sponsor's closed transaction history evidences closing only, not current fund capacity or committed financing for this enterprise value, which must be confirmed.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Repeated closed activity in the exact sector supports genuine capability, but size positioning, an unproven margin thesis and likely process competition keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 24.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Nordic%20Capital"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sponsor_platform_history"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 5,
+              "claims_verified": 5
+            }
+          ],
+          "latency_seconds": 24.557065166998655,
+          "claims_total": 5,
+          "claims_verified": 5
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "The strongest support is that this sponsor has closed Healthcare Services transactions of comparable scale with a geographic-expansion theme, which aligns with the target's stated expansion hypothesis. The main limitation is that direct sector history is thin and the margin-improvement idea is only a proposed theme, so pricing and operating upside both need diligence.",
+            "acquirer_overview": "Francisco Partners is a financial sponsor with 12 closed transactions recorded across healthcare-related sectors, spanning recapitalizations, buyouts, mergers of equals and platform investments. Current portfolio, capital availability and present acquisition intent are not recorded, so past activity alone does not establish appetite for this transaction.",
+            "strategic_fit_thesis": "Two of the sponsor's recorded transactions are in Healthcare Services at enterprise values in the same general band as this target, giving it a plausible basis to evaluate a regional privately owned services business. The thesis should be treated as a hypothesis rather than a demonstrated strategy: the direct sector record is limited, the target's Margin Improvement tag is a proposed theme rather than an observed performance gap, and the sponsor's adjacent healthcare deals in other sectors do not substitute for direct-sector operating evidence.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2020-0304",
+                "description": "Professional Health Management, a closed Healthcare Services recapitalization, is the nearest precedent on sector and scale and carried a geographic-expansion theme similar to this target's."
+              },
+              {
+                "transaction_id": "MA-2020-0387",
+                "description": "North Care, a closed Healthcare Services transaction, shows the sponsor engaging with smaller services assets under an expansion and diversification theme, though at materially smaller scale than this target."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350), a closed Healthcare Services deal, was priced at 11.2x EV/EBITDA and 3.0x EV/Revenue; Evergreen Care Solutions (MA-2021-0195), also closed in Healthcare Services, was priced at 14.6x EV/EBITDA and 2.45x EV/Revenue. Read-across is limited by structure and vintage: the first was recorded as a minority investment with an earnout, so its pricing reflects a non-control position and contingent consideration rather than whole-company value, while the second was recorded as a bolt-on acquisition by an existing platform buyer, whose pricing can embed platform-specific synergy assumptions; neither tells us how a transaction with this target would be structured or financed.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "The sponsor's recorded Healthcare Services activity is limited to two closed transactions, so the sector thesis rests on a thin base and a misread of local reimbursement or referral dynamics would not be caught by precedent.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2020-0304",
+                  "MA-2020-0387"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "Healthcare Services assets of this size have attracted multiple bidders in the retrieved closed comparables, so a competitive process could lift entry pricing above the levels implied by those transactions and compress returns.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2022-0350",
+                  "MA-2021-0195"
+                ]
+              },
+              {
+                "category": "integration_complexity",
+                "description": "If the plan is to pursue margin improvement alongside geographic expansion, the cost and management bandwidth of doing both simultaneously needs diligence, since no post-acquisition operating outcomes are recorded for this buyer.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Medium is appropriate because the sponsor has genuine, closed Healthcare Services experience at a compatible scale, but the direct-sector record is thin, the operating-improvement thesis is unproven, and entry pricing in a contested process remains the key uncertainty."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 12.0,
+                "metric": "closed_count",
+                "evidence_id": "stat:closed_count:Francisco%20Partners"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Francisco%20Partners"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sponsor_platform_history"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 6,
+              "claims_verified": 6
+            }
+          ],
+          "latency_seconds": 43.69598824996501,
+          "claims_total": 6,
+          "claims_verified": 6
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Atrium Health's closed history sits entirely in the target's sector with a repeated geographic-expansion theme, which is the strongest support for fit here. The main limitation is size: its recorded transactions are materially larger than this target, so appetite for a smaller regional asset and the margin-improvement idea both remain hypotheses for diligence.",
+            "acquirer_overview": "Atrium Health is a strategic acquirer with three recorded transactions, all in Healthcare Services and all closed, per stat:deal_count:Atrium%20Health. Recorded themes across those deals emphasize geographic expansion and platform building, though past activity does not establish current acquisition intent.",
+            "strategic_fit_thesis": "Every recorded Atrium Health transaction is in the target's sector of Healthcare Services, so sector familiarity is the clearest basis for fit, and its deals consistently carry a geographic expansion rationale that aligns with the target's stated theme. The case is hedged on scale: the target's enterprise value sits below the buyer's recorded transaction range, and the Margin Improvement theme is a proposed hypothesis rather than an observed operating result, so both the appetite for a smaller regional asset and the improvement plan need diligence.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2020-0408",
+                "description": "Granite Care, a closed Healthcare Services platform investment for Atrium Health with a geographic expansion rationale, is the buyer's smallest recorded transaction and the nearest analogue in scale to this target."
+              },
+              {
+                "transaction_id": "MA-2023-0330",
+                "description": "Charter Care Partners, a closed Healthcare Services platform investment, shows continued and more recent sector activity with a geographic expansion theme, though at a much larger transaction size."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) closed at 11.2x EV/EBITDA and 3.0x EV/Revenue, and Evergreen Care Solutions (MA-2021-0195) closed at 14.6x EV/EBITDA and 2.45x EV/Revenue; the Healthcare Services closed population shows a median of 13.6x EV/EBITDA on 37 closed deals. Comparability is limited by structure and buyer type: MA-2022-0350 was a minority investment by a financial sponsor, so its pricing reflects a non-control position rather than whole-company value, and MA-2021-0195 was an all-cash bolt-on acquisition by a financial sponsor, whose recorded synergy assumption and bolt-on context shape the price paid; neither tells us how this transaction would be structured or financed.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "Atrium Health's recorded closed transactions cluster well above this target's enterprise value, so a smaller regional asset may receive less senior attention or fall outside its usual deal parameters, raising the risk of a slow or deprioritized process.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "stat:size_min_mm:Atrium%20Health",
+                  "stat:size_max_mm:Atrium%20Health"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "The Margin Improvement theme is an unproven hypothesis for this target, and no operating outcomes are recorded for the buyer's prior closings; if a bid is priced on assumed efficiency gains, diligence must validate the cost base before value is committed.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Consistent sector-matched closing history and a recurring geographic expansion theme support the fit, while the scale gap to the buyer's recorded transactions and the unverified margin thesis keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 3.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Atrium%20Health"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 13.6,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 37.0,
+                "metric": "closed_deal_count",
+                "evidence_id": "stat:closed_deal_count:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 336.3,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:Atrium%20Health"
+              },
+              {
+                "value": 2021.8,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:Atrium%20Health"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 9,
+              "claims_verified": 9
+            }
+          ],
+          "latency_seconds": 30.046834542183205,
+          "claims_total": 9,
+          "claims_verified": 9
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Ardent Health Services has a small but exactly on-sector record in Healthcare Services, including one closed bolt-on of similar profile, which makes this target a plausible extension rather than a demonstrated strategy. The main limitation is the thinness of that record and the fact that its larger sector transaction remains unresolved, so pricing must lean on retrieved third-party closed comparables whose structures differ.",
+            "acquirer_overview": "Ardent Health Services is a strategic buyer whose observed activity in this dataset consists of 2 transactions, both in Healthcare Services. That history shows sector focus but limited breadth, and past activity does not establish present acquisition intent or available capital.",
+            "strategic_fit_thesis": "The target sits squarely in Ardent's recorded sector, and the buyer's prior deals carry a Geographic Expansion theme that aligns with one of the target's proposed themes, supporting a coverage-extension hypothesis. Evidence is thin: the target's enterprise value exceeds the buyer's observed transaction sizes, only one of its deals has closed, and the Margin Improvement theme is untested in its history, so operating-improvement upside is a diligence hypothesis rather than a demonstrated capability.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2022-0245",
+                "description": "Closed bolt-on acquisition of Select Medical Management in Healthcare Services, a directly on-sector purchase of a privately owned business with a geographic expansion theme, making it the most informative reference for how this buyer approaches a similar asset."
+              },
+              {
+                "transaction_id": "MA-2022-0389",
+                "description": "Pending SPAC merger with Quality Care in Healthcare Services, showing appetite for a larger on-sector combination but, being unresolved, providing no evidence of closing or post-deal outcomes."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350), a closed Healthcare Services transaction with a privately owned target, was priced at 11.2x EV/EBITDA and 3.0x EV/Revenue. Evergreen Care Solutions (MA-2021-0195), a closed Healthcare Services bolt-on, was priced at 14.6x EV/EBITDA and 2.45x EV/Revenue; MA-2022-0350 was structured as a minority investment, so its pricing reflects a non-control position and earnout consideration rather than whole-company value, while MA-2021-0195 was an all-cash sponsor bolt-on with high recorded synergy expectations, both of which limit direct read-across to this target.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "The buyer's Healthcare Services record contains only one closed transaction, with its other sector deal still pending, so there is limited observed evidence that it can bring a deal of this profile to signing and close.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2022-0389",
+                  "stat:closed_count:Ardent%20Health%20Services"
+                ]
+              },
+              {
+                "category": "financing_capacity",
+                "description": "The target's enterprise value is materially above the buyer's largest observed transaction size, and no information on current balance sheet or financing sources is recorded, so funding capacity and structure require confirmation before a bid.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "stat:size_max_mm:Ardent%20Health%20Services",
+                  "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "If a broad process develops around an asset of this size and sector, price discipline could erode; the likely bidder field and process format are unknown and should be tested early.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Exact sector alignment and one directly comparable closed transaction support a credible thesis, but the sparse history, unresolved second deal, and size step-up keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 2.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Ardent%20Health%20Services"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 5,
+              "claims_verified": 5
+            }
+          ],
+          "latency_seconds": 32.913641249993816,
+          "claims_total": 5,
+          "claims_verified": 5
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "UPMC's own closing history is entirely in the target's sector, including a behavioral health transaction of comparable margin profile and a smaller private-ownership deal, which supports sector familiarity for a regionally focused services business. The main limitation is that the buyer's recorded activity is thin and clustered several years back, and the retrieved comps are mostly sponsor-led structures, so pricing read-across and any margin-improvement thesis remain diligence items.",
+            "acquirer_overview": "UPMC is recorded as a strategic acquirer with three closed transactions, all in Healthcare Services, spanning strategic, bolt-on and recapitalization structures financed with cash and stock. That closing history shows repeated completion in the sector, though it does not establish current acquisition intent, available financing or integration outcomes.",
+            "strategic_fit_thesis": "The target sits squarely in the sector where every recorded UPMC transaction has closed, and its enterprise value falls inside the span of the buyer's prior deals, so size compatibility is plausible rather than proven. Geographic Expansion appears as a theme in the buyer's prior sector deals, which makes a regional services asset a coherent extension; the Margin Improvement tag is a proposed theme only and the operating plan behind it would need diligence.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2019-0090",
+                "description": "Principal Behavioral Health, a closed Healthcare Services bolt-on with a geographic expansion theme and a similar margin profile, is the nearest precedent for absorbing a business of this scale."
+              },
+              {
+                "transaction_id": "MA-2018-0486",
+                "description": "Keystone Behavioral Health, a closed Healthcare Services recapitalization of a privately owned business, shows the buyer transacting with private sellers on a geographic expansion thesis, though at much smaller scale."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) closed at 11.2x EV/EBITDA and 3.0x EV/Revenue, and Delta Health (MA-2020-0306) closed at 9.6x EV/EBITDA and 2.6x EV/Revenue; the broader closed Healthcare Services population shows a median of 13.6x EV/EBITDA and 2.7x EV/Revenue. Read-across is limited: MA-2022-0350 was a minority investment with an earnout, so its pricing reflects a non-control position and contingent consideration rather than whole-company value, while MA-2020-0306 was a stock-financed strategic acquisition of a non-profit-owned business, where consideration form and prior ownership shape the recorded multiples.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0306"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "competitive_process",
+                "description": "The buyer's recorded sector transactions each drew multiple bidders, and the closed sector population also shows multi-bidder processes, so a contested auction could compress returns or push price beyond the buyer's historical pricing.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2020-0312",
+                  "MA-2018-0486",
+                  "stat:median_num_bidders:closed-sector-Healthcare%20Services"
+                ]
+              },
+              {
+                "category": "execution_risk",
+                "description": "The Margin Improvement theme is an unproven hypothesis for this asset, and no operating or post-close performance outcomes are recorded for the buyer, so the value creation plan and its cost must be validated in diligence.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "financing_capacity",
+                "description": "Prior transactions were funded with cash and stock, but current capital availability is not recorded, so funding a transaction of this enterprise value cannot be assumed and should be confirmed.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Consistent sector alignment and a fully closed record support the fit, while thin and dated recorded activity, an unverified margin thesis and structurally imperfect pricing references keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 3.0,
+                "metric": "closed_count",
+                "evidence_id": "stat:closed_count:UPMC"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 9.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0306"
+              },
+              {
+                "value": 2.58,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0306"
+              },
+              {
+                "value": 13.6,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 2.7,
+                "metric": "median_ev_revenue_multiple",
+                "evidence_id": "stat:median_ev_revenue_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 3.0,
+                "metric": "median_num_bidders",
+                "evidence_id": "stat:median_num_bidders:closed-sector-Healthcare%20Services"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 8,
+              "claims_verified": 8
+            }
+          ],
+          "latency_seconds": 30.561561417067423,
+          "claims_total": 8,
+          "claims_verified": 8
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "The strongest support is that every one of this buyer's recorded transactions sits in Healthcare Services and each closed, with target sizes spanning well above and below this target. The main limitation is a thin three-deal history in which no recorded transaction carries an operating-improvement theme, so the margin thesis and pricing read-across remain diligence items rather than demonstrated capability.",
+            "acquirer_overview": "Steward Health Care is recorded as a strategic acquirer with three closed transactions, all in Healthcare Services, and no pending activity. Its recorded transactions cluster on geographic expansion themes, though past activity does not establish current acquisition intent or available capital.",
+            "strategic_fit_thesis": "The target sits squarely in the buyer's only recorded sector, and its enterprise value falls inside the span of transaction sizes this buyer has previously closed, so size compatibility is plausible. The geographic expansion tag echoes the recurring theme in the buyer's recorded transactions, but the margin improvement tag is an unproven hypothesis: no recorded transaction of this buyer carries an operating-improvement rationale, and the target's exact region is not specified.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2022-0187",
+                "description": "Closed acquisition of Horizon Medical Solutions, a Healthcare Services business that was privately owned before the deal, making it the nearest analogue for underwriting a private healthcare services asset of comparable profitability."
+              },
+              {
+                "transaction_id": "MA-2020-0102",
+                "description": "Closed acquisition of Horizon Home Health, a substantially larger Healthcare Services transaction that shows the buyer has closed deals well above the size contemplated here, though it says nothing about integration outcomes."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) closed at 11.2x EV/EBITDA and 2.99x EV/Revenue on a 16.5 percent EBITDA margin; Summit Medical Group (MA-2020-0232) closed at 11.9x EV/EBITDA and 2.73x EV/Revenue. Both have structural limits as pricing references: the first was a minority investment with an earnout, so the consideration reflects a non-control position and contingent value rather than full-control pricing, and the second was recorded as a merger of equals with seller financing, where the exchange terms and deferred consideration shape the headline multiple.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0232"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "competitive_process",
+                "description": "The buyer's recorded Healthcare Services transactions each drew multiple competing bidders, and the retrieved sector comps show contested processes as the norm, which could push entry pricing above the level at which the improvement thesis works.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2022-0187",
+                  "MA-2023-0445",
+                  "MA-2022-0350"
+                ]
+              },
+              {
+                "category": "execution_risk",
+                "description": "The margin improvement theme is a proposed rationale with no supporting operating-improvement precedent in this buyer's recorded history, so diligence must test whether identified cost or revenue actions are real and achievable before they are underwritten into price.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "financing_capacity",
+                "description": "Prior transactions used varied consideration and closed status proves only closing, not current balance sheet capacity; if this transaction requires new external funding, availability and terms need confirmation.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Exact-sector focus and a fully closed record support engagement, while the small number of recorded transactions, the untested improvement thesis and structurally imperfect pricing references keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 3.0,
+                "metric": "closed_count",
+                "evidence_id": "stat:closed_count:Steward%20Health%20Care"
+              },
+              {
+                "value": 0.0,
+                "metric": "pending_count",
+                "evidence_id": "stat:pending_count:Steward%20Health%20Care"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.9,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0232"
+              },
+              {
+                "value": 2.73,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0232"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 7,
+              "claims_verified": 7
+            }
+          ],
+          "latency_seconds": 27.390837792074308,
+          "claims_total": 7,
+          "claims_verified": 7
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Vista Equity has closed Healthcare Services transactions at both smaller and substantially larger enterprise values, so a target of this scale sits comfortably inside its observed activity and its sector experience is the strongest support. The main limitation is that several of its Healthcare Services attempts did not complete, so process certainty rather than sector familiarity is the binding question.",
+            "acquirer_overview": "Vista Equity is a financial sponsor with 24 recorded transactions across healthcare subsectors, including Healthcare Services, Home Health/Hospice, Behavioral Health, Physician Groups, Medical Devices and Pharma/Biotech. The recorded activity shows repeated appetite for healthcare assets in varied structures, though historical activity alone does not establish current acquisition intent.",
+            "strategic_fit_thesis": "The target sits in Healthcare Services, the exact sector where Vista Equity has multiple recorded transactions, and its enterprise value falls well within the buyer's observed transaction size span, so scale compatibility is credible. The Margin Improvement theme is a hypothesis rather than an observed condition, and Vista Equity's recorded Margin Improvement tags sit in Medical Devices and Pharma/Biotech rather than Healthcare Services, so direct-sector operating-improvement capability requires diligence.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2021-0226",
+                "description": "Strategic Medical Management, a closed Healthcare Services bolt-on acquisition, demonstrates the buyer completing a transaction in the target's exact sector."
+              },
+              {
+                "transaction_id": "MA-2023-0221",
+                "description": "Zenith Medical Solutions, a Healthcare Services recapitalization, was withdrawn rather than closed, showing that sector interest at a comparable scale has not always converted to completion."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) closed at 11.2x EV/EBITDA and 3.0x EV/Revenue; Evergreen Care Solutions (MA-2021-0195) closed at 14.6x EV/EBITDA and 2.45x EV/Revenue. Comparability is limited by structure and vintage: MA-2022-0350 was a minority investment, so its pricing reflects a non-control position rather than whole-company value, and MA-2021-0195 was a bolt-on acquisition into an existing sponsor-owned position, where recorded synergy expectations can influence the price paid; neither indicates how this target would be structured or financed.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "Two of the buyer's recorded Healthcare Services transactions, Zenith Medical Solutions and Lincoln Ambulatory Care, were withdrawn, so a signed deal with this buyer carries meaningful non-completion risk and sellers should weigh deal certainty terms.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2023-0221",
+                  "MA-2019-0444"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "If the sale is run broadly, the Margin Improvement thesis could be competed away on price, since the buyer would need above-market operating gains to clear its return threshold; the intensity of any process here is unknown and needs confirmation.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "integration_complexity",
+                "description": "The improvement and expansion themes imply operational change, but no post-acquisition integration outcomes are recorded for this buyer, so the cost and timeline of any operating plan require diligence.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Repeated recorded activity in the target's exact sector and a compatible transaction size support engagement, while withdrawn sector attempts and the unproven operating-improvement thesis keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 24.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Vista%20Equity"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sponsor_platform_history",
+            "get_failed_deals"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 5,
+              "claims_verified": 5
+            }
+          ],
+          "latency_seconds": 28.836489875102416,
+          "claims_total": 5,
+          "claims_verified": 5
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Blackstone has two closed Healthcare Services transactions at a scale that brackets this target, which makes the sector connection plausible but thin rather than demonstrated. The main limitation is that the sector history is narrow and the tagged margin opportunity is a hypothesis, so pricing must lean on retrieved third-party comps whose structures differ from any assumed terms here.",
+            "acquirer_overview": "Blackstone is a financial sponsor with 24 recorded transactions across healthcare-related sectors, spanning bolt-on, platform, buyout and minority structures. Recorded activity is broad but historical; it does not establish present acquisition intent or available capital for this target.",
+            "strategic_fit_thesis": "The buyer has closed transactions recorded in the target's exact sector, Healthcare Services, at transaction sizes in the same general band, which supports size compatibility and basic sector familiarity. Evidence is limited to a small number of direct-sector deals, so the Margin Improvement and Geographic Expansion themes attached to this target should be treated as a diligence hypothesis rather than a proven operating playbook; the buyer's Margin Improvement tags appear on deals in other sectors and are not direct Healthcare Services operating evidence.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2021-0195",
+                "description": "Evergreen Care Solutions, a closed Healthcare Services bolt-on, is the buyer's clearest same-sector precedent at a comparable transaction scale."
+              },
+              {
+                "transaction_id": "MA-2021-0407",
+                "description": "Peak Medical Management, also closed in Healthcare Services, shows the buyer transacting in the sector through a different structure, though that structure limits read-across to conventional terms."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Crest Care Partners (MA-2024-0120), a closed Healthcare Services recapitalization, was priced at 9.3x EV/EBITDA and 3.36x EV/Revenue. Quality Medical Group (MA-2022-0350), a closed Healthcare Services minority investment, was priced at 11.2x EV/EBITDA and 2.99x EV/Revenue; the recapitalization reflects a restructuring of existing ownership rather than a whole-company sale, and the minority investment prices a non-control position, so neither is a clean reference for pricing a full change-of-control transaction and both require normalization in diligence.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2024-0120"
+                },
+                {
+                  "evidence_id": "MA-2022-0350"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "The buyer has recorded withdrawn transactions, including Integrity Cardiovascular Systems and Green Care Providers, showing that announced processes do not always resolve in a close and that deal certainty warrants attention.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2024-0347",
+                  "MA-2020-0040"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "Direct Healthcare Services precedent for this buyer is limited to a small number of transactions, so the assumed value-creation plan is unproven in this sector and could be tested in a contested process.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "financing_capacity",
+                "description": "Prior transaction sizes do not evidence current fund capacity or committed financing; the financing structure for this target is unknown and must be confirmed.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Same-sector closed activity at a compatible scale supports a credible thesis, but the thin direct precedent base, unproven margin plan and structurally imperfect comps keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 24.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Blackstone"
+              },
+              {
+                "value": 9.3,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2024-0120"
+              },
+              {
+                "value": 3.36,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2024-0120"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sponsor_platform_history",
+            "get_failed_deals"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 5,
+              "claims_verified": 5
+            }
+          ],
+          "latency_seconds": 24.693964208010584,
+          "claims_total": 5,
+          "claims_verified": 5
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "GTCR has closed one Healthcare Services transaction and several deals in adjacent care-delivery sectors, which makes this target plausible but leaves the direct-sector thesis thin. Retrieved Closed Healthcare Services comps give pricing context, though their recorded structures limit read-across, and the buyer's record includes withdrawn and terminated attempts.",
+            "acquirer_overview": "GTCR is a financial sponsor whose recorded activity spans care delivery, dental, medical devices and pharma, with closing outcomes across fourteen resolved transactions and no pending deals. Its recorded completion rate is 0.79, indicating that a meaningful share of announced attempts did not reach closing; historical activity does not establish current acquisition intent.",
+            "strategic_fit_thesis": "Direct Healthcare Services evidence for this buyer is limited to a single closed transaction, so the fit case rests largely on adjacent care-delivery experience in physician groups, behavioral health and dental, where geographic expansion themes recur. The target's margin improvement and geographic expansion tags are proposed themes rather than demonstrated conditions, and whether this buyer would pursue a platform or an add-on posture here is untested on the evidence available.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2018-0357",
+                "description": "Sterling Health Systems, a closed Healthcare Services transaction and the buyer's only recorded deal in the target's exact sector, showing willingness to underwrite care-delivery assets at meaningful scale."
+              },
+              {
+                "transaction_id": "MA-2023-0293",
+                "description": "Superior Behavioral Health, a closed acquisition in Behavioral Health, indicates adjacent care-delivery appetite rather than direct Healthcare Services precedent."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) closed at 11.2x EV/EBITDA and 3.0x EV/Revenue, and Evergreen Care Solutions (MA-2021-0195) closed at 14.6x EV/EBITDA and 2.45x EV/Revenue, both Healthcare Services transactions in the target's size vicinity. The first was recorded as a minority investment, so its pricing reflects a non-control stake rather than whole-company value; the second was a bolt-on acquisition by a sponsor with a platform-build rationale, where assumed combination benefits may be embedded in the price, and neither structure tells us how this target's transaction would be structured or financed.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "The buyer's record includes withdrawn and terminated attempts, including Zenith Specialty Care and Core MedTech, so signing does not reliably imply closing and deal protections merit diligence.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2023-0279",
+                  "MA-2020-0288",
+                  "stat:completion_rate:GTCR"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "A privately held care-delivery asset with geographic expansion appeal can attract multiple sponsor bidders, which would pressure entry pricing and compress the returns available from any operating improvement plan.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "integration_complexity",
+                "description": "No integration outcomes are recorded for this buyer; if the plan involves combining this target with other care-delivery assets, the cost and timeline of that combination require diligence.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Medium is appropriate because adjacent care-delivery closings and one direct-sector closing make the thesis credible, while the thin exact-sector record, unresolved deal structure and the buyer's history of unconsummated attempts keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 14.0,
+                "metric": "resolved_count",
+                "evidence_id": "stat:resolved_count:GTCR"
+              },
+              {
+                "value": 0.0,
+                "metric": "pending_count",
+                "evidence_id": "stat:pending_count:GTCR"
+              },
+              {
+                "value": 0.7857142857142857,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:GTCR"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sponsor_platform_history",
+            "get_failed_deals"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 7,
+              "claims_verified": 7
+            }
+          ],
+          "latency_seconds": 29.431613125139847,
+          "claims_total": 7,
+          "claims_verified": 7
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "The strongest support is one closed Healthcare Services buyout plus repeated closed activity in adjacent care-delivery sectors at comparable transaction sizes, which makes this target plausible but not a demonstrated strategy. The main limitation is thin direct-sector history and a proposed margin theme that is only a hypothesis, so pricing and operating upside both require diligence.",
+            "acquirer_overview": "New Mountain Capital is a financial sponsor with 19 recorded transactions in the dataset spanning healthcare delivery, revenue cycle, health IT and insurance, at enterprise values from small bolt-ons to multi-billion-dollar carve-outs. Its recorded history skews toward care-delivery businesses acquired from private owners; historical activity alone does not establish current acquisition intent or available capital.",
+            "strategic_fit_thesis": "Direct Healthcare Services evidence for this buyer is limited to a single recorded transaction, so the fit case rests largely on adjacent care-delivery activity in behavioral health and physician groups, where the buyer has closed deals of broadly similar transaction size and acquired privately held businesses. The target's Geographic Expansion and Margin Improvement themes are consistent with rationales the buyer has previously proposed, but they are stated intentions rather than achieved outcomes, and the margin opportunity should be treated as a hypothesis to be tested in diligence rather than an established gap.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2018-0470",
+                "description": "Evergreen Health Management, a closed Healthcare Services leveraged buyout of a privately held business, is the buyer's only recorded transaction in the target's exact sector and the most direct read on sector willingness."
+              },
+              {
+                "transaction_id": "MA-2022-0377",
+                "description": "National Behavioral Services, a closed platform investment in Behavioral Health acquired from private ownership, shows comfort with care-delivery assets of comparable scale, though it sits in an adjacent sector rather than the target's."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (MA-2022-0350) closed at 11.2x EV/EBITDA and 3.0x EV/Revenue, and Evergreen Care Solutions (MA-2021-0195) closed at 14.6x EV/EBITDA and 2.45x EV/Revenue, both Healthcare Services transactions in the target's size vicinity. Comparability is limited by structure and prior ownership: MA-2022-0350 is recorded as a minority investment, so its pricing reflects a non-control position rather than whole-company value, while MA-2021-0195 is a bolt-on acquisition into an existing platform with a high recorded synergy share, which can support a multiple that a standalone purchase would not.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "The buyer's recorded completion rate across resolved transactions is below full, with several withdrawn processes including a competitive physician groups management buyout, so signing does not reliably imply closing and the seller should weigh deal certainty.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "stat:completion_rate:New%20Mountain%20Capital",
+                  "MA-2024-0216"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "A privately held care-delivery asset of this size is likely to attract multiple sponsor bidders, which could push pricing above the level at which the proposed margin and expansion plan clears the buyer's return threshold.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "integration_complexity",
+                "description": "If the plan involves combining this business with existing care-delivery holdings, integration cost and management bandwidth need diligence, since the dataset records closings only and no post-acquisition operating outcomes.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Medium is appropriate because adjacent care-delivery closings and size compatibility make the target credible, while the single direct-sector precedent, the unproven margin thesis and the buyer's incomplete resolution record keep conviction short of high."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 19.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:New%20Mountain%20Capital"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sponsor_platform_history",
+            "get_adjacent_sector_activity"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 5,
+              "claims_verified": 5
+            }
+          ],
+          "latency_seconds": 29.211095625068992,
+          "claims_total": 5,
+          "claims_verified": 5
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 14577,
+          "output_tokens": 173,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.06497,
+          "latency_ms": 4224.389916984364,
+          "timing": {
+            "token_count_ms": 147.7270000614226,
+            "admission_ms": 0.017958926036953926,
+            "provider_ms": 4076.644957996905
+          }
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 11684,
+          "output_tokens": 139,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.049655,
+          "latency_ms": 3361.7529589682817,
+          "timing": {
+            "token_count_ms": 248.37962491437793,
+            "admission_ms": 0.006292015314102173,
+            "provider_ms": 3113.3670420385897
+          }
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 14702,
+          "output_tokens": 226,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.06692,
+          "latency_ms": 4070.6521249376237,
+          "timing": {
+            "token_count_ms": 252.381999976933,
+            "admission_ms": 0.006291083991527557,
+            "provider_ms": 3818.263833876699
+          }
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 11342,
+          "output_tokens": 193,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.049295,
+          "latency_ms": 4142.325582914054,
+          "timing": {
+            "token_count_ms": 226.15804080851376,
+            "admission_ms": 0.007459195330739021,
+            "provider_ms": 3916.16008291021
+          }
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 11649,
+          "output_tokens": 197,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.05093,
+          "latency_ms": 4255.506290821359,
+          "timing": {
+            "token_count_ms": 234.44045800715685,
+            "admission_ms": 0.007874798029661179,
+            "provider_ms": 4021.057958016172
+          }
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 14604,
+          "output_tokens": 228,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.06648,
+          "latency_ms": 4458.106291946024,
+          "timing": {
+            "token_count_ms": 179.79670804925263,
+            "admission_ms": 0.0072089023888111115,
+            "provider_ms": 4278.302374994382
+          }
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 11547,
+          "output_tokens": 139,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.04897,
+          "latency_ms": 4594.501459039748,
+          "timing": {
+            "token_count_ms": 244.61266701109707,
+            "admission_ms": 0.010124873369932175,
+            "provider_ms": 4349.878667155281
+          }
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 15048,
+          "output_tokens": 288,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0702,
+          "latency_ms": 4603.035916108638,
+          "timing": {
+            "token_count_ms": 142.66150002367795,
+            "admission_ms": 0.011125113815069199,
+            "provider_ms": 4460.363290971145
+          }
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 14658,
+          "output_tokens": 224,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.06665,
+          "latency_ms": 5475.7995419204235,
+          "timing": {
+            "token_count_ms": 189.2743338830769,
+            "admission_ms": 0.009125098586082458,
+            "provider_ms": 5286.5160829387605
+          }
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 14922,
+          "output_tokens": 173,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.066695,
+          "latency_ms": 6226.710959104821,
+          "timing": {
+            "token_count_ms": 268.2678340934217,
+            "admission_ms": 0.005458015948534012,
+            "provider_ms": 5958.437666995451
+          }
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17895,
+          "output_tokens": 1625,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.11786,
+          "latency_ms": 20305.76975014992,
+          "timing": {
+            "token_count_ms": 128.8692499510944,
+            "admission_ms": 0.009291106835007668,
+            "provider_ms": 20176.89120909199
+          }
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18513,
+          "output_tokens": 1629,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.12105,
+          "latency_ms": 20521.468125050887,
+          "timing": {
+            "token_count_ms": 107.5940418522805,
+            "admission_ms": 0.008958159014582634,
+            "provider_ms": 20413.865125039592
+          }
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17564,
+          "output_tokens": 1765,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.119705,
+          "latency_ms": 23938.22995806113,
+          "timing": {
+            "token_count_ms": 101.30316601134837,
+            "admission_ms": 0.009541865438222885,
+            "provider_ms": 23836.917250184342
+          }
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 19378,
+          "output_tokens": 2073,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.136475,
+          "latency_ms": 24264.52154200524,
+          "timing": {
+            "token_count_ms": 103.99558395147324,
+            "admission_ms": 0.008250121027231216,
+            "provider_ms": 24160.51770793274
+          }
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 20236,
+          "output_tokens": 1807,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.134115,
+          "latency_ms": 24473.564584041014,
+          "timing": {
+            "token_count_ms": 111.41100013628602,
+            "admission_ms": 0.009292038157582283,
+            "provider_ms": 24362.14429186657
+          }
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18797,
+          "output_tokens": 1787,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.12642,
+          "latency_ms": 23831.81370794773,
+          "timing": {
+            "token_count_ms": 100.20445799455047,
+            "admission_ms": 0.01233280636370182,
+            "provider_ms": 23731.596917146817
+          }
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17427,
+          "output_tokens": 1931,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.12317,
+          "latency_ms": 25399.98370804824,
+          "timing": {
+            "token_count_ms": 111.16249999031425,
+            "admission_ms": 0.0065409112721681595,
+            "provider_ms": 25288.814667146653
+          }
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17362,
+          "output_tokens": 1951,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.123345,
+          "latency_ms": 26343.219875125214,
+          "timing": {
+            "token_count_ms": 122.86174995824695,
+            "admission_ms": 0.006416114047169685,
+            "provider_ms": 26220.35170905292
+          }
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17027,
+          "output_tokens": 1776,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.117295,
+          "latency_ms": 28593.48433301784,
+          "timing": {
+            "token_count_ms": 123.56741703115404,
+            "admission_ms": 0.010999850928783417,
+            "provider_ms": 28469.905916135758
+          }
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-opus-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 17907,
+          "output_tokens": 3546,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.165945,
+          "latency_ms": 37430.31541607343,
+          "timing": {
+            "token_count_ms": 97.47508307918906,
+            "admission_ms": 0.011791940778493881,
+            "provider_ms": 37332.82854105346
+          }
+        }
+      ],
+      "before_review": [],
+      "review": null,
+      "uncertain_cost_bound_usd": 0.0,
+      "tools_enabled": true,
+      "reviewer_enabled": false
+    }
+  ]
+}
