@@ -58,7 +58,7 @@ def with_validation(
     Args:
         ranking: Existing ranking stability result.
         runs: Independent recorded executions, grouped by mode.
-        config: Required repeat count.
+        config: Minimum repeat count for a validation stability measurement.
     Returns:
         Extended measurements; replay repeats never stand for live stochasticity.
     """
@@ -67,7 +67,7 @@ def with_validation(
     for mode in sorted({run.mode for run in runs}):
         group = [run for run in runs if run.mode == mode]
         metrics[f"{mode}_validation_runs"] = Metric(value=len(group), direction="higher")
-        if len(group) != config.stability_runs:
+        if len(group) < config.stability_runs:
             continue
         names = [p.acquirer for p in group[0].pages]
         same = all([p.acquirer for p in run.pages] == names for run in group)
@@ -82,9 +82,7 @@ def with_validation(
             if same and names
             else 0
         )
-        metrics[f"{mode}_validation_pass_{config.stability_runs}"] = Metric(
-            value=rate, direction="higher"
-        )
+        metrics[f"{mode}_validation_pass_{len(group)}"] = Metric(value=rate, direction="higher")
         failed |= rate != 1
     return ranking.model_copy(
         update={"metrics": metrics, "status": "failed" if failed else "passed"}

@@ -206,6 +206,8 @@ async def replay(source: Path, destination: Path, logger: BoundLogger) -> JudgeR
         mode="replay",
         cache_root=source / "responses",
         recorded_failures={o.job_id: o for o in original.outcomes if o.error and not o.calls},
+        git_sha=original.git_sha,
+        source_dirty=original.source_dirty,
     )
     result = result.model_copy(
         update={"observation_mode": original.observation_mode or original.mode}
