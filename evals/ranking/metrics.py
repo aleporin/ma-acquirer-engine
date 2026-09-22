@@ -38,19 +38,6 @@ def metrics_at_rank(rank: int | None, k: int) -> dict[str, float]:
     }
 
 
-def ranking_metrics(ranking: Sequence[str], truth: str, k: int) -> dict[str, float]:
-    """Measure one label against an ordered candidate list.
-
-    Args:
-        ranking: Unique buyer names in ranked order.
-        truth: Observed held-out buyer.
-        k: Retrieval cutoff.
-    Returns:
-        Recall@k, full-list reciprocal rank, and nDCG@k.
-    """
-    return metrics_at_rank(ranking.index(truth) + 1 if truth in ranking else None, k)
-
-
 def paired_lift(
     candidate: Sequence[float],
     baseline: Sequence[float],

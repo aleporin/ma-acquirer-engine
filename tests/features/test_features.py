@@ -7,7 +7,7 @@ Does not own: Weighted ranking or conviction.
 import pytest
 
 from acquirer_engine.ranking.features import fit_features, idf_weights
-from acquirer_engine.ranking.target import TargetProfile, assignment_target
+from acquirer_engine.ranking.target import assignment_target
 from acquirer_engine.settings import Settings
 from tests.fixtures.ranking import transaction
 
@@ -59,16 +59,7 @@ def test_sector_similarity_is_symmetric_discounted_and_learned(settings: Setting
     assert fitted.similarity["A", "B"] > fitted.similarity["A", "C"]
 
 
-def test_target_band_scales_and_margin_uses_only_supplied_rows(settings: Settings) -> None:
-    target = TargetProfile(
-        sector="Services",
-        deal_size_mm=500,
-        ebitda_margin_pct=20,
-        geography="Regional",
-        ownership="Private",
-        tags=(),
-    )
-    assert target.size_band(settings.scoring) == (250, 1000)
+def test_target_margin_uses_only_supplied_rows(settings: Settings) -> None:
     rows = [
         transaction(1, sector="Healthcare Services", ebitda_margin_pct=10),
         transaction(2, sector="Healthcare Services", ebitda_margin_pct=20),

@@ -235,7 +235,7 @@ def build_app() -> typer.Typer:
     """Build an isolated CLI without module-level application state.
 
     Returns:
-        Registered evaluation and placeholder commands.
+        Registered product and evaluation commands.
     """
     app = typer.Typer(help="Dataset-grounded acquirer analysis.", add_completion=False)
     app.command("eval")(run_evaluation)

@@ -27,7 +27,6 @@ def test_cli_overrides_yaml_and_margin_is_measured_for_selected_sector(
     assert target.deal_size_mm == 300
     assert target.ebitda_margin_pct == pytest.approx(20)
     assert target.sector == "Services" and target.tags == ()
-    assert target.size_band(settings.scoring) == (150, 600)
 
 
 @pytest.mark.parametrize("content", ["unexpected: true", "deal_size_mm: -1", "[]", "sector: ' '"])

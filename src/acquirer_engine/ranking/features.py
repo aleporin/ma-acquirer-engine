@@ -103,7 +103,6 @@ class AcquirerHistory:
     completion_rate: float | None
     median_ev_ebitda: float | None
     median_ev_revenue: float | None
-    platform_sectors: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -114,7 +113,6 @@ class FittedFeatures:
     similarity: dict[tuple[str, str], float]
     tag_idf: dict[str, float]
     training_ids: tuple[str, ...]
-    reference_year: int
 
 
 def _history(
@@ -133,9 +131,6 @@ def _history(
         completion_rate=len(closed) / len(resolved) if resolved else None,
         median_ev_ebitda=median(row.ev_ebitda_multiple for row in closed) if closed else None,
         median_ev_revenue=median(row.ev_revenue_multiple for row in closed) if closed else None,
-        platform_sectors=tuple(
-            sorted({row.sector for row in rows if row.deal_type == "Platform Investment"})
-        ),
     )
 
 
@@ -175,5 +170,4 @@ def fit_features(
         sector_similarity(history, config),
         idf_weights(history),
         tuple(row.transaction_id for row in history),
-        reference_year,
     )

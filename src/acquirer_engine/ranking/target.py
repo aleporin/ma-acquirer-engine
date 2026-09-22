@@ -26,17 +26,6 @@ class TargetProfile(BaseModel):
     ownership: Annotated[str, Field(min_length=1)]
     tags: tuple[str, ...]
 
-    def size_band(self, config: RankingConfig) -> tuple[float, float]:
-        """Scale the configured band around this target's EV.
-
-        Args:
-            config: Relative EV bands.
-        Returns:
-            Lower and upper enterprise values in millions.
-        """
-        low, high = config.size_band
-        return low * self.deal_size_mm, high * self.deal_size_mm
-
 
 def assignment_target(rows: Sequence[Transaction], config: RankingConfig) -> TargetProfile:
     """Translate the configured assumptions into a numeric target.
