@@ -1,0 +1,2258 @@
+{
+  "scope": "recorded_runs; replay does not measure live stochasticity or spend",
+  "runs": [
+    {
+      "run_id": "e0a3eb562ef440d4bf1765a43fe8308f",
+      "replay_of": null,
+      "source_git_sha": null,
+      "mode": "live",
+      "git_sha": "ebbc20c89a446eb920a7e2a226243ffdab55290d",
+      "source_dirty": false,
+      "prompt_version": "analyst_v5+sparse_v1+reviewer_v1",
+      "latency_seconds": 158.23109625000507,
+      "pages": [
+        {
+          "acquirer": "Nordic Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Nordic Capital is a financial sponsor with a Healthcare Services deal_count of 24 overall (4 flagged relevant to this target) and a perfect completion_rate (1.0, resolved basis) across 21 resolved deals, with 3 Pending excluded. Strongest support: two direct-sector precedents (Harbor Medical Center, Green Medical Center) show Nordic executing Healthcare Services LBOs at $200mm-plus scale with Geographic Expansion rationale matching the target's tag. Two Closed comps from the broader Healthcare Services set (Quality Medical Group, Professional Health Management) sit close to the target's ~16.5% margin and $200mm size, giving reasonable valuation triangulation. Limitation: the target's own EV/EBITDA and EV/Revenue are not given in target_profile, so comps are used to frame likely range context, not to price the deal precisely; also Nordic's direct Healthcare Services deals used in profile_fit are broader than the four flagged as most relevant, and tag_fit is comparatively low, meaning the buyer's historical tag alignment to Margin Improvement plus Geographic Expansion together is weaker than sector or recency fit. Conclusion: Medium conviction is appropriate -- buyer has clear direct-sector execution capability and completion history, but sizing and tag alignment are moderate, and margin-benchmark diligence should be confirmed against the Closed-sector median margin, which is close to but not below the target's margin assumption.",
+            "acquirer_overview": "Nordic Capital is a Financial Sponsor with numerous recorded deals in the dataset and a completion_rate reflecting only resolved outcomes -- all resolved deals Closed, with several Pending transactions excluded from that rate. Deal sizes across its history range widely, spanning Healthcare Services, Physician Groups, Behavioral Health, Dental and Medical Devices sub-verticals.",
+            "strategic_fit_thesis": "The target is a Regional, privately-held Healthcare Services asset with a mid-teens EBITDA margin, tagged for Margin Improvement and Geographic Expansion. Nordic Capital has directly executed Healthcare Services LBOs of comparable or larger scale (Harbor Medical Center and Green Medical Center) explicitly citing Geographic Expansion, indicating sector fluency and appetite for platform-style scale-ups in this vertical. However, tag_fit for this buyer is comparatively low relative to other fit dimensions, meaning Nordic's historical rationale mix does not consistently pair Margin Improvement with Geographic Expansion the way this target's profile does -- this is an evidence limitation rather than a disqualifier, since the Margin Improvement tag itself does not establish the target is margin-challenged.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2023-0466",
+                "description": "Harbor Medical Center: Healthcare Services LBO, large deal size, Great Plains geography, tagged Scale|Geographic Expansion|Cross-sell, Closed -- demonstrates Nordic's capacity to execute large direct-sector deals with a geographic-expansion rationale similar to the target."
+              },
+              {
+                "transaction_id": "MA-2022-0045",
+                "description": "Green Medical Center: Healthcare Services LBO, large deal size, Mid-Atlantic, tagged Scale|Geographic Expansion|Diversification, Closed -- further direct-sector precedent at the top end of Nordic's observed size range, though PE-Backed pre-ownership differs from the target's Private ownership."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Two Closed Healthcare Services comps in a size band bracketing the target's scale provide valuation context. Quality Medical Group is closely comparable on both size and margin to the target, trading at an EV/EBITDA of 11.2x and EV/Revenue of 2.99x. Professional Health Management is also margin- and size-comparable, trading at a higher EV/EBITDA of 16.6x and EV/Revenue of 3.06x. The dispersion between these two similarly-sized, similarly-margined comps suggests multiple sensitivity to deal-specific factors (e.g., financing structure, bidder competition) rather than a tight sector band; neither comp is a Nordic transaction, so they establish market pricing context rather than buyer-specific pricing behavior.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0304"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "fund_cycle",
+                "description": "Nordic's flagged-relevant deal count for this target profile is a small subset of its total recorded deals; broader sector/size comparisons beyond this narrower relevant set carry weaker direct applicability and could overstate buyer readiness.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "execution_risk",
+                "description": "Several of Nordic's recorded deals are Pending (excluded from completion_rate), meaning the perfect completion figure reflects only resolved transactions and does not guarantee the Pending deals will close, nor does it speak to post-close integration outcomes.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "stat:pending_count:Nordic%20Capital",
+                  "stat:completion_rate:Nordic%20Capital"
+                ]
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Buyer has direct Healthcare Services LBO precedents at comparable-or-larger scale with matching Geographic Expansion rationale and a strong resolved completion_rate, supporting Medium conviction. Gaps include comparatively low tag_fit and moderate size_fit relative to other signal dimensions, plus reliance on a narrower relevant-deal subset rather than the full buyer history, which tempers higher conviction."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 24.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Nordic%20Capital"
+              },
+              {
+                "value": 21.0,
+                "metric": "resolved_count",
+                "evidence_id": "stat:resolved_count:Nordic%20Capital"
+              },
+              {
+                "value": 3.0,
+                "metric": "pending_count",
+                "evidence_id": "stat:pending_count:Nordic%20Capital"
+              },
+              {
+                "value": 1.0,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:Nordic%20Capital"
+              },
+              {
+                "value": 6.5,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:Nordic%20Capital"
+              },
+              {
+                "value": 1304.4,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:Nordic%20Capital"
+              },
+              {
+                "value": 4.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Nordic%20Capital"
+              },
+              {
+                "value": 0.1925624120030158,
+                "metric": "tag_fit.raw",
+                "evidence_id": "stat:tag_fit.raw:Nordic%20Capital"
+              },
+              {
+                "value": 0.4600664246050677,
+                "metric": "size_fit.raw",
+                "evidence_id": "stat:size_fit.raw:Nordic%20Capital"
+              },
+              {
+                "value": 991.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2023-0466"
+              },
+              {
+                "value": 1304.4,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0045"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 164.2,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.8,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 3.06,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 15.3,
+                "metric": "median_ebitda_margin_pct",
+                "evidence_id": "stat:median_ebitda_margin_pct:closed-sector-Healthcare%20Services"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "acquirer_overview: stray number 0"
+              ],
+              "claims_total": 22,
+              "claims_verified": 22
+            },
+            {
+              "stage": "repair",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 22,
+              "claims_verified": 22
+            }
+          ],
+          "latency_seconds": 61.228588624857366,
+          "claims_total": 22,
+          "claims_verified": 22
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Francisco Partners is a Financial Sponsor with a perfect completion rate across twelve recorded closed deals (resolved 12 of 12). Only two of those deals sit in the exact target sector, Healthcare Services, both closed and both tagged Geographic Expansion, giving direct-sector precedent for this thesis. Sector fit and tag fit are moderate rather than strong, and size fit is mid-range given a two-hundred-million target against a much wider buyer historical range. The main limitation is sparse in-sector history relative to the buyer's broader activity in Medical Devices, Pharma/Biotech, Physician Groups, and Health IT, so the sector-specific pattern is directional, not a demonstrated core strategy. Conviction is Medium as coded, reflecting reasonable but not strong direct-sector support.",
+            "acquirer_overview": "Francisco Partners is a Financial Sponsor with a recorded deal count and completion history spanning Healthcare Services, Physician Groups, Medical Devices, Pharma/Biotech, Health IT, Health Insurance, Home Health/Hospice and Behavioral Health. All recorded deals closed (completion_rate 1.0, resolved_count 12), and historical enterprise values range from the smallest to largest deals in the record, indicating broad capacity across scales, though this reflects historical transaction size rather than current equity-check capacity.",
+            "strategic_fit_thesis": "The target is a Regional, privately-held Healthcare Services asset tagged Margin Improvement and Geographic Expansion. Francisco Partners has two direct-sector Closed precedents in Healthcare Services (Professional Health Management and North Care), both carrying a Geographic Expansion rationale tag, suggesting a plausible strategic thread toward regional platform expansion in this sector. However, sector_fit is only moderate and relevant_deals is limited to two of the buyer's total recorded transactions, so the buyer's core historical focus skews toward adjacent healthcare sub-sectors (Medical Devices, Pharma/Biotech, Physician Groups) rather than Healthcare Services specifically. This is a hypothesis grounded in limited direct-sector evidence, not a demonstrated sector strategy.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2020-0304",
+                "description": "Professional Health Management (Healthcare Services, Closed, Recapitalization, All Cash) \\u2014 direct-sector precedent tagged Geographic Expansion, PE-Backed target, closest comparable ownership/sector context to the current target."
+              },
+              {
+                "transaction_id": "MA-2020-0387",
+                "description": "North Care (Healthcare Services, Closed, Merger of Equals, Leveraged) \\u2014 second direct-sector precedent, also tagged Geographic Expansion, showing repeat activity in the exact target sector."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Two Closed comparables in Healthcare Services near the target's size band and margin level were used. Quality Medical Group (TPG Capital) is closely comparable on size and margin, with an EV/EBITDA multiple and EV/Revenue multiple both moderate for the sector, though acquired by a different sponsor. Evergreen Care Solutions (Blackstone) is a larger, lower-margin comparable with a somewhat higher EV/EBITDA multiple and lower EV/Revenue multiple, offering a directional read on how Bolt-on/Platform-oriented sponsors have priced similar regional healthcare services assets. Both are Financial Sponsor-led Closed deals in the same sector, giving reasonable but not identical comparability given differing deal types and buyers.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "Francisco Partners' direct-sector history in Healthcare Services is limited to a small fraction of its total recorded deals, so extrapolating a repeatable playbook to this target's specific margin-improvement and regional-expansion profile carries elevated uncertainty.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "competitive_process",
+                "description": "Comparable Healthcare Services deals in this size band drew multiple bidders, indicating this target could face a moderately competitive process that may affect achievable entry multiple.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2022-0350",
+                  "MA-2021-0195"
+                ]
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Medium conviction reflects two Closed direct-sector precedents supporting a plausible Geographic Expansion thesis and a perfect historical completion rate, balanced against only moderate sector_fit and tag_fit scores and reliance on a small share of the buyer's total recorded deals for direct-sector support, leaving the broader sector strategy only partially demonstrated."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 12.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Francisco%20Partners"
+              },
+              {
+                "value": 1.0,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:Francisco%20Partners"
+              },
+              {
+                "value": 12.0,
+                "metric": "resolved_count",
+                "evidence_id": "stat:resolved_count:Francisco%20Partners"
+              },
+              {
+                "value": 16.4,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:Francisco%20Partners"
+              },
+              {
+                "value": 9980.3,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:Francisco%20Partners"
+              },
+              {
+                "value": 2.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Francisco%20Partners"
+              },
+              {
+                "value": 0.4194258951584697,
+                "metric": "sector_fit.raw",
+                "evidence_id": "stat:sector_fit.raw:Francisco%20Partners"
+              },
+              {
+                "value": 0.38738326293574593,
+                "metric": "tag_fit.raw",
+                "evidence_id": "stat:tag_fit.raw:Francisco%20Partners"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.0,
+                "metric": "num_bidders",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 299.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 12.9,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 3.0,
+                "metric": "num_bidders",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 164.2,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.8,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 56.4,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0387"
+              },
+              {
+                "value": 19.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0387"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 0.55",
+                "acquirer_overview: stray number 2017",
+                "acquirer_overview: stray number 2023"
+              ],
+              "claims_total": 24,
+              "claims_verified": 24
+            },
+            {
+              "stage": "repair",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 24,
+              "claims_verified": 24
+            }
+          ],
+          "latency_seconds": 121.94959245901555,
+          "claims_total": 24,
+          "claims_verified": 24
+        },
+        {
+          "acquirer": "Atrium Health",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Atrium Health is a strategic acquirer with a 100% completion rate across 3 relevant Healthcare Services deals (sector_fit raw 1.0), giving strong sector support. Its historical deal sizes ($336.3mm to $2,021.8mm) all exceed the $200mm target, so size_fit is weak (0.333), and tag_fit for the target's tag set is low (0.081). Two direct-sector precedents, Granite Care and Charter Care Partners, both carry Geographic Expansion tags matching the target, but neither carries a Margin Improvement tag, leaving that element unsupported by own history. Retrieved Closed comps near the target's size band were done by Financial Sponsors and price below Atrium's own median EV/EBITDA of 17.9x, so pricing read-across is qualitative only. Conclusion: Medium conviction, consistent with the supplied ranking.</reasoning>\n<acquirer_overview>Atrium Health has closed 3 of 3 tracked relevant transactions (completion_rate 1.0), all in Healthcare Services, with recorded enterprise values from $336.3mm to $2,021.8mm. All are Closed outcomes with none Pending in this record; this reflects only the tracked relevant-deal population, not necessarily the buyer's entire history, and closing does not evidence integration success.",
+            "acquirer_overview": "Atrium Health has closed 3 of 3 tracked relevant transactions (completion_rate 1.0), all in Healthcare Services, with recorded enterprise values from $336.3mm to $2,021.8mm. All are Closed outcomes with none Pending in this record; this reflects only the tracked relevant-deal population, not necessarily the buyer's entire history, and closing does not evidence integration success.",
+            "strategic_fit_thesis": "Atrium's sector_fit is at maximum (1.0) from consistent Healthcare Services platform activity, and both cited prior deals carry Geographic Expansion tags matching one of the target's two tags, aligning with a regional network extension thesis. Limitation: the $200mm target sits below Atrium's smallest recorded deal ($336.3mm), size_fit is only 0.333, and tag_fit is 0.081, so the target's Margin Improvement tag has no supporting precedent in this buyer's recorded history; that tag is a recorded rationale label, not evidence of a margin problem at the target.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2020-0408",
+                "description": "Granite Care: Atrium's smallest recorded Healthcare Services deal at $336.3mm EV with a 15.2% EBITDA margin, a Platform Investment structure in Great Plains tagged Geographic Expansion, matching one of the target's tags and closest in size, though still above the $200mm target."
+              },
+              {
+                "transaction_id": "MA-2023-0330",
+                "description": "Charter Care Partners: Atrium's 2023 Healthcare Services Platform Investment at $2,021.8mm EV with a 14.9% EBITDA margin, also tagged Geographic Expansion, showing continued sector platform-building but at far larger scale than the target."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Quality Medical Group (Closed, $186.6mm EV, 16.5% EBITDA margin) transacted at 11.2x EV/EBITDA and 2.99x EV/Revenue; it is the closest comp on both size and margin to the target's 16.5% assumption, but it was a Minority Investment by a Financial Sponsor, so structure and buyer type differ from a strategic acquisition. Professional Health Management (Closed, $164.2mm EV, 16.8% EBITDA margin) transacted at 16.6x EV/EBITDA and 3.06x EV/Revenue; margin profile is similar to the target, but it was a Financial Sponsor Recapitalization of a PE-Backed asset, a different ownership and structure context. For reference, Atrium's own median EV/EBITDA is 17.9x and median EV/Revenue is 2.8x, and the Closed-sector Healthcare Services median EBITDA margin is 15.3% versus the target's 16.5% assumption. Both comps are qualitatively weaker than a strategic-buyer precedent would be.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0304"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "Atrium's recorded Healthcare Services deals span $336.3mm to $2,021.8mm EV, all above the $200mm target; an inference, not an observed fact, is that a deal of this size sits outside its demonstrated execution pattern, which could mean lower internal prioritization or resourcing for the process.",
+                "basis": "judgment",
+                "evidence_ids": []
+              },
+              {
+                "category": "competitive_process",
+                "description": "The two size-comparable Closed comps, Quality Medical Group and Professional Health Management, were both executed by Financial Sponsors, indicating sponsor appetite in this size band; a strategic bidder could face sponsor competition that raises entry pricing relative to Atrium's prior single-bidder processes.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2022-0350",
+                  "MA-2020-0304"
+                ]
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Support: perfect recorded completion (1.0) and maximum sector_fit (1.0), with two direct Healthcare Services precedents sharing the target's Geographic Expansion tag. Gaps: size_fit of 0.333 given the target sits below Atrium's smallest recorded deal, tag_fit of 0.081 leaving the Margin Improvement rationale unsupported by own history, and no strategic-buyer comp at the target's size band."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 1.0,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:Atrium%20Health"
+              },
+              {
+                "value": 3.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Atrium%20Health"
+              },
+              {
+                "value": 0.0,
+                "metric": "pending_count",
+                "evidence_id": "stat:pending_count:Atrium%20Health"
+              },
+              {
+                "value": 336.3,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:Atrium%20Health"
+              },
+              {
+                "value": 2021.8,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:Atrium%20Health"
+              },
+              {
+                "value": 17.9,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:Atrium%20Health"
+              },
+              {
+                "value": 2.8,
+                "metric": "median_ev_revenue_multiple",
+                "evidence_id": "stat:median_ev_revenue_multiple:Atrium%20Health"
+              },
+              {
+                "value": 1.0,
+                "metric": "sector_fit.raw",
+                "evidence_id": "stat:sector_fit.raw:Atrium%20Health"
+              },
+              {
+                "value": 0.3333333333333333,
+                "metric": "size_fit.raw",
+                "evidence_id": "stat:size_fit.raw:Atrium%20Health"
+              },
+              {
+                "value": 0.08107489440361897,
+                "metric": "tag_fit.raw",
+                "evidence_id": "stat:tag_fit.raw:Atrium%20Health"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 15.3,
+                "metric": "median_ebitda_margin_pct",
+                "evidence_id": "stat:median_ebitda_margin_pct:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 336.3,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0408"
+              },
+              {
+                "value": 15.2,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0408"
+              },
+              {
+                "value": 2021.8,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2023-0330"
+              },
+              {
+                "value": 14.9,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2023-0330"
+              },
+              {
+                "value": 2023.0,
+                "metric": "deal_year",
+                "evidence_id": "MA-2023-0330"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 164.2,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.8,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 3.06,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0304"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "risk_flags: Tuple should have at least 2 items after validation, not 1"
+              ],
+              "claims_total": 0,
+              "claims_verified": 0
+            },
+            {
+              "stage": "repair",
+              "status": "failed",
+              "errors": [
+                ": Value error, strategic_fit_thesis exceeds length cap 1600"
+              ],
+              "claims_total": 0,
+              "claims_verified": 0
+            },
+            {
+              "stage": "escalation",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 26,
+              "claims_verified": 26
+            }
+          ],
+          "latency_seconds": 154.4424841250293,
+          "claims_total": 26,
+          "claims_verified": 26
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "acquirer_type": "Strategic",
+          "status": "failed",
+          "banner": "Unverified: Model response reached the output token limit; draft is incomplete",
+          "rationale": null,
+          "errors": [
+            "Model response reached the output token limit; draft is incomplete"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "Model response reached the output token limit; draft is incomplete"
+              ],
+              "claims_total": 0,
+              "claims_verified": 0
+            }
+          ],
+          "latency_seconds": 38.865386832971126,
+          "claims_total": 0,
+          "claims_verified": 0
+        },
+        {
+          "acquirer": "UPMC",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "UPMC has three closed Healthcare Services deals, all resolved and closed, giving strong sector_fit and reasonably strong profile_fit. However, its precedents are dated relative to today, with low recency raw, and size_fit raw is low versus this target's deal size. Tag_fit is very low: UPMC's own rationale tags (Cost Synergies, Platform Build, Market Share, High Growth, Cross-sell) only partially overlap the target's tags (Margin Improvement, Geographic Expansion) -- Geographic Expansion appears on two of UPMC's three deals, but Margin Improvement is not recorded on any UPMC precedent. Valuation comps from Closed Healthcare Services deals in a widened size band show multiples broadly consistent with UPMC's own historical median EV/EBITDA multiple, supporting a defensible entry range, though most retrieved comps are financial-sponsor-led rather than strategic. Limitation: relevant_deals is capped at three, and the pack is not exhaustive of UPMC's full acquisition history, so recency and cadence conclusions are bounded to what is shown. Conviction is Medium per ranking, reflecting solid sector precedent but weaker size and tag alignment.",
+            "acquirer_overview": "UPMC is a Strategic acquirer with a recorded count of Healthcare Services transactions in this dataset, all closed, giving a completion rate reflecting every resolved deal reaching close. Deal sizes ranged from a smaller recapitalization to a much larger bolt-on, spanning Recapitalization, Bolt-on, and Strategic Acquisition structures across National, Northeast, and Mountain West geographies.",
+            "strategic_fit_thesis": "UPMC's direct-sector history shows a perfect sector_fit raw score, with repeated Healthcare Services acquisitions carrying Geographic Expansion as a stated rationale on two of three deals (Principal Behavioral Health, Keystone Behavioral Health), aligning with this target's Geographic Expansion tag. However, tag_fit for the full profile is low, since UPMC's historical tags emphasize Cost Synergies, Platform Build, Market Share, High Growth, and Cross-sell rather than Margin Improvement, which is not evidenced in any UPMC precedent -- a genuine evidence gap on the margin-improvement thesis specifically. Size fit is also weaker: UPMC's three deals bracket the target's deal size but the historical distribution skews smaller in two of three cases.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2019-0090",
+                "description": "Principal Behavioral Health (Northeast, Bolt-on Acquisition, Non-Profit pre-ownership) -- largest and most comparable UPMC Healthcare Services deal, tagged Geographic Expansion/Platform Build/Market Share, closed with several bidders; demonstrates capacity to close larger regional deals."
+              },
+              {
+                "transaction_id": "MA-2018-0486",
+                "description": "Keystone Behavioral Health (Mountain West, Recapitalization, Private pre-ownership) -- smaller deal also tagged Geographic Expansion, closed quickly with multiple bidders, showing willingness to pursue geographic-expansion rationale at smaller scale."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Two Closed Healthcare Services comps within a widened size band (since no exact-size-band Healthcare Services comps were sufficient) provide external valuation reference points. Quality Medical Group (TPG Capital) is closest in margin profile to the target and traded at its stated EV/EBITDA and EV/Revenue multiples, though it was a Financial Sponsor minority investment rather than a strategic full acquisition, weakening structural comparability. Delta Health (Bon Secours Mercy Health) is a same-acquirer-type (Strategic) comp at its stated multiples, but its margin is well below the target's profile, reducing margin comparability. Both comps sit at or below the Closed-sector median EV/EBITDA, suggesting the target may command a fuller multiple if margin and strategic positioning are viewed favorably relative to these references.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0306"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "UPMC's closed deals show wide variance in days-to-close, and the largest comparable transaction (Principal Behavioral Health) took the longest to close among the three, indicating potential timeline risk for a transaction of similar complexity and size.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2019-0090"
+                ]
+              },
+              {
+                "category": "competitive_process",
+                "description": "UPMC's precedent deals each involved multiple bidders, suggesting this target may also attract a competitive process that could pressure UPMC's ability to win at an attractive multiple; low tag_fit and size_fit scores may further reduce UPMC's competitive positioning versus sponsors more active at this size band.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "UPMC shows strong direct-sector precedent (perfect sector_fit, perfect completion rate across closed deals) and partial thematic alignment via Geographic Expansion, supporting Medium conviction. However, low tag_fit (no Margin Improvement precedent), weak size_fit relative to the target, and low recency constrain higher conviction, and the buyer-history sample is limited to three relevant deals."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 1.0,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:UPMC"
+              },
+              {
+                "value": 3.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:UPMC"
+              },
+              {
+                "value": 3.0,
+                "metric": "resolved_count",
+                "evidence_id": "stat:resolved_count:UPMC"
+              },
+              {
+                "value": 32.8,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:UPMC"
+              },
+              {
+                "value": 443.7,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:UPMC"
+              },
+              {
+                "value": 1.0,
+                "metric": "sector_fit.raw",
+                "evidence_id": "stat:sector_fit.raw:UPMC"
+              },
+              {
+                "value": 0.054049929602412644,
+                "metric": "tag_fit.raw",
+                "evidence_id": "stat:tag_fit.raw:UPMC"
+              },
+              {
+                "value": 0.32930632353059935,
+                "metric": "size_fit.raw",
+                "evidence_id": "stat:size_fit.raw:UPMC"
+              },
+              {
+                "value": 0.2742939058776097,
+                "metric": "recency.raw",
+                "evidence_id": "stat:recency.raw:UPMC"
+              },
+              {
+                "value": 443.7,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2019-0090"
+              },
+              {
+                "value": 32.8,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2018-0486"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 212.3,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0306"
+              },
+              {
+                "value": 11.2,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0306"
+              },
+              {
+                "value": 9.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0306"
+              },
+              {
+                "value": 2.58,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0306"
+              },
+              {
+                "value": 13.6,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 15.3,
+                "metric": "median_ebitda_margin_pct",
+                "evidence_id": "stat:median_ebitda_margin_pct:closed-sector-Healthcare%20Services"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 2018",
+                "reasoning: stray number 2020",
+                "reasoning: stray number 0.87",
+                "reasoning: stray number 100",
+                "reasoning: stray number 350mm",
+                "reasoning: stray number 11.7x",
+                "valuation_context: stray number 100",
+                "valuation_context: stray number 350mm",
+                "precedent_activity.1: stray number 4",
+                "risk_flags.1: stray number 4"
+              ],
+              "claims_total": 25,
+              "claims_verified": 25
+            },
+            {
+              "stage": "repair",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 23,
+              "claims_verified": 23
+            }
+          ],
+          "latency_seconds": 59.111250792164356,
+          "claims_total": 23,
+          "claims_verified": 23
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "acquirer_type": "Strategic",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Steward Health Care is a strategic acquirer with a small but complete Healthcare Services history (3/3 closed). Sector fit is strong (raw 1.0) and profile fit is high (0.87 raw), but tag_fit (0.08 raw) and size_fit (0.24 raw) are weak: the target's deal size sits outside the bulk of the buyer's prior deal sizes, and its tags (Margin Improvement, Geographic Expansion) only partially match past rationale tags. Two Closed comps offer better size comparability than Steward's own precedents. Limitation: no evidence of Steward pursuing a deal at this specific size and margin combination, and deal_type_fit is essentially zero, indicating past deal structures don't match typical expectations for this target. Conviction is Medium per ranking, reflecting solid sector alignment offset by size and tag mismatches plus a limited three-deal sample.",
+            "acquirer_overview": "Steward Health Care is a Strategic acquirer with a recorded deal_count of 3 Healthcare Services transactions, all Closed, giving a completion_rate of 1.0 (evidence: stat:completion_rate:Steward%20Health%20Care). These precedents include Jefferson Health Network, Horizon Medical Solutions, and Horizon Home Health, spanning a wide range of deal sizes from the smallest to the largest recorded transaction in this buyer's history. The median EV/EBITDA multiple across these deals is 14.0x (evidence: stat:median_ev_ebitda_multiple:Steward%20Health%20Care).",
+            "strategic_fit_thesis": "Steward's sector_fit is high (raw 1.0) given all three prior deals are in Healthcare Services, and profile_fit is strong (raw 0.871), suggesting the target's financial profile broadly resembles Steward's typical acquisitions. All three Steward precedents carry a Geographic Expansion rationale tag, aligning with one of the target's two tags. However, tag_fit is weak overall (raw 0.081) because none of the three cited Steward deals carry a Margin Improvement tag, so that portion of the target's thesis lacks direct buyer-history support. Evidence limitation: with only three relevant deals, this is a thin sample for inferring a stable acquisition pattern at this specific size and margin profile.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2022-0187",
+                "description": "Horizon Medical Solutions, Healthcare Services, Management Buyout, Private ownership pre-deal \") the target \\u2014 closest precedent by ownership type (Private) matching the target, with Geographic Expansion and Market Share rationale tags; EBITDA margin close to the target's margin."
+              },
+              {
+                "transaction_id": "MA-2020-0102",
+                "description": "Horizon Home Health, Healthcare Services, Management Buyout, PE-Backed pre-deal \\u2014 largest Steward Healthcare Services deal showing capacity for scale, though target ownership pre-deal differs from the target's Private status and deal size is far above the target's size."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Two Closed comps in a size band closer to the target offer external market reference points, since Steward's own precedents are either well below or well above the target size. Quality Medical Group, a Financial Sponsor deal with Private pre-deal ownership, had an EBITDA margin nearly identical to the target's, and traded at the multiples cited below. Professional Health Management, a Financial Sponsor deal with PE-Backed pre-deal ownership, had a similarly close EBITDA margin and traded at the multiples cited below. Both are Financial Sponsor deals rather than Strategic acquisitions like Steward's history, and neither carries a Margin Improvement tag, so comparability to a strategic buyer's rationale is qualitative only, not a direct precedent match.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0304"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "Steward's deal_type_fit raw score is 0.0, indicating its historical deal structures (SPAC Merger, Management Buyout) do not align with typical structural expectations implied by this target profile; this could signal negotiation or structuring friction if a similar approach is proposed.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "stat:deal_type_fit.raw:Steward%20Health%20Care"
+                ]
+              },
+              {
+                "category": "integration_complexity",
+                "description": "The target's Margin Improvement tag is not present in any of Steward's three cited Healthcare Services precedents (tag_fit raw 0.081), so there is no direct buyer-history evidence that Steward has previously executed a margin-improvement-oriented integration in this sector; this is an inference, not an observed fact.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Strong sector alignment (sector_fit raw 1.0) and reasonable profile similarity (profile_fit raw 0.871) support buyer relevance, and completion history is perfect across the three relevant deals. However, size_fit (raw 0.236) and tag_fit (raw 0.081) are weak, and the sample is limited to three deals spanning a wide size range that brackets but does not center on the target, keeping conviction at Medium rather than High."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 1.0,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:Steward%20Health%20Care"
+              },
+              {
+                "value": 3.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Steward%20Health%20Care"
+              },
+              {
+                "value": 3.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Steward%20Health%20Care"
+              },
+              {
+                "value": 14.0,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:Steward%20Health%20Care"
+              },
+              {
+                "value": 1.0,
+                "metric": "sector_fit.raw",
+                "evidence_id": "stat:sector_fit.raw:Steward%20Health%20Care"
+              },
+              {
+                "value": 0.8709677419354839,
+                "metric": "profile_fit.raw",
+                "evidence_id": "stat:profile_fit.raw:Steward%20Health%20Care"
+              },
+              {
+                "value": 0.08107489440361897,
+                "metric": "tag_fit.raw",
+                "evidence_id": "stat:tag_fit.raw:Steward%20Health%20Care"
+              },
+              {
+                "value": 0.23573941692405134,
+                "metric": "size_fit.raw",
+                "evidence_id": "stat:size_fit.raw:Steward%20Health%20Care"
+              },
+              {
+                "value": 0.0,
+                "metric": "deal_type_fit.raw",
+                "evidence_id": "stat:deal_type_fit.raw:Steward%20Health%20Care"
+              },
+              {
+                "value": 490.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0187"
+              },
+              {
+                "value": 16.1,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0187"
+              },
+              {
+                "value": 1769.8,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0102"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 3.06,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.8,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0304"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 150",
+                "reasoning: stray number 350mm",
+                "acquirer_overview: unknown evidence stat:size_min_mm",
+                "acquirer_overview: unknown evidence stat:size_max_mm",
+                "acquirer_overview: stray number 2023",
+                "acquirer_overview: stray number 2022",
+                "acquirer_overview: stray number 2020",
+                "valuation_context: stray number 150",
+                "valuation_context: stray number 350mm",
+                "valuation_context: stray number 2022",
+                "valuation_context: stray number 2020"
+              ],
+              "claims_total": 22,
+              "claims_verified": 22
+            },
+            {
+              "stage": "repair",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 20,
+              "claims_verified": 20
+            }
+          ],
+          "latency_seconds": 57.85146900010295,
+          "claims_total": 20,
+          "claims_verified": 20
+        },
+        {
+          "acquirer": "Vista Equity",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Vista Equity is a Financial Sponsor with a broad (24-deal) history and a Medium-conviction ranking (score 0.574). The strongest support is direct-sector precedent: two Healthcare Services deals (Taft Care Partners, Closed; Zenith Medical Solutions, Withdrawn) show Vista has pursued similarly-sized, similarly-margined targets in this exact sector, with the target's 200mm size sitting between these two precedents. Sector_fit is only moderate (0.437 raw) and tag_fit is low (0.234 raw), indicating the \"Margin Improvement\" and \"Geographic Expansion\" tags are not a strong statistical match to Vista's typical rationale profile, even though Geographic Expansion appears across most Vista deals. Completion rate (0.792) is decent but not perfect, and Zenith (closest-size, direct-sector comp) was Withdrawn, an execution-risk data point. Retrieved Closed comps in Healthcare Services near the target's scale \u2014 Quality Medical Group and Professional Health Management \u2014 show margins and multiples close to the target's ~16.5% margin, supporting valuation comparability without needing extreme adjustment. Limitation: relevant_deals is only 4 of 24 total rows (truncated pack), so broader sector-fit conclusions rest on a partial view; the direct-sector Withdrawn deal and an unrelated Home Health/Hospice Withdrawn plus a Dental Terminated deal flag real execution risk. Conclusion: Medium conviction is appropriate \u2014 genuine direct-sector experience and reasonable valuation alignment, but sector/tag fit scores and a Withdrawn same-sector precedent temper confidence.",
+            "acquirer_overview": "Vista Equity is recorded as a Financial Sponsor with 24 total deals in the dataset, of which 19 closed and all 24 are resolved (no pending), giving a completion_rate of 0.792. Deal sizes span from 6.4mm to 9193.4mm, indicating a wide range of transaction scale across sectors, not just Healthcare Services.",
+            "strategic_fit_thesis": "The target's Healthcare Services profile (200mm EV, ~16.5% margin, Regional geography, Private ownership) overlaps with Vista's direct-sector history: Taft Care Partners (24.3mm, Closed) and Zenith Medical Solutions (152.5mm, Withdrawn) are the two most comparable prior Healthcare Services transactions by sector. Both carried a Geographic Expansion rationale tag matching one of the target's two tags, but neither cited Margin Improvement in the direct-sector Healthcare Services deals reviewed here \u2014 that tag appears elsewhere in Vista's history (e.g., Pharma/Biotech, Medical Devices), a cross-sector theme that should not be read as direct-sector precedent for margin-driven action. Evidence limitation: the buyer-sector relevant_deals count is only 4 of 24 total rows in a truncated pack, so sector-specific patterns are directional, not exhaustive.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2024-0251",
+                "description": "Taft Care Partners (Healthcare Services, Closed, Bolt-on Acquisition, Public pre-ownership, 24.3mm EV) \\u2014 direct-sector Closed precedent sharing the Geographic Expansion rationale tag with the current target, though materially smaller in size."
+              },
+              {
+                "transaction_id": "MA-2023-0221",
+                "description": "Zenith Medical Solutions (Healthcare Services, Withdrawn, Recapitalization, Private pre-ownership, 152.5mm EV) \\u2014 closest-size direct-sector precedent to the target, but did not close, a relevant execution-risk data point rather than a completed comparable."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Two Closed Healthcare Services comps near the target's size support valuation triangulation. Quality Medical Group (186.6mm EV, Financial Sponsor buyer TPG Capital) carried a 16.5% EBITDA margin nearly identical to the target's 16.53%, with EV/EBITDA of 11.2x and EV/Revenue of 2.99x. Professional Health Management (164.2mm EV, Financial Sponsor buyer Francisco Partners) had a slightly higher 16.8% margin, with EV/EBITDA of 16.6x and EV/Revenue of 3.06x. Both are direct-sector, similarly-sized, similarly-margined Closed transactions, offering reasonable comparability to the target despite different acquirer identities than Vista.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2020-0304"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "The closest same-sector, similarly-sized precedent (Zenith Medical Solutions, Healthcare Services Recapitalization) was Withdrawn rather than Closed, indicating a real precedent of deal failure at comparable scale in this exact sector.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2023-0221"
+                ]
+              },
+              {
+                "category": "portfolio_conflict",
+                "description": "Vista's sector_fit and tag_fit scores are only moderate/low, suggesting the target's specific rationale profile (Margin Improvement plus Geographic Expansion) is not strongly represented among Vista's historical Healthcare Services activity, which may indicate a less natural strategic fit than the overall ranking score implies.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Vista shows genuine direct-sector Healthcare Services experience (one Closed, one Withdrawn precedent near the target's size) and a reasonable overall completion_rate, supporting some confidence. However, moderate sector_fit and low tag_fit scores, plus the Withdrawn outcome of the closest-size direct-sector deal, temper conviction below High. The truncated evidence pack (4 of 24 rows flagged relevant) also limits full confidence in broader sector-pattern claims."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 24.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Vista%20Equity"
+              },
+              {
+                "value": 19.0,
+                "metric": "closed_count",
+                "evidence_id": "stat:closed_count:Vista%20Equity"
+              },
+              {
+                "value": 0.0,
+                "metric": "pending_count",
+                "evidence_id": "stat:pending_count:Vista%20Equity"
+              },
+              {
+                "value": 24.0,
+                "metric": "resolved_count",
+                "evidence_id": "stat:resolved_count:Vista%20Equity"
+              },
+              {
+                "value": 0.7916666666666666,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:Vista%20Equity"
+              },
+              {
+                "value": 6.4,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:Vista%20Equity"
+              },
+              {
+                "value": 9193.4,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:Vista%20Equity"
+              },
+              {
+                "value": 4.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Vista%20Equity"
+              },
+              {
+                "value": 0.5742680215964246,
+                "metric": "score",
+                "evidence_id": "stat:score:Vista%20Equity"
+              },
+              {
+                "value": 0.4367686097671139,
+                "metric": "sector_fit.raw",
+                "evidence_id": "stat:sector_fit.raw:Vista%20Equity"
+              },
+              {
+                "value": 0.23422907866968246,
+                "metric": "tag_fit.raw",
+                "evidence_id": "stat:tag_fit.raw:Vista%20Equity"
+              },
+              {
+                "value": 24.3,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2024-0251"
+              },
+              {
+                "value": 152.5,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2023-0221"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 164.2,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.8,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 16.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 3.06,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2020-0304"
+              },
+              {
+                "value": 15.3,
+                "metric": "median_ebitda_margin_pct",
+                "evidence_id": "stat:median_ebitda_margin_pct:closed-sector-Healthcare%20Services"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats",
+            "get_failed_deals"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 100",
+                "reasoning: stray number 300mm",
+                "valuation_context: stray number 100",
+                "valuation_context: stray number 300mm"
+              ],
+              "claims_total": 24,
+              "claims_verified": 24
+            },
+            {
+              "stage": "repair",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 24,
+              "claims_verified": 24
+            }
+          ],
+          "latency_seconds": 62.96318874997087,
+          "claims_total": 24,
+          "claims_verified": 24
+        },
+        {
+          "acquirer": "Blackstone",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "Blackstone has direct, recent, closed precedents in Healthcare Services, namely Evergreen Care Solutions and Peak Medical Management, at deal sizes comparable to the target and margins near the target's ebitda_margin_pct. This supports sector familiarity despite an overall low sector_fit signal. Completion rate is high across the tracked deal count, though this spans many sectors, not just Healthcare Services, so it should not be read as sector-specific reliability. Limitation: only two of the tracked deals are flagged as directly relevant, and sector_fit is the lowest-scoring driver in the ranking relative to its weight, indicating Blackstone's broader activity is concentrated outside core Healthcare Services (e.g., Dental, Revenue Cycle, Health Insurance, Medical Devices). A withdrawn Medical Devices deal and a withdrawn Physician Groups deal show execution can fail even for this sponsor. Valuation comps in Healthcare Services at similar size show multiples in a comparable range to Blackstone's own historical Healthcare Services deals, though structures and margins differ, so comparability is qualitative rather than exact. Conviction is Medium per ranking; support is real but sector concentration is thin, so conviction should be explained as constrained by limited direct-sector depth despite good process and close characteristics.",
+            "acquirer_overview": "Blackstone is a Financial Sponsor with a tracked deal count and a completion rate reflecting broad platform activity across Healthcare Services, Revenue Cycle, Dental, Health Insurance, Health IT, Home Health/Hospice, Medical Devices and Physician Groups. Within Healthcare Services specifically, the retrieved history shows two closed deals, Evergreen Care Solutions and Peak Medical Management, both in a size range consistent with the target, though sector_fit for this buyer is scored comparatively low relative to other signals in the ranking.",
+            "strategic_fit_thesis": "Blackstone's two closed Healthcare Services deals, Evergreen Care Solutions and Peak Medical Management, both carried Geographic Expansion rationale tags matching the target's stated Geographic Expansion tag, and Peak Medical's EBITDA margin is close to the target's margin, suggesting plausible strategic overlap on regional-density plays. However, this is a hypothesis rather than a demonstrated repeatable Healthcare Services strategy: only two of the buyer's tracked deals sit in this exact sector, and the buyer's much larger completed footprint is in adjacent healthcare sub-sectors plus a withdrawn Medical Devices LBO, meaning direct-sector conviction rests on a thin sample that should be treated as directional, not proven, evidence of intent for this specific target.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2021-0195",
+                "description": "Closed Bolt-on Acquisition of Evergreen Care Solutions (Healthcare Services, Private, All Cash); Geographic Expansion and Platform Build rationale align with the target's Geographic Expansion tag, though margin was lower than the target's."
+              },
+              {
+                "transaction_id": "MA-2021-0407",
+                "description": "Closed SPAC Merger with Peak Medical Management (Healthcare Services, Non-Profit); EBITDA margin closely matches the target's, and Geographic Expansion tag overlaps, though deal structure (SPAC, Earnout) differs from a typical private acquisition."
+              },
+              {
+                "transaction_id": "MA-2024-0347",
+                "description": "Withdrawn Leveraged Buyout of Integrity Cardiovascular Systems (Medical Devices, adjacent not direct sector) carrying a Margin Improvement tag matching the target's tag; flagged here as an execution-risk data point rather than supporting precedent since it did not close."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Two Closed Healthcare Services comps near the target's size provide external market anchors, both from other financial sponsors rather than Blackstone itself, offering a market-level rather than buyer-specific valuation reference. Quality Medical Group (TPG Capital) is closest on both size and margin, with its margin nearly matching the target's, at a lower EV/EBITDA and EV/Revenue multiple than Blackstone's own Healthcare Services deals. Crest Care Partners (Advent International) is somewhat larger and lower-margin but still within the Healthcare Services comp set, at a modest EV/EBITDA and higher EV/Revenue multiple. Blackstone's own Healthcare Services deals (Evergreen and Peak Medical) sit within a broadly similar range but reflect different deal structures (Bolt-on vs. SPAC Merger) and are not perfectly comparable given differing margins and financing types. The Closed-sector median multiples situate these comps roughly mid-range, without implying a specific target multiple.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2024-0120"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "Blackstone withdrew a Healthcare-adjacent Medical Devices LBO (Integrity Cardiovascular Systems) and a Physician Groups Bolt-on (Green Care Providers), both carrying Geographic Expansion themes similar to this target; this shows completed deals are not guaranteed even for this sponsor once a process begins, raising execution-risk for the current thesis.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2024-0347",
+                  "MA-2020-0040"
+                ]
+              },
+              {
+                "category": "portfolio_conflict",
+                "description": "Because only a small share of Blackstone's tracked transactions sit directly in Healthcare Services versus a much larger footprint in adjacent healthcare sub-sectors (Dental, Revenue Cycle, Health Insurance, Health IT), there is a risk that internal deal-team bandwidth, thesis conviction, or capital allocation priority for a pure Healthcare Services target is lower than the aggregate deal count suggests.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "Medium conviction reflects genuine but thin direct-sector support: two closed Healthcare Services precedents at comparable size and margin support plausibility, and the buyer's overall completion rate is strong, but the sector_fit signal is comparatively low despite carrying meaningful weight in the ranking, and adjacent-sector withdrawals add execution uncertainty. This should be read as a supported hypothesis rather than a demonstrated Healthcare Services strategy."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 24.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:Blackstone"
+              },
+              {
+                "value": 0.9166666666666666,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:Blackstone"
+              },
+              {
+                "value": 0.3459039721175478,
+                "metric": "sector_fit.raw",
+                "evidence_id": "stat:sector_fit.raw:Blackstone"
+              },
+              {
+                "value": 0.3,
+                "metric": "sector_fit.weight",
+                "evidence_id": "stat:sector_fit.weight:Blackstone"
+              },
+              {
+                "value": 2.0,
+                "metric": "relevant_deals",
+                "evidence_id": "stat:relevant_deals:Blackstone"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 299.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 12.9,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 341.7,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2021-0407"
+              },
+              {
+                "value": 16.2,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2021-0407"
+              },
+              {
+                "value": 10.0,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0407"
+              },
+              {
+                "value": 1.52,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0407"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 303.9,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2024-0120"
+              },
+              {
+                "value": 13.9,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2024-0120"
+              },
+              {
+                "value": 9.3,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2024-0120"
+              },
+              {
+                "value": 3.36,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2024-0120"
+              },
+              {
+                "value": 13.6,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 2.7,
+                "metric": "median_ev_revenue_multiple",
+                "evidence_id": "stat:median_ev_revenue_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 15.3,
+                "metric": "median_ebitda_margin_pct",
+                "evidence_id": "stat:median_ebitda_margin_pct:closed-sector-Healthcare%20Services"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 350mm",
+                "acquirer_overview: stray number 2021",
+                "acquirer_overview: stray number 2021",
+                "acquirer_overview: stray number 350mm",
+                "conviction.justification: stray number 0.30"
+              ],
+              "claims_total": 25,
+              "claims_verified": 25
+            },
+            {
+              "stage": "repair",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 26,
+              "claims_verified": 26
+            }
+          ],
+          "latency_seconds": 86.61803675000556,
+          "claims_total": 26,
+          "claims_verified": 26
+        },
+        {
+          "acquirer": "GTCR",
+          "acquirer_type": "Financial Sponsor",
+          "status": "verified",
+          "banner": null,
+          "rationale": {
+            "reasoning": "GTCR is a financial sponsor with 14 recorded deals, 11 Closed, giving a completion_rate of 0.786 (resolved basis). Only one prior deal falls in Healthcare Services proper (Sterling Health Systems), which was Closed at a size far above this target's, so direct-sector precedent is limited to a single, much larger transaction; other relevant history sits in adjacent sub-sectors (Physician Groups, Behavioral Health, Dental, Medical Devices) tagged Geographic Expansion, showing a recurring thematic focus but not proof of a repeatable Healthcare Services strategy at this size. The target ($200mm, 16.5% margin, Regional, Private, tagged Margin Improvement/Geographic Expansion) sits well below GTCR's Healthcare Services precedent in size, so size fit is only moderate. Sector fit is comparatively low, signaling GTCR's broader portfolio is diversified across healthcare sub-verticals rather than concentrated in core Healthcare Services. Closed comps in Healthcare Services within the size band (TPG's Quality Medical Group and Blackstone's Evergreen Care Solutions) supply an external valuation anchor, since GTCR's own portfolio-wide multiple statistics are not sector-specific; those comps sit near the Closed-sector median EV/EBITDA of 13.6x and EV/Revenue of 2.7x. Limitation: profile similarity and tag overlap are moderate but not strong evidence of deal intent at this specific size and geography, and adjacent-sector deals (Zenith Specialty Care, Jefferson Surgical Systems) were Withdrawn, flagging execution risk. Conclusion: Medium conviction is appropriate \u2014 the buyer has sector-adjacent activity and one on-sector Closed precedent, but sparse direct-sector history and a size mismatch versus that precedent temper confidence.",
+            "acquirer_overview": "GTCR is a Financial Sponsor with 14 recorded transactions in this dataset, of which 11 are Closed, 3 Withdrawn or Terminated, and none Pending, yielding a resolved completion_rate of 0.786. Deal sizes across the recorded history range from $42.2mm to $12,956.5mm, spanning Healthcare Services, Physician Groups, Behavioral Health, Dental, Medical Devices, and Pharma/Biotech. Only one prior deal, Sterling Health Systems, sits in the exact target sector of Healthcare Services.",
+            "strategic_fit_thesis": "GTCR has repeatedly pursued Geographic Expansion themes across healthcare-adjacent sub-sectors (Physician Groups, Behavioral Health, Dental, Medical Devices), aligning directionally with this target's Geographic Expansion tag. However, direct-sector evidence is limited to a single Closed Healthcare Services transaction, Sterling Health Systems at $911.4mm, which is materially larger than this $200mm Private, Regional target, so the buyer's specific playbook for a target of this size within core Healthcare Services is not well demonstrated. The Margin Improvement tag on the target echoes tags used in several of GTCR's other-sector deals (e.g., Silver Instruments, Granite Dental Group, Western Biosciences), but those are cross-sector uses of the tag and do not establish that this target's margin is below Healthcare Services peers \u2014 the target's 16.5% margin is in fact close to the Closed-sector median of 15.3%.",
+            "precedent_activity": [
+              {
+                "transaction_id": "MA-2018-0357",
+                "description": "Sterling Health Systems (Closed, Public pre-ownership, Bolt-on Acquisition) is GTCR's only prior transaction in the exact target sector, Healthcare Services, evidencing sector familiarity though at a much larger deal size than the current target."
+              },
+              {
+                "transaction_id": "MA-2021-0258",
+                "description": "Silver Instruments (Medical Devices, Closed, PE-Backed pre-ownership) is a cross-sector healthcare precedent carrying Geographic Expansion and Margin Improvement tags matching the target's thesis, illustrating GTCR's broader healthcare-adjacent pattern rather than direct-sector repetition."
+              }
+            ],
+            "valuation_context": {
+              "summary": "Because GTCR's own Healthcare Services history contains only one data point (Sterling Health Systems, a much larger deal), external Closed comps in the target's sector and size band provide a better valuation anchor. Quality Medical Group (TPG Capital, Closed) traded at 11.2x EV/EBITDA and 2.99x EV/Revenue with a 16.5% margin, closely matching the target's margin and size, though acquired by a different sponsor. Evergreen Care Solutions (Blackstone, Closed) traded at 14.6x EV/EBITDA and 2.45x EV/Revenue with a 12.9% margin, offering a somewhat larger, lower-margin comparison within the same sector and Geographic Expansion theme. Both comps are Financial Sponsor-led Healthcare Services deals, supporting reasonable comparability despite differing acquirers and precise sizes.",
+              "comps": [
+                {
+                  "evidence_id": "MA-2022-0350"
+                },
+                {
+                  "evidence_id": "MA-2021-0195"
+                }
+              ]
+            },
+            "risk_flags": [
+              {
+                "category": "execution_risk",
+                "description": "GTCR's Withdrawn adjacent-sector deals, Zenith Specialty Care in Physician Groups and Jefferson Surgical Systems in Medical Devices, show that not all sourced transactions with similar Geographic Expansion rationale reach close, indicating diligence or negotiation risk could similarly affect this target.",
+                "basis": "evidence",
+                "evidence_ids": [
+                  "MA-2023-0279",
+                  "MA-2020-0181"
+                ]
+              },
+              {
+                "category": "portfolio_conflict",
+                "description": "GTCR's Healthcare Services-adjacent activity spans multiple distinct sub-sectors (Dental, Physician Groups, Behavioral Health, Medical Devices) rather than concentrated Healthcare Services holdings, which may indicate integration or platform-fit complexity if this target is meant to anchor or bolt onto an existing healthcare platform not evidenced in this dataset.",
+                "basis": "judgment",
+                "evidence_ids": []
+              }
+            ],
+            "conviction": {
+              "level": "Medium",
+              "justification": "GTCR shows one relevant Closed Healthcare Services precedent and consistent Geographic Expansion themes across adjacent healthcare sub-sectors, supporting plausible buyer interest, but sector and size fit signals are moderate-to-low, and the sole direct-sector deal is far larger than this target, limiting confidence that this specific size and geography profile matches GTCR's demonstrated playbook."
+            },
+            "outside_dataset_notes": null,
+            "claims": [
+              {
+                "value": 14.0,
+                "metric": "deal_count",
+                "evidence_id": "stat:deal_count:GTCR"
+              },
+              {
+                "value": 11.0,
+                "metric": "closed_count",
+                "evidence_id": "stat:closed_count:GTCR"
+              },
+              {
+                "value": 0.0,
+                "metric": "pending_count",
+                "evidence_id": "stat:pending_count:GTCR"
+              },
+              {
+                "value": 14.0,
+                "metric": "resolved_count",
+                "evidence_id": "stat:resolved_count:GTCR"
+              },
+              {
+                "value": 0.7857142857142857,
+                "metric": "completion_rate",
+                "evidence_id": "stat:completion_rate:GTCR"
+              },
+              {
+                "value": 42.2,
+                "metric": "size_min_mm",
+                "evidence_id": "stat:size_min_mm:GTCR"
+              },
+              {
+                "value": 12956.5,
+                "metric": "size_max_mm",
+                "evidence_id": "stat:size_max_mm:GTCR"
+              },
+              {
+                "value": 911.4,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2018-0357"
+              },
+              {
+                "value": 200.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "stat:deal_size_mm:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 16.533333333333335,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "stat:ebitda_margin_pct:target-f845bbb2b448a7e2322c960fe6fdc9a5779c8ec7ef8edb07c843d87b547d5142"
+              },
+              {
+                "value": 15.3,
+                "metric": "median_ebitda_margin_pct",
+                "evidence_id": "stat:median_ebitda_margin_pct:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 13.6,
+                "metric": "median_ev_ebitda_multiple",
+                "evidence_id": "stat:median_ev_ebitda_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 2.7,
+                "metric": "median_ev_revenue_multiple",
+                "evidence_id": "stat:median_ev_revenue_multiple:closed-sector-Healthcare%20Services"
+              },
+              {
+                "value": 186.6,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 11.2,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 2.99,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 16.5,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2022-0350"
+              },
+              {
+                "value": 299.0,
+                "metric": "deal_size_mm",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 14.6,
+                "metric": "ev_ebitda_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 2.45,
+                "metric": "ev_revenue_multiple",
+                "evidence_id": "MA-2021-0195"
+              },
+              {
+                "value": 12.9,
+                "metric": "ebitda_margin_pct",
+                "evidence_id": "MA-2021-0195"
+              }
+            ]
+          },
+          "errors": [],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 2018",
+                "reasoning: stray number 0.49",
+                "reasoning: stray number 0.37",
+                "acquirer_overview: stray number 2018",
+                "strategic_fit_thesis: stray number 2018"
+              ],
+              "claims_total": 19,
+              "claims_verified": 19
+            },
+            {
+              "stage": "repair",
+              "status": "failed",
+              "errors": [
+                "reasoning: stray number 15x"
+              ],
+              "claims_total": 19,
+              "claims_verified": 19
+            },
+            {
+              "stage": "escalation",
+              "status": "verified",
+              "errors": [],
+              "claims_total": 21,
+              "claims_verified": 21
+            }
+          ],
+          "latency_seconds": 119.50860270904377,
+          "claims_total": 21,
+          "claims_verified": 21
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "acquirer_type": "Financial Sponsor",
+          "status": "failed",
+          "banner": "Unverified: Model response reached the output token limit; draft is incomplete",
+          "rationale": null,
+          "errors": [
+            "Model response reached the output token limit; draft is incomplete"
+          ],
+          "tools": [
+            "get_comparable_deals",
+            "get_sector_stats"
+          ],
+          "attempts": [
+            {
+              "stage": "analyst",
+              "status": "failed",
+              "errors": [
+                "Model response reached the output token limit; draft is incomplete"
+              ],
+              "claims_total": 0,
+              "claims_verified": 0
+            }
+          ],
+          "latency_seconds": 103.00008508306928,
+          "claims_total": 0,
+          "claims_verified": 0
+        }
+      ],
+      "calls": [
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 13068,
+          "output_tokens": 139,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2724,
+          "cost_usd": 0.028888,
+          "latency_ms": 3760.3015420027077,
+          "timing": {
+            "token_count_ms": 179.05325000174344,
+            "admission_ms": 0.0189170241355896,
+            "provider_ms": 3581.2293749768287
+          }
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 9833,
+          "output_tokens": 139,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0161528,
+          "latency_ms": 2373.9349159877747,
+          "timing": {
+            "token_count_ms": 216.50137496180832,
+            "admission_ms": 0.004790956154465675,
+            "provider_ms": 2157.428750069812
+          }
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 10140,
+          "output_tokens": 137,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0167468,
+          "latency_ms": 2522.2007911652327,
+          "timing": {
+            "token_count_ms": 234.59950019605458,
+            "admission_ms": 0.005124835297465324,
+            "provider_ms": 2287.5961661338806
+          }
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 10175,
+          "output_tokens": 139,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0168368,
+          "latency_ms": 2536.9252918753773,
+          "timing": {
+            "token_count_ms": 190.21020783111453,
+            "admission_ms": 0.010542105883359909,
+            "provider_ms": 2346.7045419383794
+          }
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 13413,
+          "output_tokens": 139,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.023312799999999998,
+          "latency_ms": 2887.870999984443,
+          "timing": {
+            "token_count_ms": 266.4215420372784,
+            "admission_ms": 0.006082933396100998,
+            "provider_ms": 2621.4433750137687
+          }
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 13539,
+          "output_tokens": 139,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0235648,
+          "latency_ms": 2800.983167020604,
+          "timing": {
+            "token_count_ms": 149.27283395081758,
+            "admission_ms": 0.005833106115460396,
+            "provider_ms": 2651.704499963671
+          }
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 13095,
+          "output_tokens": 195,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0232368,
+          "latency_ms": 2944.012291962281,
+          "timing": {
+            "token_count_ms": 214.48466693982482,
+            "admission_ms": 0.006749993190169334,
+            "provider_ms": 2729.520875029266
+          }
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 13149,
+          "output_tokens": 137,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.022764799999999998,
+          "latency_ms": 2979.3832499999553,
+          "timing": {
+            "token_count_ms": 158.37745810858905,
+            "admission_ms": 0.006624963134527206,
+            "provider_ms": 2820.9991669282317
+          }
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 10038,
+          "output_tokens": 139,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0165628,
+          "latency_ms": 3565.020333044231,
+          "timing": {
+            "token_count_ms": 245.01504097133875,
+            "admission_ms": 0.005125068128108978,
+            "provider_ms": 3320.000167004764
+          }
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 1,
+          "mode": "live",
+          "input_tokens": 13193,
+          "output_tokens": 139,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0228728,
+          "latency_ms": 3787.882416974753,
+          "timing": {
+            "token_count_ms": 176.66137497872114,
+            "admission_ms": 0.005166977643966675,
+            "provider_ms": 3611.215875018388
+          }
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18320,
+          "output_tokens": 3064,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0623768,
+          "latency_ms": 28168.970790924504,
+          "timing": {
+            "token_count_ms": 104.32720789685845,
+            "admission_ms": 0.012167030945420265,
+            "provider_ms": 28064.6314159967
+          }
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18948,
+          "output_tokens": 3368,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0666728,
+          "latency_ms": 32842.73704094812,
+          "timing": {
+            "token_count_ms": 132.57733290083706,
+            "admission_ms": 0.010167015716433525,
+            "provider_ms": 32710.14954103157
+          }
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 16055,
+          "output_tokens": 3337,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0605768,
+          "latency_ms": 30722.41612500511,
+          "timing": {
+            "token_count_ms": 102.77379187755287,
+            "admission_ms": 0.007207971066236496,
+            "provider_ms": 30619.635125156492
+          }
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 15713,
+          "output_tokens": 3417,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.060692800000000005,
+          "latency_ms": 31663.299874868244,
+          "timing": {
+            "token_count_ms": 105.95954209566116,
+            "admission_ms": 0.01091579906642437,
+            "provider_ms": 31557.329416973516
+          }
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 19792,
+          "output_tokens": 3411,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0687908,
+          "latency_ms": 31496.072083013132,
+          "timing": {
+            "token_count_ms": 96.77695785649121,
+            "admission_ms": 0.007875030860304832,
+            "provider_ms": 31399.28725012578
+          }
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 19029,
+          "output_tokens": 3408,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0672348,
+          "latency_ms": 32712.831916986033,
+          "timing": {
+            "token_count_ms": 112.80283308587968,
+            "admission_ms": 0.009999843314290047,
+            "provider_ms": 32600.01908405684
+          }
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 15918,
+          "output_tokens": 3697,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.06390280000000001,
+          "latency_ms": 33558.0409578979,
+          "timing": {
+            "token_count_ms": 150.51883296109736,
+            "admission_ms": 0.01037493348121643,
+            "provider_ms": 33407.51175000332
+          }
+        },
+        {
+          "acquirer": "Ardent Health Services",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 15047,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.06519080000000001,
+          "latency_ms": 36272.55608397536,
+          "timing": {
+            "token_count_ms": 93.16287515684962,
+            "admission_ms": 0.008499948307871819,
+            "provider_ms": 36179.3847088702
+          }
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 19073,
+          "output_tokens": 3826,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0715028,
+          "latency_ms": 35543.13458292745,
+          "timing": {
+            "token_count_ms": 100.00775009393692,
+            "admission_ms": 0.01074979081749916,
+            "provider_ms": 35443.116083042696
+          }
+        },
+        {
+          "acquirer": "Nordic Capital",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 22448,
+          "output_tokens": 3260,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0725928,
+          "latency_ms": 24568.965750047937,
+          "timing": {
+            "token_count_ms": 93.44366705045104,
+            "admission_ms": 0.011041061952710152,
+            "provider_ms": 24475.511041935533
+          }
+        },
+        {
+          "acquirer": "Steward Health Care",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 19678,
+          "output_tokens": 3066,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0651128,
+          "latency_ms": 24488.076499896124,
+          "timing": {
+            "token_count_ms": 116.82408303022385,
+            "admission_ms": 642.4577918369323,
+            "provider_ms": 23728.794625028968
+          }
+        },
+        {
+          "acquirer": "UPMC",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 19386,
+          "output_tokens": 3201,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0658788,
+          "latency_ms": 24981.891125207767,
+          "timing": {
+            "token_count_ms": 122.80087498947978,
+            "admission_ms": 295.6298750359565,
+            "provider_ms": 24563.46037518233
+          }
+        },
+        {
+          "acquirer": "Vista Equity",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 23376,
+          "output_tokens": 3458,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0764288,
+          "latency_ms": 28402.21945894882,
+          "timing": {
+            "token_count_ms": 112.03262489289045,
+            "admission_ms": 2504.13304194808,
+            "provider_ms": 25786.05379210785
+          }
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 22609,
+          "output_tokens": 3384,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0741548,
+          "latency_ms": 27851.229083025828,
+          "timing": {
+            "token_count_ms": 103.66304102353752,
+            "admission_ms": 2929.5509168878198,
+            "provider_ms": 24818.01512511447
+          }
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 19661,
+          "output_tokens": 3762,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0720388,
+          "latency_ms": 48814.941292162985,
+          "timing": {
+            "token_count_ms": 105.6574999820441,
+            "admission_ms": 20143.33933312446,
+            "provider_ms": 28565.94445905648
+          }
+        },
+        {
+          "acquirer": "Blackstone",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 23094,
+          "output_tokens": 3715,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0784348,
+          "latency_ms": 47163.120875135064,
+          "timing": {
+            "token_count_ms": 117.80508304946125,
+            "admission_ms": 18273.827834054828,
+            "provider_ms": 28771.487958030775
+          }
+        },
+        {
+          "acquirer": "New Mountain Capital",
+          "stage": "analyst",
+          "model": "claude-sonnet-5",
+          "attempt": 2,
+          "mode": "live",
+          "input_tokens": 18446,
+          "output_tokens": 4000,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0719888,
+          "latency_ms": 100045.01858400181,
+          "timing": {
+            "token_count_ms": 108.24133409187198,
+            "admission_ms": 0.005707843229174614,
+            "provider_ms": 99936.77154206671
+          }
+        },
+        {
+          "acquirer": "GTCR",
+          "stage": "escalation",
+          "model": "claude-opus-5",
+          "attempt": 4,
+          "mode": "live",
+          "input_tokens": 25968,
+          "output_tokens": 3536,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 2720,
+          "cost_usd": 0.22164,
+          "latency_ms": 55815.77316694893,
+          "timing": {
+            "token_count_ms": 119.47570787742734,
+            "admission_ms": 22197.54391699098,
+            "provider_ms": 33498.75354208052
+          }
+        },
+        {
+          "acquirer": "Francisco Partners",
+          "stage": "repair",
+          "model": "claude-sonnet-5",
+          "attempt": 3,
+          "mode": "live",
+          "input_tokens": 21551,
+          "output_tokens": 3012,
+          "cache_read_tokens": 2724,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.0683188,
+          "latency_ms": 90829.02866601944,
+          "timing": {
+            "token_count_ms": 124.87295805476606,
+            "admission_ms": 0.013708136975765228,
+            "provider_ms": 90704.1419998277
+          }
+        },
+        {
+          "acquirer": "Atrium Health",
+          "stage": "escalation",
+          "model": "claude-opus-5",
+          "attempt": 4,
+          "mode": "live",
+          "input_tokens": 23489,
+          "output_tokens": 3478,
+          "cache_read_tokens": 2720,
+          "cache_write_tokens": 0,
+          "cost_usd": 0.192155,
+          "latency_ms": 68423.51883393712,
+          "timing": {
+            "token_count_ms": 127.76308390311897,
+            "admission_ms": 33359.10500003956,
+            "provider_ms": 34936.65074999444
+          }
+        }
+      ],
+      "before_review": [],
+      "review": null,
+      "uncertain_cost_bound_usd": 0.0,
+      "tools_enabled": true,
+      "reviewer_enabled": false
+    }
+  ]
+}
