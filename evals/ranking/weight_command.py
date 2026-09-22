@@ -22,6 +22,7 @@ from acquirer_engine.data import Transaction, load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
 from acquirer_engine.factory import build_services, model_resources
+from acquirer_engine.llm.trace import ResponseArchive
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.replay import git_state
 from acquirer_engine.settings import Settings, load_settings
@@ -33,7 +34,7 @@ from evals.ranking.proposals import (
     proposal_settings,
     request_proposals,
 )
-from evals.ranking.weighting import ExperimentPolicy, load_policy, validate_candidates
+from evals.ranking.weighting import ExperimentPolicy, load_policy, validate_proposals
 
 
 def digest(text: str) -> str:
@@ -61,7 +62,7 @@ def _load(directory: Path) -> tuple[ProposalSnapshot, ProposalRun]:
         raise EvaluationError("Proposal source identity mismatch")
     if run.errors:
         raise EvaluationError("The proposal run failed; no hypotheses are eligible")
-    validate_candidates(run.candidates, snapshot.policy, snapshot.settings.scoring)
+    validate_proposals(run.candidates, snapshot.policy, snapshot.settings.scoring)
     return snapshot, run
 
 
@@ -122,7 +123,7 @@ async def _request(
             directory,
             snapshot.prompt,
             mode="replay" if source else "live",
-            cache_root=source / "cache" if source else None,
+            archive=ResponseArchive.from_trace(source / "trace.jsonl") if source else None,
         )
         try:
             proposed = await request_proposals(

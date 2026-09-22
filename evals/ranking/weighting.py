@@ -125,6 +125,16 @@ def concentrations(buyer: AcquirerHistory) -> dict[FeatureName, float]:
     }
 
 
+def validate_proposals(
+    candidates: list[Candidate], policy: ExperimentPolicy, config: RankingConfig
+) -> None:
+    """Reserve baseline identifiers before accepting external hypotheses."""
+    validate_candidates(candidates, policy, config)
+    reserved = {"shared", "global_popularity", "sector_popularity", "random"}
+    if any(candidate.name in reserved for candidate in candidates):
+        raise EvaluationError("Hypothesis name is reserved for a comparison method")
+
+
 def buyer_weights(
     candidate: Candidate,
     buyer: AcquirerHistory,

@@ -24,7 +24,7 @@ from evals.ranking.weighting import (
     ExperimentPolicy,
     buyer_weights,
     shared_candidate,
-    validate_candidates,
+    validate_proposals,
 )
 
 
@@ -80,9 +80,7 @@ def variants(
     candidates: list[Candidate], scoring: RankingConfig, policy: ExperimentPolicy
 ) -> list[Variant]:
     """Include the unchanged control and predeclared buyer adjustment for every profile."""
-    validate_candidates(candidates, policy, scoring)
-    if any(candidate.name == "shared" for candidate in candidates):
-        raise EvaluationError("The name shared is reserved for the unchanged control")
+    validate_proposals(candidates, policy, scoring)
     return [
         Variant(candidate=candidate, strength=strength)
         for candidate in [shared_candidate(scoring), *sorted(candidates, key=lambda c: c.name)]

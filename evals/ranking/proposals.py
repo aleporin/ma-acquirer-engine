@@ -6,7 +6,7 @@ Does not own: Client construction, statistical selection, or production scoring.
 
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, RootModel
+from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, RootModel
 from pydantic_ai import Agent, ModelRetry, ToolOutput
 from pydantic_ai.usage import UsageLimits
 
@@ -15,7 +15,7 @@ from acquirer_engine.errors import EvaluationError
 from acquirer_engine.llm.cost import CallRecord
 from acquirer_engine.llm.framing import data_block
 from acquirer_engine.settings import Settings
-from evals.ranking.weighting import Candidate, ExperimentPolicy, validate_candidates
+from evals.ranking.weighting import Candidate, ExperimentPolicy, validate_proposals
 
 
 class ProposalSet(BaseModel):
@@ -23,6 +23,48 @@ class ProposalSet(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
     candidates: list[Candidate]
+
+
+class WeightVector(BaseModel):
+    """Explicit fields survive the provider's strict JSON-schema transformation."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, allow_inf_nan=False)
+    sector_fit: PositiveFloat
+    size_fit: PositiveFloat
+    recency: PositiveFloat
+    completion: PositiveFloat
+    profile_fit: PositiveFloat
+    tag_fit: PositiveFloat
+    geography_fit: PositiveFloat
+    deal_type_fit: PositiveFloat
+
+
+class TypeWeights(BaseModel):
+    """Both buyer types are mandatory in the provider output grammar."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    sponsor: WeightVector = Field(alias="Financial Sponsor")
+    strategic: WeightVector = Field(alias="Strategic")
+
+
+class ProposedProfile(BaseModel):
+    """Wire format converted into a validated local candidate after generation."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    name: str
+    explanation: str
+    multipliers: TypeWeights
+
+
+class ProposalResponse(BaseModel):
+    """A closed provider schema with no unconstrained mapping fields."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    candidates: list[ProposedProfile]
+
+    def hypotheses(self) -> ProposalSet:
+        """Convert explicit wire fields into the internal bounded candidate contract."""
+        return ProposalSet.model_validate(self.model_dump(by_alias=True))
 
 
 class ProposalSnapshot(BaseModel):
@@ -81,20 +123,18 @@ async def request_proposals(
 ) -> ProposalSet:
     """Make exactly one recorded request, rejecting invalid hypotheses without retry."""
     recorded = deps.runtime.model
-    agent: Agent[None, ProposalSet] = Agent(
+    agent: Agent[None, ProposalResponse] = Agent(
         recorded,
-        output_type=ToolOutput(ProposalSet, strict=True),
+        output_type=ToolOutput(ProposalResponse, strict=True),
         instructions=prompt,
         retries=0,
         model_settings={"max_tokens": policy.max_output_tokens},
     )
 
     @agent.output_validator
-    def validate(output: ProposalSet) -> ProposalSet:
+    def validate(output: ProposalResponse) -> ProposalResponse:
         try:
-            validate_candidates(output.candidates, policy, deps.settings.scoring)
-            if any(candidate.name == "shared" for candidate in output.candidates):
-                raise EvaluationError("The name shared is reserved for the unchanged control")
+            validate_proposals(output.hypotheses().candidates, policy, deps.settings.scoring)
         except EvaluationError as error:
             raise ModelRetry(str(error)) from error
         return output
@@ -105,4 +145,4 @@ async def request_proposals(
             data_block("history", RootModel[dict[str, Any]](packet)),
             usage_limits=UsageLimits(request_limit=1),
         )
-    return result.output
+    return result.output.hypotheses()
