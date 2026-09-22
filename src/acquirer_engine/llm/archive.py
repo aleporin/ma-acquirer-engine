@@ -14,6 +14,8 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from acquirer_engine.data.schema import Transaction
 from acquirer_engine.errors import LLMInvalidOutput
 from acquirer_engine.evidence.pack import CorePack
+from acquirer_engine.feedback.ranking import FeedbackPolicy
+from acquirer_engine.feedback.state import FeedbackState
 from acquirer_engine.llm.results import RunId
 from acquirer_engine.settings import Settings
 
@@ -33,6 +35,8 @@ class RunSnapshot(BaseModel):
     auxiliary_prompts: dict[str, str] = Field(default_factory=dict)
     history: tuple[Transaction, ...]
     packs: tuple[CorePack, ...]
+    feedback: FeedbackState = Field(default_factory=FeedbackState)
+    feedback_policy: FeedbackPolicy | None = None
 
 
 def run_directory(root: Path, run_id: str) -> Path:

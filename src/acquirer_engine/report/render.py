@@ -45,6 +45,7 @@ def _context(snapshot: RunSnapshot, report: AnalystRun) -> dict[str, object]:
         for i, pack in enumerate(snapshot.packs, 1)
     ]
     return dict(
+        feedback=snapshot.feedback,
         buyers=buyers,
         report=report,
         target=snapshot.packs[0].target,
@@ -90,8 +91,13 @@ def render_report(
     for rank, pack in enumerate(snapshot.packs, 1):
         page = next(p for p in report.pages if p.acquirer == pack.ranking.acquirer)
         files[f"buyers/{rank:02d}.md"] = template.render(
-            rank=rank, ranking=pack.ranking, page=page, report=report
+            rank=rank, ranking=pack.ranking, page=page, report=report, feedback=snapshot.feedback
         )
+    _write_outputs(directory, files, report)
+    return directory / "index.html"
+
+
+def _write_outputs(directory: Path, files: dict[str, str], report: AnalystRun) -> None:
     run_json = report.model_dump_json(indent=2) + "\n"
     existing = directory / "run.json"
     if existing.exists():
@@ -106,4 +112,3 @@ def render_report(
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("x", encoding="utf-8") as stream:
             stream.write(content)
-    return directory / "index.html"

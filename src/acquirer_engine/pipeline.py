@@ -12,11 +12,9 @@ from time import perf_counter
 from pydantic_ai.models import Model
 
 from acquirer_engine.bootstrap import AnalystServices, build_services, model_resources
-from acquirer_engine.data.loader import load_transactions
 from acquirer_engine.data.schema import Transaction
 from acquirer_engine.deps import Deps
-from acquirer_engine.evidence.pack import CorePack, build_core_pack
-from acquirer_engine.features.acquirer import fit_features
+from acquirer_engine.evidence.pack import CorePack
 from acquirer_engine.llm.archive import RunSnapshot, save_snapshot
 from acquirer_engine.llm.batch import run_analysts
 from acquirer_engine.llm.cost import ExecutionMode
@@ -24,8 +22,8 @@ from acquirer_engine.llm.results import AnalystRun, PageResult
 from acquirer_engine.llm.review_schema import ReviewResult
 from acquirer_engine.llm.reviewer import review_portfolio
 from acquirer_engine.llm.trace_replay import ResponseArchive
-from acquirer_engine.ranking.scorer import rank_acquirers
-from acquirer_engine.ranking.target import assignment_target
+from acquirer_engine.selection import prepare_selection
+from acquirer_engine.target_input import TargetOverrides
 
 
 def prepare_inputs(root: Path, deps: Deps) -> tuple[tuple[Transaction, ...], list[CorePack]]:
@@ -37,22 +35,20 @@ def prepare_inputs(root: Path, deps: Deps) -> tuple[tuple[Transaction, ...], lis
     Returns:
         Eligible tool history and ordered candidate packs.
     """
-    rows = load_transactions(root / "data/ma_transactions_500.csv")
-    config = deps.settings.scoring
-    fitted = fit_features(rows, config, reference_year=config.reference_year)
-    history = tuple(row for buyer in fitted.acquirers.values() for row in buyer.rows)
-    target = assignment_target(history, config)
-    ranked = rank_acquirers(fitted, target, config)[: config.top_k]
-    packs = [
-        build_core_pack(fitted.acquirers[item.acquirer], item, target, deps.settings.evidence.pack)
-        for item in ranked
-    ]
-    deps.logger.info("ranking_computed", stage="ranking", rows=len(rows), candidates=len(packs))
-    return history, packs
+    selected = prepare_selection(root, deps)
+    return selected.history, list(selected.packs)
 
 
 async def execute_run(
-    root: Path, directory: Path, deps: Deps, sha: str, *, replay: bool, source_dirty: bool = False
+    root: Path,
+    directory: Path,
+    deps: Deps,
+    sha: str,
+    *,
+    replay: bool,
+    source_dirty: bool = False,
+    target_file: Path | None = None,
+    overrides: TargetOverrides | None = None,
 ) -> AnalystRun:
     """Execute replay without a client, or own one client for an explicitly fresh run.
 
@@ -65,7 +61,7 @@ async def execute_run(
     Returns:
         Persisted run with all page outcomes and observed usage.
     """
-    history, packs = prepare_inputs(root, deps)
+    selected = prepare_selection(root, deps, target_file=target_file, overrides=overrides)
     prompt = (root / "prompts" / deps.settings.analyst.prompt_file).read_text(encoding="utf-8")
     snapshot = RunSnapshot(
         run_id=directory.name,
@@ -74,8 +70,10 @@ async def execute_run(
         source_dirty=source_dirty,
         prompt=prompt,
         auxiliary_prompts=_load_prompts(root, deps),
-        history=history,
-        packs=tuple(packs),
+        history=selected.history,
+        packs=selected.packs,
+        feedback=selected.feedback,
+        feedback_policy=selected.feedback_policy,
     )
     async with model_resources(deps, replay=replay) as (model, escalation):
         return await execute_prepared(

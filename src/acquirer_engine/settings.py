@@ -23,6 +23,7 @@ from pydantic import (
 
 from acquirer_engine.errors import ConfigError
 from acquirer_engine.evidence.config import EvidenceConfig
+from acquirer_engine.feedback.ranking import FeedbackPolicy
 from acquirer_engine.llm.config import AnalystConfig
 from acquirer_engine.ranking.config import BacktestConfig, RankingConfig
 
@@ -145,3 +146,16 @@ def load_settings(config_dir: Path) -> Settings:
         scoring=_load_yaml(config_dir / "scoring.yaml", RankingConfig),
         evaluation=_load_yaml(config_dir / "eval.yaml", EvalConfig),
     )
+
+
+def load_feedback_policy(config_dir: Path) -> FeedbackPolicy:
+    """Load the product-only feedback policy independently of historical settings.
+
+    Args:
+        config_dir: Project configuration directory.
+    Returns:
+        Validated maximum similarity penalty.
+    Raises:
+        ConfigError: The file is missing or invalid.
+    """
+    return _load_yaml(config_dir / "feedback.yaml", FeedbackPolicy)

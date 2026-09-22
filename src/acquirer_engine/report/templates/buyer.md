@@ -1,6 +1,9 @@
 # {{ rank }}. {{ ranking.acquirer|md }}
 
 {{ ranking.acquirer_type|md }} · Score {{ '%.3f'|format(ranking.score) }} · {{ ranking.conviction }} conviction
+{% if feedback.flags %}
+Base score before feedback: {{ '%.3f'|format(ranking.signals.values()|sum(attribute='contribution')) }}. Displayed score includes the saved sector-profile similarity penalty.
+{% endif %}
 {% set rationale = page.rationale %}
 {% macro cite(id) -%}[{{ id|md }}](../index.html#{{ id|anchor }}){%- endmacro %}
 {% if page.status == 'verified' and rationale %}

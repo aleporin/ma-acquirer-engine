@@ -4,12 +4,12 @@ Owns: YAML precedence, measured default margins, and invalid-input rejection.
 Does not own: Buyer selection or provider access.
 """
 
-import importlib
 from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
 
+from acquirer_engine import target_input as module
 from acquirer_engine.errors import DataError
 from acquirer_engine.settings import Settings
 from tests.fixtures.ranking import transaction
@@ -18,7 +18,6 @@ from tests.fixtures.ranking import transaction
 def test_cli_overrides_yaml_and_margin_is_measured_for_selected_sector(
     settings: Settings, tmp_path: Path
 ) -> None:
-    module = importlib.import_module("acquirer_engine.target_input")
     path = tmp_path / "target.yaml"
     path.write_text("sector: Services\ndeal_size_mm: 100\ntags: []\n")
     rows = (transaction(1, ebitda_margin_pct=12), transaction(2, ebitda_margin_pct=24))
@@ -35,7 +34,6 @@ def test_cli_overrides_yaml_and_margin_is_measured_for_selected_sector(
 def test_invalid_target_yaml_fails_at_input_boundary(
     settings: Settings, tmp_path: Path, content: str
 ) -> None:
-    module = importlib.import_module("acquirer_engine.target_input")
     path = tmp_path / "target.yaml"
     path.write_text(content)
     with pytest.raises((DataError, ValidationError)):
@@ -43,7 +41,6 @@ def test_invalid_target_yaml_fails_at_input_boundary(
 
 
 def test_unobserved_sector_requires_explicit_margin(settings: Settings) -> None:
-    module = importlib.import_module("acquirer_engine.target_input")
     values = module.TargetOverrides(sector="New sector")
     with pytest.raises(DataError, match="margin"):
         module.resolve_target((transaction(),), settings.scoring, None, values)

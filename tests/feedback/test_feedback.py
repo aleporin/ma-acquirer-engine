@@ -4,7 +4,6 @@ Owns: Atomic state, canonical identity, and product ranking adjustments.
 Does not own: Learning scoring weights or changing evaluation baselines.
 """
 
-import importlib
 from pathlib import Path
 from shutil import copytree
 
@@ -14,6 +13,8 @@ from typer.testing import CliRunner
 from acquirer_engine.cli import build_app
 from acquirer_engine.errors import DataError
 from acquirer_engine.features.acquirer import fit_features
+from acquirer_engine.feedback import ranking, state
+from acquirer_engine.feedback import state as module
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.ranking.target import assignment_target
 from acquirer_engine.settings import Settings
@@ -21,7 +22,6 @@ from tests.fixtures.ranking import transaction
 
 
 def test_state_canonicalizes_names_and_preserves_other_flags(tmp_path: Path) -> None:
-    module = importlib.import_module("acquirer_engine.feedback.state")
     path = tmp_path / "feedback.json"
     module.save_flag(path, " buyer a ", "conflict", {"Buyer A", "Buyer B"})
     module.save_flag(path, "Buyer B", "not a fit", {"Buyer A", "Buyer B"})
@@ -38,7 +38,6 @@ def test_state_canonicalizes_names_and_preserves_other_flags(tmp_path: Path) -> 
 
 
 def test_corrupt_feedback_is_never_silently_replaced(tmp_path: Path) -> None:
-    module = importlib.import_module("acquirer_engine.feedback.state")
     path = tmp_path / "feedback.json"
     path.write_text("broken state")
     with pytest.raises(DataError, match="feedback"):
@@ -47,8 +46,6 @@ def test_corrupt_feedback_is_never_silently_replaced(tmp_path: Path) -> None:
 
 
 def test_flagged_buyer_excluded_and_similar_profile_downweighted(settings: Settings) -> None:
-    state = importlib.import_module("acquirer_engine.feedback.state")
-    ranking = importlib.import_module("acquirer_engine.feedback.ranking")
     rows = (
         transaction(1, acquirer="Blocked", sector="Healthcare Services"),
         transaction(2, acquirer="Similar", sector="Healthcare Services"),
@@ -57,7 +54,7 @@ def test_flagged_buyer_excluded_and_similar_profile_downweighted(settings: Setti
     fitted = fit_features(rows, settings.scoring, reference_year=2024)
     target = assignment_target(rows, settings.scoring)
     original = rank_acquirers(fitted, target, settings.scoring)
-    flags = state.FeedbackState(flags=[state.BuyerFlag(acquirer="Blocked", reason="conflict")])
+    flags = state.FeedbackState(flags=(state.BuyerFlag(acquirer="Blocked", reason="conflict"),))
     adjusted = ranking.apply_feedback(original, fitted, flags, 0.2, settings.scoring)
     scores = {item.acquirer: item.score for item in original}
     assert {item.acquirer for item in adjusted} == {"Similar", "Unrelated"}

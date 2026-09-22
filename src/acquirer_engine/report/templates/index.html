@@ -16,6 +16,8 @@
 <span class="badge">{{ buyers|length }} buyers</span>
 <span class="badge">{{ strategics }} Strategic / {{ sponsors }} Financial Sponsor</span>
 <span class="badge">{{ verified }}/{{ buyers|length }} pages verified</span>
+{% if feedback.flags %}<p class="meta">Saved feedback is active. Scores include a multiplicative discount for sector-profile similarity to excluded buyers. Base scores remain the sum of the recorded feature contributions.</p>
+<ul class="meta">{% for flag in feedback.flags %}<li>Excluded: {{ flag.acquirer }} — {{ flag.reason }}</li>{% endfor %}</ul>{% endif %}
 </header>
 <section aria-label="Ranked shortlist">
 <h2>The shortlist</h2>
@@ -34,6 +36,7 @@
 <h2>{{ page.acquirer }}</h2>
 <div class="meta">Score {{ '%.3f'|format(buyer.ranking.score) }} · {{ buyer.ranking.conviction }} conviction · <a href="#top">Back to shortlist</a></div>
 {% if page.status == 'verified' and rationale %}
+{% if feedback.flags %}<p class="meta">Base score before feedback: {{ '%.3f'|format(buyer.ranking.signals.values()|sum(attribute='contribution')) }}</p>{% endif %}
 <h3>Acquirer overview</h3><p>{{ rationale.acquirer_overview }}</p>
 <h3>Strategic fit</h3><p class="thesis">{{ rationale.strategic_fit_thesis }}</p>
 <h3>Precedent activity</h3>
