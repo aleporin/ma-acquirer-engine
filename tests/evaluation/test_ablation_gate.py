@@ -118,6 +118,8 @@ def test_later_limits_do_not_erase_tools_disabled_evidence_rejections(
     assert result.metrics["live_tools_disabled_validation_failure_rate"].value == 0
     assert result.metrics["live_tools_disabled_evidence_rejection_rate"].value == 1
     assert result.metrics["live_gate_met"].value == 1
+    assert result.metrics["live_tools_disabled_budget_termination_rate"].direction == "lower"
+    assert result.metrics["live_tools_disabled_deadline_termination_rate"].direction == "lower"
     assert result.status == "passed"
 
 

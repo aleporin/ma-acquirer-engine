@@ -55,7 +55,9 @@ def test_missing_response_stays_missing_even_when_another_run_has_it(tmp_path: P
         archive.load("Buyer", 1, [ModelRequest(parts=[UserPromptPart("Original question")])])
 
 
-@pytest.mark.parametrize("corruption", ["duplicate", "invalid_json", "orphan_response"])
+@pytest.mark.parametrize(
+    "corruption", ["duplicate", "invalid_json", "orphan_response", "invalid_validation"]
+)
 def test_corrupt_archives_fail_explicitly(tmp_path: Path, corruption: str) -> None:
     trace = TraceWriter(tmp_path / "trace.jsonl")
     exchange(trace, "Buyer", "Answer")
@@ -64,6 +66,8 @@ def test_corrupt_archives_fail_explicitly(tmp_path: Path, corruption: str) -> No
     elif corruption == "invalid_json":
         with trace.path.open("a") as stream:
             stream.write("broken\n")
+    elif corruption == "invalid_validation":
+        trace.write("validation_completed", "Buyer")
     else:
         trace.write("model_responded", "Other", attempt=1, response=ModelResponse(parts=[]))
     with pytest.raises(LLMInvalidOutput, match="archive"):
