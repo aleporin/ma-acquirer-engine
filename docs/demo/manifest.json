@@ -1,47 +1,50 @@
 {
-  "recorded_at": "2026-09-22T11:23:49.534Z",
-  "executing_git_sha": "274fd86d73929cfd9da62a1f392e91d75d894a21",
+  "recorded_at": "2026-09-22T18:50:37.832Z",
+  "executing_git_sha": "51e1c0024dee6c8674a0b067156b075dc4c08ecc",
   "source_dirty": false,
-  "replay_run_id": "0878364c02ca48209dddd7d57baf6f46",
-  "replay_of": "22a363190aaf46a8a8db09c961fe3c23",
+  "replay_run_id": "92de78e7f92b4626aa1af0565583c360",
+  "replay_of": "fd394967475d4b19905d473fe26b903f",
   "mode": "replay",
+  "live_run_id": "fd394967475d4b19905d473fe26b903f",
+  "live_seconds": 48.17591949994676,
+  "live_returned_cost_usd": 1.8639299999999999,
   "verified_pages": 10,
-  "recorded_responses": 27,
+  "recorded_responses": 21,
   "new_provider_cost_usd": 0,
-  "comparison_run_id": "0bb25e95dc0949468d8282857907f377",
+  "comparison_run_id": "dfebd6a04e5146028e6e903e6485b35e",
   "comparison_new_provider_cost_usd": 0,
   "narration": "Silent screen demonstration; chapter guide in docs/DEMO.md",
   "chapters": [
     {
-      "seconds": 0.008,
+      "seconds": 0.034,
       "title": "Run the report without keys"
     },
     {
-      "seconds": 6.605,
+      "seconds": 6.642,
       "title": "Open the ten-buyer report"
     },
     {
-      "seconds": 14.686,
+      "seconds": 14.729,
       "title": "Read a buyer rationale"
     },
     {
-      "seconds": 23.26,
+      "seconds": 23.287,
       "title": "Inspect risks and conviction"
     },
     {
-      "seconds": 28.809,
+      "seconds": 28.831,
       "title": "Follow the citation to source evidence"
     },
     {
-      "seconds": 35.373,
+      "seconds": 35.401,
       "title": "Distinguish replay and historical live costs"
     },
     {
-      "seconds": 41.897,
+      "seconds": 41.922,
       "title": "Compare two targets without model calls"
     },
     {
-      "seconds": 49.458,
+      "seconds": 49.492,
       "title": "Review measured limitations"
     }
   ]
