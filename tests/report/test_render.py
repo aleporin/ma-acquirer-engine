@@ -100,3 +100,24 @@ def test_missing_reference_is_rejected_before_any_files_are_written(
     with pytest.raises(DataError, match="evidence"):
         render.render_report(snapshot.model_copy(update={"history": ()}), report, tmp_path)
     assert list(tmp_path.iterdir()) == before
+
+
+def test_report_templates_work_outside_the_project_directory(
+    deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    snapshot, report = report_inputs(deps)
+    expected, actual = tmp_path / "expected", tmp_path / "actual"
+    render.render_report(snapshot, report, expected)
+    monkeypatch.chdir(tmp_path)
+
+    render.render_report(snapshot, report, actual)
+
+    assert {
+        str(path.relative_to(actual)): path.read_bytes()
+        for path in actual.rglob("*")
+        if path.is_file()
+    } == {
+        str(path.relative_to(expected)): path.read_bytes()
+        for path in expected.rglob("*")
+        if path.is_file()
+    }
