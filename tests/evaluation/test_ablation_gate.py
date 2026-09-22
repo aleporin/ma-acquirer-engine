@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from acquirer_engine.llm.results import PageAttempt, PageResult
+from acquirer_engine.llm.results import AnalystRun, PageAttempt, PageResult
 from acquirer_engine.llm.review_schema import ReviewResult, ReviewVerdict
 from acquirer_engine.settings import LayerSpec, Settings
 from evals.phase1 import PreparedEvaluation
@@ -142,3 +142,25 @@ def test_phase_gate_requires_both_reviewer_variants(settings: Settings, tmp_path
     )
     paths = measured_cohort(settings, tmp_path, "Run deadline exceeded")
     assert operations(settings, paths[1:]).status == "failed"
+
+
+@pytest.mark.parametrize("count", [0, 1])
+def test_review_success_requires_a_verdict_for_every_buyer(
+    settings: Settings, tmp_path: Path, count: int
+) -> None:
+    settings = settings.model_copy(
+        update={"scoring": settings.scoring.model_copy(update={"top_k": 2})}
+    )
+    paths = measured_cohort(settings, tmp_path, "Run deadline exceeded")
+    reviewed = AnalystRun.model_validate_json(
+        paths[0].read_text(), context=settings.evidence.validation
+    )
+    assert reviewed.review is not None
+    review = reviewed.review.model_copy(update={"verdicts": reviewed.review.verdicts[:count]})
+    paths[0].write_text(reviewed.model_copy(update={"review": review}).model_dump_json())
+    assert operations(settings, paths).status == "failed"
+
+
+def test_missing_normal_cohort_produces_a_failed_gate(settings: Settings, tmp_path: Path) -> None:
+    paths = measured_cohort(settings, tmp_path, "Run deadline exceeded")
+    assert operations(settings, paths[:2]).status == "failed"
