@@ -1,5 +1,20 @@
 # Architecture decisions
 
+## 2026-09-22 — Correct interpretation at the evidence and report boundaries
+
+Context: correct numeric claims still allowed an inverted margin comparison,
+overstated completion history, and unsupported claims about missing precedents.
+Decision: prioritize exact-sector buyer rows before recency within the existing
+pack caps, expose Closed/Pending/resolved counts, and reject recognized explicit
+target-versus-Closed-sector median margin inversions. Version the analyst prompt
+to distinguish tags, outcomes, ownership fields, and incomplete query populations.
+Show canonical deal financials next to the prose, rather than only in an appendix.
+Alternatives considered: edit archived prose in place, force new convictions, or
+build a general semantic-verification system.
+Consequence: archived failures remain intact. The margin check has deliberately
+narrow language coverage; numeric and schema checks do not certify all prose.
+New generated samples need separate measurement and a factual read-through.
+
 ## 2026-09-22 — Preserve measurements independently of release status
 
 Context: working report output and green CI do not establish live speed,

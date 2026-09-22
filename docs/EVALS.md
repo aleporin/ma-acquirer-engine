@@ -61,6 +61,9 @@ that universe and remain misses for every method.
 A query uses target sector, EV, margin, geography, and prior ownership, never the
 held-out acquirer, outcome, deal type, or post-deal rationale tags. Actual transaction
 EV still makes this retrospective. Synthetic assignment limits external validity.
+The cutoff uses announcement year. Final outcomes are available in the CSV, but
+their historical change dates are not; completion rates are not a fully
+point-in-time reconstruction of what was known on each announcement date.
 
 Recall@10, full-list MRR, and nDCG@10 use one relevant buyer per query. All methods
 share the same candidates and denominator. Paired bootstrap intervals resample

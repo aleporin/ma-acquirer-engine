@@ -57,6 +57,8 @@ For a deeper inspection, follow the boundary relevant to the question:
 | Which facts were supplied initially? | `evidence/pack.py` |
 | Which facts did the model actually fetch? | `llm/bindings.py`, `llm/tools.py`, `llm/context.py` |
 | Why did a number or citation fail? | `validation/claims.py`, `validation/numbers.py` |
+| Which explicit margin comparisons are checked? | `validation/comparisons.py`; this is not general semantic verification |
+| Where do visible deal financials come from? | `report/facts.py` resolves cited source rows; templates display their stated values |
 | How is feedback attached to a rejected draft? | `validation/repair.py` |
 | Why did a request wait or stop? | `llm/recording.py`, `llm/budget.py`, `llm/client.py` |
 | What did a returned response cost? | `llm/cost.py` and the call entries in `run.json` |
@@ -66,6 +68,11 @@ Shared state reaches code through `Deps.runtime`. Each buyer has its own
 `ToolState`, accessed by the framework through `PageDeps`. The verifier sees only
 that buyer's core evidence and actual returned tool evidence. The saved
 `PageSession` retains the conversation for a possible reviewer revision.
+
+The core pack prioritizes exact target-sector deals before recency, retaining the
+same row and byte caps. Closed, Pending and resolved counts retain the full buyer
+history scope even when displayed rows are truncated. The analyst still needs
+tools for Closed valuation comps and population sector benchmarks.
 
 ## Live, cache replay, and historical replay
 
