@@ -68,6 +68,7 @@ class ExperimentReport(BaseModel):
     """Exploratory results retain the complete search and uncertainty policy."""
 
     exploratory: bool = True
+    top_k: int
     policy: ExperimentPolicy
     candidates: list[Candidate]
     selection: Selection
@@ -243,5 +244,10 @@ def run_experiment(
         for baseline in ("shared", "global_popularity", "sector_popularity", "random")
     }
     return ExperimentReport(
-        policy=policy, candidates=candidates, selection=selection, benchmark=benchmark, lift=lift
+        top_k=scoring.top_k,
+        policy=policy,
+        candidates=candidates,
+        selection=selection,
+        benchmark=benchmark,
+        lift=lift,
     )

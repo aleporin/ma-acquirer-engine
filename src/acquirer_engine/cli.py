@@ -30,6 +30,7 @@ from acquirer_engine.stages.select import TargetOverrides
 from evals.command import run_evaluation
 from evals.diff import compare_scorecards
 from evals.judges.command import eval_judges, prepare_judges
+from evals.ranking.weight_command import experiment_weights, propose_weights
 from evals.scorecard import read_scorecard
 
 
@@ -247,6 +248,8 @@ def build_app() -> typer.Typer:
     app.command("runs")(show_runs)
     app.command("flag")(flag_buyer)
     app.command("compare")(compare_targets)
+    app.command("propose-weights")(propose_weights)
+    app.command("experiment-weights")(experiment_weights)
     return app
 
 
