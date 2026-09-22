@@ -80,7 +80,7 @@ class LayerSpec(ConfigModel):
 class EvalConfig(ConfigModel):
     """Select offline layers without enabling provider calls."""
 
-    phase: Literal["p0", "p1", "p2", "p3", "p4", "p5"]
+    phase: Literal["p0", "p1", "p2", "p3", "p4", "p5", "p6"]
     seed: NonNegativeInt
     prompt_version: Annotated[str, Field(min_length=1)]
     quality: QualityLimits
@@ -101,7 +101,7 @@ class EvalConfig(ConfigModel):
         ids = [layer.id for layer in self.layers]
         if sorted(ids) != list(range(7)):
             raise ValueError("Define each layer from 0 through 6 exactly once")
-        allowed = set(ids) if self.phase == "p5" else set(ids) - {4}
+        allowed = set(ids) if self.phase in {"p5", "p6"} else set(ids) - {4}
         for selection in (self.offline_layers, self.ci_layers):
             if not selection or len(selection) != len(set(selection)):
                 raise ValueError("Layer selection must be nonempty and unique")

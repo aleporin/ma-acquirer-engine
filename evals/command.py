@@ -41,7 +41,7 @@ def _produce_scorecard(
     judge_run: Path | None = None,
 ) -> tuple[Path, Scorecard]:
     prepared = PreparedEvaluation({}, {})
-    if deps.settings.evaluation.phase in {"p1", "p2", "p3", "p4", "p5"}:
+    if deps.settings.evaluation.phase in {"p1", "p2", "p3", "p4", "p5", "p6"}:
         rows = load_transactions(root / "data/ma_transactions_500.csv")
         deps.logger.info("csv_loaded", stage="eval", rows=len(rows))
         config = deps.settings.evaluation
@@ -53,13 +53,13 @@ def _produce_scorecard(
         unit = grade_unit(next(layer for layer in config.layers if layer.id == 0), report)
         prepared = prepare_phase1(rows, deps, unit)
         verify_snapshot(root, prepared.artifacts["top10.json"])
-    if deps.settings.evaluation.phase in {"p2", "p3", "p4", "p5"}:
+    if deps.settings.evaluation.phase in {"p2", "p3", "p4", "p5", "p6"}:
         prepared = prepare_phase2(prepared, root, deps.settings.evidence.validation)
     if deps.settings.evaluation.phase == "p3":
         prepared = prepare_phase3(prepared, analyst_runs or [], deps.settings)
-    if deps.settings.evaluation.phase in {"p4", "p5"}:
+    if deps.settings.evaluation.phase in {"p4", "p5", "p6"}:
         prepared = prepare_phase4(prepared, analyst_runs or [], deps.settings)
-    if judge_run is not None and deps.settings.evaluation.phase == "p5":
+    if judge_run is not None and deps.settings.evaluation.phase in {"p5", "p6"}:
         prepared = prepare_phase5(prepared, judge_run)
     card = evaluate(deps, run, selection, graders=prepared.graders)
     path = write_scorecard(card, results, artifacts=prepared.artifacts)

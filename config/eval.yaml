@@ -1,4 +1,4 @@
-phase: p5
+phase: p6
 seed: 42
 prompt_version: analyst_v4+sparse_v1+reviewer_v1
 quality:
