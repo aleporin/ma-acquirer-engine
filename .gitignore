@@ -15,5 +15,6 @@ dist/
 .worktrees/
 runs/
 state/
+!cache/
 cache/*
 !cache/replay/
