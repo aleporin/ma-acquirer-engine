@@ -1,0 +1,13 @@
+{
+  "source_git_sha": "cecd319d846cd480817cf6e940ec43eb52519f81",
+  "source_dirty": false,
+  "run_id": "b6976a22ede94a9cb0de4a7e61c623af",
+  "replay_of": "fd394967475d4b19905d473fe26b903f",
+  "compared_sample_run_id": "92de78e7f92b4626aa1af0565583c360",
+  "identical_pages_excluding_timing": 10,
+  "identical_markdown_bodies_excluding_provenance_footer": 10,
+  "identical_recorded_calls_excluding_timing": 21,
+  "new_cost_usd": 0.0,
+  "config_prompts_archives_sample_unchanged": true,
+  "scope": "Behavior preservation of the selected archived run; not a new live quality or performance measurement."
+}
