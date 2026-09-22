@@ -4,7 +4,6 @@ Owns: Evidence links, safe display, complete output, and archive immutability.
 Does not own: Narrative generation or browser print pagination.
 """
 
-import importlib
 import json
 import re
 from pathlib import Path
@@ -15,6 +14,7 @@ from acquirer_engine.deps import Deps
 from acquirer_engine.errors import DataError
 from acquirer_engine.llm.archive import RunSnapshot
 from acquirer_engine.llm.results import AnalystRun
+from acquirer_engine.report import render
 from tests.fixtures.rationale import rationale_payload
 from tests.llm.test_run_archive import inputs
 
@@ -54,7 +54,6 @@ def test_report_has_public_sections_resolvable_evidence_and_no_working_notes(
     deps: Deps, tmp_path: Path
 ) -> None:
     snapshot, report = report_inputs(deps)
-    render = importlib.import_module("acquirer_engine.report.render")
     render.render_report(snapshot, report, tmp_path)
     html = (tmp_path / "index.html").read_text()
     markdown = (tmp_path / "buyers/01.md").read_text()
@@ -75,7 +74,6 @@ def test_report_has_public_sections_resolvable_evidence_and_no_working_notes(
 def test_failed_page_shows_errors_instead_of_unverified_draft(deps: Deps, tmp_path: Path) -> None:
     snapshot, report = report_inputs(deps)
     failed = report.pages[0].model_copy(update={"status": "failed", "errors": ["bad claim"]})
-    render = importlib.import_module("acquirer_engine.report.render")
     render.render_report(snapshot, report.model_copy(update={"pages": [failed]}), tmp_path)
     html = (tmp_path / "index.html").read_text()
     assert "bad claim" in html and "Failed verification" in html
@@ -85,7 +83,6 @@ def test_failed_page_shows_errors_instead_of_unverified_draft(deps: Deps, tmp_pa
 
 def test_report_refuses_mismatched_identity_and_existing_output(deps: Deps, tmp_path: Path) -> None:
     snapshot, report = report_inputs(deps)
-    render = importlib.import_module("acquirer_engine.report.render")
     with pytest.raises(DataError, match="identity"):
         render.render_report(snapshot, report.model_copy(update={"run_id": "b" * 32}), tmp_path)
     render.render_report(snapshot, report, tmp_path)
@@ -99,7 +96,7 @@ def test_missing_reference_is_rejected_before_any_files_are_written(
     deps: Deps, tmp_path: Path
 ) -> None:
     snapshot, report = report_inputs(deps)
-    render = importlib.import_module("acquirer_engine.report.render")
+    before = list(tmp_path.iterdir())
     with pytest.raises(DataError, match="evidence"):
         render.render_report(snapshot.model_copy(update={"history": ()}), report, tmp_path)
-    assert list(tmp_path.iterdir()) == []
+    assert list(tmp_path.iterdir()) == before

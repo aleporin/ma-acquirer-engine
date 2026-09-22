@@ -1,0 +1,41 @@
+:root { color-scheme: light; --ink: #17362d; --muted: #586b62; --line: #d5ddd5; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f3f4ee; color: #202e28; font: 16px/1.6 Georgia, serif; }
+main { max-width: 1080px; margin: auto; padding: 44px 48px; }
+h1, h2, h3, th, .eyebrow, .meta, .badge { font-family: system-ui, sans-serif; }
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.12; margin: 12px 0 24px; }
+h2 { font-size: 1.85rem; line-height: 1.2; color: var(--ink); }
+h3 { font-size: 1rem; margin: 28px 0 8px; color: var(--ink); }
+a { color: #255e4d; text-underline-offset: 3px; overflow-wrap: anywhere; }
+p { margin: 10px 0 18px; }
+header { padding-bottom: 28px; border-bottom: 3px solid var(--ink); }
+.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .74rem; color: var(--muted); }
+.meta, .badge, figcaption { font-size: .8rem; color: var(--muted); }
+.meta { overflow-wrap: anywhere; }
+.badge { display: inline-block; border: 1px solid var(--line); padding: 3px 10px; border-radius: 5px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+th { font-size: .73rem; text-align: left; text-transform: uppercase; letter-spacing: .04em; }
+td, th { vertical-align: top; border-bottom: 1px solid var(--line); padding: 12px 10px 12px 0; }
+article { background: #fffef9; margin: 36px 0; padding: 34px 38px; border: 1px solid var(--line); }
+article h2 { margin: 8px 0 12px; }
+.thesis { font-size: 1.12rem; border-left: 3px solid #91b09f; padding-left: 20px; }
+.risks { padding-left: 22px; }
+.risks li { margin: 14px 0; }
+.outside, .failure { padding: 16px 20px; background: #f8f0dd; border-left: 3px solid #ac7e36; }
+.outside h3 { margin-top: 0; }
+.appendix { font-size: .85rem; }
+.appendix td { overflow-wrap: anywhere; }
+footer { border-top: 2px solid var(--ink); padding: 22px 0; }
+:target { outline: 2px solid #91b09f; outline-offset: 5px; }
+@media (max-width: 640px) { main { padding: 24px 16px; } article { padding: 22px 18px; } }
+@media print {
+  body { background: white; font-size: 10pt; }
+  main { max-width: none; padding: 0; }
+  article { break-before: page; border: 0; margin: 0; padding: 0; }
+  h3, tr { break-inside: avoid; }
+  h3 { break-after: avoid; }
+  .table-wrap { overflow: visible; }
+  .appendix { break-before: page; }
+  a { text-decoration: none; color: inherit; }
+}

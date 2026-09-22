@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acquirer shortlist — {{ target.sector }}</title>
+<style>{% include 'style.css' %}</style>
+</head>
+<body><main>
+{% macro cite(id) -%}<a href="#{{ id|anchor }}">{{ id }}</a>{%- endmacro %}
+<header id="top">
+<div class="eyebrow">Acquirer research / {{ report.mode }}</div>
+<h1>Potential acquirers.<br>A case for each.</h1>
+<p>{{ target.sector }} · ${{ '%g'|format(target.deal_size_mm) }}M enterprise value · {{ target.geography }} · {{ target.ownership }}</p>
+<p class="meta">EBITDA margin assumption: {{ '%.2f'|format(target.ebitda_margin_pct) }}%. Ranking reflects the supplied transaction history; scores are relative fit measures, not acquisition probabilities.</p>
+<span class="badge">{{ buyers|length }} buyers</span>
+<span class="badge">{{ strategics }} Strategic / {{ sponsors }} Financial Sponsor</span>
+<span class="badge">{{ verified }}/{{ buyers|length }} pages verified</span>
+</header>
+<section aria-label="Ranked shortlist">
+<h2>The shortlist</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Rank</th><th>Acquirer / type</th><th>Score</th><th>Conviction</th><th>Fit thesis</th></tr></thead>
+<tbody>{% for buyer in buyers %}<tr>
+<td>{{ buyer.rank }}</td><td><a href="#buyer-{{ buyer.rank }}">{{ buyer.ranking.acquirer }}</a><br><span class="meta">{{ buyer.ranking.acquirer_type }}</span></td>
+<td>{{ '%.3f'|format(buyer.ranking.score) }}</td><td>{{ buyer.ranking.conviction }}</td>
+<td>{% if buyer.page.status == 'verified' and buyer.page.rationale %}{{ buyer.page.rationale.strategic_fit_thesis|truncate(170) }}{% else %}Failed verification{% endif %}</td>
+</tr>{% endfor %}</tbody></table></div>
+</section>
+{% for buyer in buyers %}
+{% set page = buyer.page %}{% set rationale = page.rationale %}
+<article id="buyer-{{ buyer.rank }}">
+<div class="eyebrow">Buyer {{ buyer.rank }} / {{ buyer.ranking.acquirer_type }}</div>
+<h2>{{ page.acquirer }}</h2>
+<div class="meta">Score {{ '%.3f'|format(buyer.ranking.score) }} · {{ buyer.ranking.conviction }} conviction · <a href="#top">Back to shortlist</a></div>
+{% if page.status == 'verified' and rationale %}
+<h3>Acquirer overview</h3><p>{{ rationale.acquirer_overview }}</p>
+<h3>Strategic fit</h3><p class="thesis">{{ rationale.strategic_fit_thesis }}</p>
+<h3>Precedent activity</h3>
+<ul>{% for item in rationale.precedent_activity %}<li>{{ item.description }} {{ cite(item.transaction_id) }}</li>{% endfor %}</ul>
+<h3>Valuation context · Closed transactions</h3><p>{{ rationale.valuation_context.summary }}</p>
+<p class="meta">Comparable evidence: {% for comp in rationale.valuation_context.comps %}{{ cite(comp.evidence_id) }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+<h3>Risks to the thesis</h3>
+<ul class="risks">{% for risk in rationale.risk_flags %}<li><strong>{{ risk.category|replace('_', ' ')|capitalize }} · {{ risk.basis }}</strong><br>{{ risk.description }}
+{% for id in risk.evidence_ids %}{{ cite(id) }} {% endfor %}</li>{% endfor %}</ul>
+<h3>Conviction · {{ buyer.ranking.conviction }}</h3><p>{{ rationale.conviction.justification }}</p>
+{% if rationale.outside_dataset_notes %}<aside class="outside"><h3>Unverified model knowledge</h3>
+<p>{{ rationale.outside_dataset_notes }}</p><p class="meta">Outside the supplied dataset. Training cutoff: not recorded in the archived model metadata.</p></aside>{% endif %}
+<details><summary>Numeric claim sources</summary><ul>{% for claim in rationale.claims %}<li>{{ claim.metric }}: {{ '%g'|format(claim.value) }} — {{ cite(claim.evidence_id) }}</li>{% endfor %}</ul></details>
+{% else %}<div class="failure"><h3>Failed verification</h3><p>{{ page.banner or 'This page is unavailable.' }}</p><ul>{% for error in page.errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
+</article>{% endfor %}
+<section class="appendix" id="appendix">
+<h2>Evidence appendix</h2>
+<p>Transactions cited above, preserved from this run's input. Dollar amounts are in millions. Multiples are the dataset's stated values.</p>
+{% for row in rows %}<div id="{{ row.transaction_id|anchor }}"><h3>{{ row.transaction_id }} · {{ row.target_company }}</h3>
+<p>{{ row.acquirer }} · {{ row.sector }} · {{ row.deal_year }} {{ row.deal_quarter }} · {{ row.geography }} · {{ row.outcome }}</p>
+<p>EV ${{ '%g'|format(row.deal_size_mm) }}M · Revenue ${{ '%g'|format(row.target_revenue_mm) }}M · EBITDA ${{ '%g'|format(row.target_ebitda_mm) }}M · EBITDA margin {{ '%g'|format(row.ebitda_margin_pct) }}% · EV/EBITDA {{ '%g'|format(row.ev_ebitda_multiple) }}x · EV/Revenue {{ '%g'|format(row.ev_revenue_multiple) }}x</p>
+<p>{{ row.deal_type }} · {{ row.financing_type }} · {{ row.num_bidders }} bidders · {{ row.strategic_rationale_tags }}</p></div>{% endfor %}
+<h3>Computed facts</h3><p>Computed from the frozen eligible transaction history or target assumptions; scope is encoded in each evidence ID.</p>
+<table><thead><tr><th>Evidence ID</th><th>Metric</th><th>Value</th></tr></thead><tbody>
+{% for stat in statistics %}<tr id="{{ stat.evidence_id|anchor }}"><td>{{ stat.evidence_id }}</td><td>{{ stat.metric }}</td><td>{{ '%g'|format(stat.value) }}</td></tr>{% endfor %}
+</tbody></table></section>
+<footer class="meta">
+<p>Run {{ report.run_id }} · {{ report.mode }} · {{ report.prompt_version }}<br>Models: {{ models|join(', ') or 'No model responses recorded' }}<br>New model cost: ${{ '%.4f'|format(cost) }} · Execution: {{ '%.2f'|format(report.latency_seconds) }} seconds</p>
+{% if source %}<p>Original run {{ source.run_id }} · Original model cost: ${{ '%.4f'|format(source_cost) }} · Original execution: {{ '%.2f'|format(source.latency_seconds) }} seconds. Replay uses recorded responses; it is not a new model-quality measurement.</p>{% endif %}
+<p>Execution source: {{ report.git_sha }}{% if report.source_dirty %} (working changes){% endif %}{% if report.source_git_sha %}<br>Original source: {{ report.source_git_sha }}{% endif %}</p>
+</footer>
+</main></body></html>
