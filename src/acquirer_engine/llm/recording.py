@@ -11,7 +11,6 @@ from contextvars import ContextVar
 from dataclasses import asdict, dataclass
 from time import perf_counter
 
-from pydantic import TypeAdapter
 from pydantic_ai.exceptions import ModelHTTPError
 from pydantic_ai.messages import ModelMessage, ModelResponse
 from pydantic_ai.models import Model, ModelRequestParameters
@@ -25,9 +24,9 @@ from acquirer_engine.errors import (
     LLMRateLimited,
     LLMTimeout,
 )
-from acquirer_engine.llm.budget import RunBudget, request_bound
+from acquirer_engine.llm.budget import Reservation, RunBudget, estimate_request
 from acquirer_engine.llm.cache import ResponseCache, request_key
-from acquirer_engine.llm.cost import CostLedger, ExecutionMode
+from acquirer_engine.llm.cost import CostLedger, ExecutionMode, RequestTiming
 from acquirer_engine.llm.output import compatible_output_parameters, require_complete_response
 from acquirer_engine.llm.trace import TraceWriter
 from acquirer_engine.llm.trace_replay import RequestFailure, ResponseArchive
@@ -128,17 +127,7 @@ class RecordedModel(Model):
         model_settings: ModelSettings | None,
         model_request_parameters: ModelRequestParameters,
     ) -> ModelResponse:
-        """Replay or call once, retaining every returned usage record.
-
-        Args:
-            messages: Framework conversation including tool observations.
-            model_settings: Settings applied to this request.
-            model_request_parameters: Typed tools and output schema.
-        Returns:
-            The raw response; acceptance happens in the output validator.
-        Raises:
-            LLMError: Replay fails or a provider request fails.
-        """
+        """Replay or call once, retaining raw responses and separate execution timings."""
         model_request_parameters = compatible_output_parameters(model_request_parameters)
         scope = self._scope.get()
         scope.attempt += 1
@@ -161,17 +150,26 @@ class RecordedModel(Model):
         tokens = (model_settings or {}).get(
             "max_tokens"
         ) or self.deps.settings.analyst.max_output_tokens
-        estimate = self._estimate(messages, model_request_parameters, tokens)
-        async with self.budget.claim(estimate) as charge:
+        estimate = await self._estimate(messages, model_settings, model_request_parameters)
+        counted = perf_counter()
+        async with self.budget.claim(estimate.usd) as charge:
+            admitted = perf_counter()
             response = await self._response(key, messages, model_settings, model_request_parameters)
-            duration = (perf_counter() - started) * 1000
-            charge.actual = self._record_response(scope, response, duration)
+            ended = perf_counter()
+            timing = RequestTiming(
+                token_count_ms=(counted - started) * 1000,
+                admission_ms=(admitted - counted) * 1000,
+                provider_ms=(ended - admitted) * 1000,
+            )
+            charge.actual = self._record_response(scope, response, (ended - started) * 1000, timing)
         require_complete_response(response)
         if response.usage.output_tokens > tokens:
             raise BudgetExceeded("Response exceeds configured output token limit")
         return response
 
-    def _record_response(self, scope: CallScope, response: ModelResponse, duration: float) -> float:
+    def _record_response(
+        self, scope: CallScope, response: ModelResponse, duration: float, timing: RequestTiming
+    ) -> float:
         scope.responded = True
         self.trace.write(
             "model_responded", scope.acquirer, attempt=scope.attempt, response=response
@@ -184,6 +182,7 @@ class RecordedModel(Model):
             mode=self.mode,
             stage=scope.stage,
             model=self.deps.settings.models.roles[scope.role],
+            timing=timing,
         )
         self.deps.logger.info(
             "model_called", **record.model_dump(), tool_calls=len(response.tool_calls)
@@ -191,19 +190,32 @@ class RecordedModel(Model):
         self.first_response.set()
         return record.cost_usd
 
-    def _estimate(
-        self, messages: list[ModelMessage], parameters: ModelRequestParameters, output_tokens: int
-    ) -> float:
+    async def _estimate(
+        self,
+        messages: list[ModelMessage],
+        settings: ModelSettings | None,
+        parameters: ModelRequestParameters,
+    ) -> Reservation:
         if self.mode != "live" or self.budget.limit is None:
-            return 0
-        encoded = TypeAdapter(list[ModelMessage]).dump_json(messages)
-        config = self.deps.settings.analyst
-        return request_bound(
-            self.deps.settings.models.roles[self._scope.get().role],
-            len(encoded) + len(str(asdict(parameters)).encode()) + config.request_overhead_tokens,
-            output_tokens,
-            config.sdk_retries,
+            return Reservation(0, 0, "offline")
+        scope = self._scope.get()
+        estimate = await estimate_request(
+            self.models[scope.role],
+            self.deps.settings.analyst,
+            self.deps.settings.models.roles[scope.role],
+            messages,
+            settings,
+            parameters,
         )
+        self.trace.write(
+            "budget_estimated",
+            scope.acquirer,
+            attempt=scope.attempt,
+            method=estimate.method,
+            input_tokens=estimate.input_tokens,
+            reservation_usd=estimate.usd,
+        )
+        return estimate
 
     async def _response(
         self,

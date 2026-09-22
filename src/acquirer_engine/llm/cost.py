@@ -6,13 +6,21 @@ Does not own: Provider billing reconciliation or speculative token estimates.
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, NonNegativeFloat
 from pydantic_ai.usage import RequestUsage
 
 from acquirer_engine.errors import ConfigError, LLMInvalidOutput
 from acquirer_engine.settings import ModelSpec
 
 type ExecutionMode = Literal["live", "replay", "test"]
+
+
+class RequestTiming(BaseModel):
+    """Separate preflight and budget waits from the measured provider call."""
+
+    token_count_ms: NonNegativeFloat
+    admission_ms: NonNegativeFloat
+    provider_ms: NonNegativeFloat
 
 
 class CallRecord(BaseModel):
@@ -29,6 +37,7 @@ class CallRecord(BaseModel):
     cache_write_tokens: int
     cost_usd: float
     latency_ms: float
+    timing: RequestTiming | None = None
 
 
 class CostLedger:
@@ -58,6 +67,7 @@ class CostLedger:
         mode: ExecutionMode,
         stage: str = "analyst",
         model: ModelSpec | None = None,
+        timing: RequestTiming | None = None,
     ) -> CallRecord:
         """Record actual normalized usage without double-counting cached input.
 
@@ -90,6 +100,7 @@ class CostLedger:
             cache_write_tokens=usage.cache_write_tokens,
             cost_usd=cost if mode == "live" else 0,
             latency_ms=latency_ms,
+            timing=timing,
         )
         self.entries.append(entry)
         return entry

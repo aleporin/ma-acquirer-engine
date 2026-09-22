@@ -35,3 +35,5 @@ class AnalystConfig(BaseModel):
     reviewer_enabled: bool = False
     reviewer_prompt_file: str | None = None
     reviewer_max_output_tokens: PositiveInt | None = None
+    count_input_tokens: bool = False
+    token_count_timeout_seconds: PositiveFloat | None = None

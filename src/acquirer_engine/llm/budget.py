@@ -7,9 +7,17 @@ Does not own: Provider billing reconciliation or accepting invalid output.
 import asyncio
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from typing import Literal
+
+from pydantic import TypeAdapter
+from pydantic_ai.exceptions import ModelAPIError
+from pydantic_ai.messages import ModelMessage
+from pydantic_ai.models import Model, ModelRequestParameters
+from pydantic_ai.settings import ModelSettings
 
 from acquirer_engine.errors import BudgetExceeded
+from acquirer_engine.llm.config import AnalystConfig
 from acquirer_engine.settings import ModelSpec
 
 
@@ -70,12 +78,12 @@ class RunBudget:
             await self.settle(amount, charge.actual)
 
 
-def request_bound(spec: ModelSpec, input_bytes: int, output_tokens: int, retries: int) -> float:
-    """Reserve all text bytes as tokens at the highest configured applicable price.
+def request_bound(spec: ModelSpec, input_tokens: int, output_tokens: int, retries: int) -> float:
+    """Price a guarded input estimate and the full output cap at the highest price.
 
     Args:
         spec: Pinned pricing, including cache write prices.
-        input_bytes: Serialized conversation/schema bytes plus configured protocol allowance.
+        input_tokens: Counted input or byte fallback, including the protocol allowance.
         output_tokens: Enforced per-request generation cap.
         retries: SDK attempts that could incur unreturned usage.
     Returns:
@@ -85,4 +93,47 @@ def request_bound(spec: ModelSpec, input_bytes: int, output_tokens: int, retries
         max(p.input_usd_per_million, p.cache_write_usd_per_million or 0) for p in spec.pricing
     )
     output_price = max(p.output_usd_per_million for p in spec.pricing)
-    return (input_bytes * input_price + output_tokens * output_price) * (retries + 1) / 1_000_000
+    return (input_tokens * input_price + output_tokens * output_price) * (retries + 1) / 1_000_000
+
+
+@dataclass(frozen=True)
+class Reservation:
+    """Admission estimate and its basis, never substituted for billed usage."""
+
+    usd: float
+    input_tokens: int
+    method: Literal["counted", "bytes", "offline"]
+
+
+async def estimate_request(
+    model: Model | None,
+    config: AnalystConfig,
+    spec: ModelSpec,
+    messages: list[ModelMessage],
+    settings: ModelSettings | None,
+    parameters: ModelRequestParameters,
+) -> Reservation:
+    """Count input with the injected model, retaining a conservative fallback.
+
+    Args:
+        model: Shared provider with a free token-counting endpoint, if supported.
+        config, spec: Admission policy and pinned prices.
+        messages, settings, parameters: The exact generation request contract.
+    Returns:
+        Count plus safety allowance, full output cap, and all SDK attempts reserved.
+    """
+    encoded = TypeAdapter(list[ModelMessage]).dump_json(messages)
+    tokens = len(encoded) + len(str(asdict(parameters)).encode())
+    method: Literal["counted", "bytes"] = "bytes"
+    if config.count_input_tokens and model is not None:
+        try:
+            timeout = config.token_count_timeout_seconds or config.request_timeout_seconds
+            async with asyncio.timeout(timeout):
+                usage = await model.count_tokens(messages, settings, parameters)
+            if usage.input_tokens > 0:
+                tokens, method = usage.input_tokens, "counted"
+        except (NotImplementedError, ModelAPIError, OSError, TimeoutError):
+            pass
+    tokens += config.request_overhead_tokens
+    output = (settings or {}).get("max_tokens") or config.max_output_tokens
+    return Reservation(request_bound(spec, tokens, output, config.sdk_retries), tokens, method)
