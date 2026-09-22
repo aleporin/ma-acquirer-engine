@@ -164,6 +164,9 @@ usage remains an uncertain charge, never an invented zero.
 [REPORTING.md](REPORTING.md) covers custom targets and persisted flags.
 [JUDGING.md](JUDGING.md) covers blind labels, separate paid judging, and replay.
 [ROUTING.md](ROUTING.md) records recovery and ablation evidence.
+[RANKING_EXPERIMENT.md](RANKING_EXPERIMENT.md) describes an optional recorded
+weight-proposal experiment with chronological selection. It does not change the
+shipped ranking or treat the already-inspected benchmark as independent evidence.
 
 ## What I would improve next
 

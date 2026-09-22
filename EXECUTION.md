@@ -154,6 +154,11 @@ does not run graders. Missing independent calibration stays unmeasured. Structur
 cleanup makes no new ranking, generation-quality, or speed claim; see
 [docs/EVALS.md](docs/EVALS.md) for measured limits and retained provenance.
 
+The optional [weight experiment](RANKING_EXPERIMENT.md) enters through
+`evals/ranking/weight_command.py`. `propose-weights` records one bounded hypothesis
+request from anonymous early-history aggregates; `experiment-weights` selects and
+measures saved hypotheses offline. Neither command changes the product ranker.
+
 ## Preferences and comparison
 
 `stages/select.py` is the shared input path for product runs and comparisons.
