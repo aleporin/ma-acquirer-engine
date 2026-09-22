@@ -68,7 +68,7 @@ async def test_cli_replays_original_inputs_with_no_current_files_or_cache(
     rmtree(original / "cache")
     (tmp_path / "config").mkdir()
     (tmp_path / "config/analyst.yaml").write_text("invalid: current configuration")
-    monkeypatch.setattr("acquirer_engine.cli._git_state", lambda _: ("c" * 40, source_dirty))
+    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("c" * 40, source_dirty))
 
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Historical replay must not construct a provider client")

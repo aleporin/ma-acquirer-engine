@@ -34,7 +34,7 @@ def test_replay_writes_failed_page_without_constructing_a_client(
         writer = csv.DictWriter(stream, fieldnames=list(row))
         writer.writeheader()
         writer.writerow(row)
-    monkeypatch.setattr("acquirer_engine.cli._git_state", lambda _: ("a" * 40, False))
+    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("a" * 40, False))
 
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Replay must not construct a provider client")

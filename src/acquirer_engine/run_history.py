@@ -4,12 +4,13 @@ Owns: Historical outcome metadata independent of current output schemas.
 Does not own: Executing replay, modifying archives, or loading credentials.
 """
 
+import subprocess
 from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, NonNegativeFloat, ValidationError
 
-from acquirer_engine.errors import LLMInvalidOutput
+from acquirer_engine.errors import EvaluationError, LLMInvalidOutput
 from acquirer_engine.llm.cost import ExecutionMode
 from acquirer_engine.llm.results import RunId
 
@@ -60,3 +61,25 @@ def list_runs(root: Path) -> list[RunSummary]:
             raise LLMInvalidOutput("Run archive identity differs from its directory")
         records.append(record)
     return records
+
+
+def git_state(root: Path) -> tuple[str, bool]:
+    """Read source identity and dirty state for a recorded execution.
+
+    Args:
+        root: Repository containing the code being run.
+    Returns:
+        Commit SHA and whether tracked or untracked files differ.
+    Raises:
+        EvaluationError: The directory has no usable base commit.
+    """
+    try:
+        revision = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=root, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        changes = subprocess.run(
+            ["git", "status", "--porcelain"], cwd=root, check=True, capture_output=True, text=True
+        ).stdout
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise EvaluationError("Evaluation requires a repository with a base commit") from error
+    return revision, bool(changes.strip())

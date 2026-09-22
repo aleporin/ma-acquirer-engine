@@ -28,7 +28,7 @@ def project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     config = yaml.safe_load(path.read_text())
     config["phase"] = "p0"
     path.write_text(yaml.safe_dump(config))
-    monkeypatch.setattr("acquirer_engine.cli._git_state", lambda root: ("a" * 40, False))
+    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda root: ("a" * 40, False))
     return root
 
 
@@ -117,7 +117,7 @@ def test_measured_bundle_reports_uniform_conviction_as_a_diagnostic(
         writer.writeheader()
         writer.writerows(values)
     monkeypatch.setattr(
-        "acquirer_engine.cli.run_tests",
+        "evals.command.run_tests",
         lambda *args, **kwargs: UnitReport(4, 4, 0, 0, 0.8, 0),
         raising=False,
     )
