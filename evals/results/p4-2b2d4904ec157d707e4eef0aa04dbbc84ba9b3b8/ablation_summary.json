@@ -1,0 +1,153 @@
+{
+  "as_of": "2026-09-21",
+  "scope": "One live run per variant; all three share actual source revision and prompt files. No stochastic quality or latency confidence claim.",
+  "evaluating_git_sha": "2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8",
+  "measurement_git_sha": "dc5fbd5d4c02270f0ee7438227364dda564c534c",
+  "variant_control": "Only the named CLI flag changes. Execution policy is included in analyst instructions, so the policy flag also changes that instruction block.",
+  "runs": {
+    "full": {
+      "run_id": "414912077f22457b8ad1ede8d90174e3",
+      "source_git_sha": "dc5fbd5d4c02270f0ee7438227364dda564c534c",
+      "source_dirty": false,
+      "tools_enabled": true,
+      "reviewer_enabled": true,
+      "verified_pages": 10,
+      "first_pass_pages": 7,
+      "first_pass_claims_total": 66,
+      "first_pass_claims_verified": 65,
+      "final_claims_total": 66,
+      "final_claims_verified": 66,
+      "first_pass_missing_comp_rejections": 0,
+      "repair_missing_comp_rejections": 0,
+      "final_missing_comp_rejections": 0,
+      "final_budget_failures": 0,
+      "final_deadline_failures": 0,
+      "tool_results": 26,
+      "latency_seconds": 177.8433964580763,
+      "returned_responses": 29,
+      "calls_by_stage": {
+        "analyst": 25,
+        "repair": 3,
+        "reviewer": 1
+      },
+      "request_p95_ms_including_admission_wait": 97836.99944969267,
+      "recorded_cost_usd": 1.0889864,
+      "uncertain_cost_bound_usd": 0.0,
+      "distinctness": {
+        "live_page_pairs": 45.0,
+        "live_mean_pairwise_jaccard": 0.03641823154432508,
+        "live_max_pairwise_jaccard": 0.06825232678386763
+      },
+      "review_errors": []
+    },
+    "reviewer_disabled": {
+      "run_id": "244571c44df54763ae6ddc256e20003d",
+      "source_git_sha": "dc5fbd5d4c02270f0ee7438227364dda564c534c",
+      "source_dirty": false,
+      "tools_enabled": true,
+      "reviewer_enabled": false,
+      "verified_pages": 10,
+      "first_pass_pages": 8,
+      "first_pass_claims_total": 64,
+      "first_pass_claims_verified": 64,
+      "final_claims_total": 64,
+      "final_claims_verified": 64,
+      "first_pass_missing_comp_rejections": 0,
+      "repair_missing_comp_rejections": 0,
+      "final_missing_comp_rejections": 0,
+      "final_budget_failures": 0,
+      "final_deadline_failures": 0,
+      "tool_results": 26,
+      "latency_seconds": 133.59291316685267,
+      "returned_responses": 27,
+      "calls_by_stage": {
+        "analyst": 25,
+        "repair": 2
+      },
+      "request_p95_ms_including_admission_wait": 81451.75747135654,
+      "recorded_cost_usd": 0.9859868,
+      "uncertain_cost_bound_usd": 0.0,
+      "distinctness": {
+        "live_page_pairs": 45.0,
+        "live_mean_pairwise_jaccard": 0.03403232966841967,
+        "live_max_pairwise_jaccard": 0.05497076023391813
+      },
+      "review_errors": []
+    },
+    "tools_disabled": {
+      "run_id": "273c00a0cf3e4bf69940fa6709c51ca7",
+      "source_git_sha": "dc5fbd5d4c02270f0ee7438227364dda564c534c",
+      "source_dirty": false,
+      "tools_enabled": false,
+      "reviewer_enabled": true,
+      "verified_pages": 0,
+      "first_pass_pages": 0,
+      "first_pass_claims_total": 66,
+      "first_pass_claims_verified": 66,
+      "final_claims_total": 15,
+      "final_claims_verified": 15,
+      "first_pass_missing_comp_rejections": 10,
+      "repair_missing_comp_rejections": 10,
+      "final_missing_comp_rejections": 4,
+      "final_budget_failures": 4,
+      "final_deadline_failures": 2,
+      "tool_results": 0,
+      "latency_seconds": 300.0300735000055,
+      "returned_responses": 24,
+      "calls_by_stage": {
+        "analyst": 10,
+        "repair": 10,
+        "escalation": 4
+      },
+      "request_p95_ms_including_admission_wait": 124346.3232627138,
+      "recorded_cost_usd": 1.2712713500000001,
+      "uncertain_cost_bound_usd": 1.64445,
+      "distinctness": {
+        "live_page_pairs": 0.0
+      },
+      "review_errors": [
+        "Run USD budget cannot admit another request"
+      ]
+    }
+  },
+  "replays": {
+    "reviewer_disabled": {
+      "run_id": "9e77b923dd1c4d10816569c2f85aa954",
+      "returned_responses": 27,
+      "cost_usd": 0.0,
+      "latency_seconds": 0.08553362498059869,
+      "rationales_identical": true,
+      "attempts_identical": true,
+      "review_errors": []
+    },
+    "tools_disabled": {
+      "run_id": "2b7cb58543d04eebae46279efcae9a1c",
+      "returned_responses": 24,
+      "cost_usd": 0.0,
+      "latency_seconds": 0.091743083903566,
+      "rationales_identical": true,
+      "attempts_identical": false,
+      "review_errors": [
+        "Archived request differs for portfolio, attempt 1"
+      ]
+    }
+  },
+  "paired_reviewer_effect": {
+    "pages_identical_before_after": true,
+    "flagged_pages": 0,
+    "review_call_cost_usd": 0.045584,
+    "review_call_latency_seconds": 3.3668342498131096,
+    "interpretation": "No observed change to pages or lexical overlap. The difference between separate live runs is confounded by generation variability; it is not the causal effect of the reviewer."
+  },
+  "decision": "Disable reviewer in default configuration; retain the explicit configuration opt-in and tested implementation pending quality calibration.",
+  "new_paid_runs_recorded_cost_usd": 2.25725815,
+  "new_paid_runs_uncertain_cost_bound_usd": 1.64445,
+  "gate": "The current layer-6 terminal-error metric is 0.4 and fails. All ten tools-disabled first attempts and repairs failed for missing comps; six terminal escalation errors instead report four budget denials and two deadlines. This artifact preserves both facts without redefining the gate.",
+  "limits": [
+    "No live repetitions; no statistically established reviewer benefit or latency improvement.",
+    "The 60-second target remains unmet.",
+    "Judge-based quality remains unmeasured.",
+    "Timed-out requests have unknown actual billing; reported uncertain bound is a reservation, not a charge.",
+    "Tools-disabled replay recovers returned responses but does not reproduce missing-response budget/deadline failures or downstream reviewer input exactly."
+  ]
+}

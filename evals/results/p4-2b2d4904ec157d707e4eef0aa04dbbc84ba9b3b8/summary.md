@@ -1,0 +1,112 @@
+# p4 evaluation
+
+Evaluated revision: 2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8
+Source dirty: False
+Run: 5c7c562498e649e29cbf77887e946ac1 | Mode: replay | Seed: 42
+Configuration SHA-256: c9459c805fa75ac26c1a9b51e8d6542b51724a340cfea6a2b3a89eeb0b0fd5ee
+
+| Layer | Name | Selected | Status |
+| --- | --- | --- | --- |
+| 0 | unit_and_property_tests | True | passed |
+| 1 | ranking_backtest | True | passed |
+| 2 | groundedness | True | passed |
+| 3 | distinctiveness | True | passed |
+| 4 | rubric_quality | False | not_implemented |
+| 5 | stability | True | failed |
+| 6 | operations | True | failed |
+
+| Layer | Metric | Value | Direction |
+| --- | --- | --- | --- |
+| 0 | coverage | 0.961561 | higher |
+| 0 | pass_rate | 1.000000 | higher |
+| 0 | tests | 153.000000 | higher |
+| 1 | global_popularity_mrr | 0.126381 | higher |
+| 1 | global_popularity_ndcg_at_k | 0.176085 | higher |
+| 1 | global_popularity_recall_at_k | 0.408451 | higher |
+| 1 | lift_vs_global_popularity_mrr_high | 0.091685 | higher |
+| 1 | lift_vs_global_popularity_mrr_low | -0.004937 | higher |
+| 1 | lift_vs_global_popularity_mrr_mean | 0.044708 | higher |
+| 1 | lift_vs_global_popularity_ndcg_at_k_high | 0.082837 | higher |
+| 1 | lift_vs_global_popularity_ndcg_at_k_low | -0.044530 | higher |
+| 1 | lift_vs_global_popularity_ndcg_at_k_mean | 0.021223 | higher |
+| 1 | lift_vs_global_popularity_recall_at_k_high | 0.084507 | higher |
+| 1 | lift_vs_global_popularity_recall_at_k_low | -0.147887 | higher |
+| 1 | lift_vs_global_popularity_recall_at_k_mean | -0.028169 | higher |
+| 1 | lift_vs_random_mrr_high | 0.154282 | higher |
+| 1 | lift_vs_random_mrr_low | 0.055661 | higher |
+| 1 | lift_vs_random_mrr_mean | 0.104082 | higher |
+| 1 | lift_vs_random_ndcg_at_k_high | 0.187673 | higher |
+| 1 | lift_vs_random_ndcg_at_k_low | 0.073213 | higher |
+| 1 | lift_vs_random_ndcg_at_k_mean | 0.130583 | higher |
+| 1 | lift_vs_random_recall_at_k_high | 0.345070 | higher |
+| 1 | lift_vs_random_recall_at_k_low | 0.161972 | higher |
+| 1 | lift_vs_random_recall_at_k_mean | 0.253521 | higher |
+| 1 | lift_vs_sector_popularity_mrr_high | 0.069922 | higher |
+| 1 | lift_vs_sector_popularity_mrr_low | -0.000786 | higher |
+| 1 | lift_vs_sector_popularity_mrr_mean | 0.034472 | higher |
+| 1 | lift_vs_sector_popularity_ndcg_at_k_high | 0.056517 | higher |
+| 1 | lift_vs_sector_popularity_ndcg_at_k_low | -0.025536 | higher |
+| 1 | lift_vs_sector_popularity_ndcg_at_k_mean | 0.015381 | higher |
+| 1 | lift_vs_sector_popularity_recall_at_k_high | 0.028169 | higher |
+| 1 | lift_vs_sector_popularity_recall_at_k_low | -0.140845 | higher |
+| 1 | lift_vs_sector_popularity_recall_at_k_mean | -0.056338 | higher |
+| 1 | random_mrr | 0.067007 | higher |
+| 1 | random_ndcg_at_k | 0.066724 | higher |
+| 1 | random_recall_at_k | 0.126761 | higher |
+| 1 | ranker_mrr | 0.171089 | higher |
+| 1 | ranker_ndcg_at_k | 0.197307 | higher |
+| 1 | ranker_recall_at_k | 0.380282 | higher |
+| 1 | sector_popularity_mrr | 0.136617 | higher |
+| 1 | sector_popularity_ndcg_at_k | 0.181927 | higher |
+| 1 | sector_popularity_recall_at_k | 0.436620 | higher |
+| 2 | fixture_expectation_rate | 1.000000 | higher |
+| 2 | live_first_pass_claim_rate | 0.984848 | higher |
+| 2 | live_first_pass_page_rate | 0.700000 | higher |
+| 2 | live_pages_without_parsed_claims | 0.000000 | lower |
+| 2 | live_parsed_claims | 66.000000 | higher |
+| 2 | live_post_repair_claim_rate | 1.000000 | higher |
+| 2 | live_post_repair_page_rate | 1.000000 | higher |
+| 2 | live_post_review_claim_rate | 1.000000 | higher |
+| 2 | live_post_review_page_rate | 1.000000 | higher |
+| 2 | negative_fixtures_rejected | 6.000000 | higher |
+| 2 | positive_fixture_claim_verification_rate | 1.000000 | higher |
+| 2 | positive_fixtures_accepted | 3.000000 | higher |
+| 2 | stray_numbers_detected | 1.000000 | higher |
+| 3 | before_review_live_max_pairwise_jaccard | 0.068252 | lower |
+| 3 | before_review_live_mean_pairwise_jaccard | 0.036418 | lower |
+| 3 | before_review_live_page_pairs | 45.000000 | higher |
+| 3 | live_max_pairwise_jaccard | 0.068252 | lower |
+| 3 | live_mean_pairwise_jaccard | 0.036418 | lower |
+| 3 | live_page_pairs | 45.000000 | higher |
+| 5 | conviction_agreement | 1.000000 | higher |
+| 5 | conviction_levels | 1.000000 | higher |
+| 5 | live_validation_runs | 1.000000 | higher |
+| 5 | top_k_identity | 1.000000 | higher |
+| 6 | live_cache_read_tokens | 76272.000000 | higher |
+| 6 | live_cache_write_tokens | 0.000000 | higher |
+| 6 | live_cost_usd | 1.088986 | lower |
+| 6 | live_escalation_rate | 0.000000 | lower |
+| 6 | live_financial_sponsor_get_comparable_deals_page_rate | 1.000000 | higher |
+| 6 | live_financial_sponsor_get_failed_deals_page_rate | 0.333333 | higher |
+| 6 | live_financial_sponsor_get_sector_stats_page_rate | 1.000000 | higher |
+| 6 | live_gate_met | 0.000000 | higher |
+| 6 | live_input_tokens | 465613.000000 | higher |
+| 6 | live_output_tokens | 29505.000000 | higher |
+| 6 | live_pages | 10.000000 | higher |
+| 6 | live_phase3_latency_gate_met | 0.000000 | higher |
+| 6 | live_request_p50_ms | 16265.382583 | lower |
+| 6 | live_request_p95_ms | 97836.999450 | lower |
+| 6 | live_responses | 29.000000 | higher |
+| 6 | live_reviewer_disabled_runs | 1.000000 | higher |
+| 6 | live_reviewer_flag_rate | 0.000000 | lower |
+| 6 | live_run_p50_seconds | 177.843396 | lower |
+| 6 | live_run_p95_seconds | 177.843396 | lower |
+| 6 | live_runs | 1.000000 | higher |
+| 6 | live_strategic_get_comparable_deals_page_rate | 1.000000 | higher |
+| 6 | live_strategic_get_failed_deals_page_rate | 1.000000 | higher |
+| 6 | live_strategic_get_sector_stats_page_rate | 1.000000 | higher |
+| 6 | live_tools_disabled_pages | 10.000000 | higher |
+| 6 | live_tools_disabled_validation_failure_rate | 0.400000 | higher |
+| 6 | live_uncertain_cost_bound_usd | 1.644450 | lower |
+
+Unimplemented layers have no quality measurements.
