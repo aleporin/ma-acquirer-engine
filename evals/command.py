@@ -19,15 +19,15 @@ from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.settings import load_settings
+from evals.analyst import prepare_analyst
 from evals.graders.unit import grade as grade_unit
 from evals.graders.unit import run_tests
-from evals.harness import evaluate
-from evals.phase1 import PreparedEvaluation, prepare_phase1
-from evals.phase2 import prepare_phase2
-from evals.phase3 import prepare_phase3
-from evals.phase4 import prepare_phase4
-from evals.phase5 import prepare_phase5
+from evals.groundedness import prepare_groundedness
+from evals.harness import PreparedEvaluation, evaluate
+from evals.judges.grading import prepare_judges
+from evals.ranking.prepare import prepare_ranking
 from evals.ranking.snapshot import verify_snapshot
+from evals.routing import prepare_routing
 from evals.scorecard import RunInfo, Scorecard, write_scorecard
 
 
@@ -51,16 +51,16 @@ def _produce_scorecard(
             else None
         )
         unit = grade_unit(next(layer for layer in config.layers if layer.id == 0), report)
-        prepared = prepare_phase1(rows, deps, unit)
+        prepared = prepare_ranking(rows, deps, unit)
         verify_snapshot(root, prepared.artifacts["top10.json"])
     if deps.settings.evaluation.phase in {"p2", "p3", "p4", "p5", "p6", "p7"}:
-        prepared = prepare_phase2(prepared, root, deps.settings.evidence.validation)
+        prepared = prepare_groundedness(prepared, root, deps.settings.evidence.validation)
     if deps.settings.evaluation.phase == "p3":
-        prepared = prepare_phase3(prepared, analyst_runs or [], deps.settings)
+        prepared = prepare_analyst(prepared, analyst_runs or [], deps.settings)
     if deps.settings.evaluation.phase in {"p4", "p5", "p6", "p7"}:
-        prepared = prepare_phase4(prepared, analyst_runs or [], deps.settings)
+        prepared = prepare_routing(prepared, analyst_runs or [], deps.settings)
     if judge_run is not None and deps.settings.evaluation.phase in {"p5", "p6", "p7"}:
-        prepared = prepare_phase5(prepared, judge_run)
+        prepared = prepare_judges(prepared, judge_run)
     card = evaluate(deps, run, selection, graders=prepared.graders)
     path = write_scorecard(card, results, artifacts=prepared.artifacts)
     deps.logger.info(

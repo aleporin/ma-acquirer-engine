@@ -11,9 +11,9 @@ import pytest
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import EvaluationError
 from acquirer_engine.settings import LayerSpec, Settings
+from evals.analyst import prepare_analyst
 from evals.graders import ops
-from evals.phase1 import PreparedEvaluation
-from evals.phase3 import prepare_phase3
+from evals.harness import PreparedEvaluation
 from evals.scorecard import LayerResult
 from tests.fixtures.observations import observation
 
@@ -31,13 +31,13 @@ def test_analyst_artifacts_add_claim_metrics_without_replacing_fixture_metrics(
         },
         {},
     )
-    combined = prepare_phase3(baseline, [path], deps.settings)
+    combined = prepare_analyst(baseline, [path], deps.settings)
     result = combined.graders[2](LayerSpec(id=2, name="groundedness"))
     assert result.metrics["replay_first_pass_claim_rate"].value == 1
     assert result.metrics["replay_first_pass_page_rate"].value == 1
     assert "analyst_observations.json" in combined.artifacts
     with pytest.raises(EvaluationError, match="Duplicate"):
-        prepare_phase3(baseline, [path, path], deps.settings)
+        prepare_analyst(baseline, [path, path], deps.settings)
 
 
 def test_live_gate_requires_the_configured_number_of_pages(settings: Settings) -> None:
@@ -75,7 +75,7 @@ def test_repaired_success_does_not_rewrite_first_pass_metrics(deps: Deps, tmp_pa
     baseline = PreparedEvaluation(
         {2: lambda layer: LayerResult(id=2, name=layer.name, selected=True, status="passed")}, {}
     )
-    combined = prepare_phase3(baseline, [path], deps.settings)
+    combined = prepare_analyst(baseline, [path], deps.settings)
     result = combined.graders[2](LayerSpec(id=2, name="groundedness"))
     assert result.metrics["replay_first_pass_claim_rate"].value == 0.75
     assert result.metrics["replay_first_pass_page_rate"].value == 0
@@ -111,7 +111,7 @@ def test_reviewer_failure_cannot_rewrite_post_repair_claim_rate(deps: Deps, tmp_
         {2: lambda layer: LayerResult(id=2, name=layer.name, selected=True, status="passed")}, {}
     )
     metrics = (
-        prepare_phase3(baseline, [path], deps.settings)
+        prepare_analyst(baseline, [path], deps.settings)
         .graders[2](LayerSpec(id=2, name="groundedness"))
         .metrics
     )

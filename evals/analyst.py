@@ -1,6 +1,6 @@
-"""Add recorded analyst observations to offline evaluation.
+"""Measure saved analyst runs with explicit provenance checks.
 
-Owns: Run-artifact provenance checks, claim rates, and grader composition.
+Owns: Cohort validation, claim rates, and analyst grader composition.
 Does not own: Provider execution or treating replay as a live measurement.
 """
 
@@ -8,13 +8,41 @@ import json
 from functools import partial
 from pathlib import Path
 
+from pydantic import ValidationError
+
+from acquirer_engine.errors import EvaluationError
 from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.settings import Settings
 from evals.graders import distinct, ops, stability
-from evals.harness import Grader
-from evals.observations import load_runs
-from evals.phase1 import PreparedEvaluation
+from evals.harness import Grader, PreparedEvaluation
 from evals.scorecard import LayerResult, Metric
+
+
+def load_runs(paths: list[Path], settings: Settings) -> list[AnalystRun]:
+    """Validate a comparable cohort without changing historical observations.
+
+    Args:
+        paths: Saved run artifacts.
+        settings: Rationale validation policy.
+    Returns:
+        Runs sharing source and prompt versions, with unique identities.
+    Raises:
+        EvaluationError: A run is malformed, duplicated, or incompatible.
+    """
+    try:
+        runs = [
+            AnalystRun.model_validate_json(path.read_text(), context=settings.evidence.validation)
+            for path in paths
+        ]
+    except (OSError, ValueError, ValidationError) as error:
+        raise EvaluationError("Invalid analyst run artifact") from error
+    if len({run.run_id for run in runs}) != len(runs):
+        raise EvaluationError("Duplicate analyst run identity")
+    if len({(run.git_sha, run.prompt_version) for run in runs}) > 1:
+        raise EvaluationError("Analyst stability requires matching source and prompt versions")
+    if any(call.mode != run.mode for run in runs for call in run.calls):
+        raise EvaluationError("Run mode conflicts with response usage mode")
+    return runs
 
 
 def _claims(baseline: LayerResult, runs: list[AnalystRun]) -> LayerResult:
@@ -49,7 +77,7 @@ def _claims(baseline: LayerResult, runs: list[AnalystRun]) -> LayerResult:
     return baseline.model_copy(update={"metrics": metrics})
 
 
-def prepare_phase3(
+def prepare_analyst(
     prepared: PreparedEvaluation, paths: list[Path], settings: Settings
 ) -> PreparedEvaluation:
     """Measure saved runs without ever invoking a provider.

@@ -10,10 +10,10 @@ from pathlib import Path
 from acquirer_engine.evidence.config import ValidationConfig
 from evals.graders.grounded import grade
 from evals.grounded import run_fixture_suite
-from evals.phase1 import PreparedEvaluation
+from evals.harness import PreparedEvaluation
 
 
-def prepare_phase2(
+def prepare_groundedness(
     prepared: PreparedEvaluation, root: Path, config: ValidationConfig
 ) -> PreparedEvaluation:
     """Retain earlier measurements while making layer two executable.

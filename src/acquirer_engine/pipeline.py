@@ -12,9 +12,7 @@ from time import perf_counter
 from pydantic_ai.models import Model
 
 from acquirer_engine.bootstrap import AnalystServices, build_services, model_resources
-from acquirer_engine.data.schema import Transaction
 from acquirer_engine.deps import Deps
-from acquirer_engine.evidence.pack import CorePack
 from acquirer_engine.llm.analyst import run_analysts
 from acquirer_engine.llm.archive import RunSnapshot, save_snapshot
 from acquirer_engine.llm.cost import ExecutionMode
@@ -23,19 +21,6 @@ from acquirer_engine.llm.reviewer import review_portfolio
 from acquirer_engine.llm.trace import ResponseArchive
 from acquirer_engine.portable_replay import select_replay
 from acquirer_engine.selection import TargetOverrides, prepare_selection
-
-
-def prepare_inputs(root: Path, deps: Deps) -> tuple[tuple[Transaction, ...], list[CorePack]]:
-    """Load eligible history and build the assignment target's ranked core packs.
-
-    Args:
-        root: Repository containing the input CSV.
-        deps: Run settings and logger.
-    Returns:
-        Eligible tool history and ordered candidate packs.
-    """
-    selected = prepare_selection(root, deps)
-    return selected.history, list(selected.packs)
 
 
 async def execute_run(

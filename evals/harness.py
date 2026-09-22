@@ -7,6 +7,7 @@ Does not own: Provider calls, product execution, or artifact writing.
 import hashlib
 import json
 from collections.abc import Callable
+from dataclasses import dataclass
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import EvaluationError
@@ -15,6 +16,14 @@ from evals.graders import backtest, distinct, grounded, ops, rubric, stability, 
 from evals.scorecard import LayerResult, RunInfo, Scorecard
 
 type Grader = Callable[[LayerSpec], LayerResult]
+
+
+@dataclass(frozen=True)
+class PreparedEvaluation:
+    """Grader functions and serialized companion artifacts for one run."""
+
+    graders: dict[int, Grader]
+    artifacts: dict[str, str]
 
 
 def _graders() -> dict[int, Grader]:

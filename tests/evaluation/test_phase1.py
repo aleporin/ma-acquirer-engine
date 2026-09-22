@@ -10,7 +10,7 @@ from pathlib import Path
 from acquirer_engine.deps import Deps
 from acquirer_engine.settings import LayerSpec
 from evals.graders.unit import read_test_report
-from evals.phase1 import prepare_phase1
+from evals.ranking.prepare import prepare_ranking
 from evals.scorecard import LayerResult, Metric
 from tests.fixtures.ranking import transaction
 
@@ -44,7 +44,7 @@ def test_phase_one_produces_measurements_and_reports_conviction_diversity_withou
         status="passed",
         metrics={"pass_rate": Metric(value=1, direction="higher")},
     )
-    prepared = prepare_phase1(rows, deps, unit)
+    prepared = prepare_ranking(rows, deps, unit)
     backtest = prepared.graders[1](LayerSpec(id=1, name="ranking_backtest"))
     stability = prepared.graders[5](LayerSpec(id=5, name="stability"))
     assert backtest.status == "passed"

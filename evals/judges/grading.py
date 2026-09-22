@@ -10,12 +10,12 @@ from pathlib import Path
 from acquirer_engine.errors import EvaluationError
 from acquirer_engine.settings import LayerSpec
 from evals.graders import distinct
+from evals.harness import PreparedEvaluation
 from evals.judges.plan import JudgePlan
 from evals.judges.prepare import validate_cohort
 from evals.judges.reporting import JudgeSummary, summarize
 from evals.judges.results import JudgeRun
 from evals.judges.schema import Dimension
-from evals.phase1 import PreparedEvaluation
 from evals.scorecard import LayerResult, Metric
 
 
@@ -89,7 +89,7 @@ def _check_labels(plan: JudgePlan) -> None:
         raise EvaluationError("Judge scorecards require complete original blind labels")
 
 
-def prepare_phase5(prepared: PreparedEvaluation, directory: Path) -> PreparedEvaluation:
+def prepare_judges(prepared: PreparedEvaluation, directory: Path) -> PreparedEvaluation:
     """Grade an existing archive using its original prompts, prices, and labels.
 
     Args:

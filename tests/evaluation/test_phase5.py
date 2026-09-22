@@ -7,12 +7,12 @@ Does not own: Paid execution or changing earlier layer measurements.
 from pathlib import Path
 
 from acquirer_engine.deps import Deps
+from evals.harness import PreparedEvaluation
 from evals.judges.cases import seal_corpus
+from evals.judges.grading import prepare_judges
 from evals.judges.plan import JudgePlan, build_plan
 from evals.judges.results import JudgeRun, Outcome
 from evals.judges.schema import Dimension, HumanLabel, IdentificationAnswer, RubricAnswer
-from evals.phase1 import PreparedEvaluation
-from evals.phase5 import prepare_phase5
 from tests.evaluation.test_judge_cases import example_case
 from tests.evaluation.test_judge_runner import plan_for_test
 
@@ -83,7 +83,7 @@ def test_judge_observations_add_identification_and_calibration_offline(
     tmp_path: Path, deps: Deps
 ) -> None:
     write_observation(tmp_path / "judges", deps)
-    prepared = prepare_phase5(PreparedEvaluation({}, {}), tmp_path / "judges")
+    prepared = prepare_judges(PreparedEvaluation({}, {}), tmp_path / "judges")
     layers = {layer.id: layer for layer in deps.settings.evaluation.layers}
     quality = prepared.graders[4](layers[4])
     assert quality.status == "passed"
@@ -98,6 +98,6 @@ def test_judge_observations_add_identification_and_calibration_offline(
 
 def test_synthetic_outputs_cannot_pass_live_quality_gates(tmp_path: Path, deps: Deps) -> None:
     write_observation(tmp_path / "judges", deps, synthetic=True)
-    prepared = prepare_phase5(PreparedEvaluation({}, {}), tmp_path / "judges")
+    prepared = prepare_judges(PreparedEvaluation({}, {}), tmp_path / "judges")
     layer = next(layer for layer in deps.settings.evaluation.layers if layer.id == 4)
     assert prepared.graders[4](layer).status == "failed"

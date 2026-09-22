@@ -16,8 +16,8 @@ from acquirer_engine.llm.results import (
     ReviewVerdict,
 )
 from acquirer_engine.settings import LayerSpec, Settings
-from evals.phase1 import PreparedEvaluation
-from evals.phase4 import prepare_phase4
+from evals.harness import PreparedEvaluation
+from evals.routing import prepare_routing
 from evals.scorecard import LayerResult
 from tests.fixtures.observations import observation
 
@@ -103,7 +103,7 @@ def operations(settings: Settings, paths: list[Path]) -> LayerResult:
         },
         {},
     )
-    return prepare_phase4(prepared, paths, settings).graders[6](LayerSpec(id=6, name="ops"))
+    return prepare_routing(prepared, paths, settings).graders[6](LayerSpec(id=6, name="ops"))
 
 
 @pytest.mark.parametrize("reviewer", [False, True])

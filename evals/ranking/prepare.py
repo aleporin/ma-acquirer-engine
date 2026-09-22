@@ -1,4 +1,4 @@
-"""Prepare measured Phase 1 graders and their companion artifacts.
+"""Prepare ranking, data-quality, and stability evaluation artifacts.
 
 Owns: Data/ranking evaluation composition and reproducible result snapshots.
 Does not own: File publication, provider calls, or tuning on evaluation outcomes.
@@ -6,7 +6,6 @@ Does not own: File publication, provider calls, or tuning on evaluation outcomes
 
 import json
 from collections.abc import Sequence
-from dataclasses import dataclass
 from functools import partial
 
 from acquirer_engine.data.quality import quality_report
@@ -16,17 +15,9 @@ from acquirer_engine.features.acquirer import fit_features
 from acquirer_engine.ranking.scorer import RankedAcquirer, rank_acquirers
 from acquirer_engine.ranking.target import assignment_target
 from evals.graders import backtest, stability
-from evals.harness import Grader
+from evals.harness import PreparedEvaluation
 from evals.ranking.backtest import run_backtest
 from evals.scorecard import LayerResult
-
-
-@dataclass(frozen=True)
-class PreparedEvaluation:
-    """Grader functions and serialized companion artifacts for one run."""
-
-    graders: dict[int, Grader]
-    artifacts: dict[str, str]
 
 
 def _rank_repeatedly(rows: Sequence[Transaction], deps: Deps) -> list[list[RankedAcquirer]]:
@@ -51,7 +42,7 @@ def _stability(runs: list[list[RankedAcquirer]], minimum: int) -> stability.Rank
     )
 
 
-def prepare_phase1(
+def prepare_ranking(
     rows: Sequence[Transaction], deps: Deps, unit_result: LayerResult
 ) -> PreparedEvaluation:
     """Compose measured graders while retaining all observations and artifacts.

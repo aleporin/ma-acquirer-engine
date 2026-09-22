@@ -9,10 +9,9 @@ from pathlib import Path
 
 from acquirer_engine.llm.results import AnalystRun, PageAttempt, PageResult
 from acquirer_engine.settings import LayerSpec, Settings
+from evals.analyst import load_runs, prepare_analyst
 from evals.graders import distinct, ops
-from evals.observations import load_runs
-from evals.phase1 import PreparedEvaluation
-from evals.phase3 import prepare_phase3
+from evals.harness import PreparedEvaluation
 from evals.scorecard import LayerResult, Metric
 
 
@@ -130,7 +129,7 @@ def _operations(baseline: LayerResult, runs: list[AnalystRun], settings: Setting
     return baseline.model_copy(update={"metrics": metrics})
 
 
-def prepare_phase4(
+def prepare_routing(
     prepared: PreparedEvaluation, paths: list[Path], settings: Settings
 ) -> PreparedEvaluation:
     """Preserve complete observations while measuring intentional failures separately.
@@ -150,7 +149,7 @@ def prepare_phase4(
         for path, run in zip(paths, runs, strict=True)
         if run.tools_enabled and run.reviewer_enabled == settings.analyst.reviewer_enabled
     ]
-    combined = prepare_phase3(prepared, baseline_paths, settings)
+    combined = prepare_analyst(prepared, baseline_paths, settings)
     graders = dict(combined.graders)
     original_ops = graders.get(6, ops.grade)
     graders[6] = lambda layer: _operations(original_ops(layer), runs, settings)

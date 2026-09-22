@@ -9,7 +9,7 @@ from pathlib import Path
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.settings import LayerSpec
-from evals.phase1 import PreparedEvaluation
+from evals.harness import PreparedEvaluation
 from evals.scorecard import LayerResult
 from tests.fixtures.observations import observation
 
@@ -45,7 +45,7 @@ def test_ablation_failures_do_not_reduce_full_pipeline_page_rate(
         },
         {},
     )
-    result = import_module("evals.phase4").prepare_phase4(prepared, paths, deps.settings)
+    result = import_module("evals.routing").prepare_routing(prepared, paths, deps.settings)
     claims = result.graders[2](LayerSpec(id=2, name="claims")).metrics
     assert claims["replay_post_review_page_rate"].value == 1
     metrics = result.graders[6](LayerSpec(id=6, name="ops")).metrics
