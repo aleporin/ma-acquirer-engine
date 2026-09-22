@@ -15,7 +15,8 @@
 <p class="meta">EBITDA margin assumption: {{ '%.2f'|format(target.ebitda_margin_pct) }}%. Ranking reflects the supplied transaction history; scores are relative fit measures, not acquisition probabilities.</p>
 <span class="badge">{{ buyers|length }} buyers</span>
 <span class="badge">{{ strategics }} Strategic / {{ sponsors }} Financial Sponsor</span>
-<span class="badge">{{ verified }}/{{ buyers|length }} pages verified</span>
+<span class="badge">{{ verified }}/{{ buyers|length }} pages pass data checks</span>
+<p class="meta">Schema and numeric checks do not establish complete qualitative accuracy. Historical activity does not establish current interest or financing capacity.</p>
 {% if feedback.flags %}<p class="meta">Saved feedback is active. Scores include a multiplicative discount for sector-profile similarity to excluded buyers. Base scores remain the sum of the recorded feature contributions.</p>
 <ul class="meta">{% for flag in feedback.flags %}<li>Excluded: {{ flag.acquirer }} — {{ flag.reason }}</li>{% endfor %}</ul>{% endif %}
 </header>
@@ -41,8 +42,11 @@
 <h3>Strategic fit</h3><p class="thesis">{{ rationale.strategic_fit_thesis }}</p>
 <h3>Precedent activity</h3>
 <ul>{% for item in rationale.precedent_activity %}<li>{{ item.description }} {{ cite(item.transaction_id) }}</li>{% endfor %}</ul>
+{% with deals = buyer.facts.precedents %}{% include 'deals.html' %}{% endwith %}
 <h3>Valuation context · Closed transactions</h3><p>{{ rationale.valuation_context.summary }}</p>
 <p class="meta">Comparable evidence: {% for comp in rationale.valuation_context.comps %}{{ cite(comp.evidence_id) }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+{% with deals = buyer.facts.comparables %}{% include 'deals.html' %}{% endwith %}
+<p class="meta">Tables show the dataset's stated financials. Deal EV is enterprise value, not the buyer's equity contribution. Prior ownership does not establish post-deal ownership.</p>
 <h3>Risks to the thesis</h3>
 <ul class="risks">{% for risk in rationale.risk_flags %}<li><strong>{{ risk.category|replace('_', ' ')|capitalize }} · {{ risk.basis }}</strong><br>{{ risk.description }}
 {% for id in risk.evidence_ids %}{{ cite(id) }} {% endfor %}</li>{% endfor %}</ul>

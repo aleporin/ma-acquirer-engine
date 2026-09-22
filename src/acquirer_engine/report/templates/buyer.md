@@ -7,6 +7,8 @@ Base score before feedback: {{ '%.3f'|format(ranking.signals.values()|sum(attrib
 {% set rationale = page.rationale %}
 {% macro cite(id) -%}[{{ id|md }}](../index.html#{{ id|anchor }}){%- endmacro %}
 {% if page.status == 'verified' and rationale %}
+Schema and numeric checks passed; these checks do not establish complete qualitative accuracy. Historical activity does not establish current interest or financing capacity.
+
 ## Acquirer overview
 
 {{ rationale.acquirer_overview|md }}
@@ -19,11 +21,17 @@ Base score before feedback: {{ '%.3f'|format(ranking.signals.values()|sum(attrib
 
 {% for item in rationale.precedent_activity %}- {{ item.description|md }} {{ cite(item.transaction_id) }}
 {% endfor %}
+{% with deals = facts.precedents %}{% include 'deals.md' %}{% endwith %}
+
 ## Valuation context · Closed transactions
 
 {{ rationale.valuation_context.summary|md }}
 
 Comparable evidence: {% for comp in rationale.valuation_context.comps %}{% if not loop.first %} {% endif %}{{ cite(comp.evidence_id) }}{% endfor %}
+
+{% with deals = facts.comparables %}{% include 'deals.md' %}{% endwith %}
+
+Tables show the dataset's stated financials. Deal EV is enterprise value, not the buyer's equity contribution. Prior ownership does not establish post-deal ownership.
 
 ## Risks
 

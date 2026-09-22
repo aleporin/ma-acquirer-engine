@@ -1,0 +1,7 @@
+<div class="table-wrap"><table>
+<thead><tr><th>Transaction / year / sector</th><th>Deal EV</th><th>Structure / prior ownership</th><th>Outcome</th><th>EBITDA margin</th><th>EV/EBITDA</th><th>EV/Revenue</th></tr></thead>
+<tbody>{% for row in deals %}<tr>
+<td>{{ row.target_company }}<br>{{ row.deal_year }} · {{ row.sector }}<br>{{ cite(row.transaction_id) }}</td>
+<td>${{ '%.1f'|format(row.deal_size_mm) }}M</td><td>{{ row.deal_type }}<br>{{ row.target_ownership_pre }}</td><td>{{ row.outcome }}</td>
+<td>{{ '%.2f'|format(row.ebitda_margin_pct) }}%</td><td>{{ '%.2f'|format(row.ev_ebitda_multiple) }}x</td><td>{{ '%.2f'|format(row.ev_revenue_multiple) }}x</td>
+</tr>{% endfor %}</tbody></table></div>

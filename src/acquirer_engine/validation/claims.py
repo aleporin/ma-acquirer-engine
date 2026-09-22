@@ -11,6 +11,7 @@ from acquirer_engine.errors import ValidationFailure
 from acquirer_engine.evidence.config import ValidationConfig
 from acquirer_engine.evidence.context import EvidenceContext
 from acquirer_engine.evidence.pack import Statistic
+from acquirer_engine.validation.comparisons import sector_margin_errors
 from acquirer_engine.validation.numbers import scan_numbers
 from acquirer_engine.validation.phrases import banned_phrases
 from acquirer_engine.validation.schema import AcquirerRationale, Claim
@@ -98,6 +99,7 @@ def validate_rationale(
     errors.extend(_reference_errors(page, context, set(index)))
     errors.extend(scan_numbers(page, set(index), config.rounding_tolerance))
     errors.extend(banned_phrases(page, config.banned_phrases))
+    errors.extend(sector_margin_errors(page, context))
     if errors:
         raise ValidationFailure(errors)
     return page

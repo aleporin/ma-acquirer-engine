@@ -52,6 +52,11 @@ def _statistics(
 ) -> tuple[Statistic, ...]:
     values = {
         "deal_count": history.deal_count,
+        "closed_count": sum(row.outcome == "Closed" for row in history.rows),
+        "pending_count": sum(row.outcome == "Pending" for row in history.rows),
+        "resolved_count": sum(
+            row.outcome in {"Closed", "Withdrawn", "Terminated"} for row in history.rows
+        ),
         "size_min_mm": history.size_min,
         "size_max_mm": history.size_max,
         "completion_rate": history.completion_rate,
@@ -80,7 +85,7 @@ def _statistics(
 def build_core_pack(
     history: AcquirerHistory, ranking: RankedAcquirer, target: TargetProfile, config: PackConfig
 ) -> CorePack:
-    """Keep recent own-history rows until either context budget is reached.
+    """Prioritize exact-sector history, then recency, within both context caps.
 
     Args:
         history: Already fitted eligible buyer history.
@@ -94,7 +99,10 @@ def build_core_pack(
     """
     if history.name != ranking.acquirer or any(r.acquirer != history.name for r in history.rows):
         raise EvidenceError("Ranking and core history must describe the same acquirer")
-    rows = sorted(history.rows, key=lambda r: (-r.deal_year, r.transaction_id))
+    rows = sorted(
+        history.rows,
+        key=lambda r: (r.sector != target.sector, -r.deal_year, r.transaction_id),
+    )
     pack = CorePack(
         target=target,
         ranking=ranking,

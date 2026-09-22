@@ -14,6 +14,7 @@ from acquirer_engine.errors import DataError
 from acquirer_engine.llm.archive import RunSnapshot
 from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.report.evidence import anchor, appendix
+from acquirer_engine.report.facts import deal_facts
 
 
 def _markdown(value: object) -> str:
@@ -41,7 +42,12 @@ def _context(snapshot: RunSnapshot, report: AnalystRun) -> dict[str, object]:
         raise DataError("Report buyer identity differs from its ranking")
     rows, statistics = appendix(snapshot, report)
     buyers = [
-        dict(rank=i, ranking=pack.ranking, page=by_name[pack.ranking.acquirer])
+        dict(
+            rank=i,
+            ranking=pack.ranking,
+            page=by_name[pack.ranking.acquirer],
+            facts=deal_facts(snapshot, by_name[pack.ranking.acquirer]),
+        )
         for i, pack in enumerate(snapshot.packs, 1)
     ]
     return dict(
@@ -91,7 +97,12 @@ def render_report(
     for rank, pack in enumerate(snapshot.packs, 1):
         page = next(p for p in report.pages if p.acquirer == pack.ranking.acquirer)
         files[f"buyers/{rank:02d}.md"] = template.render(
-            rank=rank, ranking=pack.ranking, page=page, report=report, feedback=snapshot.feedback
+            rank=rank,
+            ranking=pack.ranking,
+            page=page,
+            facts=deal_facts(snapshot, page),
+            report=report,
+            feedback=snapshot.feedback,
         )
     _write_outputs(directory, files, report)
     return directory / "index.html"
