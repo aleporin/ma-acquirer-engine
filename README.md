@@ -5,7 +5,7 @@ held-out deals. The current scope is **Phase 4: bounded repair, escalation,
 sparse-evidence routing, optional portfolio review, and replay**. Review is now
 configuration opt-in. The latest default run verified ten pages and 79/79 claims
 in 72.65 seconds for $1.02, with three successful repairs and no budget denials.
-The 60-second target remains unmet. Historical replay reproduces all27 responses
+The 60-second target remains unmet. Historical replay reproduces all 27 responses
 and page outcomes for $0. See [routing and results](ROUTING.md).
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
