@@ -1,4 +1,4 @@
-prompt_file: analyst_v10.md
+prompt_file: analyst_v11.md
 schema_version: rationale-v1
 max_tool_rounds: 3
 tool_max_rows: 8
