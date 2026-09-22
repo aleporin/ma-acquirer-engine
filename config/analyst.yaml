@@ -2,8 +2,8 @@ prompt_file: analyst_v9.md
 schema_version: rationale-v1
 max_tool_rounds: 3
 tool_max_rows: 8
-# Measured concise drafts peaked at 2,314 output tokens across two complete runs.
-max_output_tokens: 4000
+# A stronger-model draft reached 4,000 tokens; leave headroom to finish the schema.
+max_output_tokens: 6000
 # Allow the ranked batch to draft together after the shared-prefix warm-up.
 concurrency: 10
 # Request safety ceiling; latency_target_seconds remains the run performance gate.
