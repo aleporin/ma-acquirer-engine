@@ -44,8 +44,15 @@ Run: .../runs/<run-id>/run.json
 Verified pages: 10/10
 ```
 
-Open the printed `index.html` in your browser. Start with the ranked shortlist,
-click a buyer to read its rationale, then follow citations to the source evidence.
+Open the printed `index.html` in your browser. On macOS, from the project folder:
+
+```sh
+open runs/*/index.html
+```
+
+This opens all generated reports if you have run the pipeline more than once.
+Start with the ranked shortlist, click a buyer to read its rationale, then follow
+citations to the source evidence.
 The report works locally without a web server. For an immediate preview before
 setup, open `sample_output/index.html` from the downloaded folder (on macOS:
 `open sample_output/index.html`). GitHub does not render the HTML report itself.
