@@ -1,8 +1,10 @@
 # Routing, repair, and replay
 
-The [ablation scorecard](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/summary.md)
-and [comparison](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/ablation_summary.json)
-record three live variants at identical source, data, and prompt-file versions:
+The [corrected scorecard](evals/results/p4-eacf7e3ab9cd2148c1d316e31967b624849225cc/summary.md)
+passes the Phase 4 routing gate. It re-evaluates the same three live observations;
+the new admission configuration still needs live verification. The
+[original comparison](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/ablation_summary.json)
+records all variants at identical source, data, and prompt-file versions:
 
 | Variant | Verified pages | Final matched claims | Seconds | Recorded USD |
 | --- | --- | --- | --- | --- |
