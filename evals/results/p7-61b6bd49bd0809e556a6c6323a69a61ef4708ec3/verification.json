@@ -1,0 +1,38 @@
+{
+  "base_sha": "a77ae68",
+  "source_sha": "61b6bd49bd0809e556a6c6323a69a61ef4708ec3",
+  "source_dirty": false,
+  "python": "3.12.14",
+  "uv": "0.12.17",
+  "dependencies": "locked",
+  "red_regressions": {
+    "failed": 10,
+    "passed": 8,
+    "seconds": 3.38
+  },
+  "full_suite": {
+    "command": "make test",
+    "passed": 348,
+    "seconds": 7.89
+  },
+  "lint": {
+    "command": "make lint",
+    "ruff": "passed",
+    "format_files": 306,
+    "mypy_source_files": 165,
+    "length_check_exit_code": 0
+  },
+  "replay": {
+    "command": "make run",
+    "run_id": "c174cab79b1c4c438a4e88f6e95d3080",
+    "verified_pages": 10,
+    "recorded_responses": 21,
+    "new_cost_usd": 0
+  },
+  "evaluation_command": "make eval EVAL_FLAGS=\"--analyst-run runs/c174cab79b1c4c438a4e88f6e95d3080/run.json\"",
+  "review": {
+    "initial_findings": 4,
+    "focused_recheck_remaining_blockers": 0
+  },
+  "scope": "Offline regression and replay evidence; no new live quality, cost or latency measurement."
+}
