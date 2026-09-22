@@ -19,7 +19,7 @@ escalation_enabled: true
 tools_enabled: true
 sparse_prompt_file: analyst_sparse_v1.md
 sparse_relevant_deals: 3
-reviewer_enabled: true
+reviewer_enabled: false
 reviewer_prompt_file: reviewer_v1.md
 reviewer_max_output_tokens: 2048
 max_run_usd: 3.0
