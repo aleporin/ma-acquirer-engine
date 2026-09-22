@@ -12,9 +12,9 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart, Tool
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import analyze_one
+from acquirer_engine.factory import build_services
+from acquirer_engine.stages.draft import draft_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
@@ -75,7 +75,7 @@ async def test_rejected_draft_preserves_actionable_error_and_usage(
         "Fixture instructions.",
         mode="test",
     )
-    result = await analyze_one(context.core, replace(deps, runtime=runtime))
+    result = await draft_one(context.core, deps.with_runtime(runtime))
     assert result.status == "failed"
     assert any(message in error for error in result.errors), result.errors
     assert result.rationale is None and result.claims_total == 0

@@ -12,9 +12,9 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, RetryPromptPart, T
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import analyze_one
+from acquirer_engine.factory import build_services
+from acquirer_engine.stages.draft import draft_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
@@ -80,7 +80,7 @@ async def test_repair_corrects_rejected_output_and_preserves_first_pass(
         "Fixture instructions.",
         mode="test",
     )
-    page = await analyze_one(context.core, replace(deps, runtime=runtime))
+    page = await draft_one(context.core, deps.with_runtime(runtime))
     assert page.status == "verified", page.errors
     assert any(expected in text for text in feedback)
     attempts = page.model_dump()["attempts"]
@@ -104,7 +104,7 @@ async def test_repair_stops_after_one_failed_correction(deps: Deps, tmp_path: Pa
         "Fixture instructions.",
         mode="test",
     )
-    page = await analyze_one(context.core, replace(deps, runtime=runtime))
+    page = await draft_one(context.core, deps.with_runtime(runtime))
     assert page.status == "failed"
     assert len(runtime.model.ledger.entries) == 3
     assert len(page.model_dump()["attempts"]) == 2

@@ -1,18 +1,92 @@
-"""Fit immutable histories and dataset-wide features.
+"""Fit buyer histories and shared ranking features from eligible transactions.
 
-Owns: Cutoff enforcement, outcome policy, and descriptive buyer statistics.
-Does not own: Query-specific scores or test-period information.
+Owns: Cutoff enforcement, tag weights, sector similarity, and buyer aggregates.
+Does not own: Target-specific scores, holdout evaluation, or narrative generation.
 """
 
+import math
+from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
 from statistics import median
 
-from acquirer_engine.data.schema import AcquirerType, Transaction
+from acquirer_engine.data import AcquirerType, Transaction
 from acquirer_engine.errors import DataError
-from acquirer_engine.features.similarity import sector_similarity
-from acquirer_engine.features.tags import idf_weights
 from acquirer_engine.ranking.config import RankingConfig
+
+
+def parse_tags(value: str) -> frozenset[str]:
+    """Return unique nonempty pipe-delimited tags.
+
+    Args:
+        value: Validated CSV tag string.
+    Returns:
+        Unique trimmed tags.
+    """
+    return frozenset(tag.strip() for tag in value.split("|") if tag.strip())
+
+
+def idf_weights(rows: Sequence[Transaction]) -> dict[str, float]:
+    """Compute smoothed IDF; a ubiquitous tag has zero weight.
+
+    Args:
+        rows: Training transactions only.
+    Returns:
+        Deterministically ordered tag weights.
+    """
+    counts = Counter(tag for row in rows for tag in parse_tags(row.strategic_rationale_tags))
+    return {tag: math.log((len(rows) + 1) / (counts[tag] + 1)) for tag in sorted(counts)}
+
+
+def _centroid(rows: Sequence[Transaction]) -> tuple[float, float, float]:
+    return (
+        median(row.ebitda_margin_pct for row in rows),
+        median(math.log(row.ev_ebitda_multiple) for row in rows),
+        median(math.log(row.deal_size_mm) for row in rows),
+    )
+
+
+def _cosine(left: list[int], right: list[int]) -> float:
+    denominator = math.sqrt(sum(x * x for x in left) * sum(x * x for x in right))
+    return sum(x * y for x, y in zip(left, right, strict=True)) / denominator if denominator else 0
+
+
+def sector_similarity(
+    rows: Sequence[Transaction], config: RankingConfig
+) -> dict[tuple[str, str], float]:
+    """Fit co-activity cosine and normalized financial-profile distance.
+
+    Args:
+        rows: Non-rumored training history only.
+        config: Blend and adjacency discount.
+    Returns:
+        Unit diagonal and discounted, symmetric off-diagonal scores.
+    """
+    sectors = sorted({row.sector for row in rows})
+    sponsors = sorted({row.acquirer for row in rows if row.acquirer_type == "Financial Sponsor"})
+    counts = Counter(
+        (row.sector, row.acquirer) for row in rows if row.acquirer_type == "Financial Sponsor"
+    )
+    centers = {
+        sector: _centroid([row for row in rows if row.sector == sector]) for sector in sectors
+    }
+    scales = [
+        max(c[i] for c in centers.values()) - min(c[i] for c in centers.values()) for i in range(3)
+    ]
+    result = {}
+    for left in sectors:
+        for right in sectors:
+            cosine = _cosine(
+                [counts[left, s] for s in sponsors], [counts[right, s] for s in sponsors]
+            )
+            distances = [
+                abs(centers[left][i] - centers[right][i]) / scale if scale else 0
+                for i, scale in enumerate(scales)
+            ]
+            profile = math.exp(-sum(distances) / len(distances))
+            blend = config.coactivity_weight * cosine + (1 - config.coactivity_weight) * profile
+            result[left, right] = 1.0 if left == right else config.adjacent_discount * blend
+    return result
 
 
 @dataclass(frozen=True)

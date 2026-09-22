@@ -12,9 +12,9 @@ from typer.testing import CliRunner
 
 from acquirer_engine.cli import build_app
 from acquirer_engine.errors import DataError
-from acquirer_engine.features.acquirer import fit_features
 from acquirer_engine.feedback import ranking, state
 from acquirer_engine.feedback import state as module
+from acquirer_engine.ranking.features import fit_features
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.ranking.target import assignment_target
 from acquirer_engine.settings import Settings

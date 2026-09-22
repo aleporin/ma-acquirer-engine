@@ -6,11 +6,10 @@ Does not own: Evidence retrieval, prose judgment, or repair routing.
 
 from pydantic import ValidationError
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.errors import ValidationFailure
 from acquirer_engine.evidence.config import ValidationConfig
-from acquirer_engine.evidence.context import EvidenceContext
-from acquirer_engine.evidence.pack import Statistic
+from acquirer_engine.evidence.pack import EvidenceContext, Statistic
 from acquirer_engine.validation.numbers import scan_numbers
 from acquirer_engine.validation.prose import (
     banned_phrases,

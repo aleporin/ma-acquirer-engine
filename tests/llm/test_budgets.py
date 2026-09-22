@@ -5,7 +5,6 @@ Does not own: Reconciling provider invoices or testing live availability.
 """
 
 import asyncio
-from dataclasses import replace
 from importlib import import_module
 from pathlib import Path
 
@@ -15,10 +14,10 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import BudgetExceeded
-from acquirer_engine.llm.analyst import analyze_one
+from acquirer_engine.factory import build_services
+from acquirer_engine.stages.draft import draft_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 from tests.llm.test_routing import routing_deps
 
@@ -57,7 +56,7 @@ async def test_usd_guard_prevents_a_request_before_model_execution(
         pytest.fail("Budget breach must be caught before the provider call")
 
     runtime = build_services(deps, FunctionModel(never), (), tmp_path, "Fixture.", mode="live")
-    page = await analyze_one(context.core, replace(deps, runtime=runtime))
+    page = await draft_one(context.core, deps.with_runtime(runtime))
     assert page.status == "failed" and "budget" in " ".join(page.errors).lower()
     assert not runtime.model.ledger.entries
     assert len(page.attempts) == 1
@@ -91,7 +90,7 @@ async def test_provider_failures_are_not_retried_as_validation_repairs(
         )
 
     runtime = build_services(deps, FunctionModel(failing), (), tmp_path, "Fixture.", mode="test")
-    page = await analyze_one(context.core, replace(deps, runtime=runtime))
+    page = await draft_one(context.core, deps.with_runtime(runtime))
     assert page.status == "failed"
     assert calls == 1 and len(page.attempts) == 1
     if failure == "deadline":

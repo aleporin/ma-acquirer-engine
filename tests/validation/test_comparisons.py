@@ -7,8 +7,7 @@ Does not own: Open-ended interpretation or banker judgment.
 import pytest
 
 from acquirer_engine.errors import ValidationFailure
-from acquirer_engine.evidence.ids import stat_id
-from acquirer_engine.evidence.pack import Statistic
+from acquirer_engine.evidence.pack import Statistic, stat_id
 from acquirer_engine.settings import Settings
 from acquirer_engine.validation.claims import validate_rationale
 from tests.fixtures.rationale import evidence_context, rationale_payload

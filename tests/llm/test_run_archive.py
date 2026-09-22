@@ -17,8 +17,8 @@ from typer.testing import CliRunner
 
 from acquirer_engine.cli import build_app
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.archive import RunSnapshot, load_snapshot
 from acquirer_engine.pipeline import execute_prepared
+from acquirer_engine.replay import RunSnapshot, load_snapshot
 from tests.fixtures.rationale import evidence_context
 from tests.llm.test_analyst import tool_model
 
@@ -68,12 +68,12 @@ async def test_cli_replays_original_inputs_with_no_current_files_or_cache(
     rmtree(original / "cache")
     (tmp_path / "config").mkdir()
     (tmp_path / "config/analyst.yaml").write_text("invalid: current configuration")
-    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("c" * 40, source_dirty))
+    monkeypatch.setattr("acquirer_engine.replay.git_state", lambda _: ("c" * 40, source_dirty))
 
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Historical replay must not construct a provider client")
 
-    monkeypatch.setattr("acquirer_engine.bootstrap.create_client", no_client)
+    monkeypatch.setattr("acquirer_engine.factory.create_client", no_client)
     result = await asyncio.to_thread(
         CliRunner().invoke, build_app(), ["replay", original.name, "--project", str(tmp_path)]
     )
@@ -107,8 +107,8 @@ def test_replay_rejects_invalid_or_missing_archive_without_current_config(
 def test_saved_snapshot_preserves_legacy_execution_policy_fields(
     deps: Deps, tmp_path: Path
 ) -> None:
-    from acquirer_engine.llm.archive import save_snapshot
     from acquirer_engine.llm.config import AnalystConfig
+    from acquirer_engine.replay import save_snapshot
 
     snapshot = inputs(deps, "a" * 32)
     old_fields = {

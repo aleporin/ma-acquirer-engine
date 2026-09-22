@@ -29,7 +29,7 @@ def project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     config["phase"] = "p0"
     config["offline_layers"] = [0, 1, 2, 3, 5, 6]
     path.write_text(yaml.safe_dump(config))
-    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda root: ("a" * 40, False))
+    monkeypatch.setattr("acquirer_engine.replay.git_state", lambda root: ("a" * 40, False))
     return root
 
 

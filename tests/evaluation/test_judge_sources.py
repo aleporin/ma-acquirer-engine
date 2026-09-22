@@ -11,7 +11,7 @@ import pytest
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import EvaluationError
-from acquirer_engine.llm.archive import save_snapshot
+from acquirer_engine.replay import save_snapshot
 from evals.judges.sources import load_cases
 from tests.fixtures.observations import observation
 from tests.llm.test_run_archive import inputs

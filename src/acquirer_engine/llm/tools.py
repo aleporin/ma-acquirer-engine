@@ -11,12 +11,10 @@ from typing import Literal, Self
 from pydantic import BaseModel, ConfigDict, FiniteFloat, model_validator
 from pydantic_ai.messages import ModelMessage
 
-from acquirer_engine.data.schema import Transaction
-from acquirer_engine.deps import Deps
+from acquirer_engine.data import Transaction
+from acquirer_engine.deps import RuntimeDeps
 from acquirer_engine.errors import BudgetExceeded
-from acquirer_engine.evidence.context import EvidenceContext
-from acquirer_engine.evidence.ids import stat_id
-from acquirer_engine.evidence.pack import CorePack, Statistic
+from acquirer_engine.evidence.pack import CorePack, EvidenceContext, Statistic, stat_id
 from acquirer_engine.llm.config import AnalystConfig
 
 type ToolName = Literal[
@@ -231,7 +229,7 @@ class ToolState:
 class PageDeps:
     """One page's retrieval state with references to shared run resources."""
 
-    shared: Deps
+    shared: RuntimeDeps
     state: ToolState
 
 

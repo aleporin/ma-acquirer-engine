@@ -1,7 +1,7 @@
-"""Construct and close the resources shared by one execution.
+"""Build and close the resources shared by one execution.
 
-Owns: Client lifetime and composition of agents, tools, ledger, cache, and trace.
-Does not own: Run ordering, per-page routing, or evaluation policy.
+Owns: Provider lifetime and assembly of agents, tools, budget, cache, and trace.
+Does not own: Stage ordering, per-page routing, or evaluation policy.
 """
 
 from collections.abc import AsyncIterator
@@ -14,7 +14,7 @@ from pydantic_ai.models import Model
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.providers.anthropic import AnthropicProvider
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.deps import Deps
 from acquirer_engine.llm.agents import build_analyst, build_reviewer
 from acquirer_engine.llm.cache import ResponseCache

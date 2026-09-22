@@ -5,7 +5,6 @@ Does not own: Evaluating narrative quality or training ranking weights.
 """
 
 import json
-from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -14,11 +13,11 @@ from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 from typer.testing import CliRunner
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.cli import build_app
 from acquirer_engine.comparison import ranking
 from acquirer_engine.comparison import summary as module
 from acquirer_engine.deps import Deps
+from acquirer_engine.factory import build_services
 from acquirer_engine.ranking.scorer import RankedAcquirer
 from acquirer_engine.ranking.target import TargetProfile
 from tests.fixtures.project import write_project
@@ -42,7 +41,7 @@ def test_comparison_counts_overlap_and_defines_positive_delta_as_improvement(dep
 def test_compare_command_writes_table_without_a_provider(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("a" * 40, False))
+    monkeypatch.setattr("acquirer_engine.replay.git_state", lambda _: ("a" * 40, False))
     write_project(
         tmp_path, (transaction(1), transaction(2, acquirer="Buyer B", sector="Technology"))
     )
@@ -82,7 +81,7 @@ async def test_summary_uses_one_recorded_call_and_replays_offline(
         cache_root=tmp_path / "cache",
     )
     result = await module.summarize(
-        comparison, replace(deps, runtime=runtime), "Fixture summary", policy
+        comparison, deps.with_runtime(runtime), "Fixture summary", policy
     )
     replay = build_services(
         deps,
@@ -94,7 +93,7 @@ async def test_summary_uses_one_recorded_call_and_replays_offline(
         cache_root=tmp_path / "cache",
     )
     restored = await module.summarize(
-        comparison, replace(deps, runtime=replay), "Fixture summary", policy
+        comparison, deps.with_runtime(replay), "Fixture summary", policy
     )
     assert result == restored and len(summary_model[1]) == 1
     assert len(runtime.model.ledger.entries) == len(replay.model.ledger.entries) == 1
@@ -143,7 +142,7 @@ def test_summary_setup_failure_preserves_the_computed_table(
     write_project(tmp_path, (transaction(),))
     path = tmp_path / "target.yaml"
     path.write_text("sector: Services\n")
-    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("a" * 40, False))
+    monkeypatch.setattr("acquirer_engine.replay.git_state", lambda _: ("a" * 40, False))
     monkeypatch.setattr(command, "model_resources", unavailable)
     arguments = [
         "compare",

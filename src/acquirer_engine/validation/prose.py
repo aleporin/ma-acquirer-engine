@@ -6,8 +6,7 @@ Does not own: Numeric matching or general semantic verification.
 
 import re
 
-from acquirer_engine.evidence.context import EvidenceContext
-from acquirer_engine.evidence.ids import stat_id
+from acquirer_engine.evidence.pack import EvidenceContext, stat_id
 from acquirer_engine.validation.schema import AcquirerRationale, prose_sections
 
 

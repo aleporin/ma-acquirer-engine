@@ -11,7 +11,7 @@ from pydantic_ai import Agent, ToolOutput
 from pydantic_ai.usage import UsageLimits
 
 from acquirer_engine.comparison.ranking import ComparisonData
-from acquirer_engine.deps import Deps
+from acquirer_engine.deps import RuntimeDeps
 from acquirer_engine.llm.framing import data_block
 
 
@@ -42,7 +42,7 @@ class ComparisonSummary(BaseModel):
 
 async def summarize(
     data: ComparisonData,
-    deps: Deps,
+    deps: RuntimeDeps,
     prompt: str,
     policy: ComparisonPolicy,
 ) -> ComparisonSummary:
@@ -55,7 +55,6 @@ async def summarize(
     Returns:
         Unverified prose interpretation; the computed table remains authoritative.
     """
-    assert deps.runtime is not None
     recorded = deps.runtime.model
     agent: Agent[None, ComparisonSummary] = Agent(
         recorded,

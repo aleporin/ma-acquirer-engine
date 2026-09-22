@@ -7,7 +7,6 @@ Does not own: Buyer-page generation or changing feedback state.
 import asyncio
 import json
 import sys
-from dataclasses import replace
 from pathlib import Path
 from time import perf_counter
 from typing import Annotated
@@ -20,16 +19,16 @@ from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescap
 from pydantic import ValidationError
 from pydantic_ai.exceptions import UnexpectedModelBehavior, UsageLimitExceeded
 
-from acquirer_engine import run_history
-from acquirer_engine.bootstrap import build_services, model_resources
+from acquirer_engine import replay as archives
 from acquirer_engine.comparison.ranking import compare_rankings
 from acquirer_engine.comparison.results import ComparisonRun
 from acquirer_engine.comparison.summary import ComparisonPolicy, summarize
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, DataError
+from acquirer_engine.factory import build_services, model_resources
 from acquirer_engine.logging_setup import run_logger
-from acquirer_engine.selection import Selection, prepare_selection
 from acquirer_engine.settings import load_settings
+from acquirer_engine.stages.select import Selection, select_buyers
 
 
 def compare_targets(
@@ -56,7 +55,7 @@ def compare_targets(
             raise DataError("--fresh requires --summary; plain comparison is already offline")
         root, run_id = project.resolve(), uuid4().hex
         settings = load_settings(root / "config")
-        sha, dirty = run_history.git_state(root)
+        sha, dirty = archives.git_state(root)
         directory = root / "runs" / run_id
         with run_logger(
             root / "runs",
@@ -87,8 +86,8 @@ async def _execute(
     replay: bool,
 ) -> ComparisonRun:
     started = perf_counter()
-    left = prepare_selection(root, deps, target_file=a)
-    right = prepare_selection(root, deps, target_file=b)
+    left = select_buyers(root, deps, target_file=a)
+    right = select_buyers(root, deps, target_file=b)
     if left.history != right.history or left.feedback != right.feedback:
         raise DataError("Inputs changed while comparing; retry with stable data and feedback")
     data = compare_rankings(
@@ -156,7 +155,7 @@ async def _with_summary(
         )
         updates: dict[str, object] = {"prompt_file": policy.prompt_file}
         try:
-            result = await summarize(report.data, replace(deps, runtime=runtime), prompt, policy)
+            result = await summarize(report.data, deps.with_runtime(runtime), prompt, policy)
             updates["summary"] = result.summary
         except (
             AcquirerEngineError,
@@ -177,7 +176,7 @@ async def _with_summary(
 
 def _save(directory: Path, report: ComparisonRun) -> None:
     environment = Environment(
-        loader=PackageLoader("acquirer_engine.report", "templates"),
+        loader=PackageLoader("acquirer_engine", "templates"),
         autoescape=select_autoescape(("html",)),
         undefined=StrictUndefined,
     )

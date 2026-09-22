@@ -7,7 +7,7 @@ Does not own: Generating or silently correcting narrative text.
 from pathlib import Path
 
 from acquirer_engine.deps import Deps
-from acquirer_engine.report.render import render_report
+from acquirer_engine.stages.render import render_report
 from tests.report.test_render import report_inputs
 
 

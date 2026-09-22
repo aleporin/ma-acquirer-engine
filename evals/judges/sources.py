@@ -9,11 +9,11 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
 from acquirer_engine.evidence.pack import CorePack, Statistic
-from acquirer_engine.llm.archive import RunSnapshot, load_snapshot
 from acquirer_engine.llm.results import AnalystRun, PageResult
+from acquirer_engine.replay import RunSnapshot, load_snapshot
 from evals.judges.facts import candidate_summary, evidence_text, page_text, source_facts
 from evals.judges.schema import Candidate, Case
 

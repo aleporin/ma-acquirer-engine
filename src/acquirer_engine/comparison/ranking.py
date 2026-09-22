@@ -6,7 +6,7 @@ Does not own: Model interpretation or fitting ranking features.
 
 from pydantic import BaseModel, ConfigDict
 
-from acquirer_engine.data.schema import AcquirerType
+from acquirer_engine.data import AcquirerType
 from acquirer_engine.ranking.scorer import Conviction, RankedAcquirer
 from acquirer_engine.ranking.target import TargetProfile
 

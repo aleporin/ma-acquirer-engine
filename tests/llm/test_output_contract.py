@@ -5,7 +5,6 @@ Does not own: Provider grammar execution or paid quality measurements.
 """
 
 import json
-from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -15,10 +14,10 @@ from anthropic import transform_schema
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.providers.anthropic import AnthropicProvider
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import analyze_one
+from acquirer_engine.factory import build_services
 from acquirer_engine.llm.provider import create_client
+from acquirer_engine.stages.draft import draft_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
@@ -83,7 +82,7 @@ async def test_provider_receives_strict_compatible_output_schema(
             "Fixture instructions.",
             mode="test",
         )
-        result = await analyze_one(context.core, replace(deps, runtime=runtime))
+        result = await draft_one(context.core, deps.with_runtime(runtime))
     assert result.status == "verified", result.errors
     assert result.claims_total == result.claims_verified == 4
     assert len(requests) == 2

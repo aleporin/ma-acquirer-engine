@@ -7,9 +7,8 @@ Does not own: Provider token accounting or comparable-deal retrieval.
 import pytest
 
 from acquirer_engine.errors import EvidenceError
-from acquirer_engine.evidence.ids import stat_id
-from acquirer_engine.evidence.pack import build_core_pack
-from acquirer_engine.features.acquirer import AcquirerHistory, fit_features
+from acquirer_engine.evidence.pack import build_core_pack, stat_id
+from acquirer_engine.ranking.features import AcquirerHistory, fit_features
 from acquirer_engine.ranking.scorer import RankedAcquirer, rank_acquirers
 from acquirer_engine.ranking.target import TargetProfile
 from acquirer_engine.settings import Settings

@@ -13,9 +13,9 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import analyze_one
+from acquirer_engine.factory import build_services
+from acquirer_engine.stages.draft import draft_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 from tests.llm.test_repair import correcting_model
 
@@ -57,7 +57,7 @@ async def test_second_failure_escalates_once_then_passes_or_banners(
         mode="test",
         escalation_model=FunctionModel(escalated),
     )
-    page = await analyze_one(context.core, replace(deps, runtime=runtime))
+    page = await draft_one(context.core, deps.with_runtime(runtime))
     assert page.status == ("verified" if escalation_valid else "failed")
     assert [a.stage for a in page.attempts] == ["analyst", "repair", "escalation"]
     calls = runtime.model.ledger.entries
@@ -95,7 +95,7 @@ async def test_sparse_route_uses_ranked_density_not_truncated_pack_rows(
         mode="test",
         auxiliary_prompts={"sparse": "Sparse route requires hedging."},
     )
-    await analyze_one(pack, replace(deps, runtime=runtime))
+    await draft_one(pack, deps.with_runtime(runtime))
     assert ("Sparse route requires hedging." in (instructions[0] or "")) is expect_sparse
 
 
@@ -121,6 +121,6 @@ async def test_tools_disabled_cannot_validate_invented_comp_provenance(
         "Fixture instructions.",
         mode="test",
     )
-    page = await analyze_one(context.core, replace(deps, runtime=runtime))
+    page = await draft_one(context.core, deps.with_runtime(runtime))
     assert page.status == "failed"
     assert any("comps" in error or "comp" in error for error in page.errors)

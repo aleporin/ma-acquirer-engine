@@ -7,11 +7,11 @@ Does not own: Outside research or treating a page's claims as their own evidence
 import json
 from collections import Counter
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.errors import EvaluationError
 from acquirer_engine.evidence.pack import CorePack, Statistic
-from acquirer_engine.llm.archive import RunSnapshot
 from acquirer_engine.llm.tools import EvidenceTools
+from acquirer_engine.replay import RunSnapshot
 from acquirer_engine.validation.schema import AcquirerRationale
 from evals.judges.schema import Candidate
 

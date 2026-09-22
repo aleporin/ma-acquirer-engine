@@ -8,7 +8,7 @@ import csv
 from pathlib import Path
 from shutil import copytree
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 
 
 def write_project(root: Path, rows: tuple[Transaction, ...]) -> None:

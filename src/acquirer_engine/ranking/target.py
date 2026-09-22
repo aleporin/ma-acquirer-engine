@@ -10,7 +10,7 @@ from typing import Annotated
 import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, PositiveFloat
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.errors import DataError
 from acquirer_engine.ranking.config import RankingConfig
 

@@ -4,8 +4,7 @@ Owns: Measured quality counts and canonical-value preservation.
 Does not own: Imputation or scoring.
 """
 
-from acquirer_engine.data.loader import load_transactions
-from acquirer_engine.data.quality import quality_report
+from acquirer_engine.data import load_transactions, quality_report
 from tests.data.test_loader import csv_path
 
 

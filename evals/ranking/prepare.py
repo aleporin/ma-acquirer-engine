@@ -8,10 +8,9 @@ import json
 from collections.abc import Sequence
 from functools import partial
 
-from acquirer_engine.data.quality import quality_report
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction, quality_report
 from acquirer_engine.deps import Deps
-from acquirer_engine.features.acquirer import fit_features
+from acquirer_engine.ranking.features import fit_features
 from acquirer_engine.ranking.scorer import RankedAcquirer, rank_acquirers
 from acquirer_engine.ranking.target import assignment_target
 from evals.graders import backtest, stability

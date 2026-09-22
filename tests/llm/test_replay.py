@@ -5,7 +5,6 @@ Does not own: Paid generation or network access.
 """
 
 import json
-from dataclasses import replace
 from functools import partial
 from pathlib import Path
 
@@ -14,10 +13,10 @@ import pytest
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.providers.anthropic import AnthropicProvider
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import analyze_one
+from acquirer_engine.factory import build_services
 from acquirer_engine.llm.provider import create_client
+from acquirer_engine.stages.draft import draft_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 from tests.llm.test_analyst import tool_model
 
@@ -36,7 +35,7 @@ async def test_entire_agent_replays_with_no_provider(deps: Deps, tmp_path: Path)
         mode="test",
         cache_root=cache,
     )
-    before = await analyze_one(context.core, replace(deps, runtime=original))
+    before = await draft_one(context.core, deps.with_runtime(original))
     replay = build_services(
         deps,
         None,
@@ -46,7 +45,7 @@ async def test_entire_agent_replays_with_no_provider(deps: Deps, tmp_path: Path)
         mode="replay",
         cache_root=cache,
     )
-    after = await analyze_one(context.core, replace(deps, runtime=replay))
+    after = await draft_one(context.core, deps.with_runtime(replay))
     assert after.status == "verified", after.errors
     assert after.rationale == before.rationale and after.tools == before.tools
     assert len(replay.model.ledger.entries) == 2
@@ -113,7 +112,7 @@ async def test_provider_adapter_responses_replay_with_original_usage(
             mode="test",
             cache_root=tmp_path / "cache",
         )
-        before = await analyze_one(context.core, replace(deps, runtime=original))
+        before = await draft_one(context.core, deps.with_runtime(original))
     assert before.status == "verified", before.errors
     replay = build_services(
         deps,
@@ -124,7 +123,7 @@ async def test_provider_adapter_responses_replay_with_original_usage(
         mode="replay",
         cache_root=tmp_path / "cache",
     )
-    after = await analyze_one(context.core, replace(deps, runtime=replay))
+    after = await draft_one(context.core, deps.with_runtime(replay))
     assert after.status == "verified", after.errors
     assert after.rationale == before.rationale and len(calls) == 2
     usage = replay.model.ledger.entries[0]

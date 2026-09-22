@@ -4,7 +4,7 @@ Owns: Synthetic data used by numeric tests.
 Does not own: Source dataset sampling.
 """
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 
 
 def transaction(number: int = 1, **changes: object) -> Transaction:

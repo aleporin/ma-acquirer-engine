@@ -5,7 +5,7 @@ Does not own: Ranking policy or model prose quality.
 """
 
 from acquirer_engine.evidence.pack import build_core_pack
-from acquirer_engine.features.acquirer import fit_features
+from acquirer_engine.ranking.features import fit_features
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.settings import Settings
 from tests.evidence.test_pack import pack_inputs

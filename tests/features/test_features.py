@@ -6,8 +6,7 @@ Does not own: Weighted ranking or conviction.
 
 import pytest
 
-from acquirer_engine.features.acquirer import fit_features
-from acquirer_engine.features.tags import idf_weights
+from acquirer_engine.ranking.features import fit_features, idf_weights
 from acquirer_engine.ranking.target import TargetProfile, assignment_target
 from acquirer_engine.settings import Settings
 from tests.fixtures.ranking import transaction

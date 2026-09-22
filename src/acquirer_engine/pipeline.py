@@ -11,16 +11,15 @@ from time import perf_counter
 
 from pydantic_ai.models import Model
 
-from acquirer_engine.bootstrap import AnalystServices, build_services, model_resources
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import run_analysts
-from acquirer_engine.llm.archive import RunSnapshot, save_snapshot
+from acquirer_engine.factory import AnalystServices, build_services, model_resources
 from acquirer_engine.llm.cost import ExecutionMode
 from acquirer_engine.llm.results import AnalystRun, PageResult, ReviewResult
-from acquirer_engine.llm.reviewer import review_portfolio
 from acquirer_engine.llm.trace import ResponseArchive
-from acquirer_engine.portable_replay import select_replay
-from acquirer_engine.selection import TargetOverrides, prepare_selection
+from acquirer_engine.replay import RunSnapshot, save_snapshot, select_replay
+from acquirer_engine.stages.draft import draft_pages
+from acquirer_engine.stages.review import review_portfolio
+from acquirer_engine.stages.select import TargetOverrides, select_buyers
 
 
 async def execute_run(
@@ -45,7 +44,7 @@ async def execute_run(
     Returns:
         Persisted run with all page outcomes and observed usage.
     """
-    selected = prepare_selection(root, deps, target_file=target_file, overrides=overrides)
+    selected = select_buyers(root, deps, target_file=target_file, overrides=overrides)
     if replay and (archived := select_replay(root, deps, selected)):
         return await execute_replay(
             archived[0], directory, archived[1], deps, sha, source_dirty=source_dirty
@@ -129,8 +128,9 @@ async def execute_prepared(
         escalation_model=escalation_model,
         auxiliary_prompts=snapshot.auxiliary_prompts,
     )
-    pages = await run_analysts(list(snapshot.packs), replace(deps, runtime=services))
-    final, review = await review_portfolio(pages, replace(deps, runtime=services))
+    runtime = deps.with_runtime(services)
+    pages = await draft_pages(list(snapshot.packs), runtime)
+    final, review = await review_portfolio(pages, runtime)
     result = _run_result(snapshot, mode, services, final, perf_counter() - started, replay_of)
     return _save_report(directory, result, pages, review, services.model.budget.uncertain)
 

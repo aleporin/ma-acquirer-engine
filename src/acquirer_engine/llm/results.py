@@ -8,7 +8,7 @@ from typing import Annotated, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, NonNegativeInt, model_validator
 
-from acquirer_engine.data.schema import AcquirerType
+from acquirer_engine.data import AcquirerType
 from acquirer_engine.llm.cost import CallRecord, ExecutionMode
 from acquirer_engine.validation.schema import AcquirerRationale
 

@@ -13,11 +13,11 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart, Tool
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
 from acquirer_engine.evidence.pack import CorePack
-from acquirer_engine.llm.analyst import run_analysts
+from acquirer_engine.factory import build_services
 from acquirer_engine.llm.results import PageResult
+from acquirer_engine.stages.draft import draft_pages
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
 
@@ -63,7 +63,7 @@ async def test_first_response_warms_prefix_before_bounded_parallel_requests(
         "Fixture instructions.",
         mode="test",
     )
-    pages = await run_analysts([context.core] * (concurrency + 1), replace(deps, runtime=runtime))
+    pages = await draft_pages([context.core] * (concurrency + 1), deps.with_runtime(runtime))
     assert all(page.status == "verified" for page in pages)
     assert peak == concurrency and calls == 2 * (concurrency + 1)
     assert sorted(e.attempt for e in runtime.model.ledger.entries) == sorted(
@@ -87,7 +87,7 @@ async def test_first_page_failure_does_not_block_later_pages(deps: Deps, tmp_pat
         "Fixture instructions.",
         mode="test",
     )
-    pages = await run_analysts([bad, context.core], replace(deps, runtime=runtime))
+    pages = await draft_pages([bad, context.core], deps.with_runtime(runtime))
     assert [page.status for page in pages] == ["failed", "verified"]
 
 
@@ -95,7 +95,7 @@ async def test_first_page_failure_does_not_block_later_pages(deps: Deps, tmp_pat
 async def test_failed_warmup_stays_serial_until_a_response(
     deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import acquirer_engine.llm.analyst as pipeline
+    import acquirer_engine.stages.draft as pipeline
 
     context = evidence_context(deps.settings)
     names = ["First", "Second", "Third", "Fourth"]
@@ -127,8 +127,8 @@ async def test_failed_warmup_stays_serial_until_a_response(
         active -= 1
         return PageResult.model_construct(acquirer=name, status="verified")
 
-    monkeypatch.setattr(pipeline, "analyze_one", scheduled)
-    pages = await run_analysts(packs, replace(deps, runtime=runtime))
+    monkeypatch.setattr(pipeline, "draft_one", scheduled)
+    pages = await draft_pages(packs, deps.with_runtime(runtime))
     assert [page.status for page in pages] == ["failed", "verified", "verified", "verified"]
     assert active_before_response == 1
     assert peak == 2

@@ -12,9 +12,9 @@ import pytest
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import DataError
-from acquirer_engine.llm.archive import RunSnapshot
 from acquirer_engine.llm.results import AnalystRun
-from acquirer_engine.report import render
+from acquirer_engine.replay import RunSnapshot
+from acquirer_engine.stages import render as render
 from tests.fixtures.rationale import rationale_payload
 from tests.llm.test_run_archive import inputs
 

@@ -4,8 +4,7 @@ Owns: Small synthetic examples with known numeric facts.
 Does not own: Production generation or sampling the source CSV.
 """
 
-from acquirer_engine.evidence.context import EvidenceContext
-from acquirer_engine.evidence.pack import build_core_pack
+from acquirer_engine.evidence.pack import EvidenceContext, build_core_pack
 from acquirer_engine.settings import Settings
 from tests.evidence.test_pack import pack_inputs
 from tests.fixtures.ranking import transaction

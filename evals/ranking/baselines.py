@@ -6,7 +6,7 @@ Does not own: Training on holdout labels.
 
 from random import Random
 
-from acquirer_engine.features.acquirer import FittedFeatures
+from acquirer_engine.ranking.features import FittedFeatures
 
 
 def baseline_rankings(

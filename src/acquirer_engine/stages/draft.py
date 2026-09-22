@@ -1,6 +1,6 @@
-"""Run the ranked portfolio through bounded drafting and recovery.
+"""Draft the ranked portfolio with bounded validation and recovery.
 
-Owns: Fan-out, generation outcomes, route decisions, and repair conversations.
+Owns: Buyer scheduling, generation attempts, route decisions, and repair feedback.
 Does not own: Resource construction, evidence queries, or portfolio review.
 """
 
@@ -20,7 +20,7 @@ from pydantic_ai.messages import (
 )
 from pydantic_ai.usage import UsageLimits
 
-from acquirer_engine.deps import Deps
+from acquirer_engine.deps import RuntimeDeps
 from acquirer_engine.errors import AcquirerEngineError, ValidationFailure
 from acquirer_engine.evidence.pack import CorePack
 from acquirer_engine.llm.config import AnalystConfig
@@ -31,7 +31,7 @@ from acquirer_engine.llm.tools import PageDeps, PageSession, ToolState
 from acquirer_engine.validation.schema import AcquirerRationale
 
 
-async def run_analysts(packs: list[CorePack], deps: Deps) -> list[PageResult]:
+async def draft_pages(packs: list[CorePack], deps: RuntimeDeps) -> list[PageResult]:
     """Start other pages after the first response primes the shared prefix.
 
     Args:
@@ -43,13 +43,12 @@ async def run_analysts(packs: list[CorePack], deps: Deps) -> list[PageResult]:
     if not packs:
         return []
     runtime = deps.runtime
-    assert runtime is not None
     runtime.model.first_response.clear()
     semaphore = asyncio.Semaphore(deps.settings.analyst.concurrency)
 
     async def bounded(pack: CorePack) -> PageResult:
         async with semaphore:
-            return await analyze_one(pack, deps)
+            return await draft_one(pack, deps)
 
     results: list[PageResult] = []
     index = 0
@@ -74,7 +73,7 @@ async def run_analysts(packs: list[CorePack], deps: Deps) -> list[PageResult]:
     return results
 
 
-async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
+async def draft_one(pack: CorePack, deps: RuntimeDeps) -> PageResult:
     """Run one page to verified output or an explicit error outcome.
 
     Args:
@@ -84,7 +83,6 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
         A verified rationale or failed-page errors, preserving other page tasks.
     """
     runtime = deps.runtime
-    assert runtime is not None
     state = ToolState(pack, deps.settings.analyst.max_tool_rounds)
     started = perf_counter()
     attempts: list[PageAttempt] = []
@@ -122,7 +120,7 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
 
 def _page_result(
     pack: CorePack,
-    deps: Deps,
+    deps: RuntimeDeps,
     state: ToolState,
     output: AcquirerRationale | None,
     attempts: list[PageAttempt],
@@ -158,7 +156,7 @@ class Generation:
 
 async def generate(
     agent: Agent[PageDeps, AcquirerRationale],
-    deps: Deps,
+    deps: RuntimeDeps,
     state: ToolState,
     stage: str,
     history: list[ModelMessage] | None,
@@ -198,7 +196,6 @@ async def generate(
         claims_total=state.claims_total,
         claims_verified=state.claims_verified,
     )
-    assert deps.runtime is not None
     deps.runtime.trace.write(
         "validation_completed", state.core.ranking.acquirer, attempt=attempt, rationale=output
     )

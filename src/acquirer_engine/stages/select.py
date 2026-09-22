@@ -1,7 +1,7 @@
-"""Prepare target inputs, feedback-adjusted ranks, and bounded evidence packs.
+"""Select ranked buyers and their evidence before narrative generation.
 
-Owns: Target precedence and complete input selection before narrative generation.
-Does not own: Changing backtest baselines or executing providers.
+Owns: Target precedence, feedback application, ranking, and bounded core packs.
+Does not own: Scoring mathematics, holdout evaluation, or provider execution.
 """
 
 from collections.abc import Sequence
@@ -13,16 +13,14 @@ import pandas as pd
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, ValidationError
 
-from acquirer_engine.data.loader import load_transactions
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction, load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import DataError
-from acquirer_engine.evidence.ids import stat_id
-from acquirer_engine.evidence.pack import CorePack, Statistic, build_core_pack
-from acquirer_engine.features.acquirer import fit_features
+from acquirer_engine.evidence.pack import CorePack, Statistic, build_core_pack, stat_id
 from acquirer_engine.feedback.ranking import FeedbackPolicy, apply_feedback
 from acquirer_engine.feedback.state import FeedbackState, load_feedback
 from acquirer_engine.ranking.config import RankingConfig
+from acquirer_engine.ranking.features import fit_features
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.ranking.target import TargetProfile
 from acquirer_engine.settings import load_feedback_policy
@@ -104,7 +102,7 @@ def _penalty_evidence(pack: CorePack, max_tokens: int) -> CorePack:
     return pack
 
 
-def prepare_selection(
+def select_buyers(
     root: Path,
     deps: Deps,
     *,

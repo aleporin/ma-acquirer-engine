@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from acquirer_engine.data.loader import load_transactions
+from acquirer_engine.data import load_transactions
 from acquirer_engine.errors import DataError
 
 

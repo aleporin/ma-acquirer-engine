@@ -17,7 +17,7 @@ from structlog.stdlib import BoundLogger
 
 from acquirer_engine.errors import AcquirerEngineError, EvaluationError
 from acquirer_engine.logging_setup import run_logger
-from acquirer_engine.run_history import git_state
+from acquirer_engine.replay import git_state
 from acquirer_engine.settings import load_settings
 from evals.judges.clients import clients
 from evals.judges.config import load_judge_config

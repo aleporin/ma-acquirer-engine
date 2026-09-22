@@ -1,20 +1,36 @@
-"""Build bounded core evidence from a buyer's fitted history.
+"""Build bounded evidence packs and resolve facts available to each page.
 
-Owns: Deterministic core rows, computed facts, and conservative context caps.
-Does not own: Market comps, model token accounting, or claim verification.
+Owns: Stable fact IDs, core context, token caps, and evidence conflict detection.
+Does not own: Market retrieval, model calls, or acceptance of rationale claims.
 """
 
 from hashlib import sha256
+from urllib.parse import quote
 
 from pydantic import BaseModel, ConfigDict, FiniteFloat
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.errors import EvidenceError
 from acquirer_engine.evidence.config import PackConfig
-from acquirer_engine.evidence.ids import stat_id
-from acquirer_engine.features.acquirer import AcquirerHistory
+from acquirer_engine.ranking.features import AcquirerHistory
 from acquirer_engine.ranking.scorer import RankedAcquirer
 from acquirer_engine.ranking.target import TargetProfile
+
+
+def stat_id(name: str, scope: str) -> str:
+    """Encode a metric and scope without separator collisions.
+
+    Args:
+        name: Computed metric name.
+        scope: Buyer, target, or query scope within the evidence snapshot.
+    Returns:
+        A stable stat:<name>:<scope> identifier with escaped components.
+    Raises:
+        EvidenceError: Either component is empty.
+    """
+    if not name.strip() or not scope.strip():
+        raise EvidenceError("Statistic name and scope must be nonempty")
+    return f"stat:{quote(name, safe='')}:{quote(scope, safe='')}"
 
 
 class Statistic(BaseModel):
@@ -124,3 +140,36 @@ def build_core_pack(
             break
         pack = candidate
     return pack
+
+
+class EvidenceContext(BaseModel):
+    """Host-supplied context; the rationale cannot declare its own evidence."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    core: CorePack
+    comparable_deals: tuple[Transaction, ...] = ()
+    retrieved_deals: tuple[Transaction, ...] = ()
+    statistics: tuple[Statistic, ...] = ()
+
+    def index(self) -> dict[str, Transaction | Statistic]:
+        """Resolve IDs only within facts available to this page.
+
+        Returns:
+            An index over retained core facts and retrieved comps.
+        Raises:
+            EvidenceError: An ID refers to conflicting facts.
+        """
+        evidence: dict[str, Transaction | Statistic] = {}
+        items: tuple[Transaction | Statistic, ...] = (
+            *self.core.deals,
+            *self.core.statistics,
+            *self.comparable_deals,
+            *self.retrieved_deals,
+            *self.statistics,
+        )
+        for item in items:
+            key = item.transaction_id if isinstance(item, Transaction) else item.evidence_id
+            if key in evidence and evidence[key] != item:
+                raise EvidenceError(f"conflicting evidence for {key}")
+            evidence[key] = item
+        return evidence

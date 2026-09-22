@@ -26,7 +26,7 @@ def test_run_uses_target_flags_and_persisted_feedback_before_selecting_pages(
             transaction(3, acquirer="Unrelated", sector="Technology"),
         ),
     )
-    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("a" * 40, False))
+    monkeypatch.setattr("acquirer_engine.replay.git_state", lambda _: ("a" * 40, False))
     path = tmp_path / "target.yaml"
     path.write_text("sector: Services\ndeal_size_mm: 100\n")
     runner = CliRunner()

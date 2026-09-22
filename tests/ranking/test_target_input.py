@@ -9,9 +9,9 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from acquirer_engine import selection as module
 from acquirer_engine.errors import DataError
 from acquirer_engine.settings import Settings
+from acquirer_engine.stages import select as module
 from tests.fixtures.ranking import transaction
 
 

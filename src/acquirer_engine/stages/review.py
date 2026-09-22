@@ -1,4 +1,4 @@
-"""Review the portfolio once and revalidate one revision for each flagged page.
+"""Review the portfolio once and revalidate one revision per flagged page.
 
 Owns: Structured critique, bounded revisions, and preserved original pages.
 Does not own: Ranking, provider construction, or automatic approval of edits.
@@ -12,12 +12,12 @@ from pydantic_ai.exceptions import ModelAPIError, UnexpectedModelBehavior, Usage
 from pydantic_ai.messages import ModelRequest, UserPromptPart
 from pydantic_ai.usage import UsageLimits
 
-from acquirer_engine.deps import Deps
+from acquirer_engine.deps import RuntimeDeps
 from acquirer_engine.errors import AcquirerEngineError
-from acquirer_engine.llm.analyst import generate, repair_history
 from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.provider import output_errors
 from acquirer_engine.llm.results import PageResult, ReviewResult, ReviewVerdict
+from acquirer_engine.stages.draft import generate, repair_history
 from acquirer_engine.validation.schema import AcquirerRationale
 
 
@@ -36,7 +36,7 @@ class PortfolioInput(BaseModel):
 
 
 async def review_portfolio(
-    pages: list[PageResult], deps: Deps
+    pages: list[PageResult], deps: RuntimeDeps
 ) -> tuple[list[PageResult], ReviewResult | None]:
     """Apply one portfolio verdict and at most one revision per flagged buyer.
     Args:
@@ -46,7 +46,6 @@ async def review_portfolio(
         Revalidated pages and reviewer diagnostics, or disabled-review passthrough.
     """
     runtime = deps.runtime
-    assert runtime is not None
     if not deps.settings.analyst.reviewer_enabled or runtime.reviewer is None or not pages:
         return pages, None
     portfolio = PortfolioInput.model_validate(
@@ -87,9 +86,8 @@ async def review_portfolio(
     return final, ReviewResult(verdicts=result.output.verdicts)
 
 
-async def _revise(page: PageResult, verdict: ReviewVerdict, deps: Deps) -> PageResult:
+async def _revise(page: PageResult, verdict: ReviewVerdict, deps: RuntimeDeps) -> PageResult:
     runtime = deps.runtime
-    assert runtime is not None
     session = runtime.sessions[page.acquirer]
     history = session.messages
     if page.status == "failed":

@@ -14,9 +14,9 @@ from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.settings import ModelSettings
 from pydantic_ai.usage import RequestUsage
 
-from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import BudgetExceeded
+from acquirer_engine.factory import build_services
 from tests.llm.test_routing import routing_deps
 
 

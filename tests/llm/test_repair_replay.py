@@ -9,9 +9,9 @@ from pathlib import Path
 import pytest
 
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.archive import load_snapshot
 from acquirer_engine.pipeline import execute_prepared, execute_replay
-from acquirer_engine.report.render import render_report
+from acquirer_engine.replay import load_snapshot
+from acquirer_engine.stages.render import render_report
 from tests.llm.test_repair import correcting_model, enabled
 from tests.llm.test_run_archive import inputs
 
@@ -40,7 +40,7 @@ async def test_replay_preserves_repair_outcomes_and_rendered_page(
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Replay must not construct a provider client")
 
-    monkeypatch.setattr("acquirer_engine.bootstrap.create_client", no_client)
+    monkeypatch.setattr("acquirer_engine.factory.create_client", no_client)
     replay = await execute_replay(original, replayed, snapshot, deps, "d" * 40)
     render_report(load_snapshot(replayed), replay, replayed)
     expected = baseline.pages[0]

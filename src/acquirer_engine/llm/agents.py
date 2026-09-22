@@ -23,7 +23,6 @@ def _validate(ctx: RunContext[PageDeps], output: AcquirerRationale) -> AcquirerR
     state.claims_total = len(output.claims)
     state.claims_verified = verified_claim_count(output, state.context(), config)
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     runtime.trace.write("draft_received", state.core.ranking.acquirer, rationale=output)
     return validate_rationale(
         output.model_dump(), ctx.deps.state.context(), ctx.deps.shared.settings.evidence.validation
@@ -113,7 +112,6 @@ def build_reviewer(
 
 def _record(ctx: RunContext[PageDeps], result: ToolResult, arguments: object) -> ToolReturn:
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     ctx.deps.state.record(ctx.run_step, result)
     buyer = ctx.deps.state.core.ranking.acquirer
     runtime.trace.write(
@@ -150,7 +148,6 @@ async def get_comparable_deals(
         Bounded comparable rows and truncation metadata.
     """
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     result = runtime.tools.comparable_deals(sector, size_band, margin_band, geography)
     return _record(
         ctx,
@@ -174,7 +171,6 @@ async def get_sector_stats(ctx: RunContext[PageDeps], sector: str) -> ToolReturn
         Closed counts and canonical medians, plus bounded supporting rows.
     """
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     return _record(ctx, runtime.tools.sector_stats(sector), {"sector": sector})
 
 
@@ -193,7 +189,6 @@ async def get_adjacent_sector_activity(
         Bounded historical activity with evidence IDs.
     """
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     return _record(
         ctx,
         runtime.tools.adjacent_activity(acquirer, sectors),
@@ -214,7 +209,6 @@ async def get_sponsor_platform_history(
         Bounded sponsor Platform Investment precedents.
     """
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     return _record(
         ctx,
         runtime.tools.platform_history(acquirer, sector),
@@ -232,5 +226,4 @@ async def get_failed_deals(ctx: RunContext[PageDeps], acquirer: str) -> ToolRetu
         Bounded Withdrawn and Terminated deals.
     """
     runtime = ctx.deps.shared.runtime
-    assert runtime is not None
     return _record(ctx, runtime.tools.failed_deals(acquirer), {"acquirer": acquirer})

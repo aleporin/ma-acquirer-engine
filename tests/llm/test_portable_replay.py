@@ -10,13 +10,13 @@ from pathlib import Path
 
 import pytest
 
-from acquirer_engine import portable_replay as module
+from acquirer_engine import replay as module
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import LLMInvalidOutput
 from acquirer_engine.feedback.ranking import FeedbackPolicy
 from acquirer_engine.feedback.state import BuyerFlag, FeedbackState
 from acquirer_engine.pipeline import execute_prepared
-from acquirer_engine.selection import Selection
+from acquirer_engine.stages.select import Selection
 from tests.llm.test_analyst import tool_model
 from tests.llm.test_run_archive import inputs
 

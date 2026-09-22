@@ -7,10 +7,10 @@ Does not own: Hyperparameter search or removing unrecoverable test labels.
 import hashlib
 from collections.abc import Sequence
 
-from acquirer_engine.data.schema import Transaction
+from acquirer_engine.data import Transaction
 from acquirer_engine.errors import EvaluationError
-from acquirer_engine.features.acquirer import FittedFeatures, fit_features
 from acquirer_engine.ranking.config import BacktestConfig, RankingConfig
+from acquirer_engine.ranking.features import FittedFeatures, fit_features
 from acquirer_engine.ranking.scorer import rank_acquirers
 from acquirer_engine.ranking.target import TargetProfile
 from evals.ranking.baselines import baseline_rankings

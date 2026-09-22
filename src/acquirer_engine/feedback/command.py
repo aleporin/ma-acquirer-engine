@@ -10,7 +10,7 @@ from typing import Annotated
 import typer
 from pydantic import ValidationError
 
-from acquirer_engine.data.loader import load_transactions
+from acquirer_engine.data import load_transactions
 from acquirer_engine.errors import AcquirerEngineError
 from acquirer_engine.feedback.state import save_flag
 

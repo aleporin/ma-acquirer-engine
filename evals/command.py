@@ -13,8 +13,8 @@ from uuid import uuid4
 import typer
 from pydantic import ValidationError
 
-from acquirer_engine import run_history
-from acquirer_engine.data.loader import load_transactions
+from acquirer_engine import replay as archives
+from acquirer_engine.data import load_transactions
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError
 from acquirer_engine.logging_setup import run_logger
@@ -77,7 +77,7 @@ def _execute_evaluation(
     ci: bool,
 ) -> tuple[Path, Scorecard]:
     settings = load_settings(root / "config")
-    sha, dirty = run_history.git_state(root)
+    sha, dirty = archives.git_state(root)
     run = RunInfo(git_sha=sha, source_dirty=dirty, run_id=uuid4().hex, created_at=datetime.now(UTC))
     with run_logger(
         root / "runs", run.run_id, sha, settings.evaluation.prompt_version, sys.stderr

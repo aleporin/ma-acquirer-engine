@@ -11,9 +11,9 @@ from typing import Annotated
 from pydantic import BaseModel, ConfigDict, Field
 
 from acquirer_engine.errors import DataError
-from acquirer_engine.features.acquirer import AcquirerHistory, FittedFeatures
 from acquirer_engine.feedback.state import FeedbackState
 from acquirer_engine.ranking.config import RankingConfig
+from acquirer_engine.ranking.features import AcquirerHistory, FittedFeatures
 from acquirer_engine.ranking.scorer import RankedAcquirer, conviction
 
 

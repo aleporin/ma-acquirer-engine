@@ -13,7 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
 
 from acquirer_engine.errors import EvaluationError, ValidationFailure
 from acquirer_engine.evidence.config import ValidationConfig
-from acquirer_engine.evidence.context import EvidenceContext
+from acquirer_engine.evidence.pack import EvidenceContext
 from acquirer_engine.validation.claims import validate_rationale
 from acquirer_engine.validation.schema import AcquirerRationale
 
