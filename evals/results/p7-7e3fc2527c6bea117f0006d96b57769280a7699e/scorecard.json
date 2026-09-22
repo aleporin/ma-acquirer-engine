@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "phase": "p7",
+  "mode": "replay",
+  "run": {
+    "git_sha": "7e3fc2527c6bea117f0006d96b57769280a7699e",
+    "source_dirty": false,
+    "run_id": "55abb41de88c4318b25366ae03a66cb7",
+    "created_at": "2026-09-22T18:27:00.319800Z"
+  },
+  "seed": 42,
+  "prompt_version": "analyst_v9+sparse_v1+reviewer_v1",
+  "config_sha256": "dedcac3b7ca78a3e08f618a5b66fdbcaa10dd87f1b7e2501ccc2049e220d6374",
+  "models": {
+    "roles": {
+      "analyst": {
+        "provider": "anthropic",
+        "model_id": "claude-opus-5",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://platform.claude.com/docs/en/models/overview",
+          "https://platform.claude.com/docs/en/about-claude/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 5.0,
+            "output_usd_per_million": 25.0,
+            "cache_read_usd_per_million": 0.5,
+            "cache_write_usd_per_million": 6.25,
+            "cache_write_1h_usd_per_million": 10.0,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "mechanical": {
+        "provider": "anthropic",
+        "model_id": "claude-haiku-4-5-20251001",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://platform.claude.com/docs/en/models/overview",
+          "https://platform.claude.com/docs/en/about-claude/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": 200000,
+            "input_usd_per_million": 1.0,
+            "output_usd_per_million": 5.0,
+            "cache_read_usd_per_million": 0.1,
+            "cache_write_usd_per_million": 1.25,
+            "cache_write_1h_usd_per_million": 2.0,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "escalation": {
+        "provider": "anthropic",
+        "model_id": "claude-opus-5",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://platform.claude.com/docs/en/models/overview",
+          "https://platform.claude.com/docs/en/about-claude/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 5.0,
+            "output_usd_per_million": 25.0,
+            "cache_read_usd_per_million": 0.5,
+            "cache_write_usd_per_million": 6.25,
+            "cache_write_1h_usd_per_million": 10.0,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "judge_a": {
+        "provider": "openai",
+        "model_id": "gpt-5.6-terra",
+        "as_of": "2026-09-21",
+        "preview": false,
+        "source_urls": [
+          "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
+          "https://developers.openai.com/api/docs/pricing"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": 272000,
+            "input_usd_per_million": 2.0,
+            "output_usd_per_million": 12.0,
+            "cache_read_usd_per_million": 0.2,
+            "cache_write_usd_per_million": 2.5,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": null
+          },
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 4.0,
+            "output_usd_per_million": 18.0,
+            "cache_read_usd_per_million": 0.4,
+            "cache_write_usd_per_million": 5.0,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": null
+          }
+        ]
+      },
+      "judge_b": {
+        "provider": "google",
+        "model_id": "gemini-3.1-pro-preview",
+        "as_of": "2026-09-21",
+        "preview": true,
+        "source_urls": [
+          "https://ai.google.dev/gemini-api/docs/pricing#gemini-3.1-pro-preview"
+        ],
+        "pricing": [
+          {
+            "max_input_tokens": 200000,
+            "input_usd_per_million": 2.0,
+            "output_usd_per_million": 12.0,
+            "cache_read_usd_per_million": 0.2,
+            "cache_write_usd_per_million": null,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": 4.5
+          },
+          {
+            "max_input_tokens": null,
+            "input_usd_per_million": 4.0,
+            "output_usd_per_million": 18.0,
+            "cache_read_usd_per_million": 0.4,
+            "cache_write_usd_per_million": null,
+            "cache_write_1h_usd_per_million": null,
+            "cache_storage_usd_per_million_hour": 4.5
+          }
+        ]
+      }
+    }
+  },
+  "requested_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "layers": [
+    {
+      "id": 0,
+      "name": "unit_and_property_tests",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "tests": {
+          "value": 188.0,
+          "direction": "higher"
+        },
+        "pass_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "coverage": {
+          "value": 0.9613920609026646,
+          "direction": "higher"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "name": "ranking_backtest",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "global_popularity_recall_at_k": {
+          "value": 0.4084507042253521,
+          "direction": "higher"
+        },
+        "global_popularity_mrr": {
+          "value": 0.12638088710953088,
+          "direction": "higher"
+        },
+        "global_popularity_ndcg_at_k": {
+          "value": 0.17608466439481535,
+          "direction": "higher"
+        },
+        "sector_popularity_recall_at_k": {
+          "value": 0.43661971830985913,
+          "direction": "higher"
+        },
+        "sector_popularity_mrr": {
+          "value": 0.13661683119492465,
+          "direction": "higher"
+        },
+        "sector_popularity_ndcg_at_k": {
+          "value": 0.1819267449000178,
+          "direction": "higher"
+        },
+        "random_recall_at_k": {
+          "value": 0.1267605633802817,
+          "direction": "higher"
+        },
+        "random_mrr": {
+          "value": 0.06700699766553846,
+          "direction": "higher"
+        },
+        "random_ndcg_at_k": {
+          "value": 0.06672387863358178,
+          "direction": "higher"
+        },
+        "ranker_recall_at_k": {
+          "value": 0.38028169014084506,
+          "direction": "higher"
+        },
+        "ranker_mrr": {
+          "value": 0.17108930221607932,
+          "direction": "higher"
+        },
+        "ranker_ndcg_at_k": {
+          "value": 0.197307251757508,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_recall_at_k_mean": {
+          "value": -0.028169014084507043,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_recall_at_k_low": {
+          "value": -0.14788732394366197,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_recall_at_k_high": {
+          "value": 0.08450704225352113,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_mrr_mean": {
+          "value": 0.04470841510654842,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_mrr_low": {
+          "value": -0.0049371090904894496,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_mrr_high": {
+          "value": 0.09168507308728034,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_ndcg_at_k_mean": {
+          "value": 0.021222587362692627,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_ndcg_at_k_low": {
+          "value": -0.0445304209175144,
+          "direction": "higher"
+        },
+        "lift_vs_global_popularity_ndcg_at_k_high": {
+          "value": 0.08283667454796181,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_recall_at_k_mean": {
+          "value": -0.056338028169014086,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_recall_at_k_low": {
+          "value": -0.14084507042253522,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_recall_at_k_high": {
+          "value": 0.028169014084507043,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_mrr_mean": {
+          "value": 0.03447247102115465,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_mrr_low": {
+          "value": -0.0007859508326069838,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_mrr_high": {
+          "value": 0.06992239362359508,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_ndcg_at_k_mean": {
+          "value": 0.015380506857490163,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_ndcg_at_k_low": {
+          "value": -0.025535825634574075,
+          "direction": "higher"
+        },
+        "lift_vs_sector_popularity_ndcg_at_k_high": {
+          "value": 0.056517293980292094,
+          "direction": "higher"
+        },
+        "lift_vs_random_recall_at_k_mean": {
+          "value": 0.2535211267605634,
+          "direction": "higher"
+        },
+        "lift_vs_random_recall_at_k_low": {
+          "value": 0.1619718309859155,
+          "direction": "higher"
+        },
+        "lift_vs_random_recall_at_k_high": {
+          "value": 0.34507042253521125,
+          "direction": "higher"
+        },
+        "lift_vs_random_mrr_mean": {
+          "value": 0.10408230455054084,
+          "direction": "higher"
+        },
+        "lift_vs_random_mrr_low": {
+          "value": 0.055661411139537084,
+          "direction": "higher"
+        },
+        "lift_vs_random_mrr_high": {
+          "value": 0.15428155866799823,
+          "direction": "higher"
+        },
+        "lift_vs_random_ndcg_at_k_mean": {
+          "value": 0.1305833731239262,
+          "direction": "higher"
+        },
+        "lift_vs_random_ndcg_at_k_low": {
+          "value": 0.07321292698527426,
+          "direction": "higher"
+        },
+        "lift_vs_random_ndcg_at_k_high": {
+          "value": 0.18767325897122944,
+          "direction": "higher"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "groundedness",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "positive_fixtures_accepted": {
+          "value": 3.0,
+          "direction": "higher"
+        },
+        "negative_fixtures_rejected": {
+          "value": 6.0,
+          "direction": "higher"
+        },
+        "fixture_expectation_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "positive_fixture_claim_verification_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "stray_numbers_detected": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_first_pass_claim_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_first_pass_page_rate": {
+          "value": 0.8,
+          "direction": "higher"
+        },
+        "live_post_repair_claim_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_post_repair_page_rate": {
+          "value": 0.9,
+          "direction": "higher"
+        },
+        "live_post_review_claim_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_post_review_page_rate": {
+          "value": 0.9,
+          "direction": "higher"
+        },
+        "live_parsed_claims": {
+          "value": 59.0,
+          "direction": "higher"
+        },
+        "live_pages_without_parsed_claims": {
+          "value": 1.0,
+          "direction": "lower"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "distinctiveness",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "live_page_pairs": {
+          "value": 36.0,
+          "direction": "higher"
+        },
+        "live_mean_pairwise_jaccard": {
+          "value": 0.07720880358914121,
+          "direction": "lower"
+        },
+        "live_max_pairwise_jaccard": {
+          "value": 0.1265625,
+          "direction": "lower"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "rubric_quality",
+      "selected": true,
+      "status": "not_implemented",
+      "metrics": {}
+    },
+    {
+      "id": 5,
+      "name": "stability",
+      "selected": true,
+      "status": "passed",
+      "metrics": {
+        "top_k_identity": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "conviction_agreement": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "conviction_levels": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "conviction_diversity_target_met": {
+          "value": 0.0,
+          "direction": "higher"
+        },
+        "live_validation_runs": {
+          "value": 1.0,
+          "direction": "higher"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "operations",
+      "selected": true,
+      "status": "failed",
+      "metrics": {
+        "live_runs": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_pages": {
+          "value": 10.0,
+          "direction": "higher"
+        },
+        "live_responses": {
+          "value": 21.0,
+          "direction": "higher"
+        },
+        "live_cost_usd": {
+          "value": 2.112725,
+          "direction": "lower"
+        },
+        "live_run_p50_seconds": {
+          "value": 50.618149208137766,
+          "direction": "lower"
+        },
+        "live_run_p95_seconds": {
+          "value": 50.618149208137766,
+          "direction": "lower"
+        },
+        "live_input_tokens": {
+          "value": 347668.0,
+          "direction": "higher"
+        },
+        "live_output_tokens": {
+          "value": 25257.0,
+          "direction": "higher"
+        },
+        "live_cache_read_tokens": {
+          "value": 57120.0,
+          "direction": "higher"
+        },
+        "live_cache_write_tokens": {
+          "value": 0.0,
+          "direction": "higher"
+        },
+        "live_request_p50_ms": {
+          "value": 14686.667083064094,
+          "direction": "lower"
+        },
+        "live_request_p95_ms": {
+          "value": 35667.606625007465,
+          "direction": "lower"
+        },
+        "live_timed_responses": {
+          "value": 21.0,
+          "direction": "higher"
+        },
+        "live_token_count_p95_ms": {
+          "value": 230.09108379483223,
+          "direction": "lower"
+        },
+        "live_admission_p95_ms": {
+          "value": 0.015459023416042328,
+          "direction": "lower"
+        },
+        "live_provider_p95_ms": {
+          "value": 35571.37400005013,
+          "direction": "lower"
+        },
+        "live_financial_sponsor_get_comparable_deals_page_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_financial_sponsor_get_sponsor_platform_history_page_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_financial_sponsor_get_sector_stats_page_rate": {
+          "value": 0.3333333333333333,
+          "direction": "higher"
+        },
+        "live_strategic_get_comparable_deals_page_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_strategic_get_sector_stats_page_rate": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_strategic_get_failed_deals_page_rate": {
+          "value": 0.25,
+          "direction": "higher"
+        },
+        "live_financial_sponsor_get_failed_deals_page_rate": {
+          "value": 0.3333333333333333,
+          "direction": "higher"
+        },
+        "live_financial_sponsor_get_adjacent_sector_activity_page_rate": {
+          "value": 0.16666666666666666,
+          "direction": "higher"
+        },
+        "live_tools_disabled_pages": {
+          "value": 0.0,
+          "direction": "higher"
+        },
+        "live_reviewer_enabled_runs": {
+          "value": 0.0,
+          "direction": "higher"
+        },
+        "live_reviewer_disabled_runs": {
+          "value": 1.0,
+          "direction": "higher"
+        },
+        "live_uncertain_cost_bound_usd": {
+          "value": 0.0,
+          "direction": "lower"
+        },
+        "live_phase3_latency_gate_met": {
+          "value": 0.0,
+          "direction": "higher"
+        },
+        "live_gate_met": {
+          "value": 0.0,
+          "direction": "higher"
+        }
+      }
+    }
+  ]
+}
