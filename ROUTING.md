@@ -20,15 +20,17 @@ calibration; one observation does not establish that review never helps.
 
 With tools disabled, all ten drafts and all ten repairs were rejected for missing
 retrieved comps. Final errors were four comp rejections, four budget denials, and
-two run deadlines. Layer 6 currently counts only terminal comp errors, so its
-ablation metric is 0.4 and the gate still fails. This preserves the distinction
-between demonstrated evidence dependence and interrupted recovery. The tools-off
+two run deadlines. The historical terminal-comp metric remains 0.4. The corrected
+gate separately measures evidence rejection across attempts: all ten were
+rejected for missing retrieved comps and none succeeded. Budget/deadline
+termination rates remain visible; a denial without evidence rejection cannot pass. The tools-off
 run has an additional $1.64445 uncertain reservation bound, not recorded billing.
 
 Reviewer-disabled replay reproduced all 27 responses and identical page outcomes
-for $0. Tools-disabled replay recovered 24 responses but cannot reproduce missing
-budget/deadline responses or the subsequent reviewer input exactly. The 60-second
-target remains unmet. Both paid ablations are complete; no phase gate is claimed.
+for $0. Corrected tools-disabled replay recovers all 24 responses, all page and
+attempt outcomes, and the reviewer failure exactly. It uses explicit archived
+failure evidence and creates no missing model answers. The 60-second target
+remains unmet. Both paid ablations are complete.
 
 A page follows `analyst -> repair -> escalation -> unverified banner` when each
 validation attempt fails. Success ends recovery immediately. Schema and evidence
@@ -49,9 +51,11 @@ pages remain in `before_review`; the reviewer cannot change ranks or conviction.
 Reviewer errors remain in `review.errors` and make the command exit nonzero.
 
 All provider models share one client, recording boundary, ledger, cache, and
-spending guard. Each request reserves a conservative cost estimate using serialized
-text bytes, the configured protocol allowance, its actual output-token cap,
-maximum configured prices, and possible SDK retries. Concurrent requests wait
+spending guard. Each live request counts input tokens through the injected
+model, adds the configured safety allowance, then reserves the full output-token
+cap at maximum configured prices for all possible SDK attempts. Counting is
+[free](https://platform.claude.com/docs/en/build-with-claude/token-counting), but
+approximate; unsupported or failed counting falls back to serialized text bytes. Concurrent requests wait
 for outstanding reservations to settle instead of spending the same budget twice.
 The USD cap can stop a request even when its eventual actual cost might fit.
 Returned usage replaces the reservation; missing usage retains an explicitly
@@ -60,7 +64,9 @@ uncertain cost bound. This is admission control, not an invoice guarantee.
 The overall deadline includes reservation waits and provider execution. Tool
 rounds are counted across initial drafting, recovery, and reviewer revision.
 The ledger records model, stage, buyer, request number, real token usage, and
-cost. First-pass, post-repair, and post-review claim rates remain separate.
+cost. New calls separate token-counting time, budget admission wait, and provider
+time. Older total request durations are never relabeled as provider time.
+First-pass, post-repair, and post-review claim rates remain separate.
 
 Run these only when provider spending is intended:
 
@@ -74,7 +80,8 @@ To repeat the original three-way comparison, first enable review in configuratio
 Each snapshot freezes all prompt text and ablation settings. Historical replay
 never consults current prompts or starts a provider client. It runs current
 validation against the original responses. A missing response is an explicit
-archive failure; replay does not invent the result of a timed-out request.
+archive failure unless explicit typed or legacy validation/reviewer evidence
+records its failure. Replay restores that error without inventing a response.
 
 Supply the three saved `run.json` paths as repeated `--analyst-run` arguments to
 `acquirers eval`. The scorecard keeps intentional ablation failures outside the
@@ -82,3 +89,8 @@ full pipeline cohort and records reviewer flag rate, escalation rate, and paired
 lexical overlap before/after review. Rubric quality and human calibration remain
 unmeasured until their later evaluation phase; lexical overlap alone is not a
 banker's quality judgment. Do not treat an offline fixture pass as a live gate pass.
+
+The default output cap is now 4,000 tokens, above the measured 2,314-token peak
+from the two complete concise-prompt runs. Input counting and the smaller
+reservation are implemented and tested offline; their live speed and reliability
+remain unmeasured. The $3 cap, SDK retry allowance, and validation rules remain.

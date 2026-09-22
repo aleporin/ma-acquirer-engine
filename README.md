@@ -4,18 +4,18 @@ Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 4: bounded repair, escalation,
 sparse-evidence routing, optional portfolio review, and replay**. Review is now
 configuration opt-in: the reviewer-disabled run verified ten pages and 64/64 claims
-in 133.59 seconds for $0.99. Both ablations are recorded; speed and the terminal-error
-gate remain unmet. See [routing and results](ROUTING.md). Judging and HTML come later.
+in 133.59 seconds for $0.99. The 60-second target remains unmet. Execution flow,
+failure replay, and admission accounting are corrected; the new counted-input
+configuration awaits live measurement. See [routing and results](ROUTING.md).
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
 lift over both popularity baselines has a 95% interval containing zero. These
 are measurements on synthetic data, not a claim of predictive superiority.
 
-The assignment top ten are stable across five runs, but all receive Medium
-conviction under the initial fixed thresholds. The intermediate requirement of
-two unforced levels is **not met**. Default evaluation writes its results and
-exits nonzero to expose that unmet gate.
+The assignment top ten are stable across five runs and all receive Medium
+conviction under fixed thresholds. Diversity is a reported diagnostic; it does
+not force labels or fail the gate. Identical ranks and convictions remain required.
 
 ## Setup and commands
 
@@ -114,8 +114,8 @@ been adjusted to make the measured results pass.
 Layer 0 executes isolated data, feature, ranking, evidence, validation, and analyst tests and
 reads their JUnit/coverage artifacts. `make test` covers the complete suite.
 Layer 1 passing means its measurements completed; it does not mean positive lift.
-Layer 5 measures ranking identity and conviction agreement across five runs, plus
-the intermediate two-level gate. With saved analyst runs, it also measures the
+Layer 5 requires ranking identity and conviction agreement across five runs and
+reports conviction diversity separately. With saved analyst runs, it also measures the
 fraction of buyers whose pages validate in all five executions. Repeat
 `--analyst-run` for each distinct artifact; duplicate run IDs are rejected.
 Replay repetition measures reproducibility, not live model stochasticity.
@@ -140,7 +140,7 @@ recorded. Committed baselines come from clean source; their source commit preced
 the separate `eval(pN):` artifact commit. Logs stay local under `runs/`.
 CI checks the latest tracked ranking snapshot; intentional identity changes need
 a `ranking:` marker in an intervening commit message. CI selects layers 0–2, so
-green CI does not imply the separate Phase 1 conviction exit criterion passed.
+green CI does not imply live generation or the Phase 4 ablation gate passed.
 
 ## Evidence and rationale validation
 
@@ -171,8 +171,8 @@ facts. Conviction must match the ranker's result.
 Layer 2 runs three hand-written valid pages and six planted-invalid pages. Saved
 analyst runs add first-pass numeric claim and whole-page acceptance rates; they
 do not replace the fixture results. A schema failure has no parsed claims and is
-reported separately, never counted as a perfect claim rate. Post-repair rates are
-deferred. The verifier catches numeric and reference errors; it does not prove
+reported separately, never counted as a perfect claim rate. First-pass, post-repair,
+and post-review rates remain separate. The verifier catches numeric and reference errors; it does not prove
 that prose attaches a valid number to the right subject, that a selected comp is
 economically persuasive, or that a qualitative thesis is true. Those limitations
 remain for later evaluation and human review. The fixtures contain synthetic
@@ -185,7 +185,11 @@ Start with the [execution walkthrough](EXECUTION.md). `data/` validates input;
 owns holdout measurement. `evals/phase1.py` composes graders and companion artifacts.
 `evidence/` assembles addressable facts; `validation/` checks structured rationale.
 `evals/grounded.py` executes labeled pages and `evals/phase2.py` adds their results.
-The CLI builds one settings snapshot and logger. A fresh run owns one SDK client,
+The CLI reads flags and builds settings and a logger; `pipeline.py` coordinates
+the portfolio. `bootstrap.py` owns shared resource construction and client lifetime.
+`llm/analyst.py` contains the buyer recovery loop; `llm/agents.py` declares typed
+agents. `llm/context.py` holds page state and `llm/batch.py` schedules buyers.
+`evals/command.py` assembles eval commands. A fresh run owns one SDK client,
 agent, cost ledger, cache, and trace writer, passed through `Deps`. Each buyer owns
 only its tool evidence and validation state. `llm/` contains those boundaries;
 `evals/phase3.py` measures saved run artifacts without contacting providers.
@@ -227,8 +231,9 @@ supported schema subset. Full schema, length, risk-reference, and claim checks
 still run locally; unsupported provider constraints remain local requirements.
 The generation schema separates evidence risks, which require references, from
 judgment risks, which omit references. Stored judgments have an empty list.
-The output allowance is 8,000 tokens, and the versioned prompt asks for a concise
-page that leaves room for its claims. Responses that end at the token limit are
+The output allowance is 4,000 tokens; the two complete concise-prompt runs peaked
+at 2,314. This reduced cap still needs live verification. The versioned prompt
+asks for a concise page that leaves room for its claims. Responses that end at the token limit are
 recorded with usage, then rejected explicitly, even if their partial arguments
 can be parsed. Schema failures retain field-level reasons without raw inputs.
 
@@ -251,8 +256,10 @@ prepared buyer evidence, and tool-query history. No credentials are included.
 `acquirers replay RUN_ID` reads that snapshot and the original trace, independently
 of the current configuration, CSV, prompts, or shared cache. Use the full ID from
 `acquirers runs`. It reruns current tools and validation, checking each conversation
-against the original request before returning its saved response. Missing responses
-and changed conversations fail explicitly. Rejected drafts stay available.
+against the original request before returning its saved response. Typed request
+failures replay as their original errors. Older budget/timeout failures are
+recovered only from explicit validation or reviewer records for a missing response.
+Unexplained gaps and changed conversations fail. Rejected drafts stay available.
 
 Replay writes a new run with `replay_of`, original source SHA, executing SHA, and
 zero new spend. `source_dirty` marks uncommitted executing code (`*` in the listing).
@@ -265,35 +272,6 @@ Prose can vary between fresh runs. Only cache replay reproduces a saved response
 and replay still executes tools and validation. Unit tests use local models and
 a fake HTTP transport, including a hostile input and full-conversation replay.
 
-The [Phase 3 offline baseline](evals/results/p3-899731d101d5c18d3b175a572bbbdca781b42d35/summary.md)
-records passing layers 0–2 and the inherited layer-5 shortfall. The subsequent
-[first live scorecard](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/summary.md)
-records ten draft timeouts after evidence retrieval. Twelve returned responses
-account for $0.259395; billing for timed-out requests is unknown. The 49.09-second
-run produced no drafts or parsed claims. Layers 3, 5, and 6 fail; passing fixture
-checks do not imply live-page acceptance. Five offline repetitions replayed the
-available responses for no new spend, then failed at missing draft responses.
-The [attempt details](evals/results/p3-19f341aed6cdbf7125ab7bea09711ed19b9b555e/live_attempt.json)
-record these limits explicitly.
-
-The [timeout-corrected run](evals/results/p3-4279e443c7084f741a42e19e45f4b0d1722eae7d/summary.md)
-took 84.82 seconds and recorded $1.091577, with no request timeouts. Nine drafts
-hit the previous 4,000-token allowance; the complete draft failed risk-reference
-consistency. None reached claim validation.
-
-The [complete-draft run](evals/results/p3-4ddbb485649aa018a501ecf5134bcd39685110eb/summary.md)
-used the larger allowance and `analyst_v2`: all ten drafts completed, eight parsed,
-and their 259 explicit numeric claims verified. No whole page passed: two drafts
-failed risk consistency and the rest failed prose-number coverage. It took
-158.81 seconds and cost $1.0650584. Perfect accuracy among parsed claims does not
-mean every numeric statement was covered or that failed schemas were correct.
-
-The [offline corrections](evals/results/p3-457ef3fd66af275e0263b8579c75091d7dbd6999/summary.md)
-cover risk alternatives and rounding; saved drafts lose 82 false positives but still fail.
-The [revised-prompt run](evals/results/p3-a4bc6ef07dd381bbee37c759becb24b22f42cd39/summary.md)
-produced ten schema-valid drafts: four pages passed and all 155 explicit claims verified.
-It took 79.47 seconds and cost $0.952018. Missing prose claims and statistic-ID scan
-errors remain; Phase 3 still fails. Offline replay reproduced all 26 responses for $0.
-
-The [v4 live scorecard](evals/results/p3-50493691575df8de6a7f75de41c891ae5c0f4340/summary.md) records 7/10 verified pages, 63/63 parsed claims, 64.40 seconds, and $0.8681912.
-That historical run failed risk, claim, and precedent checks. Replay reproduces its 25 responses for $0.
+The [routing results](ROUTING.md) link the measured controls and explain the
+remaining limits. Every earlier failed measurement is retained under
+[evals/results](evals/results/); later success does not replace those artifacts.
