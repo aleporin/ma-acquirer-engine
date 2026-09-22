@@ -1,8 +1,8 @@
 # M&A Acquirer Engine
 
 Rank likely acquirers from transaction history and measure the ranking against
-held-out deals. The current scope is **Phase 4: bounded repair, escalation,
-sparse-evidence routing, optional portfolio review, and replay**. Review is now
+held-out deals. The current scope is **Phase 5: independent judges and human calibration**.
+The offline harness and [blind packet](JUDGING.md) are ready; live judging is pending. Review is now
 configuration opt-in. The latest default run verified ten pages and 79/79 claims
 in 72.65 seconds for $1.02, with three successful repairs and no budget denials.
 The 60-second target remains unmet. Historical replay reproduces all 27 responses
@@ -51,7 +51,7 @@ detection. Unit-test fixtures reject socket connections.
 | `make eval` | Write measured layers 0–2 and ranking stability in 5; fail on unmet gates |
 | `make eval EVAL_FLAGS=--ci RESULTS=/tmp/ci-results` | Select layers 0–2 for offline CI |
 | `make eval-diff A=before.json B=after.json` | Show metric changes and flag regressions |
-| `make eval-judges` | Report unavailable without making calls |
+| `make eval-judges` | Print the free judge cost plan; explicit `--fresh` permits paid calls |
 | `make run` | Replay cached responses and write structured page outcomes; cache misses fail |
 | `make run RUN_FLAGS=--fresh` | Make paid analyst calls and refresh the response cache |
 | `acquirers eval --analyst-run runs/ID/run.json` | Measure a saved run without provider access |
@@ -122,7 +122,8 @@ Replay repetition measures reproducibility, not live model stochasticity.
 
 Layer 3 measures pairwise word-ngram Jaccard similarity on accepted pages. A
 passing status means measurement completed, not that prose quality is established.
-Name-masked identification and the layer 4 rubric judges remain deferred.
+Phase 5 adds name-masked identification and calibrated rubric judges from saved
+judge archives; see [execution, labeling, and limits](JUDGING.md).
 Layer 6 records observed tokens, cache usage, USD, empirical latency percentiles,
 and tool-selection rates by buyer type. Every metric is prefixed by execution
 mode. With no supplied run artifacts, layers 3 and 6 remain unmeasured stubs.
@@ -194,13 +195,14 @@ agent, cost ledger, cache, and trace writer, passed through `Deps`. Each buyer o
 only its tool evidence and validation state. `llm/` contains those boundaries;
 `evals/phase3.py` measures saved run artifacts without contacting providers.
 
-PyYAML parses five configuration files and Pydantic validates them:
+PyYAML parses configuration files and Pydantic validates them:
 `models.yaml` records dated provider metadata; `scoring.yaml` contains all tunable
 ranking policy and target assumptions; `eval.yaml` selects layers and controls
 splits, uncertainty, and size limits; `evidence.yaml` controls context budgets,
 section lengths, rounding tolerance, and banned phrases. `analyst.yaml` controls
 tool rounds, rows, output tokens, concurrency, timeouts, and measurement policy.
-Model metadata does not establish account access or tested live behavior.
+`judges.yaml` controls separate judge execution and calibration. Model metadata
+does not establish account access or tested live behavior.
 
 Maintained files stay below 300 lines and Python functions below 50. Generated
 artifacts, lockfiles, and the unchanged transaction CSV are exempt. GitHub Actions
