@@ -2,7 +2,8 @@ prompt_file: analyst_v4.md
 schema_version: rationale-v1
 max_tool_rounds: 3
 tool_max_rows: 8
-max_output_tokens: 8000
+# Measured concise drafts peaked at 2,314 output tokens across two complete runs.
+max_output_tokens: 4000
 # Allow the ranked batch to draft together after the shared-prefix warm-up.
 concurrency: 10
 # Request safety ceiling; latency_target_seconds remains the run performance gate.
@@ -24,4 +25,6 @@ reviewer_prompt_file: reviewer_v1.md
 reviewer_max_output_tokens: 2048
 max_run_usd: 3.0
 request_overhead_tokens: 1024
+count_input_tokens: true
+token_count_timeout_seconds: 10
 run_timeout_seconds: 300
