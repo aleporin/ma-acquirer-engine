@@ -55,9 +55,9 @@ def conversation() -> list[ModelMessage]:
 
 @pytest.mark.asyncio
 async def test_counted_input_admits_a_request_that_byte_reservations_reject(
-    deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    accounting_deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    deps = routing_deps(deps, count_input_tokens=True, max_run_usd=0.02)
+    deps = routing_deps(accounting_deps, count_input_tokens=True, max_run_usd=0.02)
     model = CountedModel()
     monkeypatch.setattr("acquirer_engine.llm.recording.perf_counter", lambda: model.clock)
     runtime = build_services(deps, model, (), tmp_path, "Fixture.", mode="live")

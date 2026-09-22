@@ -1,0 +1,5 @@
+max_input_tokens: null
+input_usd_per_million: 2
+output_usd_per_million: 10
+cache_read_usd_per_million: 0.2
+cache_write_usd_per_million: 2.5

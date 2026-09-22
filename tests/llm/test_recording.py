@@ -19,11 +19,11 @@ from acquirer_engine.llm.cache import ResponseCache, request_key
 from acquirer_engine.llm.cost import CostLedger
 from acquirer_engine.llm.recording import RecordedModel
 from acquirer_engine.llm.trace import TraceWriter
-from acquirer_engine.settings import Settings
+from acquirer_engine.settings import ModelSpec
 
 
-def test_usage_separates_cached_input_from_uncached_input(settings: Settings) -> None:
-    ledger = CostLedger(settings.models.roles["analyst"])
+def test_usage_separates_cached_input_from_uncached_input(accounting_model: ModelSpec) -> None:
+    ledger = CostLedger(accounting_model)
     usage = RequestUsage(
         input_tokens=200, output_tokens=20, cache_read_tokens=70, cache_write_tokens=30
     )
