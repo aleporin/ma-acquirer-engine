@@ -1,7 +1,23 @@
 # Recorded replay walkthrough
 
-This demonstration uses the shipped response archive. It makes no provider calls,
-and its speed is replay speed. The original live run took 72.65 seconds.
+[Watch the silent screen demonstration](demo/replay.webm) (about one minute).
+It uses the shipped response archive, makes no provider calls, and shows replay
+speed. The original live run took 72.65 seconds.
+
+| Approximate time | What is shown |
+| --- | --- |
+| 0:00 | Actual run output and replay mode |
+| 0:07 | Ranked buyer list |
+| 0:15 | Francisco Partners rationale |
+| 0:23 | Risks and conviction |
+| 0:29 | Linked transaction evidence |
+| 0:35 | Replay versus original live cost and latency |
+| 0:42 | Free target comparison |
+| 0:50 | Measured limitations |
+
+The selected page also illustrates the known qualitative margin-comparison error
+documented in [EVALS.md](EVALS.md). It is not presented as banker-quality proof.
+The [recording manifest](demo/manifest.json) identifies source, runs, and chapters.
 
 ## Reproduce the same flow
 

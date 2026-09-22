@@ -1,0 +1,48 @@
+{
+  "recorded_at": "2026-09-22T11:23:49.534Z",
+  "executing_git_sha": "274fd86d73929cfd9da62a1f392e91d75d894a21",
+  "source_dirty": false,
+  "replay_run_id": "0878364c02ca48209dddd7d57baf6f46",
+  "replay_of": "22a363190aaf46a8a8db09c961fe3c23",
+  "mode": "replay",
+  "verified_pages": 10,
+  "recorded_responses": 27,
+  "new_provider_cost_usd": 0,
+  "comparison_run_id": "0bb25e95dc0949468d8282857907f377",
+  "comparison_new_provider_cost_usd": 0,
+  "narration": "Silent screen demonstration; chapter guide in docs/DEMO.md",
+  "chapters": [
+    {
+      "seconds": 0.008,
+      "title": "Run the report without keys"
+    },
+    {
+      "seconds": 6.605,
+      "title": "Open the ten-buyer report"
+    },
+    {
+      "seconds": 14.686,
+      "title": "Read a buyer rationale"
+    },
+    {
+      "seconds": 23.26,
+      "title": "Inspect risks and conviction"
+    },
+    {
+      "seconds": 28.809,
+      "title": "Follow the citation to source evidence"
+    },
+    {
+      "seconds": 35.373,
+      "title": "Distinguish replay and historical live costs"
+    },
+    {
+      "seconds": 41.897,
+      "title": "Compare two targets without model calls"
+    },
+    {
+      "seconds": 49.458,
+      "title": "Review measured limitations"
+    }
+  ]
+}

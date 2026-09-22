@@ -22,10 +22,17 @@ passed product target, and an offline replay is not a new live generation.
 
 The live observation is
 [recorded here](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/fresh_verification.json).
-The [report replay scorecard](../evals/results/p6-2a4312258da10eddc14b4f30e1f9ff3997055080/summary.md)
+The [shipping replay scorecard](../evals/results/p7-274fd86d73929cfd9da62a1f392e91d75d894a21/summary.md)
 contains the ranking intervals and mode-prefixed metrics.
 Request p95 in the latest live run was 29.864 seconds; provider p95 was 29.769.
 Neither is end-to-end p95 across repeated fresh portfolios.
+
+One qualitative error is visible in the bundled Francisco Partners thesis: it
+describes the target margin as below the sector median. The target is 16.53%;
+the eligible-sector median is 15.7% (Closed-only median: 15.3%). Numeric claim
+validation did not catch this number-free comparison. The archived output is
+preserved unchanged, and this is an unresolved quality defect, not a verified
+economic conclusion. A new prompt or validator needs a measured follow-up.
 
 ## Seven layers and what a pass proves
 
@@ -137,5 +144,6 @@ but that is not a substitute for the pending calibration experiment.
 | Recovery and controls | [p4](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md) | Complete output, repair, ablations, separate speed failure |
 | Calibration preparation | [p5](../evals/results/p5-35f1652a84f5bbccaa4e81a5b029b184b3b9d36f/summary.md) | Frozen cases and blind labels; quality unmeasured |
 | Portable report | [p6](../evals/results/p6-2a4312258da10eddc14b4f30e1f9ff3997055080/summary.md) | Complete keyless replay from a clean clone |
+| Shipping verification | [p7](../evals/results/p7-274fd86d73929cfd9da62a1f392e91d75d894a21/summary.md) | 310 tests and keyless replay; independent calibration still unmeasured |
 
 Earlier unsuccessful runs remain under [evals/results](../evals/results/).

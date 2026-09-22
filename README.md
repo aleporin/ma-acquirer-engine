@@ -90,6 +90,8 @@ including the typed Pydantic AI boundary and why there is no application server.
 - Verification proves numeric/reference consistency. It cannot prove economic
   causation, current buyer appetite, or the quality of a qualitative thesis.
   Outside-dataset notes are visibly labeled unverified.
+  The bundled Francisco page contains an incorrect qualitative margin comparison;
+  [the evaluation guide](docs/EVALS.md) records the exact failure.
 - Live prose may change even at identical inputs. Ranking and facts are
   deterministic; versioned caches and frozen transcripts reproduce recorded responses.
   Replay does not measure a new prompt's quality or new provider latency.

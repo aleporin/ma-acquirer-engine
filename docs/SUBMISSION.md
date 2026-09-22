@@ -34,6 +34,8 @@ numeric claims, but took 72.65 seconds and cost $1.022239 in returned usage.
 Ranking has not demonstrated lift over popularity. All default convictions are
 Medium. Independent human/judge calibration and a measured judge-prompt iteration
 remain unfinished. Replay does not change those observations.
+The archived Francisco thesis also misstates the target's margin position;
+the known qualitative defect and its measured values are in [EVALS.md](EVALS.md).
 
 ## Final human checks
 
