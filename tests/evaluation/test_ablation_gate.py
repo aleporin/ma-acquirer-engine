@@ -14,7 +14,7 @@ from acquirer_engine.settings import LayerSpec, Settings
 from evals.phase1 import PreparedEvaluation
 from evals.phase4 import prepare_phase4
 from evals.scorecard import LayerResult
-from tests.evals.test_analyst_metrics import observation
+from tests.fixtures.observations import observation
 
 
 def failed_attempts(terminal: str, rejected: bool, recovered: bool) -> list[PageAttempt]:

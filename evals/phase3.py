@@ -8,32 +8,13 @@ import json
 from functools import partial
 from pathlib import Path
 
-from pydantic import ValidationError
-
-from acquirer_engine.errors import EvaluationError
 from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.settings import Settings
 from evals.graders import distinct, ops, stability
 from evals.harness import Grader
+from evals.observations import load_runs
 from evals.phase1 import PreparedEvaluation
 from evals.scorecard import LayerResult, Metric
-
-
-def _load_runs(paths: list[Path], settings: Settings) -> list[AnalystRun]:
-    try:
-        runs = [
-            AnalystRun.model_validate_json(path.read_text(), context=settings.evidence.validation)
-            for path in paths
-        ]
-    except (OSError, ValueError, ValidationError) as error:
-        raise EvaluationError("Invalid analyst run artifact") from error
-    if len({run.run_id for run in runs}) != len(runs):
-        raise EvaluationError("Duplicate analyst run identity")
-    if len({(run.git_sha, run.prompt_version) for run in runs}) > 1:
-        raise EvaluationError("Analyst stability requires matching source and prompt versions")
-    if any(call.mode != run.mode for run in runs for call in run.calls):
-        raise EvaluationError("Run mode conflicts with response usage mode")
-    return runs
 
 
 def _claims(baseline: LayerResult, runs: list[AnalystRun]) -> LayerResult:
@@ -84,7 +65,7 @@ def prepare_phase3(
     """
     if not paths:
         return prepared
-    runs = _load_runs(paths, settings)
+    runs = load_runs(paths, settings)
     graders: dict[int, Grader] = {
         2: lambda layer: _claims(prepared.graders[2](layer), runs),
         3: partial(distinct.grade, runs=runs, config=settings.analyst),

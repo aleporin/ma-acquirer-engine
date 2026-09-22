@@ -15,7 +15,7 @@ from evals.graders import ops
 from evals.phase1 import PreparedEvaluation
 from evals.phase3 import prepare_phase3
 from evals.scorecard import LayerResult
-from tests.evals.test_analyst_metrics import observation
+from tests.fixtures.observations import observation
 
 
 def test_analyst_artifacts_add_claim_metrics_without_replacing_fixture_metrics(

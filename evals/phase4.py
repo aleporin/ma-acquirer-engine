@@ -10,8 +10,9 @@ from pathlib import Path
 from acquirer_engine.llm.results import AnalystRun, PageAttempt, PageResult
 from acquirer_engine.settings import LayerSpec, Settings
 from evals.graders import distinct
+from evals.observations import load_runs
 from evals.phase1 import PreparedEvaluation
-from evals.phase3 import _load_runs, prepare_phase3
+from evals.phase3 import prepare_phase3
 from evals.scorecard import LayerResult, Metric
 
 
@@ -136,7 +137,7 @@ def prepare_phase4(
     """
     if not paths:
         return prepared
-    runs = _load_runs(paths, settings)
+    runs = load_runs(paths, settings)
     baseline_paths = [
         path
         for path, run in zip(paths, runs, strict=True)
