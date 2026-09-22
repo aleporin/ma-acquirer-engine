@@ -1,0 +1,39 @@
+{
+  "source_git_sha": "2a4312258da10eddc14b4f30e1f9ff3997055080",
+  "source_dirty": false,
+  "python": "3.12.14",
+  "uv": "0.12.17",
+  "lint": {
+    "command": "make lint",
+    "exit_code": 0,
+    "mypy_source_files": 190
+  },
+  "tests": {
+    "command": "make test",
+    "exit_code": 0,
+    "passed": 305,
+    "seconds": 6.05
+  },
+  "replay_exit": {
+    "command": "make run",
+    "environment": "fresh local clone; env -i with HOME and PATH only",
+    "exit_code": 0,
+    "run_id": "692d47f2386242b19854e51c0058607a",
+    "verified_pages": 10,
+    "markdown_pages": 10,
+    "responses": 27,
+    "new_model_cost_usd": 0,
+    "broken_internal_links": 0,
+    "external_assets": 0,
+    "private_reasoning_absent_from_html": true
+  },
+  "comparison": {
+    "command": "uv run --locked acquirers compare examples/healthcare.yaml examples/healthcare_large.yaml",
+    "exit_code": 0,
+    "overlap_buyers": 6,
+    "overlap_fraction": 0.6,
+    "live_summary_requested": false
+  },
+  "visual_check": "Browser inspected index and buyer page; buyer navigation succeeded.",
+  "proof_boundary": "Replays recorded responses through current validation; no new live model-quality or calibration measurement."
+}
