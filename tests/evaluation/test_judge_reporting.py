@@ -10,7 +10,7 @@ from acquirer_engine.deps import Deps
 from acquirer_engine.errors import EvaluationError
 from evals.judges.reporting import summarize
 from evals.judges.results import JudgeRun, Outcome
-from evals.judges.schema import IdentificationAnswer, RubricAnswer
+from evals.judges.schema import IdentificationAnswer, RubricAnswer, Vote
 from tests.evaluation.test_judge_runner import plan_for_test
 
 
@@ -24,7 +24,7 @@ def test_report_separates_failures_abstentions_and_human_agreement(deps: Deps) -
         elif job.kind == "specificity" and job.role == plan.config.roles[0]:
             outcomes.append(Outcome(job_id=job.job_id, error="TimeoutError"))
         else:
-            vote = "Unknown" if job.kind == "banker_tone" else "Pass"
+            vote: Vote = "Unknown" if job.kind == "banker_tone" else "Pass"
             outcomes.append(
                 Outcome(job_id=job.job_id, answer=RubricAnswer(vote=vote, reason="Evidence"))
             )

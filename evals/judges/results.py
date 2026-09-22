@@ -33,6 +33,7 @@ class JudgeRun(Record):
 
     plan_digest: str
     mode: ExecutionMode
+    observation_mode: ExecutionMode | None = None
     outcomes: tuple[Outcome, ...]
     uncertain_cost_bound_usd: float
     git_sha: str | None = None

@@ -78,7 +78,6 @@ async def test_replay_rejects_an_edited_plan_before_using_cached_verdicts(
         mode="test",
     )
     path = tmp_path / "run/plan.json"
-    path.write_text(path.read_text().replace("Matching-not-present", "changed") + " ")
     changed = plan.model_copy(update={"jobs": plan.jobs[:-1]})
     path.write_text(changed.model_dump_json())
     with pytest.raises(EvaluationError, match="sealed plan"):

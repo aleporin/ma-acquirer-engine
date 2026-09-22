@@ -5,6 +5,7 @@ Does not own: Client construction, calibration metrics, or human labeling.
 """
 
 import asyncio
+import shutil
 from collections.abc import Mapping
 from pathlib import Path
 
@@ -100,6 +101,35 @@ async def _run_job(deps: JudgeDeps, job: Job) -> Outcome:
     return outcome
 
 
+async def _scheduled_job(deps: JudgeDeps, job: Job, failures: Mapping[str, Outcome]) -> Outcome:
+    if job.job_id not in failures:
+        return await _run_job(deps, job)
+    outcome = failures[job.job_id].model_copy(update={"calls": (), "cache_hit": False})
+    deps.trace.write("judge_failed", job.case_id, outcome=outcome, recorded_failure=True)
+    return outcome
+
+
+def _resources(
+    plan: JudgePlan,
+    directory: Path,
+    models: Mapping[str, Model],
+    logger: BoundLogger,
+    mode: ExecutionMode,
+    cache_root: Path | None,
+) -> JudgeDeps:
+    return JudgeDeps(
+        plan,
+        dict(models),
+        ResponseCache(cache_root or directory / "responses"),
+        CostLedger(next(iter(plan.models.values()))),
+        RunBudget(plan.config.max_run_usd),
+        TraceWriter(directory / "trace.jsonl"),
+        logger,
+        mode,
+        asyncio.Semaphore(plan.config.concurrency),
+    )
+
+
 async def execute(
     plan: JudgePlan,
     directory: Path,
@@ -110,6 +140,7 @@ async def execute(
     cache_root: Path | None = None,
     git_sha: str | None = None,
     source_dirty: bool = False,
+    recorded_failures: Mapping[str, Outcome] | None = None,
 ) -> JudgeRun:
     """Execute a frozen plan with one shared budget and no validation retries.
 
@@ -128,21 +159,14 @@ async def execute(
         raise EvaluationError("Every configured judge must be injected")
     directory.mkdir(parents=True, exist_ok=False)
     (directory / "plan.json").write_text(plan.model_dump_json(indent=2) + "\n")
-    deps = JudgeDeps(
-        plan,
-        dict(models),
-        ResponseCache(cache_root or directory / "responses"),
-        CostLedger(next(iter(plan.models.values()))),
-        RunBudget(plan.config.max_run_usd),
-        TraceWriter(directory / "trace.jsonl"),
-        logger,
-        mode,
-        asyncio.Semaphore(plan.config.concurrency),
+    deps = _resources(plan, directory, models, logger, mode, cache_root)
+    outcomes = await asyncio.gather(
+        *(_scheduled_job(deps, job, recorded_failures or {}) for job in plan.jobs)
     )
-    outcomes = await asyncio.gather(*(_run_job(deps, job) for job in plan.jobs))
     result = JudgeRun(
         plan_digest=plan.digest,
         mode=mode,
+        observation_mode=mode,
         outcomes=tuple(outcomes),
         uncertain_cost_bound_usd=deps.budget.uncertain,
         git_sha=git_sha,
@@ -169,6 +193,19 @@ async def replay(source: Path, destination: Path, logger: BoundLogger) -> JudgeR
         j.job_id for j in plan.jobs
     ]:
         raise EvaluationError("Judge archive does not match its sealed plan")
-    return await execute(
-        plan, destination, {}, logger, mode="replay", cache_root=source / "responses"
+    result = await execute(
+        plan,
+        destination,
+        {},
+        logger,
+        mode="replay",
+        cache_root=source / "responses",
+        recorded_failures={o.job_id: o for o in original.outcomes if o.error and not o.calls},
     )
+    result = result.model_copy(
+        update={"observation_mode": original.observation_mode or original.mode}
+    )
+    (destination / "run.json").write_text(result.model_dump_json(indent=2) + "\n")
+    if (source / "responses").exists():
+        shutil.copytree(source / "responses", destination / "responses")
+    return result
