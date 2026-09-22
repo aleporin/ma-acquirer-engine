@@ -1,8 +1,10 @@
 # M&A Acquirer Engine
 
 Rank likely acquirers from transaction history and measure the ranking against
-held-out deals. The current scope is **Phase 5: independent judges and human calibration**.
-The offline harness and [blind packet](JUDGING.md) are ready; live judging is pending. Review is now
+held-out deals. The current scope is **Phase 6: portable reports and target inputs**.
+Run `make run` with no API keys to produce the ten-buyer report, or open
+[sample_output/index.html](sample_output/index.html). See [report commands](REPORTING.md).
+The independent judge harness and [blind packet](JUDGING.md) are ready; live judging is pending. Review is now
 configuration opt-in. The latest default run verified ten pages and 79/79 claims
 in 72.65 seconds for $1.02, with three successful repairs and no budget denials.
 The 60-second target remains unmet. Historical replay reproduces all 27 responses
@@ -52,11 +54,13 @@ detection. Unit-test fixtures reject socket connections.
 | `make eval EVAL_FLAGS=--ci RESULTS=/tmp/ci-results` | Select layers 0–2 for offline CI |
 | `make eval-diff A=before.json B=after.json` | Show metric changes and flag regressions |
 | `make eval-judges` | Print the free judge cost plan; explicit `--fresh` permits paid calls |
-| `make run` | Replay cached responses and write structured page outcomes; cache misses fail |
+| `make run` | Replay the committed archive into linked HTML, ten Markdown pages, and JSON |
 | `make run RUN_FLAGS=--fresh` | Make paid analyst calls and refresh the response cache |
 | `acquirers eval --analyst-run runs/ID/run.json` | Measure a saved run without provider access |
 | `acquirers runs` | List saved run IDs, outcomes, source, prompt, cost, and latency |
 | `acquirers replay RUN_ID` | Replay one archive with its saved inputs and responses |
+| `acquirers flag BUYER --reason REASON` | Persist a buyer exclusion and similarity preference |
+| `acquirers compare a.yaml b.yaml` | Compare two rankings offline and save a side-by-side report |
 
 Evaluation is offline. For repeat evaluations, supply a new `RESULTS` directory;
 existing baseline directories are never overwritten.
@@ -86,7 +90,8 @@ frequency reduces common rationale tags to little or no signal.
 
 Each buyer gets bounded sector, size, activity, completion, margin, tag, geography,
 and deal-type signals. Signals shrink toward the empirical mean of that buyer type
-using a configurable prior strength. Weighted contributions sum to the score.
+using a configurable prior strength. Weighted contributions sum to the base score. Product-only saved feedback can
+apply a separate, disclosed similarity penalty; it does not change the backtest.
 Names resolve ties; there is no strategic/sponsor quota. Conviction depends on the
 score and relevant-history count, independently of other buyers' assigned levels.
 
@@ -186,7 +191,7 @@ Start with the [execution walkthrough](EXECUTION.md). `data/` validates input;
 owns holdout measurement. `evals/phase1.py` composes graders and companion artifacts.
 `evidence/` assembles addressable facts; `validation/` checks structured rationale.
 `evals/grounded.py` executes labeled pages and `evals/phase2.py` adds their results.
-The CLI reads flags and builds settings and a logger; `pipeline.py` coordinates
+`cli.py` registers commands; `run_command.py` builds settings and a logger; `pipeline.py` coordinates
 the portfolio. `bootstrap.py` owns shared resource construction and client lifetime.
 `llm/analyst.py` contains the buyer recovery loop; `llm/agents.py` declares typed
 agents. `llm/context.py` holds page state and `llm/batch.py` schedules buyers.
@@ -201,7 +206,8 @@ ranking policy and target assumptions; `eval.yaml` selects layers and controls
 splits, uncertainty, and size limits; `evidence.yaml` controls context budgets,
 section lengths, rounding tolerance, and banned phrases. `analyst.yaml` controls
 tool rounds, rows, output tokens, concurrency, timeouts, and measurement policy.
-`judges.yaml` controls separate judge execution and calibration. Model metadata
+`judges.yaml` controls separate judge execution and calibration. `feedback.yaml`
+sets the preference discount; `comparison.yaml` bounds an optional summary. Model metadata
 does not establish account access or tested live behavior.
 
 Maintained files stay below 300 lines and Python functions below 50. Generated
@@ -249,9 +255,11 @@ but records zero new spend. Billing for unsuccessful requests without returned
 usage is unknown; the ledger does not invent it.
 
 Fresh execution needs `ANTHROPIC_API_KEY` in the environment. Default `make run`
-uses only the request cache; misses fail without a paid fallback. Cache identity
+checks a committed response archive against the selected inputs and policy, then
+replays its conversation through current verification. No paid fallback exists.
+Without a portable bundle, matching request-cache entries can be replayed. Cache identity
 includes configuration, prompt, schema, evidence, and tool results. Fresh execution
-replaces matching cache entries. The portable sample cache is a later deliverable.
+replaces matching cache entries. The curated archive is in `cache/replay/`.
 
 Each new run writes `snapshot.json` before model requests: settings, prompt,
 prepared buyer evidence, and tool-query history. No credentials are included.

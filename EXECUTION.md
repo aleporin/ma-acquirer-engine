@@ -1,13 +1,16 @@
 # Follow one run
 
-Start with `src/acquirer_engine/cli.py:run_product`, then
+Start with `src/acquirer_engine/run_command.py:run_product`, then
 `src/acquirer_engine/pipeline.py:execute_run` and `execute_prepared`.
 The latter reads in execution order: freeze inputs, build resources, run buyer
 pages, optionally review, then save the result.
 
 ```mermaid
 flowchart TD
-    CLI[CLI: settings, run ID, logger] --> PREP[Load history, compute ranking, build evidence packs]
+    CLI[Run command: settings, run ID, logger] --> PREP[Resolve target and feedback, rank, build evidence packs]
+    PREP --> ARCHIVE{Matching portable replay?}
+    ARCHIVE -->|yes| FROZEN[Use verified archived inputs and responses]
+    FROZEN --> SETUP
     PREP --> SETUP[Freeze inputs and build shared resources]
     SETUP --> BATCH[Warm first response, then concurrent buyer tasks]
     BATCH --> DRAFT[Analyst selects evidence tools and drafts one page]
@@ -21,7 +24,8 @@ flowchart TD
     REVIEW -->|yes| VERDICT[Portfolio verdict and at most one revalidated revision]
     REVIEW -->|no| SAVE[Write run.json]
     VERDICT --> SAVE
-    SAVE --> EXIT[Print verified count and exit status]
+    SAVE --> REPORT[Render linked HTML and buyer Markdown]
+    REPORT --> EXIT[Print report path, verified count, and exit status]
 ```
 
 The diagram summarizes control flow. Provider failures and resource limits end
@@ -30,7 +34,9 @@ tasks continue. The CLI exits nonzero if any page or the portfolio review fails.
 
 | Read in this order | What it owns |
 | --- | --- |
-| `cli.py` | Flags, mode, settings, run identity, logger, display, exit code |
+| `cli.py` | Register command names |
+| `run_command.py` | Flags, settings, run identity, logger, display, exit code |
+| `selection.py` | Resolve target and saved feedback, score, select, build evidence |
 | `pipeline.py` | Prepare ranked inputs, execute the portfolio, persist output |
 | `llm/batch.py` | Warm-up, concurrency semaphore, stable output order |
 | `llm/analyst.py` | Select normal/sparse prompt and drive one buyer through generation and recovery |
@@ -65,7 +71,9 @@ that buyer's core evidence and actual returned tool evidence. The saved
 
 - `acquirers run --fresh`: prepare current inputs and make provider requests.
 - `acquirers run --replay`: prepare current inputs and use matching response-cache
-  entries; a miss fails without a provider fallback.
+  entries when no bundle is installed. A committed portable bundle is checked
+  first for exact inputs, feedback, prompt, policy and file integrity. A mismatch
+  fails without a provider fallback.
 - `acquirers replay RUN_ID`: load frozen inputs from the selected `snapshot.json`
   and responses from `trace.jsonl`, then enter `execute_prepared` with no client.
 
@@ -82,9 +90,25 @@ Missing responses are never reconstructed as model answers or billed usage.
 `acquirers eval` enters `evals/command.py:run_evaluation`, which prepares measured graders
 and writes a scorecard through `evals/harness.py` and `evals/scorecard.py`.
 Supplied analyst run files are read as observations; evaluation never drafts pages.
-The product path does not execute graders. Judge evaluation and rendered reports
-remain later deliverables.
+The product path does not execute graders. Judge evaluation remains separate
+from report generation; missing human calibration remains explicitly unmeasured.
 
 `evals/observations.py` validates saved-run identity and source/prompt cohorts.
 Evaluation tests live together in `tests/evaluation`; shared factories live in
 `tests/fixtures`, alongside the hand-built ranking and rationale fixtures.
+
+## Display, preferences, and comparison
+
+`report/render.py` projects public fields into small Jinja templates. `report/evidence.py`
+resolves every visible citation against archived rows and computed statistics before
+any file is written. Working notes remain in the structured run, never the pages.
+
+`target_input.py` owns YAML/flag precedence. `feedback/state.py` saves named exclusions;
+`feedback/ranking.py` applies a disclosed similarity penalty after the base scorer.
+`selection.py` is the single input-preparation path for product runs and comparisons.
+
+`comparison/command.py` prepares two selections, computes their differences through
+`comparison/ranking.py`, and saves a table. The optional `comparison/summary.py` path
+uses the existing recorded model boundary, with one request and no output retry.
+`comparison/results.py` keeps optional-summary failures separate from valid ranking
+facts. Default comparison never constructs a provider client.

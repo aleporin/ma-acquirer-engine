@@ -1,0 +1,5 @@
+sector: Healthcare Services
+deal_size_mm: 200
+geography: Regional
+ownership: Private
+# Margin is measured from eligible sector history when omitted.
