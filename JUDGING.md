@@ -20,7 +20,7 @@ Follow one path through the code:
    judgments through `recording.py`, sharing a budget, cache, trace, and ledger
    through `JudgeDeps`. Failed requests do not become valid Unknown votes.
 5. `reporting.py` computes rates and reviewer comparisons; `calibration.py`
-   computes kappa and buyer-cluster bootstrap intervals. `evals/phase5.py`
+   computes kappa and buyer-cluster bootstrap intervals. `evals/judges/grading.py`
    adds those saved observations to offline scorecards.
 
 Data contracts live in `schema.py`, `plan.py`, and `results.py`; runtime policy

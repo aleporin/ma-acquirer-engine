@@ -77,6 +77,22 @@ whether to accept, repair, escalate, or stop. This is a workflow with bounded
 agent stages. [Architecture decisions](docs/DECISIONS.md) explain the choices,
 including the typed Pydantic AI boundary and why there is no application server.
 
+## Code entry points
+
+Read [`cli.py`](src/acquirer_engine/cli.py) and
+[`run_command.py`](src/acquirer_engine/run_command.py) for the command boundary,
+then [`selection.py`](src/acquirer_engine/selection.py) for target resolution and
+ranking. [`pipeline.py`](src/acquirer_engine/pipeline.py) orders the stages;
+[`bootstrap.py`](src/acquirer_engine/bootstrap.py) builds their shared resources.
+The complete buyer loop is in [`llm/analyst.py`](src/acquirer_engine/llm/analyst.py):
+`run_analysts` → `analyze_one` → `generate` → `next_route` → `repair_history`.
+[`report/render.py`](src/acquirer_engine/report/render.py) produces the deliverable.
+
+The [execution map](EXECUTION.md) explains each boundary and the thirteen model-stage
+modules. Evaluation has its own entry in [`evals/command.py`](evals/command.py),
+with preparation modules named for ranking, groundedness, analyst outcomes,
+routing, and judges. File organization does not change the measured results above.
+
 ## Assumptions and limits
 
 - Default target: Healthcare Services, $200M EV, Private, Regional. Strong margin

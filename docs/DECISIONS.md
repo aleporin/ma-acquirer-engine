@@ -1,5 +1,24 @@
 # Architecture decisions
 
+## 2026-09-22 — Group code around the execution readers need to follow
+
+Context: the buyer loop was spread across separate scheduling, attempt, route,
+and repair modules, while evaluation preparation still used build-phase names.
+Decision: place the complete buyer loop in `llm/analyst.py`; group agent bindings,
+evidence state, provider adaptation, cost controls, and trace replay with their
+related implementations. Keep ranking policy in the scorer, prose guards together,
+and report evidence resolution in one module. Move target precedence into
+selection and command inspection into the CLI. Name evaluation preparation for
+ranking, groundedness, analyst outcomes, routing, and judges.
+Alternatives considered: retain one small file per helper, or combine the entire
+pipeline into a single module.
+Consequence: fewer files are needed to follow one outcome; some modules are longer.
+Functions remain bounded, and provider construction, typed results, frozen inputs,
+response identity, and data framing retain separate responsibilities. This is a
+structural change: prompts, model policy, scoring, validation behavior, archive
+contracts, and historical measurements remain unchanged. It makes no new claim
+about generation quality, latency, predictive lift, or independent calibration.
+
 ## 2026-09-22 — Use the stronger writer for output corrections
 
 Context: numeric/schema acceptance did not prevent incorrect interpretation of
