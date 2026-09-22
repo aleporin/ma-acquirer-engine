@@ -61,6 +61,18 @@ def test_ablation_removes_one_group_and_renormalizes(settings: Settings) -> None
     assert sum(signal.weight for signal in ranked[0].signals.values()) == pytest.approx(1)
 
 
+@pytest.mark.parametrize("target_size", [100, 500])
+@pytest.mark.parametrize("ratio, expected", [(0.25, 0), (0.5, 1), (1, 1), (2, 1), (4, 0)])
+def test_size_signal_scales_with_target_enterprise_value(
+    settings: Settings, target_size: float, ratio: float, expected: float
+) -> None:
+    rows = [transaction(deal_size_mm=target_size * ratio)]
+    fitted = fit_features(rows, settings.scoring, reference_year=2021)
+    query = target().model_copy(update={"deal_size_mm": target_size})
+    ranked = rank_acquirers(fitted, query, settings.scoring)
+    assert ranked[0].signals["size_fit"].raw == expected
+
+
 def test_conviction_uses_fixed_signals_without_forcing_levels(settings: Settings) -> None:
     config = settings.scoring
     assert conviction(0.9, 4, config) == "High"

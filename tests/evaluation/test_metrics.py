@@ -8,19 +8,19 @@ import math
 
 import pytest
 
-from evals.ranking.metrics import paired_lift, ranking_metrics
+from evals.ranking.metrics import metrics_at_rank, paired_lift
 
 
 def test_known_rank_metrics_and_unseen_label() -> None:
-    values = ranking_metrics(["A", "B", "C"], "B", 2)
+    values = metrics_at_rank(2, 2)
     assert values == {"recall_at_k": 1, "mrr": 0.5, "ndcg_at_k": 1 / math.log2(3)}
-    assert ranking_metrics(["A"], "Unseen", 10) == {
+    assert metrics_at_rank(None, 10) == {
         "recall_at_k": 0,
         "mrr": 0,
         "ndcg_at_k": 0,
     }
-    assert ranking_metrics(["A", "B", "C"], "C", 2)["mrr"] == pytest.approx(1 / 3)
-    assert ranking_metrics(["A", "B", "C"], "C", 2)["ndcg_at_k"] == 0
+    assert metrics_at_rank(3, 2)["mrr"] == pytest.approx(1 / 3)
+    assert metrics_at_rank(3, 2)["ndcg_at_k"] == 0
 
 
 def test_paired_bootstrap_preserves_pairing_and_seed() -> None:
