@@ -6,6 +6,7 @@ Does not own: Live provider access or predictive validation of proposed weights.
 
 from importlib import import_module
 from pathlib import Path
+from typing import Any
 
 import pytest
 from pydantic_ai.exceptions import UnexpectedModelBehavior
@@ -16,6 +17,26 @@ from pydantic_ai.usage import RequestUsage
 from acquirer_engine.deps import Deps
 from acquirer_engine.factory import build_services
 from tests.evaluation.test_weighting import module_and_policy
+
+
+def assert_weight_fields(schema: dict[str, Any], features: set[str]) -> None:
+    """Check the transformed schema handed to the provider, not just local parsing."""
+
+    def resolve(value: dict[str, Any]) -> dict[str, Any]:
+        if "$ref" in value:
+            result: dict[str, Any] = schema["$defs"][value["$ref"].rsplit("/", 1)[-1]]
+            return result
+        return value
+
+    candidate = resolve(schema["properties"]["candidates"]["items"])
+    weights = resolve(candidate["properties"]["multipliers"])
+    assert set(weights["properties"]) == {"Financial Sponsor", "Strategic"}
+    assert set(weights["required"]) == set(weights["properties"])
+    for value in weights["properties"].values():
+        vector = resolve(value)
+        assert set(vector["properties"]) == features
+        assert set(vector["required"]) == features
+        assert vector["additionalProperties"] is False
 
 
 @pytest.mark.asyncio
@@ -34,6 +55,9 @@ async def test_proposal_is_one_recorded_call_and_replays_without_provider(
         nonlocal calls
         calls += 1
         assert info.output_tools
+        assert_weight_fields(
+            info.output_tools[0].parameters_json_schema, set(deps.settings.scoring.weights)
+        )
         return ModelResponse(
             parts=[
                 ToolCallPart(info.output_tools[0].name, {"candidates": [candidate.model_dump()]})
