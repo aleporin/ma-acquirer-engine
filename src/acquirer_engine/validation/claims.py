@@ -15,6 +15,7 @@ from acquirer_engine.validation.comparisons import sector_margin_errors
 from acquirer_engine.validation.numbers import scan_numbers
 from acquirer_engine.validation.phrases import banned_phrases
 from acquirer_engine.validation.schema import AcquirerRationale, Claim
+from acquirer_engine.validation.theme_scope import theme_scope_errors
 
 
 def _claim_errors(
@@ -100,6 +101,7 @@ def validate_rationale(
     errors.extend(scan_numbers(page, set(index), config.rounding_tolerance))
     errors.extend(banned_phrases(page, config.banned_phrases))
     errors.extend(sector_margin_errors(page, context))
+    errors.extend(theme_scope_errors(page, context))
     if errors:
         raise ValidationFailure(errors)
     return page
