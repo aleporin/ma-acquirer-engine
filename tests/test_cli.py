@@ -96,7 +96,7 @@ def test_second_eval_preserves_existing_baseline(project: Path) -> None:
 
 
 @pytest.mark.parametrize("phase", ["p1", "p2"])
-def test_measured_bundle_is_written_before_failing_quality_gate(
+def test_measured_bundle_reports_uniform_conviction_as_a_diagnostic(
     project: Path, monkeypatch: pytest.MonkeyPatch, phase: str
 ) -> None:
     config_path = project / "config/eval.yaml"
@@ -122,12 +122,13 @@ def test_measured_bundle_is_written_before_failing_quality_gate(
         raising=False,
     )
     result = CliRunner().invoke(build_app(), ["eval", "--project", str(project)])
-    assert result.exit_code == 1, result.output
+    assert result.exit_code == 0, result.output
     path = next((project / "evals/results").glob("*/scorecard.json"))
     card = read_scorecard(path)
     assert card.layers[0].metrics["coverage"].value == 0.8
     assert card.layers[1].status == "passed"
-    assert card.layers[5].status == "failed"
+    assert card.layers[5].status == "passed"
+    assert card.layers[5].metrics["conviction_diversity_target_met"].value == 0
     assert path.with_name("top10.json").exists()
 
     if phase == "p2":
