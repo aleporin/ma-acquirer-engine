@@ -107,7 +107,17 @@ async def _execute(
         feedback_policy=left.feedback_policy,
     )
     if summary:
-        report = await _with_summary(root, directory, deps, left, report, replay)
+        try:
+            report = await _with_summary(root, directory, deps, left, report, replay)
+        except (
+            AcquirerEngineError,
+            OSError,
+            ValidationError,
+            yaml.YAMLError,
+            AnthropicError,
+        ) as error:
+            message = type(error).__name__ if isinstance(error, AnthropicError) else str(error)
+            report = report.model_copy(update={"errors": (message,)})
     report = report.model_copy(update={"latency_seconds": perf_counter() - started})
     _save(directory, report)
     return report
