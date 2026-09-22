@@ -4,7 +4,6 @@ Owns: Rank deltas, overlap, saved output, and provider-call count.
 Does not own: Evaluating narrative quality or training ranking weights.
 """
 
-import importlib
 import json
 from dataclasses import replace
 from pathlib import Path
@@ -17,6 +16,8 @@ from typer.testing import CliRunner
 
 from acquirer_engine.bootstrap import build_services
 from acquirer_engine.cli import build_app
+from acquirer_engine.comparison import ranking
+from acquirer_engine.comparison import summary as module
 from acquirer_engine.deps import Deps
 from acquirer_engine.ranking.scorer import RankedAcquirer
 from acquirer_engine.ranking.target import TargetProfile
@@ -26,12 +27,11 @@ from tests.llm.test_run_archive import inputs
 
 
 def test_comparison_counts_overlap_and_defines_positive_delta_as_improvement(deps: Deps) -> None:
-    module = importlib.import_module("acquirer_engine.comparison.ranking")
     target = inputs(deps, "a" * 32).packs[0].target
     base = inputs(deps, "a" * 32).packs[0].ranking
     left = [base.model_copy(update={"acquirer": name}) for name in ("A", "B")]
     right = [base.model_copy(update={"acquirer": name}) for name in ("B", "C")]
-    result = module.compare_rankings(target, target, left, right)
+    result = ranking.compare_rankings(target, target, left, right)
     assert result.overlap == ("B",) and result.overlap_fraction == 0.5
     by_name = {item.acquirer: item for item in result.rows}
     assert by_name["B"].rank_a == 2 and by_name["B"].rank_b == 1
@@ -39,7 +39,10 @@ def test_comparison_counts_overlap_and_defines_positive_delta_as_improvement(dep
     assert by_name["A"].rank_b is None and by_name["C"].rank_delta is None
 
 
-def test_compare_command_writes_table_without_a_provider(tmp_path: Path) -> None:
+def test_compare_command_writes_table_without_a_provider(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("a" * 40, False))
     write_project(
         tmp_path, (transaction(1), transaction(2, acquirer="Buyer B", sector="Technology"))
     )
@@ -62,8 +65,6 @@ def test_compare_command_writes_table_without_a_provider(tmp_path: Path) -> None
 async def test_summary_uses_one_recorded_call_and_replays_offline(
     deps: Deps, tmp_path: Path, summary_model: tuple[FunctionModel, list[None]]
 ) -> None:
-    module = importlib.import_module("acquirer_engine.comparison.summary")
-    ranking = importlib.import_module("acquirer_engine.comparison.ranking")
     snapshot = inputs(deps, "a" * 32)
     target: TargetProfile = snapshot.packs[0].target
     candidate: RankedAcquirer = snapshot.packs[0].ranking

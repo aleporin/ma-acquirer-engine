@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Target comparison</title><style>{% include 'style.css' %}</style></head>
+<body><main><header><div class="eyebrow">Target comparison / {{ report.mode }}</div>
+<h1>How the shortlist changes.</h1>
+{% for label, target in [('A', report.data.target_a), ('B', report.data.target_b)] %}
+<p><strong>{{ label }}</strong> · {{ target.sector }} · ${{ '%g'|format(target.deal_size_mm) }}M EV · {{ '%g'|format(target.ebitda_margin_pct) }}% EBITDA margin · {{ target.geography }} · {{ target.ownership }}</p>
+{% endfor %}<p>{{ report.data.overlap|length }} shared buyers · {{ '%.0f'|format(report.data.overlap_fraction * 100) }}% overlap of the shorter shortlist.</p></header>
+<section><h2>Side by side</h2><p>Positive delta means a buyer ranks higher for B. A dash means the buyer is outside that shortlist.</p>
+<div class="table-wrap"><table><thead><tr><th>Buyer</th><th>Rank A</th><th>Rank B</th><th>Delta</th><th>Score A / B</th><th>Conviction A / B</th></tr></thead><tbody>
+{% for row in report.data.rows %}<tr><td>{{ row.acquirer }}<br><span class="meta">{{ row.acquirer_type }}</span></td><td>{{ row.rank_a or '—' }}</td><td>{{ row.rank_b or '—' }}</td>
+<td>{{ row.rank_delta if row.rank_delta is not none else '—' }}</td><td>{{ '%.3f'|format(row.score_a) if row.score_a is not none else '—' }} / {{ '%.3f'|format(row.score_b) if row.score_b is not none else '—' }}</td>
+<td>{{ row.conviction_a or '—' }} / {{ row.conviction_b or '—' }}</td></tr>{% endfor %}</tbody></table></div></section>
+{% if report.summary %}<section class="outside"><h2>Model interpretation</h2><p>{{ report.summary }}</p><p class="meta">This prose is not independently verified. The computed table above is authoritative.</p></section>{% endif %}
+{% if report.errors %}<section class="failure"><h2>Summary unavailable</h2><ul>{% for error in report.errors %}<li>{{ error }}</li>{% endfor %}</ul></section>{% endif %}
+{% if report.feedback.flags %}<section><h2>Saved feedback</h2><ul>{% for flag in report.feedback.flags %}<li>Excluded: {{ flag.acquirer }} — {{ flag.reason }}</li>{% endfor %}</ul><p>Maximum similarity discount: {{ '%.0f'|format(report.feedback_policy.similarity_penalty * 100) }}%.</p></section>{% endif %}
+<footer class="meta"><p>Run {{ report.run_id }} · {{ report.git_sha }}{% if report.source_dirty %} (working changes){% endif %}<br>New model cost: ${{ '%.4f'|format(cost) }} · {{ '%.2f'|format(report.latency_seconds) }} seconds{% if report.prompt_file %}<br>Prompt: {{ report.prompt_file }}{% endif %}</p></footer>
+</main></body></html>

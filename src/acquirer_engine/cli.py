@@ -8,6 +8,7 @@ import os
 
 import typer
 
+from acquirer_engine.comparison.command import compare_targets
 from acquirer_engine.feedback.command import flag_buyer
 from acquirer_engine.inspect_commands import eval_diff, show_runs
 from acquirer_engine.run_command import replay_product, run_product
@@ -30,6 +31,7 @@ def build_app() -> typer.Typer:
     app.command("replay")(replay_product)
     app.command("runs")(show_runs)
     app.command("flag")(flag_buyer)
+    app.command("compare")(compare_targets)
     return app
 
 
