@@ -214,7 +214,7 @@ async def execute_replay(
     Returns:
         New replay outcomes with explicit source lineage and zero new model spend.
     """
-    archive = ResponseArchive.from_trace(source / "trace.jsonl")
+    archive = ResponseArchive.from_trace(source / "trace.jsonl", report_path=source / "run.json")
     current = snapshot.model_copy(
         update={
             "run_id": directory.name,

@@ -30,7 +30,7 @@ from acquirer_engine.llm.cache import ResponseCache, request_key
 from acquirer_engine.llm.cost import CostLedger, ExecutionMode
 from acquirer_engine.llm.output import compatible_output_parameters, require_complete_response
 from acquirer_engine.llm.trace import TraceWriter
-from acquirer_engine.llm.trace_replay import ResponseArchive
+from acquirer_engine.llm.trace_replay import RequestFailure, ResponseArchive
 
 
 @dataclass
@@ -41,6 +41,7 @@ class CallScope:
     attempt: int = 0
     stage: str = "analyst"
     role: str = "analyst"
+    responded: bool = False
 
 
 class RecordedModel(Model):
@@ -62,7 +63,7 @@ class RecordedModel(Model):
         super().__init__(profile=wrapped.profile if wrapped else None)
         self.wrapped, self.deps, self.cache, self.ledger = wrapped, deps, cache, ledger
         self.trace, self.mode = trace, mode
-        seconds = deps.settings.analyst.run_timeout_seconds
+        seconds = deps.settings.analyst.run_timeout_seconds if mode != "replay" else None
         self.deadline = perf_counter() + seconds if seconds is not None else None
         self.archive = archive
         self.budget = RunBudget(deps.settings.analyst.max_run_usd if mode == "live" else None)
@@ -104,7 +105,22 @@ class RecordedModel(Model):
             async with asyncio.timeout(remaining):
                 return await self._request(messages, model_settings, model_request_parameters)
         except TimeoutError as error:
-            raise LLMTimeout("Run deadline exceeded") from error
+            failure = LLMTimeout("Run deadline exceeded")
+            self._record_failure(failure)
+            raise failure from error
+        except (BudgetExceeded, LLMError) as error:
+            self._record_failure(error)
+            raise
+
+    def _record_failure(self, error: BudgetExceeded | LLMError) -> None:
+        scope = self._scope.get()
+        if not scope.responded:
+            self.trace.write(
+                "model_failed",
+                scope.acquirer,
+                attempt=scope.attempt,
+                failure=RequestFailure.from_error(error),
+            )
 
     async def _request(
         self,
@@ -126,6 +142,7 @@ class RecordedModel(Model):
         model_request_parameters = compatible_output_parameters(model_request_parameters)
         scope = self._scope.get()
         scope.attempt += 1
+        scope.responded = False
         self._attempts[scope.acquirer] = scope.attempt
         key = request_key(
             self.identity + self.model_name,
@@ -155,6 +172,7 @@ class RecordedModel(Model):
         return response
 
     def _record_response(self, scope: CallScope, response: ModelResponse, duration: float) -> float:
+        scope.responded = True
         self.trace.write(
             "model_responded", scope.acquirer, attempt=scope.attempt, response=response
         )
