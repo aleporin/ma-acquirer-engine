@@ -4,13 +4,13 @@ Owns: Keyless archive loading, tamper rejection, and stale-target protection.
 Does not own: Provider calls or replacing historical response content.
 """
 
-import importlib
 import json
 from hashlib import sha256
 from pathlib import Path
 
 import pytest
 
+from acquirer_engine import portable_replay as module
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import LLMInvalidOutput
 from acquirer_engine.feedback.ranking import FeedbackPolicy
@@ -44,7 +44,6 @@ async def bundle_fixture(root: Path, deps: Deps) -> tuple[Path, Selection]:
 async def test_portable_archive_matches_selected_inputs_and_checks_all_file_hashes(
     tmp_path: Path, deps: Deps
 ) -> None:
-    module = importlib.import_module("acquirer_engine.portable_replay")
     directory, selected = await bundle_fixture(tmp_path, deps)
     chosen = module.select_replay(tmp_path, deps, selected)
     assert chosen is not None and chosen[0] == directory
@@ -59,7 +58,6 @@ async def test_portable_archive_matches_selected_inputs_and_checks_all_file_hash
 async def test_portable_replay_refuses_target_changes_without_falling_back_to_live(
     tmp_path: Path, deps: Deps
 ) -> None:
-    module = importlib.import_module("acquirer_engine.portable_replay")
     _, selected = await bundle_fixture(tmp_path, deps)
     pack = selected.packs[0]
     changed = pack.model_copy(
@@ -72,7 +70,6 @@ async def test_portable_replay_refuses_target_changes_without_falling_back_to_li
 
 @pytest.mark.asyncio
 async def test_portable_replay_refuses_changed_prompt(tmp_path: Path, deps: Deps) -> None:
-    module = importlib.import_module("acquirer_engine.portable_replay")
     _, selected = await bundle_fixture(tmp_path, deps)
     (tmp_path / "prompts" / deps.settings.analyst.prompt_file).write_text("Changed instructions")
     with pytest.raises(LLMInvalidOutput, match="prompt|policy"):
@@ -82,7 +79,6 @@ async def test_portable_replay_refuses_changed_prompt(tmp_path: Path, deps: Deps
 def test_absent_portable_archive_keeps_existing_response_cache_behavior(
     tmp_path: Path, deps: Deps
 ) -> None:
-    module = importlib.import_module("acquirer_engine.portable_replay")
     snapshot = inputs(deps, "a" * 32)
     selected = Selection(
         snapshot.history, snapshot.packs, snapshot.feedback, FeedbackPolicy(similarity_penalty=0.15)

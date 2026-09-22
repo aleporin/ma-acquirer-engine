@@ -113,7 +113,9 @@ def _run_current(
 
 
 def _show_run(directory: Path, report: AnalystRun) -> None:
-    render_report(load_snapshot(directory), report, directory)
+    snapshot = load_snapshot(directory)
+    original = _source_report(directory, report)
+    render_report(snapshot, report, directory, source_report=original)
     typer.echo(f"Report: {directory / 'index.html'}")
     typer.echo(f"Run: {directory / 'run.json'}")
     verified = sum(page.status == "verified" for page in report.pages)
@@ -165,3 +167,16 @@ def replay_product(
     except (AcquirerEngineError, OSError) as error:
         typer.echo(f"Replay failed: {error}", err=True)
         raise typer.Exit(1) from error
+
+
+def _source_report(directory: Path, report: AnalystRun) -> AnalystRun | None:
+    if report.replay_of is None:
+        return None
+    root = directory.parent.parent
+    for source in (root / "runs" / report.replay_of, root / "cache/replay" / report.replay_of):
+        if (source / "run.json").is_file():
+            snapshot = load_snapshot(source)
+            return AnalystRun.model_validate_json(
+                (source / "run.json").read_bytes(), context=snapshot.settings.evidence.validation
+            )
+    return None

@@ -22,6 +22,7 @@ from acquirer_engine.llm.results import AnalystRun, PageResult
 from acquirer_engine.llm.review_schema import ReviewResult
 from acquirer_engine.llm.reviewer import review_portfolio
 from acquirer_engine.llm.trace_replay import ResponseArchive
+from acquirer_engine.portable_replay import select_replay
 from acquirer_engine.selection import prepare_selection
 from acquirer_engine.target_input import TargetOverrides
 
@@ -62,6 +63,10 @@ async def execute_run(
         Persisted run with all page outcomes and observed usage.
     """
     selected = prepare_selection(root, deps, target_file=target_file, overrides=overrides)
+    if replay and (archived := select_replay(root, deps, selected)):
+        return await execute_replay(
+            archived[0], directory, archived[1], deps, sha, source_dirty=source_dirty
+        )
     prompt = (root / "prompts" / deps.settings.analyst.prompt_file).read_text(encoding="utf-8")
     snapshot = RunSnapshot(
         run_id=directory.name,
