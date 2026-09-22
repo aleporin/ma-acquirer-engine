@@ -1,4 +1,4 @@
-phase: p4
+phase: p5
 seed: 42
 prompt_version: analyst_v4+sparse_v1+reviewer_v1
 quality:
@@ -12,7 +12,7 @@ layers:
   - {id: 4, name: rubric_quality}
   - {id: 5, name: stability}
   - {id: 6, name: operations}
-offline_layers: [0, 1, 2, 3, 5, 6]
+offline_layers: [0, 1, 2, 3, 4, 5, 6]
 ci_layers: [0, 1, 2]
 backtest:
   train_end_year: 2021

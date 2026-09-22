@@ -26,6 +26,7 @@ from evals.phase1 import PreparedEvaluation, prepare_phase1
 from evals.phase2 import prepare_phase2
 from evals.phase3 import prepare_phase3
 from evals.phase4 import prepare_phase4
+from evals.phase5 import prepare_phase5
 from evals.ranking.snapshot import verify_snapshot
 from evals.scorecard import RunInfo, Scorecard, write_scorecard
 
@@ -37,9 +38,10 @@ def _produce_scorecard(
     selection: list[int],
     results: Path,
     analyst_runs: list[Path] | None = None,
+    judge_run: Path | None = None,
 ) -> tuple[Path, Scorecard]:
     prepared = PreparedEvaluation({}, {})
-    if deps.settings.evaluation.phase in {"p1", "p2", "p3", "p4"}:
+    if deps.settings.evaluation.phase in {"p1", "p2", "p3", "p4", "p5"}:
         rows = load_transactions(root / "data/ma_transactions_500.csv")
         deps.logger.info("csv_loaded", stage="eval", rows=len(rows))
         config = deps.settings.evaluation
@@ -51,17 +53,46 @@ def _produce_scorecard(
         unit = grade_unit(next(layer for layer in config.layers if layer.id == 0), report)
         prepared = prepare_phase1(rows, deps, unit)
         verify_snapshot(root, prepared.artifacts["top10.json"])
-    if deps.settings.evaluation.phase in {"p2", "p3", "p4"}:
+    if deps.settings.evaluation.phase in {"p2", "p3", "p4", "p5"}:
         prepared = prepare_phase2(prepared, root, deps.settings.evidence.validation)
     if deps.settings.evaluation.phase == "p3":
         prepared = prepare_phase3(prepared, analyst_runs or [], deps.settings)
-    if deps.settings.evaluation.phase == "p4":
+    if deps.settings.evaluation.phase in {"p4", "p5"}:
         prepared = prepare_phase4(prepared, analyst_runs or [], deps.settings)
+    if judge_run is not None and deps.settings.evaluation.phase == "p5":
+        prepared = prepare_phase5(prepared, judge_run)
     card = evaluate(deps, run, selection, graders=prepared.graders)
     path = write_scorecard(card, results, artifacts=prepared.artifacts)
     deps.logger.info(
         "scorecard_written", stage="eval", path=str(path), source_dirty=run.source_dirty
     )
+    return path, card
+
+
+def _execute_evaluation(
+    root: Path,
+    results: Path | None,
+    analyst_run: list[Path] | None,
+    judge_run: Path | None,
+    ci: bool,
+) -> tuple[Path, Scorecard]:
+    settings = load_settings(root / "config")
+    sha, dirty = run_history.git_state(root)
+    run = RunInfo(git_sha=sha, source_dirty=dirty, run_id=uuid4().hex, created_at=datetime.now(UTC))
+    with run_logger(
+        root / "runs", run.run_id, sha, settings.evaluation.prompt_version, sys.stderr
+    ) as log:
+        deps = Deps(settings=settings, logger=log)
+        selection = settings.evaluation.ci_layers if ci else settings.evaluation.offline_layers
+        path, card = _produce_scorecard(
+            root,
+            deps,
+            run,
+            selection,
+            results or root / "evals/results",
+            analyst_run,
+            judge_run,
+        )
     return path, card
 
 
@@ -72,6 +103,9 @@ def run_evaluation(
     ci: Annotated[bool, typer.Option(help="Select offline CI layers.")] = False,
     analyst_run: Annotated[
         list[Path] | None, typer.Option(help="Saved run.json; repeat for stability.")
+    ] = None,
+    judge_run: Annotated[
+        Path | None, typer.Option(help="Saved judge directory; no provider calls.")
     ] = None,
 ) -> None:
     """Write an offline scorecard and its measured phase artifacts.
@@ -90,19 +124,7 @@ def run_evaluation(
         raise typer.Exit(2)
     try:
         root = project.resolve()
-        settings = load_settings(root / "config")
-        sha, dirty = run_history.git_state(root)
-        run = RunInfo(
-            git_sha=sha, source_dirty=dirty, run_id=uuid4().hex, created_at=datetime.now(UTC)
-        )
-        with run_logger(
-            root / "runs", run.run_id, sha, settings.evaluation.prompt_version, sys.stderr
-        ) as log:
-            deps = Deps(settings=settings, logger=log)
-            selection = settings.evaluation.ci_layers if ci else settings.evaluation.offline_layers
-            path, card = _produce_scorecard(
-                root, deps, run, selection, results or root / "evals/results", analyst_run
-            )
+        path, card = _execute_evaluation(root, results, analyst_run, judge_run, ci)
         typer.echo(f"Scorecard: {path}")
         for layer in card.layers:
             typer.echo(f"Layer {layer.id}: {layer.status}")

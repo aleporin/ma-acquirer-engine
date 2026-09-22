@@ -27,6 +27,7 @@ def project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     path = root / "config/eval.yaml"
     config = yaml.safe_load(path.read_text())
     config["phase"] = "p0"
+    config["offline_layers"] = [0, 1, 2, 3, 5, 6]
     path.write_text(yaml.safe_dump(config))
     monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda root: ("a" * 40, False))
     return root

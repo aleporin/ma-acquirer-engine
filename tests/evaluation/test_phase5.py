@@ -20,7 +20,7 @@ from tests.evaluation.test_judge_runner import plan_for_test
 def matched_plan(deps: Deps) -> JudgePlan:
     prototype = plan_for_test(deps)
     cases = []
-    labels = []
+    labels: list[HumanLabel] = []
     for source in range(2):
         for buyer in range(2):
             index = source * 2 + buyer + 1
