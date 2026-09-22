@@ -1,12 +1,12 @@
 {
-  "run_id": "e9525a4ddacb450abbce64235e1b785d",
+  "run_id": "e0290202fd254df0ab1b75cac00f589f",
   "replay_of": "22a363190aaf46a8a8db09c961fe3c23",
   "source_git_sha": "7213c62852810996a2b9a759e16418f65cebdb2c",
   "mode": "replay",
-  "git_sha": "b26cae145d78a7072d32be5495e2c4632446f884",
+  "git_sha": "a2f7ef8718fa7b22e05b423fbd216fa4789b4c87",
   "source_dirty": false,
   "prompt_version": "analyst_v4+sparse_v1+reviewer_v1",
-  "latency_seconds": 0.07772904192097485,
+  "latency_seconds": 0.07935008290223777,
   "pages": [
     {
       "acquirer": "Nordic Capital",
@@ -124,7 +124,7 @@
           "claims_verified": 8
         }
       ],
-      "latency_seconds": 0.041868792148306966,
+      "latency_seconds": 0.03877008310519159,
       "claims_total": 8,
       "claims_verified": 8
     },
@@ -226,7 +226,7 @@
           "claims_verified": 6
         }
       ],
-      "latency_seconds": 0.04410554189234972,
+      "latency_seconds": 0.04477537493221462,
       "claims_total": 6,
       "claims_verified": 6
     },
@@ -334,7 +334,7 @@
           "claims_verified": 5
         }
       ],
-      "latency_seconds": 0.05858808313496411,
+      "latency_seconds": 0.05978770786896348,
       "claims_total": 5,
       "claims_verified": 5
     },
@@ -437,7 +437,7 @@
           "claims_verified": 5
         }
       ],
-      "latency_seconds": 0.0431122500449419,
+      "latency_seconds": 0.044256207998842,
       "claims_total": 5,
       "claims_verified": 5
     },
@@ -559,7 +559,7 @@
           "claims_verified": 10
         }
       ],
-      "latency_seconds": 0.04401845810934901,
+      "latency_seconds": 0.04413545783609152,
       "claims_total": 10,
       "claims_verified": 10
     },
@@ -687,7 +687,7 @@
           "claims_verified": 11
         }
       ],
-      "latency_seconds": 0.042775999987497926,
+      "latency_seconds": 0.04421337484382093,
       "claims_total": 11,
       "claims_verified": 11
     },
@@ -795,7 +795,7 @@
           "claims_verified": 7
         }
       ],
-      "latency_seconds": 0.05281000002287328,
+      "latency_seconds": 0.054290666012093425,
       "claims_total": 7,
       "claims_verified": 7
     },
@@ -929,7 +929,7 @@
           "claims_verified": 12
         }
       ],
-      "latency_seconds": 0.05181066691875458,
+      "latency_seconds": 0.05291487509384751,
       "claims_total": 12,
       "claims_verified": 12
     },
@@ -1043,7 +1043,7 @@
           "claims_verified": 6
         }
       ],
-      "latency_seconds": 0.06010491610504687,
+      "latency_seconds": 0.06161412503570318,
       "claims_total": 6,
       "claims_verified": 6
     },
@@ -1172,7 +1172,7 @@
           "claims_verified": 9
         }
       ],
-      "latency_seconds": 0.05720883305184543,
+      "latency_seconds": 0.05821399996057153,
       "claims_total": 9,
       "claims_verified": 9
     }
@@ -1189,11 +1189,11 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 2724,
       "cost_usd": 0.0,
-      "latency_ms": 0.06325007416307926,
+      "latency_ms": 0.05870801396667957,
       "timing": {
-        "token_count_ms": 0.00900006853044033,
-        "admission_ms": 0.010041985660791397,
-        "provider_ms": 0.044208019971847534
+        "token_count_ms": 0.00262516550719738,
+        "admission_ms": 0.0149579718708992,
+        "provider_ms": 0.04112487658858299
       }
     },
     {
@@ -1207,11 +1207,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.10587484575808048,
+      "latency_ms": 0.09904196485877037,
       "timing": {
-        "token_count_ms": 0.0018749851733446121,
-        "admission_ms": 0.008832896128296852,
-        "provider_ms": 0.09516696445643902
+        "token_count_ms": 0.002250075340270996,
+        "admission_ms": 0.00537489540874958,
+        "provider_ms": 0.0914169941097498
       }
     },
     {
@@ -1225,11 +1225,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.04787510260939598,
+      "latency_ms": 0.05012494511902332,
       "timing": {
-        "token_count_ms": 0.001583946868777275,
-        "admission_ms": 0.003250082954764366,
-        "provider_ms": 0.04304107278585434
+        "token_count_ms": 0.0017078127712011337,
+        "admission_ms": 0.00600004568696022,
+        "provider_ms": 0.04241708666086197
       }
     },
     {
@@ -1243,11 +1243,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.036250101402401924,
+      "latency_ms": 0.03650016151368618,
       "timing": {
-        "token_count_ms": 0.0012081582099199295,
-        "admission_ms": 0.0029578804969787598,
-        "provider_ms": 0.032084062695503235
+        "token_count_ms": 0.001250067725777626,
+        "admission_ms": 0.005250098183751106,
+        "provider_ms": 0.029999995604157448
       }
     },
     {
@@ -1261,11 +1261,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.03624986857175827,
+      "latency_ms": 0.03695813938975334,
       "timing": {
-        "token_count_ms": 0.0012498348951339722,
-        "admission_ms": 0.002874992787837982,
-        "provider_ms": 0.032125040888786316
+        "token_count_ms": 0.001375097781419754,
+        "admission_ms": 0.005458015948534012,
+        "provider_ms": 0.030125025659799576
       }
     },
     {
@@ -1279,11 +1279,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.034207943826913834,
+      "latency_ms": 0.03400002606213093,
       "timing": {
-        "token_count_ms": 0.00100000761449337,
-        "admission_ms": 0.0024579931050539017,
-        "provider_ms": 0.030749943107366562
+        "token_count_ms": 0.0010421499609947205,
+        "admission_ms": 0.0051658134907484055,
+        "provider_ms": 0.027792062610387802
       }
     },
     {
@@ -1297,11 +1297,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.03491714596748352,
+      "latency_ms": 0.03416603431105614,
       "timing": {
-        "token_count_ms": 0.000959029421210289,
-        "admission_ms": 0.0024579931050539017,
-        "provider_ms": 0.03150012344121933
+        "token_count_ms": 0.0009578652679920197,
+        "admission_ms": 0.0025830231606960297,
+        "provider_ms": 0.030625145882368088
       }
     },
     {
@@ -1315,11 +1315,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.042125117033720016,
+      "latency_ms": 0.04116701893508434,
       "timing": {
-        "token_count_ms": 0.0012081582099199295,
-        "admission_ms": 0.002458924427628517,
-        "provider_ms": 0.03845803439617157
+        "token_count_ms": 0.0009580980986356735,
+        "admission_ms": 0.0024170149117708206,
+        "provider_ms": 0.03779190592467785
       }
     },
     {
@@ -1333,11 +1333,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.04354212433099747,
+      "latency_ms": 0.041582854464650154,
       "timing": {
-        "token_count_ms": 0.0008752103894948959,
-        "admission_ms": 0.0024167820811271667,
-        "provider_ms": 0.040250131860375404
+        "token_count_ms": 0.0009578652679920197,
+        "admission_ms": 0.0024170149117708206,
+        "provider_ms": 0.038207974284887314
       }
     },
     {
@@ -1351,11 +1351,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.043459003791213036,
+      "latency_ms": 0.041082967072725296,
       "timing": {
-        "token_count_ms": 0.0008749775588512421,
-        "admission_ms": 0.002375105395913124,
-        "provider_ms": 0.04020892083644867
+        "token_count_ms": 0.0008330680429935455,
+        "admission_ms": 0.0024579931050539017,
+        "provider_ms": 0.03779190592467785
       }
     },
     {
@@ -1369,11 +1369,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.048291170969605446,
+      "latency_ms": 0.04183407872915268,
       "timing": {
-        "token_count_ms": 0.0010831281542778015,
-        "admission_ms": 0.00237487256526947,
-        "provider_ms": 0.044833170250058174
+        "token_count_ms": 0.0008752103894948959,
+        "admission_ms": 0.0024170149117708206,
+        "provider_ms": 0.03854185342788696
       }
     },
     {
@@ -1387,11 +1387,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.12550014071166515,
+      "latency_ms": 0.11712498962879181,
       "timing": {
-        "token_count_ms": 0.0024170149117708206,
-        "admission_ms": 0.005166046321392059,
-        "provider_ms": 0.11791707947850227
+        "token_count_ms": 0.0016249250620603561,
+        "admission_ms": 0.0037080608308315277,
+        "provider_ms": 0.11179200373589993
       }
     },
     {
@@ -1405,29 +1405,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.09787501767277718,
+      "latency_ms": 0.09816605597734451,
       "timing": {
-        "token_count_ms": 0.0016670674085617065,
-        "admission_ms": 0.0037918798625469208,
-        "provider_ms": 0.09241607040166855
-      }
-    },
-    {
-      "acquirer": "Atrium Health",
-      "stage": "analyst",
-      "model": "claude-sonnet-5",
-      "attempt": 2,
-      "mode": "replay",
-      "input_tokens": 15712,
-      "output_tokens": 2005,
-      "cache_read_tokens": 2724,
-      "cache_write_tokens": 0,
-      "cost_usd": 0.0,
-      "latency_ms": 0.09420793503522873,
-      "timing": {
-        "token_count_ms": 0.0017499551177024841,
-        "admission_ms": 0.004332978278398514,
-        "provider_ms": 0.08812500163912773
+        "token_count_ms": 0.001666136085987091,
+        "admission_ms": 0.0036249402910470963,
+        "provider_ms": 0.09287497960031033
       }
     },
     {
@@ -1441,83 +1423,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.07212511263787746,
+      "latency_ms": 0.08645816706120968,
       "timing": {
-        "token_count_ms": 0.0010409858077764511,
-        "admission_ms": 0.002874992787837982,
-        "provider_ms": 0.06820913404226303
-      }
-    },
-    {
-      "acquirer": "Steward Health Care",
-      "stage": "analyst",
-      "model": "claude-sonnet-5",
-      "attempt": 2,
-      "mode": "replay",
-      "input_tokens": 12905,
-      "output_tokens": 2273,
-      "cache_read_tokens": 2724,
-      "cache_write_tokens": 0,
-      "cost_usd": 0.0,
-      "latency_ms": 0.07299985736608505,
-      "timing": {
-        "token_count_ms": 0.00100000761449337,
-        "admission_ms": 0.002749962732195854,
-        "provider_ms": 0.06924988701939583
-      }
-    },
-    {
-      "acquirer": "Blackstone",
-      "stage": "analyst",
-      "model": "claude-sonnet-5",
-      "attempt": 2,
-      "mode": "replay",
-      "input_tokens": 18876,
-      "output_tokens": 48,
-      "cache_read_tokens": 2724,
-      "cache_write_tokens": 0,
-      "cost_usd": 0.0,
-      "latency_ms": 0.0938749872148037,
-      "timing": {
-        "token_count_ms": 0.0008749775588512421,
-        "admission_ms": 0.002624932676553726,
-        "provider_ms": 0.09037507697939873
-      }
-    },
-    {
-      "acquirer": "Vista Equity",
-      "stage": "analyst",
-      "model": "claude-sonnet-5",
-      "attempt": 2,
-      "mode": "replay",
-      "input_tokens": 18757,
-      "output_tokens": 49,
-      "cache_read_tokens": 2724,
-      "cache_write_tokens": 0,
-      "cost_usd": 0.0,
-      "latency_ms": 0.09266706183552742,
-      "timing": {
-        "token_count_ms": 0.0009578652679920197,
-        "admission_ms": 0.002750195562839508,
-        "provider_ms": 0.08895900100469589
-      }
-    },
-    {
-      "acquirer": "GTCR",
-      "stage": "analyst",
-      "model": "claude-sonnet-5",
-      "attempt": 2,
-      "mode": "replay",
-      "input_tokens": 18821,
-      "output_tokens": 47,
-      "cache_read_tokens": 2724,
-      "cache_write_tokens": 0,
-      "cost_usd": 0.0,
-      "latency_ms": 0.0929578673094511,
-      "timing": {
-        "token_count_ms": 0.0008749775588512421,
-        "admission_ms": 0.0025830231606960297,
-        "provider_ms": 0.08949986658990383
+        "token_count_ms": 0.001375097781419754,
+        "admission_ms": 0.0036249402910470963,
+        "provider_ms": 0.08145812898874283
       }
     },
     {
@@ -1531,11 +1441,101 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.08008303120732307,
+      "latency_ms": 0.09041698649525642,
+      "timing": {
+        "token_count_ms": 0.001125037670135498,
+        "admission_ms": 0.0034999102354049683,
+        "provider_ms": 0.08579203858971596
+      }
+    },
+    {
+      "acquirer": "Blackstone",
+      "stage": "analyst",
+      "model": "claude-sonnet-5",
+      "attempt": 2,
+      "mode": "replay",
+      "input_tokens": 18876,
+      "output_tokens": 48,
+      "cache_read_tokens": 2724,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.091583002358675,
       "timing": {
         "token_count_ms": 0.0009580980986356735,
-        "admission_ms": 0.0025420449674129486,
-        "provider_ms": 0.07658288814127445
+        "admission_ms": 0.002624932676553726,
+        "provider_ms": 0.0879999715834856
+      }
+    },
+    {
+      "acquirer": "Steward Health Care",
+      "stage": "analyst",
+      "model": "claude-sonnet-5",
+      "attempt": 2,
+      "mode": "replay",
+      "input_tokens": 12905,
+      "output_tokens": 2273,
+      "cache_read_tokens": 2724,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.07429113611578941,
+      "timing": {
+        "token_count_ms": 0.0009580980986356735,
+        "admission_ms": 0.0027918722480535507,
+        "provider_ms": 0.07054116576910019
+      }
+    },
+    {
+      "acquirer": "GTCR",
+      "stage": "analyst",
+      "model": "claude-sonnet-5",
+      "attempt": 2,
+      "mode": "replay",
+      "input_tokens": 18821,
+      "output_tokens": 47,
+      "cache_read_tokens": 2724,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.08920812979340553,
+      "timing": {
+        "token_count_ms": 0.0008330680429935455,
+        "admission_ms": 0.002583954483270645,
+        "provider_ms": 0.08579110726714134
+      }
+    },
+    {
+      "acquirer": "Atrium Health",
+      "stage": "analyst",
+      "model": "claude-sonnet-5",
+      "attempt": 2,
+      "mode": "replay",
+      "input_tokens": 15712,
+      "output_tokens": 2005,
+      "cache_read_tokens": 2724,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.08245906792581081,
+      "timing": {
+        "token_count_ms": 0.000833999365568161,
+        "admission_ms": 0.002749962732195854,
+        "provider_ms": 0.0788751058280468
+      }
+    },
+    {
+      "acquirer": "Vista Equity",
+      "stage": "analyst",
+      "model": "claude-sonnet-5",
+      "attempt": 2,
+      "mode": "replay",
+      "input_tokens": 18757,
+      "output_tokens": 49,
+      "cache_read_tokens": 2724,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.08870800957083702,
+      "timing": {
+        "token_count_ms": 0.0008330680429935455,
+        "admission_ms": 0.002458924427628517,
+        "provider_ms": 0.08541601710021496
       }
     },
     {
@@ -1549,11 +1549,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.11208304204046726,
+      "latency_ms": 0.09291712194681168,
       "timing": {
-        "token_count_ms": 0.001416075974702835,
-        "admission_ms": 0.004249857738614082,
-        "provider_ms": 0.10641710832715034
+        "token_count_ms": 0.001125037670135498,
+        "admission_ms": 0.0026670750230550766,
+        "provider_ms": 0.0891250092536211
       }
     },
     {
@@ -1567,29 +1567,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.13387505896389484,
+      "latency_ms": 0.1235839445143938,
       "timing": {
-        "token_count_ms": 0.0019578728824853897,
-        "admission_ms": 0.004417030140757561,
-        "provider_ms": 0.1275001559406519
-      }
-    },
-    {
-      "acquirer": "Vista Equity",
-      "stage": "analyst",
-      "model": "claude-sonnet-5",
-      "attempt": 3,
-      "mode": "replay",
-      "input_tokens": 20528,
-      "output_tokens": 2252,
-      "cache_read_tokens": 2724,
-      "cache_write_tokens": 0,
-      "cost_usd": 0.0,
-      "latency_ms": 0.1271250657737255,
-      "timing": {
-        "token_count_ms": 0.0015420373529195786,
-        "admission_ms": 0.004125060513615608,
-        "provider_ms": 0.12145796790719032
+        "token_count_ms": 0.00162515789270401,
+        "admission_ms": 0.003583962097764015,
+        "provider_ms": 0.11837482452392578
       }
     },
     {
@@ -1603,11 +1585,29 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.1243329606950283,
+      "latency_ms": 0.1322501339018345,
       "timing": {
-        "token_count_ms": 0.0010409858077764511,
-        "admission_ms": 0.0027921050786972046,
-        "provider_ms": 0.12049986980855465
+        "token_count_ms": 0.001250067725777626,
+        "admission_ms": 0.003334134817123413,
+        "provider_ms": 0.12766593135893345
+      }
+    },
+    {
+      "acquirer": "Vista Equity",
+      "stage": "analyst",
+      "model": "claude-sonnet-5",
+      "attempt": 3,
+      "mode": "replay",
+      "input_tokens": 20528,
+      "output_tokens": 2252,
+      "cache_read_tokens": 2724,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.12025004252791405,
+      "timing": {
+        "token_count_ms": 0.0014170072972774506,
+        "admission_ms": 0.00400003045797348,
+        "provider_ms": 0.11483300477266312
       }
     },
     {
@@ -1621,11 +1621,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.13479101471602917,
+      "latency_ms": 0.12491713277995586,
       "timing": {
-        "token_count_ms": 0.001250067725777626,
-        "admission_ms": 0.0034580007195472717,
-        "provider_ms": 0.13008294627070427
+        "token_count_ms": 0.0015830155462026596,
+        "admission_ms": 0.003834022209048271,
+        "provider_ms": 0.11950009502470493
       }
     },
     {
@@ -1639,11 +1639,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.16479194164276123,
+      "latency_ms": 0.1394590362906456,
       "timing": {
-        "token_count_ms": 0.001583946868777275,
-        "admission_ms": 0.004541128873825073,
-        "provider_ms": 0.15866686590015888
+        "token_count_ms": 0.001125037670135498,
+        "admission_ms": 0.003209104761481285,
+        "provider_ms": 0.13512489385902882
       }
     },
     {
@@ -1657,11 +1657,11 @@
       "cache_read_tokens": 2724,
       "cache_write_tokens": 0,
       "cost_usd": 0.0,
-      "latency_ms": 0.17883279360830784,
+      "latency_ms": 0.19837496802210808,
       "timing": {
-        "token_count_ms": 0.0019159633666276932,
-        "admission_ms": 0.003834022209048271,
-        "provider_ms": 0.17308280803263187
+        "token_count_ms": 0.00200001522898674,
+        "admission_ms": 0.00500003807246685,
+        "provider_ms": 0.1913749147206545
       }
     }
   ],

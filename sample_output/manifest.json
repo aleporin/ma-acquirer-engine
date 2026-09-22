@@ -1,24 +1,24 @@
 {
-  "run_id": "e9525a4ddacb450abbce64235e1b785d",
+  "run_id": "e0290202fd254df0ab1b75cac00f589f",
   "replay_of": "22a363190aaf46a8a8db09c961fe3c23",
-  "git_sha": "b26cae145d78a7072d32be5495e2c4632446f884",
+  "git_sha": "a2f7ef8718fa7b22e05b423fbd216fa4789b4c87",
   "source_dirty": false,
   "mode": "replay",
   "verified_pages": 10,
   "new_model_cost_usd": 0.0,
   "source_archive": "../cache/replay/22a363190aaf46a8a8db09c961fe3c23",
   "sha256": {
-    "buyers/01.md": "fa92ce10a648a62e8cb6eeb2051c441878e9644b8572e88fc06b2df24169b19b",
-    "buyers/02.md": "f27fda2174d0f260ce8aef15fc7a7532b206b38a2a0be87afe2111b56d1e4ff4",
-    "buyers/03.md": "c99dfd77131e52948f66cc12eed575ecef82369ba3cb719bab0814317d8ed30a",
-    "buyers/04.md": "ded1fb1bd9adbeeb035b15a18f7ac4095a100a581c403c7aa00355a923574cea",
-    "buyers/05.md": "55550787e66d1b64c77064fdb8e81f01214e879f8dd10e3893aee2e94660b2ca",
-    "buyers/06.md": "5a2507eeef4067d5e36dcac68f30180f0d8283917255bceaccbfa96df53de583",
-    "buyers/07.md": "ffe23d0b4d90d32022d106c04bf8ea6b0b9d63d5ee2c4a2a6a5a109a8a5ba381",
-    "buyers/08.md": "f0c58bf32487dab981de402758bac961e4a539f6b310006fa362dee62db6fc9d",
-    "buyers/09.md": "a5573ffc766e1ec6094f5ca8821bf30fe8523cc68791b48df774521e81242c73",
-    "buyers/10.md": "dbe70224f442889dc682ba826fe0984748a60cff4b75d1d4422361ca28770a84",
-    "index.html": "20408d915421672a173e4346b78d31e3a0152e53889259b8d07ee8fb0a230ca5",
-    "run.json": "75f9c153c2841e7a7d824f43adffaef7fd13010b85273bc9c8159249a7068f05"
+    "buyers/01.md": "575088103dca73e61b867c74335bce908b31b3df714dfeeb86aa8326a7dc4d3e",
+    "buyers/02.md": "5c2b0a137bcb890477928ceaf517096d726bb3ec1ec69d4e6ac31ed31e4cfbab",
+    "buyers/03.md": "bed8625ba862835115bdf227b0ccce0c4894bc5a5057d2b9360cc1fd7af01d06",
+    "buyers/04.md": "5da2a10b14f635e0d43c2d2c67b6baf6beab66a13c0e3df7fcceb0272af5e05d",
+    "buyers/05.md": "714f09c7b25135a3832941549e71d53eb9976e600ea06c71e5cdc61f7af66591",
+    "buyers/06.md": "7483ae505ebbabfc1ce4b5be60d73d7fdf84e6b4aa2f3f146c67079e10bae3d0",
+    "buyers/07.md": "a48ac16f98dca32ba18a662e452b1d8e7a9512e55b5099bf342a2b92a813f6af",
+    "buyers/08.md": "c7f2d82d60f31958b00eb4d118262e036dd8733ac27adde097d8b0d05887f678",
+    "buyers/09.md": "7819eaf632a5eb307235a55bc6c538c07f5582f6626e15a30affa4998b141643",
+    "buyers/10.md": "04f56cfac450ff4af919eb6b3ec2eef525b7bdbceec67956751d7ea84eff4977",
+    "index.html": "a02f457a119fbebde35437009f4450aef4f8602cf5d02d80a573c786266b12de",
+    "run.json": "77469d2109d29588b1f6a48895564b1d21ecdd52db213ce88b9f5ce9d7bb9155"
   }
 }
