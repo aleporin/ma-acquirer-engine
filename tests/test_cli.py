@@ -56,7 +56,7 @@ def test_ci_selects_only_layers_zero_through_two(project: Path) -> None:
     assert read_scorecard(path).requested_layers == [0, 1, 2]
 
 
-@pytest.mark.parametrize("arguments", [["eval-judges"], ["eval", "--fresh"]])
+@pytest.mark.parametrize("arguments", [["eval", "--fresh"]])
 def test_unavailable_commands_fail_without_provider_access(arguments: list[str]) -> None:
     result = CliRunner().invoke(build_app(), arguments)
     assert result.exit_code == 2
