@@ -1,180 +1,117 @@
 # M&A Acquirer Engine
 
-Turn a transaction CSV into ten ranked buyers and an evidence-linked rationale
-for each. Python computes the facts, ranking, and conviction; a bounded analyst
-stage retrieves evidence and writes the prose. The deliverable opens in a browser.
+Rank ten potential buyers from a transaction CSV and produce a cited rationale
+for each. Python computes the ranking and financial facts; a tool-using analyst
+writes the pages, with validation and bounded repair before rendering.
 
-The core is the ranking → evidence → draft → verify → report path. Evaluation
-received extra investment to make failures, costs, and iteration inspectable.
-Custom targets, saved buyer exclusions, and comparison are optional extensions.
-This is a prototype with measured limits, not a production underwriting model.
+## Run it
 
-## Run without an API key
+Install [uv 0.12.17](https://docs.astral.sh/uv/getting-started/installation/), then
+run from the repository root:
 
-Install [uv 0.12.17](https://docs.astral.sh/uv/getting-started/installation/), then,
-from the repository root:
-
-~~~sh
+```sh
 make run
-~~~
+```
 
-The command installs locked dependencies and Python 3.12.14 if needed, then
-replays an actual recorded model conversation through the current tools and
-validation. Installation needs internet; replay makes no provider calls.
-macOS and Linux are supported; Windows needs a Linux environment such as WSL.
+This installs the locked dependencies and Python 3.12.14 if needed, then replays
+recorded model responses **without an API key or provider calls**. Installation
+needs internet. Use macOS, Linux, or WSL.
 
-Open the printed `runs/ID/index.html` path. Each run also writes ten Markdown
-buyer pages, structured `run.json`, an input snapshot, and a replay trace.
-The HTML contains ten buyer sections plus an index and evidence appendix;
-browser printing can use more than ten sheets. You can also open the committed
-[sample report](sample_output/index.html) immediately.
+Open the printed `runs/ID/index.html`, or the committed
+[sample report](sample_output/index.html). Each output directory contains ten buyer
+pages, linked source evidence, Markdown copies, structured JSON, and replay traces.
+Copy the whole directory to keep citation links working.
 
-See [report, target, and comparison commands](docs/REPORTING.md),
-[the demo walkthrough](docs/DEMO.md), and [follow one run in code](docs/EXECUTION.md).
+### Fresh generation and custom targets
 
-## What the measurements say
+Set `ANTHROPIC_API_KEY` in your environment, then explicitly select paid generation:
 
-| Question | Observation |
-| --- | --- |
-| Does the complete live pipeline work? | Latest recorded run: 10/10 verified pages, 54/54 final numeric claims; one page repaired |
-| How fast and costly was it? | 48.18 seconds and $1.863930 returned usage; the under-$1 goal remains unmet |
-| Does replay reproduce it? | All 21 recorded responses; 10/10 pages; $0 new provider spend |
-| Does ranking beat simple popularity? | Recall@10 is 38.0%, versus 40.8% global and 43.7% sector popularity; no demonstrated lift |
-| Are ranks stable? | Identical top ten and convictions across five deterministic runs |
-| Are the pages banker-ready? | Independent judge/human calibration is not yet measured |
+```sh
+make run RUN_FLAGS=--fresh
+uv run acquirers run --fresh --target examples/healthcare.yaml --ev 300 --margin 25
+```
 
-These observations come from committed artifacts, not illustrative outputs.
-[Evaluation results and the iteration trail](docs/EVALS.md) explain denominators,
-confidence intervals, live versus replay evidence, and unmeasured quality checks.
-The saved live run was selected after multiple correction iterations and checked
-against its source evidence. It is not an unbiased reliability estimate, a latency
-distribution, or independent banker calibration.
+Target flags override YAML, which overrides defaults. `--ev` is USD millions;
+`--margin` is percentage points. Other flags are `--sector`, `--geography`,
+`--ownership`, and repeated `--tag`; [the example YAML](examples/healthcare.yaml)
+shows the field names. The default archive only matches its recorded target and
+policy: changed inputs fail replay explicitly, with no automatic paid fallback.
+The application does not load `.env` files; [.env.example](.env.example) lists
+credential names. Generation has a $10 reservation cap, not a promised bill.
 
-## How it works
+### Compare, replay, and save preferences
 
-1. **Validate and rank.** Load the CSV, fit buyer features, shrink sparse signals
-   toward the buyer-type prior, and select the top ten with fixed tie-breaks.
-2. **Prepare evidence.** Each buyer receives a bounded pack of its own history,
-   score components, target assumptions, and code-computed conviction.
-3. **Retrieve and draft.** The analyst chooses among five typed evidence tools.
-   Closed valuation comps must be retrieved; the initial pack cannot satisfy that check.
-4. **Check and recover.** Validate the schema, citations, numeric claims, and prose
-   numbers, plus narrow margin-comparison and partial-evidence scope checks.
-   Return precise errors for one same-tier repair under the shipped configuration.
-   A failed buyer retains an error banner while the others finish.
-5. **Render and retain.** Write escaped HTML, Markdown, JSON, usage, and replay
-   records. Internal working notes stay in JSON and never appear on the buyer pages.
-
-The first response warms the shared prompt prefix, then buyer tasks run
-concurrently. Provider clients, the ledger, cache, and logger are constructed
-once and injected. The optional portfolio reviewer is disabled by default:
-in a historical matched observation it changed no pages, while adding cost.
-The shipped primary uses the stronger configured model; escalation is disabled.
-
-Prompts separate task rules, output schema, and delimited untrusted data.
-Model-written answers determine tool use; deterministic validation determines
-whether to accept, repair, escalate, or stop. This is a workflow with bounded
-agent stages. [Architecture decisions](docs/DECISIONS.md) explain the choices,
-including the typed Pydantic AI boundary and why there is no application server.
-
-## Code entry points
-
-Start with [`cli.py`](src/acquirer_engine/cli.py), then
-[`pipeline.py`](src/acquirer_engine/pipeline.py). The workflow is visible in four
-stage files: [`select.py`](src/acquirer_engine/stages/select.py) →
-[`draft.py`](src/acquirer_engine/stages/draft.py) →
-[`review.py`](src/acquirer_engine/stages/review.py) →
-[`render.py`](src/acquirer_engine/stages/render.py). Review is optional.
-
-[`factory.py`](src/acquirer_engine/factory.py) constructs shared resources before
-model stages receive required `RuntimeDeps`. The [execution map](docs/EXECUTION.md)
-connects the stages to data, ranking, evidence, replay, and the ten model-support
-modules. Evaluation enters separately through [`evals/command.py`](evals/command.py).
-
-## Assumptions and limits
-
-- Default target: Healthcare Services, $200M EV, Private, Regional. Strong margin
-  means the eligible sector's upper-tercile boundary. The primary size band scales
-  with target EV from 0.5× to 2×; there is no invented regional location.
-- The 500-row dataset is synthetic. Stated multiples are canonical despite
-  403 ratio discrepancies; margin discrepancies affect 362 rows.
-  Buyer type takes precedence over inconsistent deal-type labels.
-- Rumored rows do not influence fitting. Closed deals alone support valuation.
-  Pending outcomes are excluded from the completion-rate denominator.
-- Adjacent-sector activity broadens sparse evidence, and common rationale tags
-  receive less weight. There is no forced sponsor/strategic quota.
-- All default top-ten convictions are Medium under the fixed thresholds.
-  Diversity is diagnostic; labels are not changed to manufacture a spread.
-- Verification proves numeric/reference consistency. It cannot prove economic
-  causation, current buyer appetite, or the quality of a qualitative thesis.
-  Outside-dataset notes are visibly labeled unverified.
-  Cited source tables expose stated EV, multiples, margin, and transaction context.
-  The earlier margin error was corrected; narrow guards do not establish general
-  qualitative accuracy. [The evaluation guide](docs/EVALS.md) records that boundary.
-- Live prose may change even at identical inputs. Ranking and facts are
-  deterministic; versioned caches and frozen transcripts reproduce recorded responses.
-  Replay does not measure a new prompt's quality or new provider latency.
-- Real deal data would require access controls, a reviewed retention agreement,
-  encrypted artifact storage, and identifier redaction. Local traces contain
-  full conversations and should be treated as confidential.
-
-## Commands and development
-
-~~~sh
-uv sync --locked
-make test
-make lint
-make eval RESULTS=/tmp/acquirer-eval
-uv run pre-commit install
-~~~
-
-The tests use local models and reject network access. CI runs lint, types, size
-checks, the full test suite, keyless report replay, and offline evaluation layers
-0–2. Green CI does not mean human calibration or live performance targets passed.
-The pinned lockfile and YAML settings define the runtime; model IDs, dated prices,
-thresholds, and budgets are configuration rather than Python constants.
-
-~~~sh
-# Free: compare two targets without drafting new pages.
+```sh
+# Free: compare rankings for two targets without drafting pages.
 uv run acquirers compare examples/healthcare.yaml examples/healthcare_large.yaml
 
-# Free: inspect and replay a previously saved local run.
+# Free: list saved runs and replay one with its original inputs.
 uv run acquirers runs
 uv run acquirers replay RUN_ID
 
-# Free: inspect the judge plan; no clients are constructed.
-make eval-judges
-~~~
+# Exclude a buyer from subsequent rankings.
+uv run acquirers flag "KKR" --reason "conflict"
+```
 
-Fresh generation requires `ANTHROPIC_API_KEY` in the environment and explicit
-`--fresh`. Independent judging uses `OPENAI_API_KEY` and `GEMINI_API_KEY`.
-The application does not read dotenv files; [.env.example](.env.example) lists
-empty variable names. Keep real keys outside the repository.
+Flags persist in ignored `state/feedback.json` and also discount similar same-type
+buyers. Remove an entry to undo it, or move the file aside to restore defaults.
+Changed feedback requires fresh generation; replaying a run ID uses its frozen
+state. Use `uv run acquirers --help` or a command's `--help` for all options.
 
-~~~sh
-# Paid generation, only when spending is intended.
-make run RUN_FLAGS=--fresh
-~~~
+## How it works
 
-The generation admission cap is $10; it is distinct from the under-$1 measurement
-goal. Reservations account for worst-case tokens and SDK retries. Missing returned
-usage remains an uncertain charge, never an invented zero.
+1. **Select:** validate the CSV, derive historical buyer signals, score, and rank.
+2. **Draft:** give each buyer its own evidence pack; the analyst chooses typed
+   tools for additional evidence and writes a structured rationale.
+3. **Validate and repair:** check citations, numeric claims, and selected prose
+   patterns. Return errors for one repair; a failed page keeps an error banner.
+4. **Render:** produce self-contained HTML and Markdown, with usage and replay data.
 
-[REPORTING.md](docs/REPORTING.md) covers custom targets and persisted flags.
-[JUDGING.md](docs/JUDGING.md) covers blind labels, separate paid judging, and replay.
-[ROUTING.md](docs/ROUTING.md) records recovery and ablation evidence.
-[RANKING_EXPERIMENT.md](docs/RANKING_EXPERIMENT.md) describes an optional recorded
-weight-proposal experiment with chronological selection. It does not change the
-shipped ranking or treat the already-inspected benchmark as independent evidence.
+[`cli.py`](src/acquirer_engine/cli.py) → [`pipeline.py`](src/acquirer_engine/pipeline.py)
+→ [`stages/`](src/acquirer_engine/stages). Pydantic AI supplies typed tool/output
+contracts; Python owns scoring and recovery limits. The portfolio reviewer is
+optional and disabled by default. [Architecture and decisions](docs/DECISIONS.md)
+cover the execution flow, libraries, and alternatives.
 
-## What I would improve next
+## Results and limitations
 
-First, collect independent banker labels and measure agreement, then test the
-current model/prompt with matched controls and reduce cost using paired runs. Validate ranking on real, permissioned
-transactions before tuning it to this synthetic holdout.
+| Measurement | Result |
+| --- | --- |
+| Selected live run | 10/10 pages, 54/54 final numeric claims; one repair |
+| Time and returned usage | 48.18 seconds, $1.863930; under-$1 goal unmet |
+| Keyless replay | 21 recorded responses, 10/10 pages, $0 new spend |
+| Historical recall@10 | 38.0%, versus 40.8% global and 43.7% sector popularity |
 
-At higher volume, persist immutable runs in object storage and use queued jobs.
-Dagster could coordinate data refresh and evaluation. The structured `run.json`
-contract could serve a Salesforce component without changing scoring or validation;
-typed evidence tools could be exposed over MCP when there is an actual client.
-Those integrations are intentionally not implemented.
+Ranking has **not demonstrated lift over popularity**. Independent human/judge
+calibration is unmeasured. The live sample was selected after multiple iterations;
+numeric verification does not prove the quality of an investment thesis.
+[Evaluation results](docs/EVALS.md) contain the methods, intervals, and run history.
+
+- The supplied 500-row dataset is synthetic. Stated multiples and margins are used
+  despite ratio inconsistencies; buyer type takes precedence over deal-type labels.
+- Default target: Healthcare Services, $200M EV, Private, Regional. An omitted
+  margin uses the sector's upper-tercile boundary; the size band is 0.5×–2× EV.
+- Rumored deals do not affect fitting; only Closed deals support valuation.
+  All default top-ten convictions are Medium under fixed thresholds.
+- Ranking is deterministic; fresh prose can vary. Replay reproduces recorded
+  responses through current validation, not a new live measurement.
+
+## Development
+
+```sh
+uv sync --locked
+uv run pre-commit install
+make test
+make lint
+make eval RESULTS=/tmp/acquirer-eval
+```
+
+CI runs lint, types, size checks, the full test suite, keyless replay, and offline
+eval layers 0–2. Tests reject network access. Settings, thresholds, model IDs, and
+prices live in [`config/`](config/); prompts are versioned in [`prompts/`](prompts/).
+
+Next: validate ranking on real transactions, collect independent banker labels,
+and test quality/cost tradeoffs with matched runs. At higher volume, use queued
+jobs and protected artifact storage, with identifier redaction and retention
+controls for confidential traces. Structured JSON could support Salesforce;
+Dagster and MCP are possible extensions once there is an actual workload.

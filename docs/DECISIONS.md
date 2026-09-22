@@ -1,213 +1,136 @@
-# Architecture decisions
+# Architecture and decisions
 
-## 2026-09-22 — Expose the workflow as four named stages
+## Execution map
 
-Context: consolidating small helpers reduced file hopping, but the product stages
-still lived among runtime utilities and the command boundary was split.
-Decision: expose select, draft, review, and render under `stages/`; keep command
-handling in `cli.py`, orchestration in `pipeline.py`, and resource construction
-in `factory.py`. Group typed rows/loading/quality in `data.py`, fitted history in
-`ranking/features.py`, scoring policy in `ranking/scorer.py`, and evidence IDs,
-packs, and lookup in `evidence/pack.py`. `replay.py` owns snapshots, run history,
-and portable archive checks; request traces and response caches retain distinct
-contracts. Templates live at the package root.
+```text
+cli.py → pipeline.py
+  ├─ stages/select.py    validate inputs, rank buyers, prepare evidence
+  ├─ factory.py          construct shared runtime resources
+  ├─ stages/draft.py     retrieve → draft → validate → repair if needed
+  ├─ stages/review.py    optional portfolio review (disabled by default)
+  └─ save run.json
+cli.py → stages/render.py → HTML + Markdown
+```
 
-`Deps` now carries settings and logger only. `with_runtime` creates `RuntimeDeps`
-with required `AnalystServices`; model stages and page dependencies require that
-type rather than checking an optional runtime repeatedly. Evaluation preparation
-uses measurement names. Judge source/evidence preparation sits in `prepare.py`,
-contracts in `schema.py`, and provider construction in `command.py`.
-Alternatives considered: retain one small file per helper, or combine the entire
-pipeline into a single module.
-Consequence: readers can find the workflow first and inspect supporting boundaries
-when needed. Some modules are longer; files and functions retain their configured
-limits. Model support remains separate from stage ordering. This is a structural
-change: prompts, models, scoring, validation rules, archive formats, sample output,
-and historical measurements remain unchanged. It makes no new claim about
-quality, latency, predictive lift, or independent calibration.
+| Concern | Implementation |
+| --- | --- |
+| CSV validation and quality | [`data.py`](../src/acquirer_engine/data.py) |
+| Historical features and scoring | [`ranking/`](../src/acquirer_engine/ranking) |
+| Initial evidence and stable IDs | [`evidence/pack.py`](../src/acquirer_engine/evidence/pack.py) |
+| Agent definitions and evidence queries | [`llm/agents.py`](../src/acquirer_engine/llm/agents.py), [`llm/tools.py`](../src/acquirer_engine/llm/tools.py) |
+| Claim and prose checks | [`validation/`](../src/acquirer_engine/validation) |
+| Requests, usage, and traces | [`llm/recording.py`](../src/acquirer_engine/llm/recording.py), [`llm/cost.py`](../src/acquirer_engine/llm/cost.py), [`llm/trace.py`](../src/acquirer_engine/llm/trace.py) |
+| Saved inputs and replay | [`replay.py`](../src/acquirer_engine/replay.py) |
+| Independent evaluation | [`evals/command.py`](../evals/command.py) → [`evals/harness.py`](../evals/harness.py) |
 
-## 2026-09-22 — Use the stronger writer for output corrections
+## 2026-09-22 — Keep the workflow explicit
 
-Context: numeric/schema acceptance did not prevent incorrect interpretation of
-margins, ownership, geography, and transaction values. Prompt corrections alone
-had not produced an acceptable replacement sample.
-Decision: promote the previously reserved Opus 5 escalation model to the analyst role,
-disable escalation because no stronger tier is configured, and retain opt-in
-portfolio review. The current router permits one same-tier repair when escalation
-is disabled, despite the configured ceiling of two recovery attempts. Use the
-approved $10 admission cap for concurrent reservations and a 6,000-token output
-ceiling after an earlier draft reached 4,000 tokens. Retain the under-$1
-returned-usage goal and 60-second end-to-end target.
-Alternatives considered: retain the cheaper writer with further prompt changes,
-or require the extra portfolio review despite its inconclusive historical effect.
-Consequence: [v6](../evals/results/p7-f12ac9adc5c49079dd40c1b402aabad0b6a55c40/iteration.md)
-completed in 44.823s for $1.914185, and
-[v7](../evals/results/p7-0a63cfe438c161aef46b0502ca13c941ec1779e2/iteration.md)
-in 50.613s for $1.940530. Both met the speed goal in those observations, exceeded
-the cost goal, and were rejected in factual read-throughs. They do not establish
-causal quality or speed improvement from model choice. The
-[selected v13 run](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md)
-produced 10/10 pages and 54/54 matched claims in 48.176s for $1.863930, with one
-numeric repair. A source-based factual read-through found no concrete
-contradiction, but selection after several iterations is not an unbiased
-first-run reliability estimate. The cost goal remains unmet and independent
-calibration is unmeasured. Live layer 6 still lacks matched controls for this
-model/prompt cohort; historical ablations remain evidence for their original
-cohort only.
+**Context:** the product has a fixed sequence with a bounded model stage.
+**Decision:** keep CLI handling, orchestration, resource construction, and the four
+stages separate. `Deps` holds settings/logger; `RuntimeDeps` adds required shared
+services; each buyer gets its own evidence and conversation state.
+**Alternatives:** a monolithic script or a graph framework for the entire flow.
+**Consequence:** stage order is visible in Python, and dependencies can be replaced
+in tests without creating clients inside the call path.
 
-## 2026-09-22 — Correct interpretation at the evidence and report boundaries
+## 2026-09-22 — Use a stronger writer with bounded recovery
 
-Context: correct numeric claims still allowed an inverted margin comparison,
-overstated completion history, and unsupported claims about missing precedents.
-Decision: prioritize exact-sector buyer rows before recency within the existing
-pack caps, expose Closed/Pending/resolved counts, and reject recognized explicit
-target-versus-Closed-sector median margin inversions. Version the analyst prompt
-to distinguish tags, outcomes, ownership fields, and incomplete query populations.
-Show canonical deal financials next to the prose, rather than only in an appendix.
-Add a test-first scope guard for recognized “only through/in/on” target-theme
-claims when the analyst has seen only part of a buyer's history; request observed
-positive examples instead of asserting exclusivity.
-Alternatives considered: edit archived prose in place, force new convictions, or
-build a general semantic-verification system.
-Consequence: archived failures remain intact. Both semantic guards have deliberately
-narrow language coverage; complete history lifts the theme-scope restriction but
-does not prove an exclusive claim true. Numeric and schema checks do not certify
-all prose. The selected v13 sample passed a separate source-based factual
-read-through; this is development QA, not independent banker calibration.
+**Context:** schema-valid drafts could still misinterpret the evidence.
+**Decision:** use the stronger configured writer, one same-tier repair, and opt-in
+portfolio review. Escalation is disabled because no stronger tier is configured.
+The router's second recovery slot belongs to escalation, so `max_repairs: 2` does
+not enable two same-tier repairs. See [analyst settings](../config/analyst.yaml).
+The first response warms the shared prompt prefix; remaining buyers run behind
+a semaphore. Schema/evidence failures retain conversation and tool history for
+repair. SDK retries handle transient transport errors; exhausted retries,
+deadlines, budgets, and missing replay responses stop the affected page.
+**Alternatives:** a cheaper writer with more retries, or mandatory extra review.
+**Consequence:** the selected run completed ten pages within the speed goal but
+exceeded the cost goal. Historical review changed no pages in one observation;
+that does not prove review never helps. [Measurements](EVALS.md) remain separate
+from design choices. Failed pages retain banners and cause a nonzero CLI exit.
 
-## 2026-09-22 — Preserve measurements independently of release status
+## 2026-09-22 — Validate evidence without claiming semantic certainty
 
-Context: working report output and green CI do not establish live speed,
-predictive lift, or agreement with a human rater.
-Decision: keep original scorecards and label absent measurements explicitly.
-The final replay check remains separate from earlier live observations.
-Alternatives considered: replace historical failures with the latest output.
-Consequence: reviewers can trace improvement and see which goals remain unmet.
+**Context:** correct numbers alone did not prevent an inverted margin comparison
+or an exclusive claim based on incomplete history.
+**Decision:** prioritize exact-sector evidence, expose Closed/Pending/resolved
+counts, and add narrow checks for recognized margin-direction and exclusivity
+phrases. Display source financials beside the prose. Keep original failed archives.
+**Alternatives:** manual edits to generated pages or a general semantic verifier.
+**Consequence:** known faults are caught, but qualitative reasoning still needs
+independent evaluation. Complete history does not by itself prove an exclusive claim.
 
-## 2026-09-21 — Ship a portable, static report
+## 2026-09-21 — Compute ranking from historical signals
 
-Context: the primary output is a buyer list someone can read and share.
-Decision: render self-contained HTML, ten Markdown pages, and structured JSON.
-Escape public fields and resolve displayed citations before writing.
-Alternatives considered: a web application, PDF-only output, or notebook-only delivery.
-Consequence: no server is needed; printed sheet count depends on browser settings.
-The JSON contract is available for a later authenticated API or CRM adapter.
+**Context:** the buyer list needs reproducible arithmetic, while many buyers have
+sparse histories.
+**Decision:** combine sector, size, recency, completion, margin, geography,
+rationale-tag, and deal-type signals. Shrink sparse signals toward buyer-type
+priors; use fixed weights, tie-breaks, and conviction thresholds. The weights are
+initial design assumptions, not an established banking framework.
+Use stated multiples and margins; report source discrepancies instead of silently
+recalculating them. Exclude Rumored deals from fitting and Pending deals from the
+completion denominator. Closed deals alone support valuation. Sponsor co-activity
+and profile distance define sector adjacency; common tags receive less weight.
+**Alternatives:** popularity alone, a trained classifier, or model-written scores.
+**Consequence:** every score is explainable, but the synthetic holdout has not
+shown lift over popularity. Fixed thresholds yield ten Medium convictions;
+labels are not forced to create diversity.
 
-## 2026-09-21 — Use a workflow with bounded analyst stages
+## 2026-09-21 — Use typed tools and a thin evidence pack
 
-Context: ranking requires reproducible arithmetic; a specific rationale requires
-choosing and interpreting evidence.
-Decision: code owns ranking and route limits. Each analyst selects typed tools,
-drafts a schema-constrained page, and receives verifier feedback when it fails.
-Alternatives considered: a single large prompt or an unconstrained autonomous loop.
-Consequence: behavior has explicit stop conditions and can be replayed.
+**Context:** the analyst must choose evidence without receiving the entire CSV.
+**Decision:** Pydantic validates boundary data; Pydantic AI defines typed tools,
+structured outputs, output validators, and local test models. Prompts separate
+instructions, output schema, and delimited untrusted data. A buyer's initial pack
+contains its activity and scores; valuation requires separately retrieved Closed
+comps. Five tools return stable IDs, capped rows, and explicit truncation.
+**Alternatives:** a single large prompt, raw SDK orchestration, or vector retrieval.
+**Consequence:** tool use is necessary and testable. The verifier sees only each
+buyer's pack and retrieved evidence, so one buyer cannot borrow another's provenance.
 
-## 2026-09-21 — Use typed boundaries and shared resources
+## 2026-09-21 — Share resources and record actual usage
 
-Context: model responses and tool results cross validation boundaries.
-Decision: use Pydantic AI for typed tools, outputs, validators, usage limits,
-and local test models. Construct providers in `factory.py`; wrap recording at
-the model boundary. Inject shared clients, ledger, cache, and logger.
-Alternatives considered: raw SDK orchestration throughout the application or
-another framework with an additional state abstraction.
-Consequence: provider-specific changes stay near the adapter. A direct SDK
-replacement still requires the same contract tests.
+**Context:** concurrent calls share a budget and need inspectable failures.
+**Decision:** construct providers, ledger, cache, and logger once in `factory.py`.
+Reserve estimated input plus maximum output/retry charges before admission, then
+settle returned usage. Missing usage remains an uncertain bound. Structlog writes
+JSON events; recorded conversations support debugging and replay.
+**Alternatives:** create a client per request or check cost only after completion.
+**Consequence:** reservations prevent concurrent over-allocation but can reject a
+request whose eventual bill would fit. The $10 admission cap is distinct from the
+under-$1 measured-cost goal. Local traces contain confidential conversation data.
 
-## 2026-09-21 — Make evidence retrieval necessary
+## 2026-09-21 — Keep replay strict
 
-Context: supplying every fact initially would make tool calls decorative.
-Decision: the core pack includes a buyer's activity, scores, and assumptions;
-valuation needs separately retrieved Closed comps. Tool results have row caps,
-stable IDs, and explicit truncation.
-Alternatives considered: put every transaction in the initial context.
-Consequence: the tools-disabled control tests whether retrieval matters.
-Numeric validation still cannot prove a comp is economically persuasive.
+**Context:** repeating a saved conversation differs from generating a new one.
+**Decision:** separate content-addressed response caching, frozen run-ID replay,
+and a hash-checked portable archive. Bundle replay requires matching inputs and
+policy; run-ID replay loads the original snapshot. Neither has a paid fallback.
+**Alternatives:** filename caching or silently regenerating missing responses.
+**Consequence:** replay writes a new run with lineage and applies current validation
+to recorded responses. It does not run old code or measure new model quality.
 
-## 2026-09-21 — Separate repair from transport recovery
+## 2026-09-21 — Deliver a local report with small extensions
 
-Context: malformed prose, rate limits, and budget denial need different remedies.
-Decision: schema/evidence errors get bounded feedback and possible escalation.
-SDK retries handle transient transport errors. Budget, deadline, and missing
-replay failures stop the affected page while other buyers continue.
-Alternatives considered: retry everything or fail the whole portfolio.
-Consequence: failure reasons remain visible and costs stay bounded.
+**Context:** 500 structured rows and a shareable buyer list need little infrastructure.
+**Decision:** use pandas queries, PyYAML settings, a Typer CLI, and escaped Jinja
+HTML/Markdown templates. Keep feedback in atomically written local JSON. Exclude
+flagged buyers and disclose a cosine-similarity discount for remaining same-type
+buyers; the evaluated base ranker stays unchanged. Comparison reuses selection
+without drafting. Optional model summaries are labeled unverified interpretations.
+**Alternatives:** a database-backed web app, notebook-only output, or online retraining.
+**Consequence:** no server is needed. Copy the complete output directory for linked
+citations; browser printing may use more than ten sheets. Per-user transactional
+storage, access controls, and CRM/API adapters belong to a larger deployment.
 
-## 2026-09-21 — Make portfolio review opt-in
+## 2026-09-21 — Evaluate independently of generation
 
-Context: in the matched observation, the reviewer approved every page without
-revision and incurred $0.045584 of returned usage.
-Decision: retain the tested reviewer but disable it by default.
-Alternatives considered: require an extra serial review on every run.
-Consequence: one observation does not prove review never improves quality;
-independent rubric calibration remains pending.
-
-## 2026-09-21 — Separate budget reservations from measured billing
-
-Context: concurrent requests cannot each assume the remaining budget is free.
-Decision: reserve a conservative maximum cost, then settle returned usage.
-Keep unreturned usage uncertain. The original approved generation admission cap
-was $3; the quality-correction decision above supersedes it with $10. The
-under-$1 measured-cost goal remains.
-Alternatives considered: check cost only after all requests finish.
-Consequence: admission can stop work that might ultimately fit, but prevents
-concurrent over-allocation. The 120-second request ceiling is a safety limit,
-not a replacement for the 60-second end-to-end target.
-
-## 2026-09-21 — Keep ranking and conviction deterministic
-
-Context: sponsors have deeper histories than most strategics; the synthetic
-holdout does not establish superiority over popularity.
-Decision: combine bounded signals with buyer-type shrinkage, fixed weights,
-deterministic ties, and fixed conviction thresholds. Report diversity without
-forcing label variety. Fit only on eligible historical data.
-Alternatives considered: raw counts, a trained classifier, or buyer quotas.
-Consequence: arithmetic is explainable; sparse data still limits confidence.
-Weights were not tuned to make the holdout pass.
-
-## 2026-09-21 — Use explicit data policies
-
-Context: stated and computed ratios disagree; deal-type labels can conflict
-with buyer type.
-Decision: trust stated multiples and buyer type, report discrepancies, and
-restrict valuation to Closed transactions. Use sponsor co-activity and financial
-profile distance for adjacency; discount common rationale tags.
-Alternatives considered: silently repair the source or discard adjacent sectors.
-Consequence: assumptions are visible and the original CSV remains unchanged.
-
-## 2026-09-21 — Keep three replay contracts distinct
-
-Context: replaying a prior execution differs from reusing a response for a new request.
-Decision: use content-addressed caching, frozen historical replay, and a
-hash-checked portable archive with exact input/policy compatibility.
-Alternatives considered: filename caching or an automatic paid fallback.
-Consequence: changed inputs fail explicitly. Replay uses current validation;
-it does not run old code or establish new generation quality.
-
-## 2026-09-21 — Calibrate independent judges
-
-Context: agreeing judges may share biases or disagree with a human.
-Decision: isolate five dimensions, include Unknown, mask buyer identity for
-identification, shuffle with a recorded seed, and use two provider families.
-Require blind human votes first; report each judge against the human separately
-from judge-versus-judge agreement.
-Alternatives considered: a single broad score without reference labels.
-Consequence: twenty pages from one rater are a small sanity check. Missing votes,
-failed requests, or undefined intervals cannot become passing results.
-
-## 2026-09-21 — Keep feedback local and interpretable
-
-Context: a user may know a buyer is irrelevant.
-Decision: atomically persist named exclusions and disclose the sector-profile
-similarity discount on remaining same-type buyers. Keep it out of backtest scoring.
-Alternatives considered: online retraining or an external database.
-Consequence: the preference survives restarts, but is not measured predictive
-improvement. At scale this needs transactional storage per user.
-
-## 2026-09-21 — Leave unused infrastructure out
-
-Context: the input is 500 structured rows and the interface is a local CLI.
-Decision: use dataframe queries and JSON artifacts. Do not build a vector store,
-routing classifier, database server, webhooks, MCP server, or custom frontend.
-Alternatives considered: infrastructure for hypothetical consumers.
-Consequence: future integrations need real access, retention, and workload
-requirements. Typed tools and structured output provide extension points.
+**Context:** passing numeric checks does not establish useful ranking or prose.
+**Decision:** keep temporal baselines, fixtures, repeated-run checks, cost/latency,
+and controlled ablations in a separate harness. Judge five isolated dimensions
+with two model families against blind human labels; report agreement and uncertainty.
+**Alternatives:** a single broad model score or only end-to-end happy-path tests.
+**Consequence:** missing calibration stays unmeasured, failed runs remain available,
+and replay results are distinguished from live observations. See [EVALS.md](EVALS.md).
