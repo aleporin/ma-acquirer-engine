@@ -1,0 +1,10 @@
+{
+  "wheel": "ma_acquirer_engine-0.1.0-py3-none-any.whl",
+  "source_git_sha": "17d6c26f335f62d37a908dced00f1e7889a73b0c",
+  "imports_from_installed_wheel": true,
+  "working_directory": "/private/tmp",
+  "identical_rendered_files": 12,
+  "comparison_template_rendered": true,
+  "dependencies": "Reused locked development dependencies; wheel installed without dependencies.",
+  "scope": "Installed package resource and output check; not a clean dependency resolution."
+}
