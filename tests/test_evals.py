@@ -23,7 +23,7 @@ def test_all_layers_report_not_implemented_without_metrics(deps: Deps, run: RunI
     assert [layer.id for layer in card.layers] == list(range(7))
     assert {layer.status for layer in card.layers} == {"not_implemented"}
     assert all(not layer.metrics for layer in card.layers)
-    assert not card.layers[4].selected
+    assert all(layer.selected for layer in card.layers)
     assert card.models == deps.settings.models
     assert card.run == run
 
@@ -34,9 +34,10 @@ def test_ci_selection_keeps_full_baseline_visible(deps: Deps, run: RunInfo) -> N
     assert len(card.layers) == 7
 
 
-def test_invalid_selection_fails(deps: Deps, run: RunInfo) -> None:
+@pytest.mark.parametrize("selection", [[], [0, 0], [0, 7]])
+def test_invalid_selection_fails(deps: Deps, run: RunInfo, selection: list[int]) -> None:
     with pytest.raises(EvaluationError, match="selection"):
-        evaluate(deps, run, [0, 4])
+        evaluate(deps, run, selection)
 
 
 def test_grader_failure_propagates_without_a_success_card(deps: Deps, run: RunInfo) -> None:
