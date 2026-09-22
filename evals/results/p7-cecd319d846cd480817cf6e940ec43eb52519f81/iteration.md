@@ -13,7 +13,8 @@ with the workflow that uses them. This is not a runtime-performance claim.
 ## Verification
 
 - `make test`: 326 passed in 6.80s at runtime source `2d328ab`; subsequent source
-  changes only updated documentation. The evaluation reran the same suite.
+  changes only updated documentation. The evaluation separately ran its configured
+  196-test subset; it is not the full 326-test suite.
 - `make lint`: Ruff and format passed; strict mypy passed for 181 source files;
   file/function size checks passed. No runtime changes followed that check.
 - `make run`: 10/10 verified pages, 21 recorded responses, $0 new spend.
