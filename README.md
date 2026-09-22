@@ -2,10 +2,10 @@
 
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 4: bounded repair, escalation,
-sparse-evidence routing, portfolio review, and replay**. The latest live run
-verified ten pages after three repairs, with 66/66 numeric claims, in 177.84 seconds
-for $1.09. Speed and ablation gates remain open. See [routing and controls](ROUTING.md).
-Judging and HTML rendering belong to later phases.
+sparse-evidence routing, optional portfolio review, and replay**. Review is now
+configuration opt-in: the reviewer-disabled run verified ten pages and 64/64 claims
+in 133.59 seconds for $0.99. Both ablations are recorded; speed and the terminal-error
+gate remain unmet. See [routing and results](ROUTING.md). Judging and HTML come later.
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -180,7 +180,7 @@ examples, not generated analyst pages.
 
 ## Structure and configuration
 
-`data/` owns validation and quality counts; `features/` owns fitted history;
+Start with the [execution walkthrough](EXECUTION.md). `data/` validates input;
 `ranking/` owns target profiles, signals, priors, and ordering. `evals/ranking/`
 owns holdout measurement. `evals/phase1.py` composes graders and companion artifacts.
 `evidence/` assembles addressable facts; `validation/` checks structured rationale.
@@ -212,8 +212,8 @@ enter the verifier's retrieval context. Dataset strings are cleaned and escaped
 inside delimited data blocks; they cannot supply application instructions.
 
 The first buyer response warms the shared instruction/tool prefix before the
-remaining buyers start behind a semaphore. Each page has at most three tool
-rounds and four model requests. The request deadline is now 120 seconds, including
+remaining buyers start behind a semaphore. Tool use is capped at three rounds per page;
+each generation permits at most four model requests. The request deadline is now 120 seconds, including
 SDK retries with backoff and jitter for transient failures. The run performance
 target remains 60 seconds; a slower completed run still fails that criterion.
 The larger safety ceiling lets slow responses finish for quality measurement;

@@ -1,12 +1,34 @@
 # Routing, repair, and replay
 
-The [latest live measurement](evals/results/p4-dc5fbd5d4c02270f0ee7438227364dda564c534c/summary.md)
-produced ten verified pages after three successful repairs: 66/66 claims matched,
-177.84 seconds, and $1.09 in returned usage under a $3 admission cap. Replay
-reproduced all 29 responses, page outcomes, and reviewer verdicts for no new cost.
-The earlier $1 cap blocked seven drafts. Both measurements remain in the history.
-The 60-second performance target and the two live ablations remain incomplete.
-The reviewer approved all pages, so this run demonstrates no improvement from review.
+The [ablation scorecard](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/summary.md)
+and [comparison](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/ablation_summary.json)
+record three live variants at identical source, data, and prompt-file versions:
+
+| Variant | Verified pages | Final matched claims | Seconds | Recorded USD |
+| --- | --- | --- | --- | --- |
+| Full pipeline | 10/10 | 66/66 | 177.84 | 1.0890 |
+| Reviewer disabled | 10/10 | 64/64 | 133.59 | 0.9860 |
+| Tools disabled | 0/10 | Not a successful output | 300.03 | 1.2713 |
+
+The full run needed three repairs; reviewer-disabled needed two. The reviewer
+changed no pages, so its paired lexical-overlap effect was zero. It cost $0.045584
+and took 3.37 seconds. Separate-run timing differences also reflect generation
+variation; they are not a causal estimate of review overhead or quality.
+**Decision: cut review from the default path.** Set `reviewer_enabled: true` in
+`config/analyst.yaml` to opt in. Its tested implementation remains for later quality
+calibration; one observation does not establish that review never helps.
+
+With tools disabled, all ten drafts and all ten repairs were rejected for missing
+retrieved comps. Final errors were four comp rejections, four budget denials, and
+two run deadlines. Layer 6 currently counts only terminal comp errors, so its
+ablation metric is 0.4 and the gate still fails. This preserves the distinction
+between demonstrated evidence dependence and interrupted recovery. The tools-off
+run has an additional $1.64445 uncertain reservation bound, not recorded billing.
+
+Reviewer-disabled replay reproduced all 27 responses and identical page outcomes
+for $0. Tools-disabled replay recovered 24 responses but cannot reproduce missing
+budget/deadline responses or the subsequent reviewer input exactly. The 60-second
+target remains unmet. Both paid ablations are complete; no phase gate is claimed.
 
 A page follows `analyst -> repair -> escalation -> unverified banner` when each
 validation attempt fails. Success ends recovery immediately. Schema and evidence
@@ -19,7 +41,7 @@ from the number of rows that fit into the core pack. Its threshold is configured
 The analyst still has to retrieve valuation comps; thin evidence does not relax
 validation. Turning tools off is an explicit negative control.
 
-One portfolio review reads all page outcomes, including failures. Every buyer
+When enabled, one portfolio review reads all page outcomes, including failures. Every buyer
 must receive exactly one approve/revise verdict. Revisions need specific feedback.
 Each flagged page gets one revision, using its original evidence and conversation,
 followed by the same validation. A failed revision retains a banner. Original
@@ -44,10 +66,11 @@ Run these only when provider spending is intended:
 
 ```sh
 make run RUN_FLAGS=--fresh
-make run RUN_FLAGS='--fresh --no-reviewer'
+make run RUN_FLAGS='--fresh --no-reviewer'  # also bypasses an enabled reviewer
 make run RUN_FLAGS='--fresh --no-tools'
 ```
 
+To repeat the original three-way comparison, first enable review in configuration.
 Each snapshot freezes all prompt text and ablation settings. Historical replay
 never consults current prompts or starts a provider client. It runs current
 validation against the original responses. A missing response is an explicit
