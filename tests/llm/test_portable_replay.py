@@ -91,9 +91,7 @@ async def test_portable_replay_refuses_legacy_feedback_without_recorded_policy(
     tmp_path: Path, deps: Deps
 ) -> None:
     feedback = FeedbackState(flags=(BuyerFlag(acquirer="Legacy Buyer", reason="Excluded"),))
-    _, selected = await bundle_fixture(
-        tmp_path, deps, feedback_policy=None, feedback=feedback
-    )
+    _, selected = await bundle_fixture(tmp_path, deps, feedback_policy=None, feedback=feedback)
     with pytest.raises(LLMInvalidOutput, match="feedback policy"):
         module.select_replay(tmp_path, deps, selected)
 
