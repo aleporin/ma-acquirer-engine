@@ -1,8 +1,10 @@
 # Routing, repair, and replay
 
-The [corrected scorecard](evals/results/p4-eacf7e3ab9cd2148c1d316e31967b624849225cc/summary.md)
-passes the Phase 4 routing gate. It re-evaluates the same three live observations;
-the new admission configuration still needs live verification. The
+The [exit scorecard](evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md)
+passes the Phase 4 routing gate on the original matched ablation cohort. A
+[separate fresh verification](evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/fresh_verification.json)
+checks the new admission configuration:10/10 pages,79/79 final claims,72.645s,$1.022239.
+Its27 responses and all outcomes replay exactly. The60s target remains unmet. The
 [original comparison](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/ablation_summary.json)
 records all variants at identical source, data, and prompt-file versions:
 
@@ -92,7 +94,10 @@ lexical overlap before/after review. Rubric quality and human calibration remain
 unmeasured until their later evaluation phase; lexical overlap alone is not a
 banker's quality judgment. Do not treat an offline fixture pass as a live gate pass.
 
-The default output cap is now 4,000 tokens, above the measured 2,314-token peak
-from the two complete concise-prompt runs. Input counting and the smaller
-reservation are implemented and tested offline; their live speed and reliability
-remain unmeasured. The $3 cap, SDK retry allowance, and validation rules remain.
+The4,000-token output cap completed all new responses, peaking at2,529 tokens.
+All27 input estimates used provider token counts. Request p95 was29.864s,
+provider p95 29.769s, counting p95 0.206s, and budget-wait p95 0.014ms.
+No request failed or incurred uncertain usage. Seven first-pass pages became
+ten after three repairs; explicit claims improved from76/79 to79/79.
+This is one fresh observation, not a causal timing study or reliability estimate.
+The $3 cap, SDK retry allowance, and validation rules remain.

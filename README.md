@@ -3,10 +3,10 @@
 Rank likely acquirers from transaction history and measure the ranking against
 held-out deals. The current scope is **Phase 4: bounded repair, escalation,
 sparse-evidence routing, optional portfolio review, and replay**. Review is now
-configuration opt-in: the reviewer-disabled run verified ten pages and 64/64 claims
-in 133.59 seconds for $0.99. The 60-second target remains unmet. Execution flow,
-failure replay, and admission accounting are corrected; the new counted-input
-configuration awaits live measurement. See [routing and results](ROUTING.md).
+configuration opt-in. The latest default run verified ten pages and 79/79 claims
+in 72.65 seconds for $1.02, with three successful repairs and no budget denials.
+The 60-second target remains unmet. Historical replay reproduces all27 responses
+and page outcomes for $0. See [routing and results](ROUTING.md).
 
 The initial ranker has recall@10 of 38.0%, versus 40.8% for global popularity,
 43.7% for sector popularity, and 12.7% for a seeded random baseline. Its recall
@@ -231,8 +231,8 @@ supported schema subset. Full schema, length, risk-reference, and claim checks
 still run locally; unsupported provider constraints remain local requirements.
 The generation schema separates evidence risks, which require references, from
 judgment risks, which omit references. Stored judgments have an empty list.
-The output allowance is 4,000 tokens; the two complete concise-prompt runs peaked
-at 2,314. This reduced cap still needs live verification. The versioned prompt
+The output allowance is 4,000 tokens; the latest complete live run peaked at
+2,529 with no truncated responses. The versioned prompt
 asks for a concise page that leaves room for its claims. Responses that end at the token limit are
 recorded with usage, then rejected explicitly, even if their partial arguments
 can be parsed. Schema failures retain field-level reasons without raw inputs.
