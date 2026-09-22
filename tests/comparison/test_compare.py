@@ -119,3 +119,46 @@ def summary_model() -> tuple[FunctionModel, list[None]]:
         )
 
     return FunctionModel(response), calls
+
+
+def test_summary_setup_failure_preserves_the_computed_table(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from collections.abc import AsyncIterator
+    from contextlib import asynccontextmanager
+
+    from pydantic_ai.models import Model
+
+    from acquirer_engine.comparison import command
+    from acquirer_engine.errors import ConfigError
+
+    @asynccontextmanager
+    async def unavailable(
+        deps: Deps, *, replay: bool
+    ) -> AsyncIterator[tuple[Model | None, Model | None]]:
+        if not replay:
+            raise ConfigError("Provider credentials unavailable")
+        yield None, None
+
+    write_project(tmp_path, (transaction(),))
+    path = tmp_path / "target.yaml"
+    path.write_text("sector: Services\n")
+    monkeypatch.setattr("acquirer_engine.run_history.git_state", lambda _: ("a" * 40, False))
+    monkeypatch.setattr(command, "model_resources", unavailable)
+    arguments = [
+        "compare",
+        str(path),
+        str(path),
+        "--project",
+        str(tmp_path),
+        "--summary",
+        "--fresh",
+    ]
+    result = CliRunner().invoke(build_app(), arguments)
+    assert result.exit_code == 1
+    saved = list((tmp_path / "runs").glob("*/comparison.json"))
+    assert len(saved) == 1, result.output
+    report = json.loads(saved[0].read_text())
+    assert report["data"]["overlap"] == ["Buyer A"]
+    assert report["errors"] == ["Provider credentials unavailable"]
+    assert report["calls"] == []
