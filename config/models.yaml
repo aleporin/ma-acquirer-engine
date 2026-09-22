@@ -3,7 +3,7 @@
 roles:
   analyst:
     provider: anthropic
-    model_id: claude-sonnet-5
+    model_id: claude-opus-5
     as_of: 2026-09-21
     preview: false
     source_urls:
@@ -11,11 +11,11 @@ roles:
       - https://platform.claude.com/docs/en/about-claude/pricing
     pricing:
       - max_input_tokens: null
-        input_usd_per_million: 2
-        output_usd_per_million: 10
-        cache_read_usd_per_million: 0.2
-        cache_write_usd_per_million: 2.5
-        cache_write_1h_usd_per_million: 4
+        input_usd_per_million: 5
+        output_usd_per_million: 25
+        cache_read_usd_per_million: 0.5
+        cache_write_usd_per_million: 6.25
+        cache_write_1h_usd_per_million: 10
   mechanical:
     provider: anthropic
     model_id: claude-haiku-4-5-20251001
