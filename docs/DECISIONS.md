@@ -1,5 +1,34 @@
 # Architecture decisions
 
+## 2026-09-22 — Use the stronger writer for output corrections
+
+Context: numeric/schema acceptance did not prevent incorrect interpretation of
+margins, ownership, geography, and transaction values. Prompt corrections alone
+had not produced an acceptable replacement sample.
+Decision: promote the previously reserved Opus 5 escalation model to the analyst role,
+disable escalation because no stronger tier is configured, and retain opt-in
+portfolio review. The current router permits one same-tier repair when escalation
+is disabled, despite the configured ceiling of two recovery attempts. Use the
+approved $10 admission cap for concurrent reservations and a 6,000-token output
+ceiling after an earlier draft reached 4,000 tokens. Retain the under-$1
+returned-usage goal and 60-second end-to-end target.
+Alternatives considered: retain the cheaper writer with further prompt changes,
+or require the extra portfolio review despite its inconclusive historical effect.
+Consequence: [v6](../evals/results/p7-f12ac9adc5c49079dd40c1b402aabad0b6a55c40/iteration.md)
+completed in 44.823s for $1.914185, and
+[v7](../evals/results/p7-0a63cfe438c161aef46b0502ca13c941ec1779e2/iteration.md)
+in 50.613s for $1.940530. Both met the speed goal in those observations, exceeded
+the cost goal, and were rejected in factual read-throughs. They do not establish
+causal quality or speed improvement from model choice. The
+[selected v13 run](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md)
+produced 10/10 pages and 54/54 matched claims in 48.176s for $1.863930, with one
+numeric repair. A source-based factual read-through found no concrete
+contradiction, but selection after several iterations is not an unbiased
+first-run reliability estimate. The cost goal remains unmet and independent
+calibration is unmeasured. Live layer 6 still lacks matched controls for this
+model/prompt cohort; historical ablations remain evidence for their original
+cohort only.
+
 ## 2026-09-22 — Correct interpretation at the evidence and report boundaries
 
 Context: correct numeric claims still allowed an inverted margin comparison,
@@ -9,11 +38,16 @@ pack caps, expose Closed/Pending/resolved counts, and reject recognized explicit
 target-versus-Closed-sector median margin inversions. Version the analyst prompt
 to distinguish tags, outcomes, ownership fields, and incomplete query populations.
 Show canonical deal financials next to the prose, rather than only in an appendix.
+Add a test-first scope guard for recognized “only through/in/on” target-theme
+claims when the analyst has seen only part of a buyer's history; request observed
+positive examples instead of asserting exclusivity.
 Alternatives considered: edit archived prose in place, force new convictions, or
 build a general semantic-verification system.
-Consequence: archived failures remain intact. The margin check has deliberately
-narrow language coverage; numeric and schema checks do not certify all prose.
-New generated samples need separate measurement and a factual read-through.
+Consequence: archived failures remain intact. Both semantic guards have deliberately
+narrow language coverage; complete history lifts the theme-scope restriction but
+does not prove an exclusive claim true. Numeric and schema checks do not certify
+all prose. The selected v13 sample passed a separate source-based factual
+read-through; this is development QA, not independent banker calibration.
 
 ## 2026-09-22 — Preserve measurements independently of release status
 
@@ -85,8 +119,9 @@ independent rubric calibration remains pending.
 
 Context: concurrent requests cannot each assume the remaining budget is free.
 Decision: reserve a conservative maximum cost, then settle returned usage.
-Keep unreturned usage uncertain. Use the approved $3 generation admission cap;
-retain the under-$1 measured-cost goal.
+Keep unreturned usage uncertain. The original approved generation admission cap
+was $3; the quality-correction decision above supersedes it with $10. The
+under-$1 measured-cost goal remains.
 Alternatives considered: check cost only after all requests finish.
 Consequence: admission can stop work that might ultimately fit, but prevents
 concurrent over-allocation. The 120-second request ceiling is a safety limit,

@@ -2,7 +2,7 @@
 
 [Watch the silent screen demonstration](demo/replay.webm) (about one minute).
 It uses the shipped response archive, makes no provider calls, and shows replay
-speed. The original live run took 72.65 seconds.
+speed. The source live run took 48.18 seconds and cost $1.863930.
 
 | Approximate time | What is shown |
 | --- | --- |
@@ -15,8 +15,8 @@ speed. The original live run took 72.65 seconds.
 | 0:42 | Free target comparison |
 | 0:50 | Measured limitations |
 
-The selected page also illustrates the known qualitative margin-comparison error
-documented in [EVALS.md](EVALS.md). It is not presented as banker-quality proof.
+The selected page shows the corrected sample and visible source financials.
+It is not presented as independent banker-quality proof; see [EVALS.md](EVALS.md).
 The [recording manifest](demo/manifest.json) identifies source, runs, and chapters.
 
 ## Reproduce the same flow
@@ -47,7 +47,7 @@ evidence. The verifier checks its references and numeric claims; failures receiv
 specific feedback for a bounded repair. This report reproduces a saved model
 conversation without needing a key.”
 
-“The latest live run completed ten pages, but took 72.65 seconds. The ranker has
+“The selected live run completed ten pages in 48.18 seconds for $1.86. The ranker has
 not beaten popularity on the synthetic holdout, and independent human/judge
 calibration is still unfinished. Those limits are in the scorecards.”
 

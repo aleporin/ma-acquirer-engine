@@ -29,13 +29,17 @@ metadata do not belong in the delivery package.
 
 ## Status that must remain visible
 
-The latest complete live observation produced 10/10 verified pages and 79/79
-numeric claims, but took 72.65 seconds and cost $1.022239 in returned usage.
+The selected corrected live observation produced 10/10 verified pages and 54/54
+final numeric claims in 48.18 seconds for $1.863930 returned usage. Nine pages
+passed first try and one needed a numeric repair. The under-$1 goal remains unmet.
 Ranking has not demonstrated lift over popularity. All default convictions are
 Medium. Independent human/judge calibration and a measured judge-prompt iteration
 remain unfinished. Replay does not change those observations.
-The archived Francisco thesis also misstates the target's margin position;
-the known qualitative defect and its measured values are in [EVALS.md](EVALS.md).
+The original margin defect is corrected in the shipped sample. A source-based
+read-through found no concrete factual contradiction across its ten pages, but
+this curated result is not an independent banker-quality assessment. New matched
+controls for the current model/prompt remain unmeasured; historical controls are
+kept separate in [EVALS.md](EVALS.md).
 
 ## Final human checks
 

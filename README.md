@@ -36,9 +36,9 @@ See [report, target, and comparison commands](REPORTING.md),
 
 | Question | Observation |
 | --- | --- |
-| Does the complete live pipeline work? | Latest recorded run: 10/10 verified pages, 79/79 numeric claims after three repairs |
-| How fast and costly was it? | 72.65 seconds and $1.022239 returned usage; the 60-second and under-$1 goals remain unmet |
-| Does replay reproduce it? | All 27 recorded responses; 10/10 pages; $0 new provider spend |
+| Does the complete live pipeline work? | Latest recorded run: 10/10 verified pages, 54/54 final numeric claims; one page repaired |
+| How fast and costly was it? | 48.18 seconds and $1.863930 returned usage; the under-$1 goal remains unmet |
+| Does replay reproduce it? | All 21 recorded responses; 10/10 pages; $0 new provider spend |
 | Does ranking beat simple popularity? | Recall@10 is 38.0%, versus 40.8% global and 43.7% sector popularity; no demonstrated lift |
 | Are ranks stable? | Identical top ten and convictions across five deterministic runs |
 | Are the pages banker-ready? | Independent judge/human calibration is not yet measured |
@@ -46,7 +46,9 @@ See [report, target, and comparison commands](REPORTING.md),
 These observations come from committed artifacts, not illustrative outputs.
 [Evaluation results and the iteration trail](docs/EVALS.md) explain denominators,
 confidence intervals, live versus replay evidence, and unfinished gates.
-The saved live run is one observation, not a reliability or latency distribution.
+The saved live run was selected after multiple correction iterations and checked
+against its source evidence. It is not an unbiased reliability estimate, a latency
+distribution, or independent banker calibration.
 
 ## How it works
 
@@ -57,7 +59,8 @@ The saved live run is one observation, not a reliability or latency distribution
 3. **Retrieve and draft.** The analyst chooses among five typed evidence tools.
    Closed valuation comps must be retrieved; the initial pack cannot satisfy that check.
 4. **Check and recover.** Validate the schema, citations, numeric claims, and prose
-   numbers. Return precise errors for a bounded repair, then escalate if needed.
+   numbers, plus narrow margin-comparison and partial-evidence scope checks.
+   Return precise errors for one same-tier repair under the shipped configuration.
    A failed buyer retains an error banner while the others finish.
 5. **Render and retain.** Write escaped HTML, Markdown, JSON, usage, and replay
    records. Internal working notes stay in JSON and never appear on the buyer pages.
@@ -65,7 +68,8 @@ The saved live run is one observation, not a reliability or latency distribution
 The first response warms the shared prompt prefix, then buyer tasks run
 concurrently. Provider clients, the ledger, cache, and logger are constructed
 once and injected. The optional portfolio reviewer is disabled by default:
-in the matched observation it changed no pages, while adding cost.
+in a historical matched observation it changed no pages, while adding cost.
+The shipped primary uses the stronger configured model; escalation is disabled.
 
 Prompts separate task rules, output schema, and delimited untrusted data.
 Model-written answers determine tool use; deterministic validation determines
@@ -90,8 +94,9 @@ including the typed Pydantic AI boundary and why there is no application server.
 - Verification proves numeric/reference consistency. It cannot prove economic
   causation, current buyer appetite, or the quality of a qualitative thesis.
   Outside-dataset notes are visibly labeled unverified.
-  The bundled Francisco page contains an incorrect qualitative margin comparison;
-  [the evaluation guide](docs/EVALS.md) records the exact failure.
+  Cited source tables expose stated EV, multiples, margin, and transaction context.
+  The earlier margin error was corrected; narrow guards do not establish general
+  qualitative accuracy. [The evaluation guide](docs/EVALS.md) records that boundary.
 - Live prose may change even at identical inputs. Ranking and facts are
   deterministic; versioned caches and frozen transcripts reproduce recorded responses.
   Replay does not measure a new prompt's quality or new provider latency.
@@ -137,7 +142,7 @@ empty variable names. Keep real keys outside the repository.
 make run RUN_FLAGS=--fresh
 ~~~
 
-The generation admission cap is $3; it is distinct from the under-$1 measurement
+The generation admission cap is $10; it is distinct from the under-$1 measurement
 goal. Reservations account for worst-case tokens and SDK retries. Missing returned
 usage remains an uncertain charge, never an invented zero.
 
@@ -147,8 +152,8 @@ usage remains an uncertain charge, never an invented zero.
 
 ## What I would improve next
 
-First, collect independent banker labels and measure agreement, then improve the
-slowest draft/repair path using paired runs. Validate ranking on real, permissioned
+First, collect independent banker labels and measure agreement, then test the
+current model/prompt with matched controls and reduce cost using paired runs. Validate ranking on real, permissioned
 transactions before tuning it to this synthetic holdout.
 
 At higher volume, persist immutable runs in object storage and use queued jobs.

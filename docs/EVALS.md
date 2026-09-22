@@ -14,25 +14,35 @@ passed product target, and an offline replay is not a new live generation.
 | Ranking identity | 100% across five deterministic runs | Same data/config gives the same ranks |
 | Conviction | Ten Medium; 100% repeated agreement | Honest fixed thresholds, no forced diversity |
 | Verifier fixtures | Three valid accepted; all six planted-invalid rejected | Known numeric/reference faults are caught |
-| Latest live first pass | 7/10 pages; 76/79 parsed numeric claims | Three pages needed repair |
-| Latest live final | 10/10 pages; 79/79 claims | Each failed first draft passed a repair |
-| Latest live operations | 72.645 seconds; $1.022239 returned usage | 60-second and under-$1 goals remain unmet |
-| Replay | 27 responses; 10/10 pages; $0 new spend | Reproduces saved responses through current validation |
+| Selected live first pass | 9/10 pages; all parsed numeric claims matched | One page had an unclaimed prose number |
+| Selected live final | 10/10 pages; 54/54 final claims | The failed first draft passed a repair |
+| Selected live operations | 48.176 seconds; $1.863930 returned usage | Under 60 seconds in this observation; under-$1 goal unmet |
+| Replay | 21 responses; 10/10 pages; $0 new spend | Reproduces saved responses through current validation |
 | Human/judge agreement | Unmeasured | No kappa, identification, or quality improvement is claimed |
 
-The live observation is
-[recorded here](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/fresh_verification.json).
-The [shipping replay scorecard](../evals/results/p7-274fd86d73929cfd9da62a1f392e91d75d894a21/summary.md)
-contains the ranking intervals and mode-prefixed metrics.
-Request p95 in the latest live run was 29.864 seconds; provider p95 was 29.769.
+The corrected live observation and source-based read-through are
+[recorded here](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md).
+Its [scorecard](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/summary.md)
+contains the ranking intervals and mode-prefixed metrics. The selected
+[replay manifest](../sample_output/manifest.json) binds the sample to its archive.
+Request p95 in this live run was 25.868 seconds; provider p95 was 25.761.
 Neither is end-to-end p95 across repeated fresh portfolios.
 
-One qualitative error is visible in the bundled Francisco Partners thesis: it
-describes the target margin as below the sector median. The target is 16.53%;
-the eligible-sector median is 15.7% (Closed-only median: 15.3%). Numeric claim
-validation did not catch this number-free comparison. The archived output is
-preserved unchanged, and this is an unresolved quality defect, not a verified
-economic conclusion. A new prompt or validator needs a measured follow-up.
+The earlier Francisco thesis incorrectly placed the target margin below the
+sector median. The target is 16.53%; the eligible-sector median is 15.7%
+(Closed-only median: 15.3%). The original archive is retained unchanged, but the
+shipped sample now uses a fresh corrected run. Regression tests cover explicit
+margin-direction claims and recognized exclusive theme claims based on partial
+history. Visible source tables expose each cited deal's financials and context.
+These narrow guards do not verify arbitrary economic reasoning.
+
+All ten selected pages and their internal summaries were checked against source
+rows and actual tool returns, with no concrete factual contradiction found. The
+sample was selected after multiple measured prompt iterations, not drawn as an
+unbiased reliability trial. This development QA is not independent calibration.
+All parsed first-draft claims matched; GTCR failed on an additional unclaimed
+prose number. A repaired draft replaced its claim list, so
+the all-attempt claim count and final-page count have different denominators.
 
 ## Seven layers and what a pass proves
 
@@ -48,8 +58,11 @@ economic conclusion. A new prompt or validator needs a measured follow-up.
 
 The legacy status `not_implemented` also represents a missing observation for
 an implemented grader. It is not zero quality, and it must not be reported as a pass.
-Phase 4's operational status reflects its recovery/ablation gate; the separate
-`live_phase3_latency_gate_met` metric retains the failed speed target.
+The corrected live scorecard passes layers 0/1/2/3/5; layer 4 is unmeasured and
+layer 6 fails because this new model/prompt cohort lacks matched tools/reviewer
+controls. Its `live_phase3_latency_gate_met` metric passes. Historical controls
+are not relabeled as current. Replay has its own operational gate and cannot
+establish a new live result.
 
 ## Ranking protocol
 
@@ -90,7 +103,8 @@ The original terminal-comp metric is 0.4; across-attempt evidence rejection is 1
 The reviewer changed no pages in its paired observation. Its own cost was $0.045584
 and latency 3.37 seconds, so it is opt-in. Separate generated portfolios also differ
 stochastically; their timing difference is not a causal reviewer-overhead estimate.
-The newer 72.645-second run is a separate observation, not a matched optimization study.
+The newer 48.176-second run uses a different model, prompt, and guard set. It is
+a separate observation, not a matched optimization study.
 
 ## Reproduce measurements without provider calls
 
@@ -132,7 +146,7 @@ are not fabricated binary votes; undefined kappa stays null.
 Twenty pages from one non-banker rater are a sanity check, not a validated benchmark.
 
 No completed live judge baseline or measured judge-prompt iteration is present.
-Generation prompts did change from v1 through v4 and their failures are preserved,
+Generation prompts changed from v1 through v13 and their failures are preserved,
 but that is not a substitute for the pending calibration experiment.
 
 ## Iteration trail
@@ -147,6 +161,7 @@ but that is not a substitute for the pending calibration experiment.
 | Recovery and controls | [p4](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md) | Complete output, repair, ablations, separate speed failure |
 | Calibration preparation | [p5](../evals/results/p5-35f1652a84f5bbccaa4e81a5b029b184b3b9d36f/summary.md) | Frozen cases and blind labels; quality unmeasured |
 | Portable report | [p6](../evals/results/p6-2a4312258da10eddc14b4f30e1f9ff3997055080/summary.md) | Complete keyless replay from a clean clone |
-| Shipping verification | [p7](../evals/results/p7-274fd86d73929cfd9da62a1f392e91d75d894a21/summary.md) | 310 tests and keyless replay; independent calibration still unmeasured |
+| Original shipping verification | [p7](../evals/results/p7-274fd86d73929cfd9da62a1f392e91d75d894a21/summary.md) | 310 tests and keyless replay; independent calibration still unmeasured |
+| Corrected sample | [live result](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md) | 324 tests, fresh audited output, narrow guards, visible financials; current controls and calibration unmeasured |
 
 Earlier unsuccessful runs remain under [evals/results](../evals/results/).

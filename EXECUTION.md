@@ -58,6 +58,7 @@ For a deeper inspection, follow the boundary relevant to the question:
 | Which facts did the model actually fetch? | `llm/bindings.py`, `llm/tools.py`, `llm/context.py` |
 | Why did a number or citation fail? | `validation/claims.py`, `validation/numbers.py` |
 | Which explicit margin comparisons are checked? | `validation/comparisons.py`; this is not general semantic verification |
+| Why is an exclusive theme claim rejected? | `validation/theme_scope.py` limits recognized exclusivity wording when buyer history is partial; it is not an exhaustive language check |
 | Where do visible deal financials come from? | `report/facts.py` resolves cited source rows; templates display their stated values |
 | How is feedback attached to a rejected draft? | `validation/repair.py` |
 | Why did a request wait or stop? | `llm/recording.py`, `llm/budget.py`, `llm/client.py` |
