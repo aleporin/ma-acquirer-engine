@@ -6,21 +6,53 @@ writes the pages, with validation and bounded repair before rendering.
 
 ## Run it
 
-Install [uv 0.12.17](https://docs.astral.sh/uv/getting-started/installation/), then
-run from the repository root:
+Use macOS, Linux, or WSL with Git, curl, make, and internet access. No Python
+installation or API key is needed beforehand.
+
+**1. Get the project.** With access to this private repository:
+
+```sh
+git clone https://github.com/aleporin/ma-acquirer-engine.git
+cd ma-acquirer-engine
+```
+
+Already downloaded it? Open a terminal in the folder containing this README and
+`Makefile`, not its parent folder.
+
+**2. Install the pinned runner.** This uses the official
+[standalone uv installer](https://docs.astral.sh/uv/getting-started/installation/)
+and avoids pip/pyenv setup:
+
+```sh
+curl -LsSf https://astral.sh/uv/0.12.17/install.sh | env UV_INSTALL_DIR="$HOME/.local/bin" sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+**3. Generate the report.** In the same terminal:
 
 ```sh
 make run
 ```
 
-This installs the locked dependencies and Python 3.12.14 if needed, then replays
-recorded model responses **without an API key or provider calls**. Installation
-needs internet. Use macOS, Linux, or WSL.
+The first run downloads Python 3.12.14 and locked dependencies automatically.
+It then replays recorded model responses **without API keys or provider calls**,
+while running the current ranking, validation, and rendering code. Expect:
 
-Open the printed `runs/ID/index.html`, or the committed
-[sample report](sample_output/index.html). Each output directory contains ten buyer
-pages, linked source evidence, Markdown copies, structured JSON, and replay traces.
-Copy the whole directory to keep citation links working.
+```text
+Report: .../runs/<run-id>/index.html
+Run: .../runs/<run-id>/run.json
+Verified pages: 10/10
+```
+
+Open the printed `index.html` in your browser. Start with the ranked shortlist,
+click a buyer to read its rationale, then follow citations to the source evidence.
+The report works locally without a web server. For an immediate preview before
+setup, open `sample_output/index.html` from the downloaded folder (on macOS:
+`open sample_output/index.html`). GitHub does not render the HTML report itself.
+
+Each output directory also contains Markdown pages, structured JSON, and replay
+traces. Copy the whole directory to keep citation links working. To check the
+implementation afterward, run `make test` and `make lint`.
 
 ### Fresh generation and custom targets
 
