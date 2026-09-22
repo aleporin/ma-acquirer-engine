@@ -45,7 +45,7 @@ See [report, target, and comparison commands](docs/REPORTING.md),
 
 These observations come from committed artifacts, not illustrative outputs.
 [Evaluation results and the iteration trail](docs/EVALS.md) explain denominators,
-confidence intervals, live versus replay evidence, and unfinished gates.
+confidence intervals, live versus replay evidence, and unmeasured quality checks.
 The saved live run was selected after multiple correction iterations and checked
 against its source evidence. It is not an unbiased reliability estimate, a latency
 distribution, or independent banker calibration.
@@ -90,7 +90,6 @@ stage files: [`select.py`](src/acquirer_engine/stages/select.py) →
 model stages receive required `RuntimeDeps`. The [execution map](docs/EXECUTION.md)
 connects the stages to data, ranking, evidence, replay, and the ten model-support
 modules. Evaluation enters separately through [`evals/command.py`](evals/command.py).
-The structure changes no measured result or model behavior described above.
 
 ## Assumptions and limits
 
@@ -179,7 +178,3 @@ Dagster could coordinate data refresh and evaluation. The structured `run.json`
 contract could serve a Salesforce component without changing scoring or validation;
 typed evidence tools could be exposed over MCP when there is an actual client.
 Those integrations are intentionally not implemented.
-
-For review, start with the [demo](docs/DEMO.md), [execution map](docs/EXECUTION.md), and
-[decision records](docs/DECISIONS.md). The [submission guide](docs/SUBMISSION.md)
-identifies the evidence and the remaining human checks.

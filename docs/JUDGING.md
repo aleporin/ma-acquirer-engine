@@ -1,6 +1,6 @@
 # Judges and calibration
 
-Phase 5 evaluates saved rationale pages. It does not generate another portfolio.
+Judging evaluates saved rationale pages without generating another portfolio.
 The offline implementation and blind packet are available; live judge quality,
 human agreement, and prompt improvement remain unmeasured.
 
@@ -39,7 +39,8 @@ The cohort uses two complete ten-buyer runs from the same generation revision:
 one with portfolio review and one without it. Ten paired pre-review pages are
 also preserved for measurement, but do not require additional human labels.
 These historical pages are distinct from the newer default-generation latency
-measurement in ROUTING.md. They are not evidence of current generation speed.
+measurement in [ROUTING.md](ROUTING.md). They are not evidence of current
+generation speed.
 
 To prepare a new corpus in a checkout without an existing packet:
 
@@ -115,10 +116,6 @@ small corpus are exploratory, not held-out validation.
 
 Layer 3 checks the default cohort against the configured identification target.
 Layer 4 checks the configured overall kappa target for both judges, complete
-observations, and available confidence intervals. A poor result remains a poor
-result. The legacy `not_implemented` scorecard status denotes an absent judge
-observation when no judge archive is supplied. CI remains offline layers 0–2.
-
-The phase exit still requires completed blind labels, a measured judge baseline,
-and a versioned prompt iteration with a scorecard diff or documented null result.
-No paid measurement or prompt improvement is claimed by the offline tests.
+observations, and available confidence intervals. The legacy `not_implemented`
+scorecard status denotes an absent judge observation when no judge archive is
+supplied. CI remains offline layers 0–2.

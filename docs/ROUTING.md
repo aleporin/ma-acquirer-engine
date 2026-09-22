@@ -20,7 +20,7 @@ optional escalation route. Reviewer execution remains opt-in.
 Schema and evidence errors return to the analyst with the rejected draft and its
 existing evidence history. Timeouts, exhausted rate-limit retries, missing replay
 responses, and resource limits terminate the page without validation repair.
-The quality-correction runs use an approved $10 admission cap. This permits
+The current generation policy uses a $10 admission cap. This permits
 concurrent worst-case reservations; it is neither expected billing nor a revision
 to the under-$1 measured-cost goal. The end-to-end speed target remains 60 seconds. The output-token ceiling is now
 6,000, leaving headroom after a stronger-model draft reached the earlier limit.
@@ -60,8 +60,8 @@ independent quality calibration remains unmeasured.
 
 ## Historical routing evidence
 
-The [Phase 4 exit scorecard](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md)
-passes the routing gate on the original matched ablation cohort. A
+The [historical routing scorecard](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md)
+passes routing checks on the original matched ablation cohort. A
 [separate historical verification](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/fresh_verification.json)
 recorded 10/10 pages, 79/79 final claims, 72.645s, and $1.022239 under the
 then-current admission configuration. Its 27 responses and outcomes replayed
@@ -152,7 +152,7 @@ Supply the three saved `run.json` paths as repeated `--analyst-run` arguments to
 full pipeline cohort and records reviewer flag rate, escalation rate, and paired
 lexical overlap before/after review. Rubric quality and human calibration remain
 unmeasured without the required independent judgments; lexical overlap alone is
-not a banker's quality judgment. Do not treat an offline fixture pass as a live gate pass.
+not a banker's quality judgment.
 
 In the separate historical 72.645-second run, the 4,000-token output cap completed
 all responses, peaking at 2,529 tokens.
@@ -161,6 +161,6 @@ provider p95 29.769s, counting p95 0.206s, and budget-wait p95 0.014ms.
 No request failed or incurred uncertain usage. Seven first-pass pages became
 ten after three repairs; explicit claims improved from 76/79 to 79/79.
 These figures describe that historical observation, not a causal timing study or
-a reliability estimate for the current writer. That run used the then-approved
+a reliability estimate for the current writer. That run used a
 $3 admission cap; the current cap is $10, with the same distinction between
 reservation limits and measured returned usage.

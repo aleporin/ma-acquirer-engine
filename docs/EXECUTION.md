@@ -71,7 +71,6 @@ references, numbers, and limited prose patterns, not general economic truth.
 - `Deps` contains only settings and logger, available during preparation.
 - `deps.with_runtime(services)` creates `RuntimeDeps`, whose `runtime` is required.
 - Drafting, review, and optional comparison summaries accept `RuntimeDeps`.
-  Their signatures no longer suggest that model resources may be absent.
 - `PageDeps` combines those shared runtime resources with one buyer's `ToolState`.
   `PageSession` retains the conversation for a possible reviewer revision.
 
@@ -150,9 +149,8 @@ construction and execution entry. [JUDGING.md](JUDGING.md) describes the separat
 blind-label, paid-judge, and replay paths.
 
 Evaluation consumes saved runs and does not draft buyer pages. The product path
-does not run graders. Missing independent calibration stays unmeasured. Structural
-cleanup makes no new ranking, generation-quality, or speed claim; see
-[docs/EVALS.md](EVALS.md) for measured limits and retained provenance.
+does not run graders. [EVALS.md](EVALS.md) records the measurements and their limits,
+including the absence of independent calibration.
 
 The optional [weight experiment](RANKING_EXPERIMENT.md) enters through
 `evals/ranking/weight_command.py`. `propose-weights` records one bounded hypothesis
