@@ -1,0 +1,18 @@
+# Exploratory protocol: freeze before inspecting new candidate benchmark results.
+proposal_cutoff: 2018
+selection_years: [2019, 2020, 2021]
+test_end_year: 2024
+seed: 42
+bootstrap_samples: 2000
+confidence: 0.95
+buyer_prior_deals: 20
+buyer_strength: 0.5
+min_multiplier: 0.5
+max_multiplier: 2.0
+max_candidates: 3
+prompt_file: ranking_weights_v1.md
+max_output_tokens: 3000
+max_run_usd: 0.50
+request_timeout_seconds: 120
+run_timeout_seconds: 150
+max_retries: 0
