@@ -22,7 +22,9 @@ passed product target, and an offline replay is not a new live generation.
 
 The corrected live observation and source-based read-through are
 [recorded here](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md).
-Its [scorecard](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/summary.md)
+The [shipping replay scorecard](../evals/results/p7-e9e45db11ab88f824f2ea06a5e5ca4e22663fff4/summary.md)
+passes layers 0/1/2/3/5/6 and leaves 4 unmeasured.
+The separate live [scorecard](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/summary.md)
 contains the ranking intervals and mode-prefixed metrics. The selected
 [replay manifest](../sample_output/manifest.json) binds the sample to its archive.
 Request p95 in this live run was 25.868 seconds; provider p95 was 25.761.
