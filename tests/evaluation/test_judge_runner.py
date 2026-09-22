@@ -6,6 +6,7 @@ Does not own: Live judge quality or provider credentials.
 
 import json
 from pathlib import Path
+from typing import Literal
 
 import pytest
 from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart
@@ -144,3 +145,29 @@ async def test_changed_plan_or_missing_replay_response_never_calls_a_provider(
         json.loads(line) for line in (tmp_path / "replay/trace.jsonl").read_text().splitlines()
     ]
     assert any(event["event"] == "judge_failed" for event in trace)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("dirty", [True, False])
+@pytest.mark.parametrize("mode", ["live", "test"])
+async def test_judge_replay_preserves_original_source_provenance(
+    tmp_path: Path, deps: Deps, dirty: bool, mode: Literal["live", "test"]
+) -> None:
+    plan = plan_for_test(deps)
+    calls: list[str] = []
+    original = await execute(
+        plan,
+        tmp_path / "original",
+        {role: judge_model(calls) for role in plan.config.roles},
+        deps.logger,
+        mode=mode,
+        git_sha="a" * 40,
+        source_dirty=dirty,
+    )
+    result = await replay(tmp_path / "original", tmp_path / "replay", deps.logger)
+    assert result.mode == "replay" and result.observation_mode == mode
+    assert result.git_sha == original.git_sha
+    assert result.source_dirty is dirty
+    assert len(calls) == 12 and result.cost_usd == 0
+    saved = json.loads((tmp_path / "replay/run.json").read_text())
+    assert saved["git_sha"] == original.git_sha and saved["source_dirty"] is dirty

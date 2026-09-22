@@ -4,6 +4,8 @@ Owns: Metric arithmetic and the boundary between replay and live evidence.
 Does not own: Claims about provider quality from fixture text.
 """
 
+import pytest
+
 from acquirer_engine.settings import LayerSpec, Settings
 from evals.graders import distinct, ops, stability
 from tests.fixtures.observations import observation
@@ -45,3 +47,20 @@ def test_validation_stability_requires_all_five_runs_and_preserves_ranking_failu
         "replay_validation_pass_5"
         not in stability.with_validation(ranking, runs[:1], settings.analyst).metrics
     )
+
+
+@pytest.mark.parametrize("failed_index", [0, 5, None])
+def test_extra_stability_runs_cannot_hide_observed_failures(
+    settings: Settings, failed_index: int | None
+) -> None:
+    layer = LayerSpec(id=5, name="stability")
+    ranking = stability.grade(layer, stability.RankingStability(1, 1, 1, 2))
+    runs = [observation(settings, i) for i in range(6)]
+    if failed_index is not None:
+        run = runs[failed_index]
+        bad = run.pages[0].model_copy(update={"status": "failed", "rationale": None})
+        runs[failed_index] = run.model_copy(update={"pages": [bad, run.pages[1]]})
+    result = stability.with_validation(ranking, runs, settings.analyst)
+    assert result.status == ("passed" if failed_index is None else "failed")
+    assert result.metrics["replay_validation_runs"].value == 6
+    assert result.metrics["replay_validation_pass_6"].value == (1 if failed_index is None else 0.5)
