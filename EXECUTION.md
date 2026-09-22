@@ -1,179 +1,167 @@
 # Follow one run
 
-Read the product path in this order. Start with the inputs and outputs of each
-stage; follow a boundary implementation only when its behavior needs explaining.
+Start with the four files in [`stages/`](src/acquirer_engine/stages). Their names
+match the product workflow: **select → draft → review → render**. Review is
+optional. [`pipeline.py`](src/acquirer_engine/pipeline.py) connects the stages;
+[`cli.py`](src/acquirer_engine/cli.py) accepts the request and displays the result.
 
-| Order | Entry point | What it owns |
-| --- | --- | --- |
-| 1 | [`cli.py`](src/acquirer_engine/cli.py): `build_app` | Command registration and saved-run inspection |
-| 2 | [`run_command.py`](src/acquirer_engine/run_command.py): `run_product` | Flags, settings, run identity, logger, display, and exit status |
-| 3 | [`selection.py`](src/acquirer_engine/selection.py): `prepare_selection` | Target YAML/flag precedence, saved feedback, ranking, and evidence packs |
-| 4 | [`pipeline.py`](src/acquirer_engine/pipeline.py): `execute_run`, `execute_prepared` | Select current or archived inputs, freeze the run, execute the portfolio, and persist results |
-| 5 | [`bootstrap.py`](src/acquirer_engine/bootstrap.py): `model_resources`, `build_services` | Build shared clients, agents, tools, ledger, cache, and trace before buyer tasks start |
-| 6 | [`llm/analyst.py`](src/acquirer_engine/llm/analyst.py): `run_analysts`, `analyze_one` | Concurrent buyer tasks and each page's complete draft/validation/recovery loop |
-| 7 | [`report/render.py`](src/acquirer_engine/report/render.py): `render_report` | Public HTML, buyer Markdown, and canonical evidence tables |
-
-This is a reading order, not a stack trace: `run_product` calls the pipeline,
-which calls selection before executing the prepared portfolio. After the pipeline
-returns, the command renders the saved result and prints its paths.
-
-```mermaid
-flowchart TD
-    CLI[Command: settings, run ID, logger] --> PREP[Resolve target and feedback, rank, build evidence packs]
-    PREP --> ARCHIVE{Matching portable replay?}
-    ARCHIVE -->|yes| FROZEN[Use verified archived inputs and responses]
-    ARCHIVE -->|no bundle| SETUP[Freeze inputs and build shared resources]
-    FROZEN --> SETUP
-    SETUP --> BATCH[Warm first response, then concurrent buyer tasks]
-    BATCH --> DRAFT[Analyst selects evidence tools and drafts one page]
-    DRAFT --> CHECK{Schema and evidence valid?}
-    CHECK -->|yes| PAGE[Verified page]
-    CHECK -->|no: correction available| REPAIR[Return errors with the rejected draft]
-    REPAIR --> DRAFT
-    CHECK -->|no: limit reached| FAILED[Failed page with specific errors]
-    PAGE --> REVIEW{Review enabled?}
-    FAILED --> REVIEW
-    REVIEW -->|yes| VERDICT[Portfolio verdict and at most one revalidated revision]
-    REVIEW -->|no| SAVE[Write run.json]
-    VERDICT --> SAVE
-    SAVE --> REPORT[Render linked HTML and buyer Markdown]
-    REPORT --> EXIT[Print report path, verified count, and exit status]
+```text
+cli.py:run_product
+  → pipeline.py:execute_run
+      → stages/select.py:select_buyers
+      → factory.py:model_resources
+      → pipeline.py:execute_prepared
+          → factory.py:build_services
+          → stages/draft.py:draft_pages
+          → stages/review.py:review_portfolio
+          → save run.json
+  → stages/render.py:render_report
+  → print paths and exit status
 ```
 
-The diagram summarizes control flow. A portable bundle mismatch fails rather
-than using different responses. Provider failures and resource limits end that
-page directly; they do not enter validation repair. Other buyers continue.
-The CLI exits nonzero if any page or the portfolio review fails.
+This outlines the live path; `execute_prepared` calls `build_services` before
+launching the model stages. Replay supplies archived responses without creating
+a provider client. The CLI renders only after the pipeline returns its result.
 
-## The complete buyer loop in one file
+## The four stages
 
-[`llm/analyst.py`](src/acquirer_engine/llm/analyst.py) contains the execution steps
-in reading order:
+| Stage | Inputs and decision | Output |
+| --- | --- | --- |
+| [`select.py`](src/acquirer_engine/stages/select.py): `select_buyers` | Resolve target YAML/flags, load transactions and saved feedback, fit features, score buyers, build bounded evidence | Ranked buyers and their evidence packs |
+| [`draft.py`](src/acquirer_engine/stages/draft.py): `draft_pages`, `draft_one` | Warm one response, fan out buyer tasks, let each analyst retrieve evidence and draft, validate and route failures | A verified page or an explicit failed-page result for every buyer |
+| [`review.py`](src/acquirer_engine/stages/review.py): `review_portfolio` | When enabled, request portfolio verdicts and at most one revalidated revision per flagged page | Final pages plus separate reviewer outcomes; disabled review passes pages through |
+| [`render.py`](src/acquirer_engine/stages/render.py): `render_report` | Resolve visible citations and canonical deal facts, then project public fields into templates | HTML and buyer Markdown; internal working notes remain in structured JSON |
 
-1. `run_analysts` starts one buyer to warm the shared prefix, then runs the other
-   tasks behind the concurrency semaphore and preserves ranked output order.
-2. `analyze_one` creates buyer-local evidence state, chooses the normal or sparse
-   agent, and drives generation until the page passes or recovery stops.
-3. `generate` runs the injected agent, retains its messages, and records the
-   validation outcome and claim counts for that attempt.
-4. `next_route` turns the outcome and recovery limits into pass, repair,
-   escalation, or a failed page with a banner.
-5. `repair_history` returns precise errors against the rejected output call while
-   preserving its draft and retrieved evidence for the next attempt.
+`factory.py` owns provider lifetime and constructs agents, evidence tools,
+recording, ledger, cache, and trace once. A buyer task receives those resources;
+it does not create a new client. The pipeline freezes input snapshots and saves
+outcomes independently of presentation.
 
-The shipped configuration allows one same-tier repair, with escalation disabled.
-The optional escalation route remains configurable; it is not exercised by the
-selected sample. The portfolio reviewer is also disabled by default and lives
-in its own module. These choices and their measurements are in [ROUTING.md](ROUTING.md).
+## One buyer's draft and recovery
 
-Agent construction stays outside this loop. `llm/agents.py` declares typed tool
-bindings and the output validator; `validation/claims.py` performs deterministic
-checks on the supplied evidence. A model chooses tools and writes a draft; code
-checks it and selects the next route. No buyer creates a provider client.
+The full loop is in [`stages/draft.py`](src/acquirer_engine/stages/draft.py):
 
-## Thirteen model-stage modules
+1. `draft_pages` primes the shared prompt prefix, then uses a semaphore to bound
+   concurrent tasks while retaining ranked output order.
+2. `draft_one` creates buyer-local evidence state, selects the normal or sparse
+   agent, and keeps the attempt history until the page passes or recovery stops.
+3. `generate` runs the injected agent and captures its messages, validation
+   outcome, and explicit claim counts.
+4. `next_route` selects pass, repair, escalation, or a failed-page banner from
+   the outcome and configured limits.
+5. `repair_history` attaches precise errors to the rejected output call while
+   preserving the draft and retrieved evidence for the next attempt.
 
-The package groups execution, evidence, provider, and replay responsibilities.
-Small independent boundaries remain separate when combining them would couple
-unrelated callers.
+The current configuration permits one same-tier repair, with escalation disabled.
+The optional reviewer is also disabled by default. [ROUTING.md](ROUTING.md)
+separates these settings from historical recovery and ablation measurements.
+Provider failures and resource limits stop the affected page without entering
+validation repair. Other buyers continue. The CLI exits nonzero if any page or
+portfolio review fails.
 
-| Module | Responsibility |
-| --- | --- |
-| [`analyst.py`](src/acquirer_engine/llm/analyst.py) | Batch scheduling, one-page execution, route decisions, and repair feedback |
-| [`agents.py`](src/acquirer_engine/llm/agents.py) | Agent declarations, five typed tool bindings, output validation, and reviewer coverage checks |
-| [`tools.py`](src/acquirer_engine/llm/tools.py) | Deterministic evidence queries, query schemas, buyer-local provenance, and saved continuation state |
-| [`reviewer.py`](src/acquirer_engine/llm/reviewer.py) | Optional portfolio critique and one revalidated revision per flagged page |
-| [`recording.py`](src/acquirer_engine/llm/recording.py) | Shared request boundary: deadlines, request identity, live/replay selection, usage, and failure capture |
-| [`provider.py`](src/acquirer_engine/llm/provider.py) | Provider-client construction, retry eligibility, schema compatibility, truncation, and safe error messages |
-| [`cost.py`](src/acquirer_engine/llm/cost.py) | Returned-usage accounting, admission reservations, token estimates, and uncertain charges |
-| [`results.py`](src/acquirer_engine/llm/results.py) | Typed page attempts, final pages, reviewer verdicts, and run artifacts |
-| [`trace.py`](src/acquirer_engine/llm/trace.py) | Append-only events and exact historical response/failure matching |
-| [`archive.py`](src/acquirer_engine/llm/archive.py) | Frozen input snapshots and safe run-directory selection |
-| [`cache.py`](src/acquirer_engine/llm/cache.py) | Content-addressed request identity and atomic response reuse |
-| [`config.py`](src/acquirer_engine/llm/config.py) | Typed analyst execution settings, independent of runtime construction |
-| [`framing.py`](src/acquirer_engine/llm/framing.py) | Escaped JSON data boundaries shared by analyst, comparison, and judge prompts |
+The agent's output validator is registered in `llm/agents.py` and calls
+`validation/claims.py`. A model chooses tools and writes a draft; deterministic
+checks decide whether to accept it or return errors. This boundary checks schema,
+references, numbers, and limited prose patterns, not general economic truth.
 
-Shared state reaches code through `Deps.runtime`. Each buyer has its own
-`ToolState`, accessed by the framework through `PageDeps`. The verifier sees only
-that buyer's core evidence and actual returned tool evidence. Its `PageSession`
-retains the conversation for a possible reviewer revision. These local state
-types sit beside the queries in `llm/tools.py`; they do not create shared clients.
+## Dependencies before and after resource construction
 
-## Follow a fact or failure
+[`deps.py`](src/acquirer_engine/deps.py) makes the lifecycle explicit:
+
+- `Deps` contains only settings and logger, available during preparation.
+- `deps.with_runtime(services)` creates `RuntimeDeps`, whose `runtime` is required.
+- Drafting, review, and optional comparison summaries accept `RuntimeDeps`.
+  Their signatures no longer suggest that model resources may be absent.
+- `PageDeps` combines those shared runtime resources with one buyer's `ToolState`.
+  `PageSession` retains the conversation for a possible reviewer revision.
+
+Buyer-local state lives beside evidence queries in `llm/tools.py`. The verifier
+receives only that buyer's initial pack and the evidence actually returned by its
+tools. One buyer's mutable evidence is not shared with another buyer.
+
+## Domain modules behind the stages
 
 | Question | Where to look |
 | --- | --- |
-| Why this buyer, score, and conviction? | `features/acquirer.py`, `ranking/signals.py`, and `ranking/scorer.py`; the scorer also owns shrinkage and conviction |
-| Which facts were initially supplied? | `evidence/pack.py` |
-| Which facts did the model actually fetch? | Typed bindings in `llm/agents.py`; queries and recorded provenance in `llm/tools.py` |
+| How is the CSV validated and its quality measured? | [`data.py`](src/acquirer_engine/data.py): typed transactions, loading, identity checks, and quality report |
+| How is eligible history fitted? | [`ranking/features.py`](src/acquirer_engine/ranking/features.py): buyer histories, sector similarity, and tag weights |
+| Why this score and conviction? | [`ranking/scorer.py`](src/acquirer_engine/ranking/scorer.py): signals, shrinkage, weights, ordering, and conviction |
+| What evidence is initially available or later resolved? | [`evidence/pack.py`](src/acquirer_engine/evidence/pack.py): stable IDs, statistics, core packs, and evidence lookup |
 | Why did a number or citation fail? | `validation/claims.py`, `validation/numbers.py` |
-| Which qualitative phrasing is checked? | `validation/prose.py`: recognized margin inversions, partial-history theme exclusivity, and configured boilerplate |
-| Where do visible deal financials come from? | `report/evidence.py` resolves source rows and statistics before rendering |
-| Why did a request wait or stop? | `llm/recording.py`, `llm/cost.py`, `llm/provider.py` |
-| What did a returned response cost? | `llm/cost.py` and the call entries in `run.json` |
-| Where are conversation and continuation state? | `llm/tools.py` and local `trace.jsonl`, written by `llm/trace.py` |
+| Which qualitative wording is checked? | `validation/prose.py`: recognized margin inversions, partial-history theme exclusivity, and configured boilerplate |
+| Where do visible financial facts come from? | `stages/render.py` resolves source rows/statistics before rendering [`templates/`](src/acquirer_engine/templates) |
+| How are frozen inputs and portable replay selected? | [`replay.py`](src/acquirer_engine/replay.py): snapshots, run history, integrity manifests, and strict policy matching |
 
 The core pack prioritizes exact target-sector deals before recency within the row
 and byte caps. Closed, Pending, and resolved counts retain full-history scope even
 when displayed rows are truncated. Tools remain necessary for Closed valuation
 comps and population sector benchmarks.
 
-The narrow prose guards are not general semantic verification. Passing numeric
-and reference checks does not certify an investment thesis. Structural
-consolidation changes neither that proof boundary nor the measured ranking,
-speed, cost, or independent-calibration limitations in [docs/EVALS.md](docs/EVALS.md).
+## Ten model-support modules
 
-## Live, cache replay, and historical replay
+Workflow stages are outside `llm/`; this package supplies their reusable boundaries.
+
+| Module | Responsibility |
+| --- | --- |
+| [`agents.py`](src/acquirer_engine/llm/agents.py) | Agent declarations, five typed tool bindings, output validation, and reviewer coverage checks |
+| [`tools.py`](src/acquirer_engine/llm/tools.py) | Evidence queries, query schemas, buyer-local provenance, and continuation state |
+| [`recording.py`](src/acquirer_engine/llm/recording.py) | Shared request boundary: deadlines, request identity, live/replay choice, usage, and failures |
+| [`provider.py`](src/acquirer_engine/llm/provider.py) | Client creation, retry eligibility, output-schema compatibility, truncation, and safe error messages |
+| [`cost.py`](src/acquirer_engine/llm/cost.py) | Returned-usage accounting, admission reservations, token estimates, and uncertain charges |
+| [`results.py`](src/acquirer_engine/llm/results.py) | Typed attempts, pages, reviewer verdicts, and run artifacts |
+| [`trace.py`](src/acquirer_engine/llm/trace.py) | Append-only events and exact historical response/failure matching |
+| [`cache.py`](src/acquirer_engine/llm/cache.py) | Content-addressed request identity and atomic response reuse |
+| [`config.py`](src/acquirer_engine/llm/config.py) | Typed execution policy, separate from constructing resources |
+| [`framing.py`](src/acquirer_engine/llm/framing.py) | Escaped JSON data boundaries shared by drafting, comparison, and judging |
+
+## Live and replay
 
 - `acquirers run --fresh`: prepare current inputs and make provider requests.
-- `acquirers run --replay`: prepare current inputs and use matching response-cache
-  entries when no bundle is installed. A committed portable bundle is checked
-  first for exact inputs, feedback, prompt, policy, and file integrity. A mismatch
-  fails without a provider fallback.
-- `acquirers replay RUN_ID`: load frozen inputs from the selected `snapshot.json`
-  and responses from `trace.jsonl`, then enter `execute_prepared` with no client.
+- `acquirers run --replay`: first check an installed portable bundle for exact
+  input, feedback, prompt, policy, and file-integrity agreement. If no bundle is
+  installed, use matching response-cache entries. A mismatch has no paid fallback.
+- `acquirers replay RUN_ID`: load that run's frozen `snapshot.json` and recorded
+  `trace.jsonl`, then execute with no provider client.
 
-`llm/archive.py` owns frozen inputs; `llm/trace.py` matches historical responses
-to conversations. `llm/cache.py` owns content-addressed response reuse. These are
-separate contracts. Historical replay writes a new run and retains lineage to the
-original; it does not overwrite the source archive or run old code. Failed
-requests replay their typed error. Only explicit archived failure evidence can
-restore legacy failures. Missing responses never become invented answers or usage.
+`replay.py` owns saved inputs and bundle selection; `llm/trace.py` matches original
+responses to conversations; `llm/cache.py` owns reusable responses by request key.
+Those remain different contracts. Historical replay writes a new run with lineage,
+never overwrites the original, and does not run old code. Explicit failures replay
+as failures. Missing responses never become invented answers or usage.
 
 ## Evaluation takes another path
 
 `acquirers eval` enters [`evals/command.py`](evals/command.py): `run_evaluation`.
 The command assembles `PreparedEvaluation`, calls `evaluate` in
-[`evals/harness.py`](evals/harness.py) to run the selected graders, and writes the
-scorecard through `evals/scorecard.py`.
-The preparation modules are named for what they measure:
+[`evals/harness.py`](evals/harness.py), and writes the scorecard through
+`evals/scorecard.py`. Preparation modules describe what they measure:
 
 | Preparation | Module and function |
 | --- | --- |
-| Ranking holdout, baselines, and ablations | `evals/ranking/prepare.py`: `prepare_ranking` |
+| Ranking holdout, baselines, ablations | `evals/ranking/prepare.py`: `prepare_ranking` |
 | Evidence fixtures and groundedness | `evals/groundedness.py`: `prepare_groundedness` |
-| Saved analyst outcomes and run-cohort checks | `evals/analyst.py`: `prepare_analyst`, `load_runs` |
+| Saved analyst outcomes and cohort checks | `evals/analyst.py`: `prepare_analyst`, `load_runs` |
 | Recovery and ablation observations | `evals/routing.py`: `prepare_routing` |
 | Independent judge observations | `evals/judges/grading.py`: `prepare_judges` |
 
-Supplied run files are observations; evaluation never drafts buyer pages. The
-product path does not execute graders. Paid judge execution remains separate
-from report generation, and missing human calibration stays explicitly unmeasured.
-Evaluation tests live in `tests/evaluation`; shared factories and hand-built
-ranking/rationale examples live in `tests/fixtures`.
+Judge corpus and evidence preparation live in `evals/judges/prepare.py`; typed
+cases, verdicts, and outcomes live in `schema.py`; `command.py` owns provider
+construction and execution entry. [JUDGING.md](JUDGING.md) describes the separate
+blind-label, paid-judge, and replay paths.
 
-## Display, preferences, and comparison
+Evaluation consumes saved runs and does not draft buyer pages. The product path
+does not run graders. Missing independent calibration stays unmeasured. Structural
+cleanup makes no new ranking, generation-quality, or speed claim; see
+[docs/EVALS.md](docs/EVALS.md) for measured limits and retained provenance.
 
-`report/render.py` projects public fields into small Jinja templates.
-`report/evidence.py` resolves visible citations and deal financials before files
-are written. Working notes remain in the structured run, never the public pages.
+## Preferences and comparison
 
-`selection.py` owns target YAML/flag precedence and the common input-preparation
-path. `feedback/state.py` saves named exclusions; `feedback/ranking.py` applies
-a disclosed similarity penalty after the base scorer.
+`stages/select.py` is the shared input path for product runs and comparisons.
+`feedback/state.py` saves exclusions; `feedback/ranking.py` applies a disclosed
+similarity penalty after the base scorer.
 
-`comparison/command.py` prepares two selections, computes differences through
-`comparison/ranking.py`, and saves a table. Optional `comparison/summary.py` uses
-the existing recorded model boundary, with one request and no output retry.
-`comparison/results.py` keeps summary failures separate from valid ranking facts.
-Default comparison never constructs a provider client.
+`comparison/command.py` selects two target portfolios, computes their differences
+through `comparison/ranking.py`, and saves a table. Optional `comparison/summary.py`
+uses the existing recorded model boundary, with one request and no output retry.
+`comparison/results.py` retains summary failures separately from valid ranking
+facts. Default comparison never constructs a provider client.

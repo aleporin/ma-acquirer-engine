@@ -8,23 +8,25 @@ human agreement, and prompt improvement remain unmeasured.
 
 Follow one path through the code:
 
-1. `prepare-judges` calls `evals/judges/prepare.py`. `sources.py` checks original
-   generation archives; `facts.py` resolves referenced evidence from their frozen
-   inputs. `cases.py` seals the corpus and masks identification inputs.
+1. `prepare-judges` enters `evals/judges/command.py` and calls `prepare.py`, which
+   checks original generation archives, resolves evidence from frozen inputs,
+   and requires a matched cohort. `cases.py` seals and masks the corpus.
 2. `labels.py` exports a shuffled packet and validates complete human votes.
    Source run, reviewer setting, generation prompt, and judge outputs are hidden.
 3. `eval-judges` calls `command.py`. `plan.py` freezes exact prompts, source
    lineage, candidate order, model prices, output schemas, and human labels.
    Labels and expected identification answers never enter provider requests.
-4. `clients.py` creates each provider once. `runtime.py` schedules isolated
+4. `command.py` creates each provider once. `runtime.py` schedules isolated
    judgments through `recording.py`, sharing a budget, cache, trace, and ledger
    through `JudgeDeps`. Failed requests do not become valid Unknown votes.
 5. `reporting.py` computes rates and reviewer comparisons; `calibration.py`
    computes kappa and buyer-cluster bootstrap intervals. `evals/judges/grading.py`
    adds those saved observations to offline scorecards.
 
-Data contracts live in `schema.py`, `plan.py`, and `results.py`; runtime policy
-lives in `config/judges.yaml`. These modules belong to evaluation, not generation.
+Typed cases, verdicts, and execution outcomes live in `schema.py`; frozen job
+plans live in `plan.py`. Runtime policy lives in `config/judges.yaml`. These modules
+belong to evaluation, not generation. The product stages have their own entry
+map in [EXECUTION.md](EXECUTION.md).
 
 ## Blind labeling
 

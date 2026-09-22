@@ -1,23 +1,30 @@
 # Architecture decisions
 
-## 2026-09-22 — Group code around the execution readers need to follow
+## 2026-09-22 — Expose the workflow as four named stages
 
-Context: the buyer loop was spread across separate scheduling, attempt, route,
-and repair modules, while evaluation preparation still used build-phase names.
-Decision: place the complete buyer loop in `llm/analyst.py`; group agent bindings,
-evidence state, provider adaptation, cost controls, and trace replay with their
-related implementations. Keep ranking policy in the scorer, prose guards together,
-and report evidence resolution in one module. Move target precedence into
-selection and command inspection into the CLI. Name evaluation preparation for
-ranking, groundedness, analyst outcomes, routing, and judges.
+Context: consolidating small helpers reduced file hopping, but the product stages
+still lived among runtime utilities and the command boundary was split.
+Decision: expose select, draft, review, and render under `stages/`; keep command
+handling in `cli.py`, orchestration in `pipeline.py`, and resource construction
+in `factory.py`. Group typed rows/loading/quality in `data.py`, fitted history in
+`ranking/features.py`, scoring policy in `ranking/scorer.py`, and evidence IDs,
+packs, and lookup in `evidence/pack.py`. `replay.py` owns snapshots, run history,
+and portable archive checks; request traces and response caches retain distinct
+contracts. Templates live at the package root.
+
+`Deps` now carries settings and logger only. `with_runtime` creates `RuntimeDeps`
+with required `AnalystServices`; model stages and page dependencies require that
+type rather than checking an optional runtime repeatedly. Evaluation preparation
+uses measurement names. Judge source/evidence preparation sits in `prepare.py`,
+contracts in `schema.py`, and provider construction in `command.py`.
 Alternatives considered: retain one small file per helper, or combine the entire
 pipeline into a single module.
-Consequence: fewer files are needed to follow one outcome; some modules are longer.
-Functions remain bounded, and provider construction, typed results, frozen inputs,
-response identity, and data framing retain separate responsibilities. This is a
-structural change: prompts, model policy, scoring, validation behavior, archive
-contracts, and historical measurements remain unchanged. It makes no new claim
-about generation quality, latency, predictive lift, or independent calibration.
+Consequence: readers can find the workflow first and inspect supporting boundaries
+when needed. Some modules are longer; files and functions retain their configured
+limits. Model support remains separate from stage ordering. This is a structural
+change: prompts, models, scoring, validation rules, archive formats, sample output,
+and historical measurements remain unchanged. It makes no new claim about
+quality, latency, predictive lift, or independent calibration.
 
 ## 2026-09-22 — Use the stronger writer for output corrections
 
@@ -99,7 +106,7 @@ Consequence: behavior has explicit stop conditions and can be replayed.
 
 Context: model responses and tool results cross validation boundaries.
 Decision: use Pydantic AI for typed tools, outputs, validators, usage limits,
-and local test models. Construct providers in bootstrap; wrap recording at
+and local test models. Construct providers in `factory.py`; wrap recording at
 the model boundary. Inject shared clients, ledger, cache, and logger.
 Alternatives considered: raw SDK orchestration throughout the application or
 another framework with an additional state abstraction.

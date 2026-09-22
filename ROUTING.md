@@ -2,6 +2,13 @@
 
 ## Current generation policy
 
+The execution loop is in [`stages/draft.py`](src/acquirer_engine/stages/draft.py):
+`draft_pages` schedules buyers; `draft_one`, `generate`, `next_route`, and
+`repair_history` drive each page. Optional portfolio review is in
+[`stages/review.py`](src/acquirer_engine/stages/review.py).
+[`factory.py`](src/acquirer_engine/factory.py) constructs shared services once;
+the pipeline binds them into required `RuntimeDeps` before these stages run.
+
 The analyst now uses the stronger Opus 5 model previously reserved for escalation,
 as configured in `config/models.yaml`. Escalation is disabled because there is no
 stronger configured tier. The current route is
