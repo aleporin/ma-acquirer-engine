@@ -23,11 +23,11 @@ Base score before feedback: {{ '%.3f'|format(ranking.signals.values()|sum(attrib
 
 {{ rationale.valuation_context.summary|md }}
 
-Comparable evidence: {% for comp in rationale.valuation_context.comps %}{{ cite(comp.evidence_id) }} {% endfor %}
+Comparable evidence: {% for comp in rationale.valuation_context.comps %}{% if not loop.first %} {% endif %}{{ cite(comp.evidence_id) }}{% endfor %}
 
 ## Risks
 
-{% for risk in rationale.risk_flags %}- **{{ risk.category|replace('_', ' ')|capitalize }} · {{ risk.basis }}**: {{ risk.description|md }} {% for id in risk.evidence_ids %}{{ cite(id) }} {% endfor %}
+{% for risk in rationale.risk_flags %}- **{{ risk.category|replace('_', ' ')|capitalize }} · {{ risk.basis }}**: {{ risk.description|md }}{% for id in risk.evidence_ids %} {{ cite(id) }}{% endfor %}
 {% endfor %}
 ## Conviction · {{ ranking.conviction }}
 
