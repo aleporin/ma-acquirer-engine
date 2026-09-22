@@ -1,0 +1,25 @@
+version: judges_v1
+roles: [judge_a, judge_b]
+seed: 20260921
+candidate_count: 10
+calibration_runs: 2
+bootstrap_samples: 2000
+confidence: 0.95
+identification_accuracy_min: 0.8
+kappa_min: 0.6
+concurrency: 4
+max_output_tokens: 2048
+request_overhead_tokens: 1024
+sdk_retries: 0
+request_timeout_seconds: 120
+run_timeout_seconds: 900
+max_run_usd: 10
+openai_reasoning_effort: low
+google_thinking_level: LOW
+identification_prompt: identification_v1.md
+rubric_prompts:
+  specificity: specificity_v1.md
+  thesis_evidence_link: thesis_evidence_link_v1.md
+  risk_relevance: risk_relevance_v1.md
+  conviction_defensibility: conviction_defensibility_v1.md
+  banker_tone: banker_tone_v1.md

@@ -15,13 +15,13 @@ from pydantic_ai.usage import RequestUsage
 from acquirer_engine.deps import Deps
 from evals.judges.cases import seal_corpus
 from evals.judges.config import load_judge_config
-from evals.judges.plan import build_plan
+from evals.judges.plan import JudgePlan, build_plan
 from evals.judges.runtime import execute, replay
 from evals.judges.schema import Dimension, HumanLabel
 from tests.evaluation.test_judge_cases import example_case
 
 
-def plan_for_test(deps: Deps):  # type: ignore[no-untyped-def]
+def plan_for_test(deps: Deps) -> JudgePlan:
     root = Path(__file__).resolve().parents[2]
     corpus = seal_corpus([example_case()], seed=7)
     labels = [
@@ -40,7 +40,9 @@ def judge_model(calls: list[str], *, invalid: bool = False) -> FunctionModel:
     async def respond(messages: list[ModelMessage], info: AgentInfo) -> ModelResponse:
         calls.append(str(messages))
         schema = info.output_tools[0].parameters_json_schema
-        answer = {"reason": "The supplied evidence supports the requested criterion."}
+        answer: dict[str, object] = {
+            "reason": "The supplied evidence supports the requested criterion."
+        }
         if "choice" in schema["properties"]:
             answer["choice"] = 999 if invalid else 1
         else:
