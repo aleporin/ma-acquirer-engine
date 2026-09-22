@@ -1,16 +1,17 @@
-"""Resolve report citations against the run's frozen evidence.
+"""Resolve visible report facts and citations against frozen evidence.
 
-Owns: Appendix contents and stable, safe HTML anchors.
-Does not own: Deciding whether a generated claim is valid.
+Owns: Cited deal rows, appendix contents, and stable safe HTML anchors.
+Does not own: Revising prose or deciding whether generated claims are valid.
 """
 
+from dataclasses import dataclass
 from hashlib import sha256
 
 from acquirer_engine.data.schema import Transaction
 from acquirer_engine.errors import DataError
 from acquirer_engine.evidence.pack import Statistic
 from acquirer_engine.llm.archive import RunSnapshot
-from acquirer_engine.llm.results import AnalystRun
+from acquirer_engine.llm.results import AnalystRun, PageResult
 from acquirer_engine.llm.tools import EvidenceTools
 
 
@@ -57,4 +58,30 @@ def appendix(
     return (
         [rows[key] for key in sorted(ids & rows.keys())],
         [stats[key] for key in sorted(ids & stats.keys())],
+    )
+
+
+@dataclass(frozen=True)
+class DealFacts:
+    """Public source rows, kept separate from model-written narrative."""
+
+    precedents: tuple[Transaction, ...]
+    comparables: tuple[Transaction, ...]
+
+
+def deal_facts(snapshot: RunSnapshot, page: PageResult) -> DealFacts:
+    """Resolve rows after the report's evidence appendix has checked references.
+
+    Args:
+        snapshot: Frozen transaction history for this run.
+        page: A page whose citations were checked by the renderer.
+    Returns:
+        Cited source rows, or empty tables for unavailable pages.
+    """
+    if page.status != "verified" or page.rationale is None:
+        return DealFacts((), ())
+    rows = {row.transaction_id: row for row in snapshot.history}
+    return DealFacts(
+        tuple(rows[item.transaction_id] for item in page.rationale.precedent_activity),
+        tuple(rows[item.evidence_id] for item in page.rationale.valuation_context.comps),
     )

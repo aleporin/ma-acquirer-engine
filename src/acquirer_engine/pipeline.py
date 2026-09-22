@@ -22,8 +22,7 @@ from acquirer_engine.llm.results import AnalystRun, PageResult, ReviewResult
 from acquirer_engine.llm.reviewer import review_portfolio
 from acquirer_engine.llm.trace import ResponseArchive
 from acquirer_engine.portable_replay import select_replay
-from acquirer_engine.selection import prepare_selection
-from acquirer_engine.target_input import TargetOverrides
+from acquirer_engine.selection import TargetOverrides, prepare_selection
 
 
 def prepare_inputs(root: Path, deps: Deps) -> tuple[tuple[Transaction, ...], list[CorePack]]:

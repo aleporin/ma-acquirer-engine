@@ -11,11 +11,13 @@ from acquirer_engine.errors import ValidationFailure
 from acquirer_engine.evidence.config import ValidationConfig
 from acquirer_engine.evidence.context import EvidenceContext
 from acquirer_engine.evidence.pack import Statistic
-from acquirer_engine.validation.comparisons import sector_margin_errors
 from acquirer_engine.validation.numbers import scan_numbers
-from acquirer_engine.validation.phrases import banned_phrases
+from acquirer_engine.validation.prose import (
+    banned_phrases,
+    sector_margin_errors,
+    theme_scope_errors,
+)
 from acquirer_engine.validation.schema import AcquirerRationale, Claim
-from acquirer_engine.validation.theme_scope import theme_scope_errors
 
 
 def _claim_errors(

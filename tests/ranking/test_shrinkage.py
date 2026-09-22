@@ -8,7 +8,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from acquirer_engine.ranking.shrinkage import shrink
+from acquirer_engine.ranking.scorer import shrink
 
 
 def test_single_observation_is_pulled_toward_type_prior() -> None:

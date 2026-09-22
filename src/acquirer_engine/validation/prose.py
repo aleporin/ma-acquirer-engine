@@ -1,7 +1,7 @@
-"""Check explicit target-to-sector median margin comparisons.
+"""Check rationale wording against configured phrases and narrow evidence rules.
 
-Owns: A narrow guard against the observed margin-direction inversion.
-Does not own: General semantic verification, peer definitions, or banker judgment.
+Owns: Boilerplate, explicit margin direction, and partial-history theme scope.
+Does not own: Numeric matching or general semantic verification.
 """
 
 import re
@@ -55,3 +55,52 @@ def _explicit_direction(sentence: str) -> str | None:
         if match:
             return match.group(1)
     return None
+
+
+def theme_scope_errors(page: AcquirerRationale, context: EvidenceContext) -> list[str]:
+    """Require complete own-history coverage for recognized exclusive theme prose.
+
+    Args:
+        page: Parsed prose, including the private reasoning summary.
+        context: Actual core and retrieved rows available to this draft.
+    Returns:
+        Repairable errors requesting positive examples instead of exclusivity.
+        Complete coverage lifts this scope restriction, not all semantic checks.
+    """
+    own_ids = {
+        row.transaction_id
+        for row in (*context.core.deals, *context.retrieved_deals, *context.comparable_deals)
+        if row.acquirer == context.core.ranking.acquirer
+    }
+    if len(own_ids) == context.core.total_rows:
+        return []
+    themes = [tag.casefold().replace("-", " ") for tag in context.core.target.tags]
+    errors = []
+    for path, prose in prose_sections(page).items():
+        for sentence in re.split(r"[.!?;]\s+", prose.casefold().replace("-", " ")):
+            if any(theme in sentence for theme in themes) and re.search(
+                r"\bonly\s+(?:through|in|on)\b", sentence
+            ):
+                errors.append(
+                    f"{path}: exclusive theme assertion requires complete buyer history; "
+                    "describe an observed positive example without claiming exclusivity"
+                )
+    return errors
+
+
+def banned_phrases(page: AcquirerRationale, phrases: tuple[str, ...]) -> list[str]:
+    """Return specific field paths for configured boilerplate.
+
+    Args:
+        page: Parsed rationale.
+        phrases: Forbidden phrases from configuration.
+    Returns:
+        Actionable validation errors.
+    """
+    errors = []
+    for path, text in prose_sections(page).items():
+        normalized = " ".join(text.casefold().split())
+        for phrase in phrases:
+            if " ".join(phrase.casefold().split()) in normalized:
+                errors.append(f"{path}: banned phrase '{phrase}'")
+    return errors

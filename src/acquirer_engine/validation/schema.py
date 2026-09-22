@@ -9,7 +9,7 @@ from typing import Annotated, Literal, Self
 from pydantic import BaseModel, ConfigDict, Field, FiniteFloat, ValidationInfo, model_validator
 
 from acquirer_engine.evidence.config import ValidationConfig
-from acquirer_engine.ranking.conviction import Conviction
+from acquirer_engine.ranking.scorer import Conviction
 
 type Text = Annotated[str, Field(min_length=1)]
 type RiskCategory = Literal[

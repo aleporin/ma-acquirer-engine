@@ -1,20 +1,56 @@
-"""Rank acquirers using empirical type priors and explicit contributions.
+"""Score buyers with regularized signals and deterministic conviction.
 
-Owns: Shrinkage, feature weighting, stable ordering, and rank explanations.
-Does not own: Tuning from holdout labels or generating rationale.
+Owns: Shrinkage, feature weighting, conviction, and stable rank explanations.
+Does not own: Feature fitting, holdout tuning, or narrative generation.
 """
 
 from statistics import fmean
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
 from acquirer_engine.data.schema import AcquirerType
 from acquirer_engine.features.acquirer import AcquirerHistory, FittedFeatures
 from acquirer_engine.ranking.config import FeatureName, RankingConfig
-from acquirer_engine.ranking.conviction import Conviction, conviction
-from acquirer_engine.ranking.shrinkage import shrink
 from acquirer_engine.ranking.signals import raw_signals
 from acquirer_engine.ranking.target import TargetProfile
+
+type Conviction = Literal["High", "Medium", "Low"]
+
+
+def conviction(score: float, relevant_deals: int, config: RankingConfig) -> Conviction:
+    """Apply score boundaries and require evidence for high conviction.
+
+    Args:
+        score: Computed score in the unit interval.
+        relevant_deals: Direct or sufficiently similar historical transactions.
+        config: Ordered score boundaries and evidence requirement.
+    Returns:
+        A level independently of every other buyer's assigned level.
+    """
+    if score >= config.high_score and relevant_deals >= config.high_min_relevant:
+        return "High"
+    return "Medium" if score >= config.medium_score else "Low"
+
+
+def shrink(observed: float, count: int, prior: float, strength: float) -> float:
+    """Blend an observed signal with a prior using pseudo-observations.
+
+    Args:
+        observed: Mean signal in the unit interval.
+        count: Number of supporting observations.
+        prior: Empirical mean for this buyer type.
+        strength: Prior pseudo-observation count.
+    Returns:
+        Posterior mean between the observation and prior.
+    Raises:
+        ValueError: Counts, strength, or bounded inputs are invalid.
+    """
+    if count < 0 or strength <= 0 or not 0 <= observed <= 1 or not 0 <= prior <= 1:
+        raise ValueError("Invalid shrinkage arguments")
+    if count == 0:
+        return prior
+    return (observed * count + prior * strength) / (count + strength)
 
 
 class Signal(BaseModel):

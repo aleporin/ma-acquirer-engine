@@ -22,8 +22,8 @@ from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.pipeline import execute_replay, execute_run
 from acquirer_engine.report.render import render_report
+from acquirer_engine.selection import TargetOverrides
 from acquirer_engine.settings import load_settings
-from acquirer_engine.target_input import TargetOverrides
 
 
 def run_product(

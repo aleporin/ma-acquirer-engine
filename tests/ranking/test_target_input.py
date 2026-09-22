@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from acquirer_engine import target_input as module
+from acquirer_engine import selection as module
 from acquirer_engine.errors import DataError
 from acquirer_engine.settings import Settings
 from tests.fixtures.ranking import transaction

@@ -14,8 +14,7 @@ from acquirer_engine.errors import DataError
 from acquirer_engine.features.acquirer import AcquirerHistory, FittedFeatures
 from acquirer_engine.feedback.state import FeedbackState
 from acquirer_engine.ranking.config import RankingConfig
-from acquirer_engine.ranking.conviction import conviction
-from acquirer_engine.ranking.scorer import RankedAcquirer
+from acquirer_engine.ranking.scorer import RankedAcquirer, conviction
 
 
 class FeedbackPolicy(BaseModel):

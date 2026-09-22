@@ -13,8 +13,7 @@ from jinja2 import Environment, PackageLoader, StrictUndefined, select_autoescap
 from acquirer_engine.errors import DataError
 from acquirer_engine.llm.archive import RunSnapshot
 from acquirer_engine.llm.results import AnalystRun
-from acquirer_engine.report.evidence import anchor, appendix
-from acquirer_engine.report.facts import deal_facts
+from acquirer_engine.report.evidence import anchor, appendix, deal_facts
 
 
 def _markdown(value: object) -> str:
