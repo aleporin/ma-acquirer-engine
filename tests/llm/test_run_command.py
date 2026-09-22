@@ -10,6 +10,7 @@ from pathlib import Path
 from shutil import copytree
 
 import pytest
+from rich.text import Text
 from typer.testing import CliRunner
 
 from acquirer_engine.cli import build_app
@@ -53,8 +54,14 @@ def test_replay_writes_failed_page_without_constructing_a_client(
     assert snapshot["settings"]["analyst"]["reviewer_enabled"] is False
 
 
-def test_cli_exposes_explicit_tools_and_reviewer_ablation_flags() -> None:
-    result = CliRunner().invoke(build_app(), ["run", "--help"])
+@pytest.mark.parametrize("force_color", [False, True])
+def test_cli_exposes_explicit_tools_and_reviewer_ablation_flags(force_color: bool) -> None:
+    result = CliRunner().invoke(
+        build_app(),
+        ["run", "--help"],
+        env={"FORCE_COLOR": "1", "CLICOLOR_FORCE": "1"} if force_color else {},
+    )
     assert result.exit_code == 0
-    assert "--no-tools" in result.output
-    assert "--no-reviewer" in result.output
+    output = Text.from_ansi(result.output).plain
+    assert "--no-tools" in output
+    assert "--no-reviewer" in output
