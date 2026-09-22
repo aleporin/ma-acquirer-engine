@@ -1,0 +1,667 @@
+{
+  "stability_runs": 5,
+  "acquirers": [
+    {
+      "acquirer": "Nordic Capital",
+      "acquirer_type": "Financial Sponsor",
+      "score": 0.6000569750193036,
+      "conviction": "Medium",
+      "relevant_deals": 4,
+      "deal_count": 24,
+      "signals": {
+        "completion": {
+          "raw": 1.0,
+          "prior": 0.852634255722491,
+          "posterior": 0.9815792819653114,
+          "weight": 0.12,
+          "contribution": 0.11778951383583737
+        },
+        "deal_type_fit": {
+          "raw": 0.2916666666666667,
+          "prior": 0.23997071717760907,
+          "posterior": 0.2859226722789936,
+          "weight": 0.03,
+          "contribution": 0.008577680168369807
+        },
+        "geography_fit": {
+          "raw": 0.5625,
+          "prior": 0.591918280371807,
+          "posterior": 0.5657686978190897,
+          "weight": 0.08,
+          "contribution": 0.04526149582552717
+        },
+        "profile_fit": {
+          "raw": 0.7436001872557488,
+          "prior": 0.7069765154699497,
+          "posterior": 0.73953089039066,
+          "weight": 0.12,
+          "contribution": 0.0887437068468792
+        },
+        "recency": {
+          "raw": 0.9839965360850667,
+          "prior": 0.9315939473292999,
+          "posterior": 0.9781740262233148,
+          "weight": 0.12,
+          "contribution": 0.11738088314679777
+        },
+        "sector_fit": {
+          "raw": 0.44853420345659717,
+          "prior": 0.3630744752936329,
+          "posterior": 0.43903867810515673,
+          "weight": 0.3,
+          "contribution": 0.131711603431547
+        },
+        "size_fit": {
+          "raw": 0.4600664246050677,
+          "prior": 0.46512406178475096,
+          "posterior": 0.46062838429169917,
+          "weight": 0.17,
+          "contribution": 0.07830682532958887
+        },
+        "tag_fit": {
+          "raw": 0.1925624120030158,
+          "prior": 0.3022906691893238,
+          "posterior": 0.20475444057927222,
+          "weight": 0.06,
+          "contribution": 0.012285266434756333
+        }
+      }
+    },
+    {
+      "acquirer": "Francisco Partners",
+      "acquirer_type": "Financial Sponsor",
+      "score": 0.5884686999057901,
+      "conviction": "Medium",
+      "relevant_deals": 2,
+      "deal_count": 12,
+      "signals": {
+        "completion": {
+          "raw": 1.0,
+          "prior": 0.852634255722491,
+          "posterior": 0.9705268511444982,
+          "weight": 0.12,
+          "contribution": 0.11646322213733978
+        },
+        "deal_type_fit": {
+          "raw": 0.16666666666666666,
+          "prior": 0.23997071717760907,
+          "posterior": 0.18132747676885513,
+          "weight": 0.03,
+          "contribution": 0.0054398243030656535
+        },
+        "geography_fit": {
+          "raw": 0.5416666666666666,
+          "prior": 0.591918280371807,
+          "posterior": 0.5517169894076948,
+          "weight": 0.08,
+          "contribution": 0.04413735915261558
+        },
+        "profile_fit": {
+          "raw": 0.7048419306704291,
+          "prior": 0.7069765154699497,
+          "posterior": 0.7052688476303332,
+          "weight": 0.12,
+          "contribution": 0.08463226171563998
+        },
+        "recency": {
+          "raw": 0.8358715490049438,
+          "prior": 0.9315939473292999,
+          "posterior": 0.8550160286698151,
+          "weight": 0.12,
+          "contribution": 0.1026019234403778
+        },
+        "sector_fit": {
+          "raw": 0.4194258951584697,
+          "prior": 0.3630744752936329,
+          "posterior": 0.4081556111855023,
+          "weight": 0.3,
+          "contribution": 0.12244668335565069
+        },
+        "size_fit": {
+          "raw": 0.5493479635972894,
+          "prior": 0.46512406178475096,
+          "posterior": 0.5325031832347817,
+          "weight": 0.17,
+          "contribution": 0.0905255411499129
+        },
+        "tag_fit": {
+          "raw": 0.38738326293574593,
+          "prior": 0.3022906691893238,
+          "posterior": 0.3703647441864615,
+          "weight": 0.06,
+          "contribution": 0.022221884651187688
+        }
+      }
+    },
+    {
+      "acquirer": "Atrium Health",
+      "acquirer_type": "Strategic",
+      "score": 0.5881629632983332,
+      "conviction": "Medium",
+      "relevant_deals": 3,
+      "deal_count": 3,
+      "signals": {
+        "completion": {
+          "raw": 1.0,
+          "prior": 0.8494505494505494,
+          "posterior": 0.9247252747252747,
+          "weight": 0.12,
+          "contribution": 0.11096703296703296
+        },
+        "deal_type_fit": {
+          "raw": 0.6666666666666666,
+          "prior": 0.21007326007326008,
+          "posterior": 0.43836996336996337,
+          "weight": 0.03,
+          "contribution": 0.0131510989010989
+        },
+        "geography_fit": {
+          "raw": 0.5,
+          "prior": 0.6042124542124542,
+          "posterior": 0.552106227106227,
+          "weight": 0.08,
+          "contribution": 0.04416849816849816
+        },
+        "profile_fit": {
+          "raw": 0.9080084513386999,
+          "prior": 0.7025050302860762,
+          "posterior": 0.805256740812388,
+          "weight": 0.12,
+          "contribution": 0.09663080889748656
+        },
+        "recency": {
+          "raw": 0.36195532425120946,
+          "prior": 0.26463304029558377,
+          "posterior": 0.3132941822733966,
+          "weight": 0.12,
+          "contribution": 0.037595301872807595
+        },
+        "sector_fit": {
+          "raw": 1.0,
+          "prior": 0.38725514235431036,
+          "posterior": 0.6936275711771552,
+          "weight": 0.3,
+          "contribution": 0.20808827135314656
+        },
+        "size_fit": {
+          "raw": 0.3333333333333333,
+          "prior": 0.38566768929569367,
+          "posterior": 0.35950051131451355,
+          "weight": 0.17,
+          "contribution": 0.06111508692346731
+        },
+        "tag_fit": {
+          "raw": 0.08107489440361897,
+          "prior": 0.46715391275621926,
+          "posterior": 0.2741144035799191,
+          "weight": 0.06,
+          "contribution": 0.016446864214795145
+        }
+      }
+    },
+    {
+      "acquirer": "Ardent Health Services",
+      "acquirer_type": "Strategic",
+      "score": 0.584283440207304,
+      "conviction": "Medium",
+      "relevant_deals": 2,
+      "deal_count": 2,
+      "signals": {
+        "completion": {
+          "raw": 1.0,
+          "prior": 0.8494505494505494,
+          "posterior": 0.887087912087912,
+          "weight": 0.12,
+          "contribution": 0.10645054945054944
+        },
+        "deal_type_fit": {
+          "raw": 0.5,
+          "prior": 0.21007326007326008,
+          "posterior": 0.32604395604395603,
+          "weight": 0.03,
+          "contribution": 0.009781318681318681
+        },
+        "geography_fit": {
+          "raw": 0.5,
+          "prior": 0.6042124542124542,
+          "posterior": 0.5625274725274725,
+          "weight": 0.08,
+          "contribution": 0.0450021978021978
+        },
+        "profile_fit": {
+          "raw": 0.8346774193548386,
+          "prior": 0.7025050302860762,
+          "posterior": 0.7553739859135812,
+          "weight": 0.12,
+          "contribution": 0.09064487830962974
+        },
+        "recency": {
+          "raw": 0.3429358886522502,
+          "prior": 0.26463304029558377,
+          "posterior": 0.2959541796382504,
+          "weight": 0.12,
+          "contribution": 0.03551450155659004
+        },
+        "sector_fit": {
+          "raw": 1.0,
+          "prior": 0.38725514235431036,
+          "posterior": 0.6323530854125863,
+          "weight": 0.3,
+          "contribution": 0.1897059256237759
+        },
+        "size_fit": {
+          "raw": 0.7218033257378074,
+          "prior": 0.38566768929569367,
+          "posterior": 0.5201219438725392,
+          "weight": 0.17,
+          "contribution": 0.08842073045833167
+        },
+        "tag_fit": {
+          "raw": 0.08107489440361897,
+          "prior": 0.46715391275621926,
+          "posterior": 0.31272230541517915,
+          "weight": 0.06,
+          "contribution": 0.01876333832491075
+        }
+      }
+    },
+    {
+      "acquirer": "UPMC",
+      "acquirer_type": "Strategic",
+      "score": 0.5810382875262426,
+      "conviction": "Medium",
+      "relevant_deals": 3,
+      "deal_count": 3,
+      "signals": {
+        "completion": {
+          "raw": 1.0,
+          "prior": 0.8494505494505494,
+          "posterior": 0.9247252747252747,
+          "weight": 0.12,
+          "contribution": 0.11096703296703296
+        },
+        "deal_type_fit": {
+          "raw": 0.3333333333333333,
+          "prior": 0.21007326007326008,
+          "posterior": 0.2717032967032967,
+          "weight": 0.03,
+          "contribution": 0.0081510989010989
+        },
+        "geography_fit": {
+          "raw": 0.6666666666666666,
+          "prior": 0.6042124542124542,
+          "posterior": 0.6354395604395604,
+          "weight": 0.08,
+          "contribution": 0.050835164835164835
+        },
+        "profile_fit": {
+          "raw": 0.8683649086874894,
+          "prior": 0.7025050302860762,
+          "posterior": 0.7854349694867828,
+          "weight": 0.12,
+          "contribution": 0.09425219633841393
+        },
+        "recency": {
+          "raw": 0.2742939058776097,
+          "prior": 0.26463304029558377,
+          "posterior": 0.26946347308659674,
+          "weight": 0.12,
+          "contribution": 0.03233561677039161
+        },
+        "sector_fit": {
+          "raw": 1.0,
+          "prior": 0.38725514235431036,
+          "posterior": 0.6936275711771552,
+          "weight": 0.3,
+          "contribution": 0.20808827135314656
+        },
+        "size_fit": {
+          "raw": 0.32930632353059935,
+          "prior": 0.38566768929569367,
+          "posterior": 0.3574870064131465,
+          "weight": 0.17,
+          "contribution": 0.06077279109023491
+        },
+        "tag_fit": {
+          "raw": 0.054049929602412644,
+          "prior": 0.46715391275621926,
+          "posterior": 0.26060192117931597,
+          "weight": 0.06,
+          "contribution": 0.015636115270758956
+        }
+      }
+    },
+    {
+      "acquirer": "Steward Health Care",
+      "acquirer_type": "Strategic",
+      "score": 0.5798900559489484,
+      "conviction": "Medium",
+      "relevant_deals": 3,
+      "deal_count": 3,
+      "signals": {
+        "completion": {
+          "raw": 1.0,
+          "prior": 0.8494505494505494,
+          "posterior": 0.9247252747252747,
+          "weight": 0.12,
+          "contribution": 0.11096703296703296
+        },
+        "deal_type_fit": {
+          "raw": 0.0,
+          "prior": 0.21007326007326008,
+          "posterior": 0.10503663003663004,
+          "weight": 0.03,
+          "contribution": 0.003151098901098901
+        },
+        "geography_fit": {
+          "raw": 0.6666666666666666,
+          "prior": 0.6042124542124542,
+          "posterior": 0.6354395604395604,
+          "weight": 0.08,
+          "contribution": 0.050835164835164835
+        },
+        "profile_fit": {
+          "raw": 0.8709677419354839,
+          "prior": 0.7025050302860762,
+          "posterior": 0.7867363861107801,
+          "weight": 0.12,
+          "contribution": 0.09440836633329361
+        },
+        "recency": {
+          "raw": 0.45492784830005084,
+          "prior": 0.26463304029558377,
+          "posterior": 0.35978044429781736,
+          "weight": 0.12,
+          "contribution": 0.04317365331573808
+        },
+        "sector_fit": {
+          "raw": 1.0,
+          "prior": 0.38725514235431036,
+          "posterior": 0.6936275711771552,
+          "weight": 0.3,
+          "contribution": 0.20808827135314656
+        },
+        "size_fit": {
+          "raw": 0.23573941692405134,
+          "prior": 0.38566768929569367,
+          "posterior": 0.3107035531098725,
+          "weight": 0.17,
+          "contribution": 0.05281960402867833
+        },
+        "tag_fit": {
+          "raw": 0.08107489440361897,
+          "prior": 0.46715391275621926,
+          "posterior": 0.2741144035799191,
+          "weight": 0.06,
+          "contribution": 0.016446864214795145
+        }
+      }
+    },
+    {
+      "acquirer": "Vista Equity",
+      "acquirer_type": "Financial Sponsor",
+      "score": 0.5742680215964246,
+      "conviction": "Medium",
+      "relevant_deals": 4,
+      "deal_count": 24,
+      "signals": {
+        "completion": {
+          "raw": 0.7916666666666666,
+          "prior": 0.852634255722491,
+          "posterior": 0.7984408432284249,
+          "weight": 0.12,
+          "contribution": 0.09581290118741098
+        },
+        "deal_type_fit": {
+          "raw": 0.3333333333333333,
+          "prior": 0.23997071717760907,
+          "posterior": 0.3229597093160307,
+          "weight": 0.03,
+          "contribution": 0.00968879127948092
+        },
+        "geography_fit": {
+          "raw": 0.5,
+          "prior": 0.591918280371807,
+          "posterior": 0.5102131422635341,
+          "weight": 0.08,
+          "contribution": 0.04081705138108273
+        },
+        "profile_fit": {
+          "raw": 0.7094519576446507,
+          "prior": 0.7069765154699497,
+          "posterior": 0.7091769085141285,
+          "weight": 0.12,
+          "contribution": 0.08510122902169542
+        },
+        "recency": {
+          "raw": 0.9772238183741799,
+          "prior": 0.9315939473292999,
+          "posterior": 0.9721538327025265,
+          "weight": 0.12,
+          "contribution": 0.11665845992430318
+        },
+        "sector_fit": {
+          "raw": 0.4367686097671139,
+          "prior": 0.3630744752936329,
+          "posterior": 0.42858037260339377,
+          "weight": 0.3,
+          "contribution": 0.12857411178101813
+        },
+        "size_fit": {
+          "raw": 0.49183882704167986,
+          "prior": 0.46512406178475096,
+          "posterior": 0.48887051979091,
+          "weight": 0.17,
+          "contribution": 0.08310798836445471
+        },
+        "tag_fit": {
+          "raw": 0.23422907866968246,
+          "prior": 0.3022906691893238,
+          "posterior": 0.24179147761630926,
+          "weight": 0.06,
+          "contribution": 0.014507488656978556
+        }
+      }
+    },
+    {
+      "acquirer": "Blackstone",
+      "acquirer_type": "Financial Sponsor",
+      "score": 0.5687601757231957,
+      "conviction": "Medium",
+      "relevant_deals": 2,
+      "deal_count": 24,
+      "signals": {
+        "completion": {
+          "raw": 0.9166666666666666,
+          "prior": 0.852634255722491,
+          "posterior": 0.9095519543395361,
+          "weight": 0.12,
+          "contribution": 0.10914623452074432
+        },
+        "deal_type_fit": {
+          "raw": 0.375,
+          "prior": 0.23997071717760907,
+          "posterior": 0.3599967463530677,
+          "weight": 0.03,
+          "contribution": 0.010799902390592031
+        },
+        "geography_fit": {
+          "raw": 0.6041666666666666,
+          "prior": 0.591918280371807,
+          "posterior": 0.6028057348561268,
+          "weight": 0.08,
+          "contribution": 0.04822445878849014
+        },
+        "profile_fit": {
+          "raw": 0.676482105566727,
+          "prior": 0.7069765154699497,
+          "posterior": 0.6798703733337519,
+          "weight": 0.12,
+          "contribution": 0.08158444480005023
+        },
+        "recency": {
+          "raw": 0.9677740469254449,
+          "prior": 0.9315939473292999,
+          "posterior": 0.9637540358592065,
+          "weight": 0.12,
+          "contribution": 0.11565048430310478
+        },
+        "sector_fit": {
+          "raw": 0.3459039721175478,
+          "prior": 0.3630744752936329,
+          "posterior": 0.34781180580377946,
+          "weight": 0.3,
+          "contribution": 0.10434354174113383
+        },
+        "size_fit": {
+          "raw": 0.4346988834734873,
+          "prior": 0.46512406178475096,
+          "posterior": 0.4380794588414055,
+          "weight": 0.17,
+          "contribution": 0.07447350800303894
+        },
+        "tag_fit": {
+          "raw": 0.42229368840211107,
+          "prior": 0.3022906691893238,
+          "posterior": 0.4089600196006902,
+          "weight": 0.06,
+          "contribution": 0.024537601176041413
+        }
+      }
+    },
+    {
+      "acquirer": "GTCR",
+      "acquirer_type": "Financial Sponsor",
+      "score": 0.5667978055745843,
+      "conviction": "Medium",
+      "relevant_deals": 1,
+      "deal_count": 14,
+      "signals": {
+        "completion": {
+          "raw": 0.7857142857142857,
+          "prior": 0.852634255722491,
+          "posterior": 0.7975236921863219,
+          "weight": 0.12,
+          "contribution": 0.09570284306235863
+        },
+        "deal_type_fit": {
+          "raw": 0.35714285714285715,
+          "prior": 0.23997071717760907,
+          "posterior": 0.33646542067840157,
+          "weight": 0.03,
+          "contribution": 0.010093962620352047
+        },
+        "geography_fit": {
+          "raw": 0.5714285714285714,
+          "prior": 0.591918280371807,
+          "posterior": 0.5750444024185543,
+          "weight": 0.08,
+          "contribution": 0.04600355219348434
+        },
+        "profile_fit": {
+          "raw": 0.7358059206901195,
+          "prior": 0.7069765154699497,
+          "posterior": 0.7307183785924425,
+          "weight": 0.12,
+          "contribution": 0.0876862054310931
+        },
+        "recency": {
+          "raw": 0.8790258001607838,
+          "prior": 0.9315939473292999,
+          "posterior": 0.8883025320140513,
+          "weight": 0.12,
+          "contribution": 0.10659630384168615
+        },
+        "sector_fit": {
+          "raw": 0.371980697482436,
+          "prior": 0.3630744752936329,
+          "posterior": 0.3704090112138237,
+          "weight": 0.3,
+          "contribution": 0.1111227033641471
+        },
+        "size_fit": {
+          "raw": 0.4926581742717774,
+          "prior": 0.46512406178475096,
+          "posterior": 0.487799213244655,
+          "weight": 0.17,
+          "contribution": 0.08292586625159136
+        },
+        "tag_fit": {
+          "raw": 0.4748999396592108,
+          "prior": 0.3022906691893238,
+          "posterior": 0.44443948016452484,
+          "weight": 0.06,
+          "contribution": 0.02666636880987149
+        }
+      }
+    },
+    {
+      "acquirer": "New Mountain Capital",
+      "acquirer_type": "Financial Sponsor",
+      "score": 0.5653470411928101,
+      "conviction": "Medium",
+      "relevant_deals": 1,
+      "deal_count": 19,
+      "signals": {
+        "completion": {
+          "raw": 0.7777777777777778,
+          "prior": 0.852634255722491,
+          "posterior": 0.7884715603413083,
+          "weight": 0.12,
+          "contribution": 0.09461658724095699
+        },
+        "deal_type_fit": {
+          "raw": 0.15789473684210525,
+          "prior": 0.23997071717760907,
+          "posterior": 0.16908691597876488,
+          "weight": 0.03,
+          "contribution": 0.005072607479362946
+        },
+        "geography_fit": {
+          "raw": 0.631578947368421,
+          "prior": 0.591918280371807,
+          "posterior": 0.6261706745961555,
+          "weight": 0.08,
+          "contribution": 0.05009365396769244
+        },
+        "profile_fit": {
+          "raw": 0.7735563110552559,
+          "prior": 0.7069765154699497,
+          "posterior": 0.764477248020896,
+          "weight": 0.12,
+          "contribution": 0.09173726976250751
+        },
+        "recency": {
+          "raw": 0.9282753681477125,
+          "prior": 0.9315939473292999,
+          "posterior": 0.9287279016724743,
+          "weight": 0.12,
+          "contribution": 0.11144734820069692
+        },
+        "sector_fit": {
+          "raw": 0.35131751212829765,
+          "prior": 0.3630744752936329,
+          "posterior": 0.3529207343781161,
+          "weight": 0.3,
+          "contribution": 0.10587622031343483
+        },
+        "size_fit": {
+          "raw": 0.5598172704087807,
+          "prior": 0.46512406178475096,
+          "posterior": 0.5469045601418675,
+          "weight": 0.17,
+          "contribution": 0.09297377522411748
+        },
+        "tag_fit": {
+          "raw": 0.21336703301300244,
+          "prior": 0.3022906691893238,
+          "posterior": 0.2254929834006826,
+          "weight": 0.06,
+          "contribution": 0.013529579004040957
+        }
+      }
+    }
+  ],
+  "top_k_identity": 1.0,
+  "conviction_agreement": 1.0
+}
