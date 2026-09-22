@@ -90,7 +90,10 @@ def test_incomplete_duplicate_or_unknown_label_rows_are_rejected(tmp_path: Path)
     with path.open("w") as stream:
         writer = csv.DictWriter(stream, fieldnames=["case_id", *Dimension])
         writer.writeheader()
-        row = {"case_id": example_case().case_id, **dict.fromkeys(Dimension, "Pass")}
+        row: dict[str, str] = {
+            "case_id": example_case().case_id,
+            **dict.fromkeys(Dimension, "Pass"),
+        }
         writer.writerow(row)
     labels = read_labels(path, corpus)
     assert len(labels) == 5 and all(label.vote == "Pass" for label in labels)
