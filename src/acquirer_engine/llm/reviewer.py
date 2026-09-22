@@ -8,19 +8,17 @@ import asyncio
 from time import perf_counter
 
 from pydantic import BaseModel
-from pydantic_ai import Agent, RunContext, ToolOutput
 from pydantic_ai.exceptions import ModelAPIError, UnexpectedModelBehavior, UsageLimitExceeded
 from pydantic_ai.messages import ModelRequest, UserPromptPart
 from pydantic_ai.usage import UsageLimits
 
 from acquirer_engine.deps import Deps
-from acquirer_engine.errors import AcquirerEngineError, ValidationFailure
+from acquirer_engine.errors import AcquirerEngineError
 from acquirer_engine.llm.attempts import generate
 from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.output import output_errors
-from acquirer_engine.llm.recording import RecordedModel
 from acquirer_engine.llm.results import PageResult
-from acquirer_engine.llm.review_schema import PortfolioVerdicts, ReviewResult, ReviewVerdict
+from acquirer_engine.llm.review_schema import ReviewResult, ReviewVerdict
 from acquirer_engine.validation.repair import repair_history
 from acquirer_engine.validation.schema import AcquirerRationale
 
@@ -37,37 +35,6 @@ class PortfolioInput(BaseModel):
     """The complete portfolio in its ranked order."""
 
     pages: list[ReviewPage]
-
-
-def _coverage(ctx: RunContext[tuple[str, ...]], output: PortfolioVerdicts) -> PortfolioVerdicts:
-    names = [v.acquirer for v in output.verdicts]
-    if len(names) != len(set(names)) or set(names) != set(ctx.deps):
-        raise ValidationFailure(["Review must name every supplied acquirer exactly once"])
-    return output
-
-
-def build_reviewer(
-    recorded: RecordedModel, prompt: str, tokens: int
-) -> Agent[tuple[str, ...], PortfolioVerdicts]:
-    """Construct the reviewer with the run's existing recording boundary.
-
-    Args:
-        recorded: Shared client, ledger, cache, trace, and spending guard.
-        prompt: Versioned prompt text frozen in the input snapshot.
-        tokens: Configured output cap for this smaller response contract.
-    Returns:
-        A tool-free reviewer with strict buyer coverage validation.
-    """
-    agent = Agent(
-        recorded,
-        deps_type=tuple[str, ...],
-        output_type=ToolOutput(PortfolioVerdicts, strict=True),
-        instructions=prompt,
-        model_settings={"max_tokens": tokens},
-        retries=0,
-    )
-    agent.output_validator(_coverage)
-    return agent
 
 
 async def review_portfolio(

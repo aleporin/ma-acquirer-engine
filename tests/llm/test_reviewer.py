@@ -12,7 +12,7 @@ from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
 from acquirer_engine.deps import Deps
-from acquirer_engine.run_command import execute_prepared, execute_replay
+from acquirer_engine.pipeline import execute_prepared, execute_replay
 from tests.fixtures.rationale import rationale_payload
 from tests.llm.test_routing import routing_deps
 from tests.llm.test_run_archive import inputs

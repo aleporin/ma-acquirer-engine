@@ -15,8 +15,9 @@ from anthropic import transform_schema
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.providers.anthropic import AnthropicProvider
 
+from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
-from acquirer_engine.llm.analyst import analyze_one, build_services
+from acquirer_engine.llm.analyst import analyze_one
 from acquirer_engine.llm.client import create_client
 from tests.fixtures.rationale import evidence_context, rationale_payload
 

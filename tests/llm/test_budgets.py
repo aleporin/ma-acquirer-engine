@@ -15,9 +15,10 @@ from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.usage import RequestUsage
 
+from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import BudgetExceeded
-from acquirer_engine.llm.analyst import analyze_one, build_services
+from acquirer_engine.llm.analyst import analyze_one
 from tests.fixtures.rationale import evidence_context, rationale_payload
 from tests.llm.test_routing import routing_deps
 

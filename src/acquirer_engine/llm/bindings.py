@@ -6,8 +6,8 @@ Does not own: Query arithmetic or model-selected arguments.
 
 from pydantic_ai import RunContext, ToolReturn
 
+from acquirer_engine.llm.context import PageDeps
 from acquirer_engine.llm.framing import data_block
-from acquirer_engine.llm.page_deps import PageDeps
 from acquirer_engine.llm.tools import NumericBand, ToolResult
 
 

@@ -13,11 +13,10 @@ from pydantic_ai.usage import UsageLimits
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError, ValidationFailure
+from acquirer_engine.llm.context import PageDeps, ToolState
 from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.output import output_errors
-from acquirer_engine.llm.page_deps import PageDeps
 from acquirer_engine.llm.results import PageAttempt
-from acquirer_engine.llm.tool_state import ToolState
 from acquirer_engine.validation.schema import AcquirerRationale
 
 

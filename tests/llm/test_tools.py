@@ -70,7 +70,7 @@ def test_history_tools_apply_buyer_type_sector_and_outcome_filters(settings: Set
 def test_distinct_tool_rounds_are_bounded_and_noncomp_tools_cannot_supply_comps(
     settings: Settings,
 ) -> None:
-    from acquirer_engine.llm.tool_state import ToolState
+    from acquirer_engine.llm.context import ToolState
 
     context = evidence_context(settings)
     state = ToolState(context.core, settings.analyst.max_tool_rounds)

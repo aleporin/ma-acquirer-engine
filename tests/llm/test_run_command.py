@@ -39,7 +39,7 @@ def test_replay_writes_failed_page_without_constructing_a_client(
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Replay must not construct a provider client")
 
-    monkeypatch.setattr("acquirer_engine.run_command.create_client", no_client)
+    monkeypatch.setattr("acquirer_engine.bootstrap.create_client", no_client)
     result = CliRunner().invoke(
         build_app(), ["run", "--project", str(root), "--replay", "--no-tools", "--no-reviewer"]
     )

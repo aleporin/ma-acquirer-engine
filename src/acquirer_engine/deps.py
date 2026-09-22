@@ -1,7 +1,7 @@
-"""Carry the dependencies used by the offline harness.
+"""Carry references to one run's shared execution resources.
 
-Owns: References to one run's settings and logger.
-Does not own: Dependency construction or future provider resources.
+Owns: Settings, logger, and the optional analyst runtime.
+Does not own: Constructing or closing resources.
 """
 
 from dataclasses import dataclass
@@ -12,7 +12,7 @@ from structlog.stdlib import BoundLogger
 from acquirer_engine.settings import Settings
 
 if TYPE_CHECKING:
-    from acquirer_engine.llm.analyst import AnalystServices
+    from acquirer_engine.bootstrap import AnalystServices
 
 
 @dataclass(frozen=True)

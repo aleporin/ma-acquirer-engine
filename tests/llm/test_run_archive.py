@@ -18,7 +18,7 @@ from typer.testing import CliRunner
 from acquirer_engine.cli import build_app
 from acquirer_engine.deps import Deps
 from acquirer_engine.llm.archive import RunSnapshot, load_snapshot
-from acquirer_engine.run_command import execute_prepared
+from acquirer_engine.pipeline import execute_prepared
 from tests.fixtures.rationale import evidence_context
 from tests.llm.test_analyst import tool_model
 
@@ -73,7 +73,7 @@ async def test_cli_replays_original_inputs_with_no_current_files_or_cache(
     def no_client(*args: object, **kwargs: object) -> None:
         raise AssertionError("Historical replay must not construct a provider client")
 
-    monkeypatch.setattr("acquirer_engine.run_command.create_client", no_client)
+    monkeypatch.setattr("acquirer_engine.bootstrap.create_client", no_client)
     result = await asyncio.to_thread(
         CliRunner().invoke, build_app(), ["replay", original.name, "--project", str(tmp_path)]
     )

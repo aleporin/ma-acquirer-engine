@@ -1,11 +1,14 @@
-"""Track exactly which tool evidence an analyst has received.
+"""Keep one page's evidence, dependencies, and continuation together.
 
-Owns: Per-page retrieval state and distinct model tool-round enforcement.
+Owns: Page-local evidence provenance, tool-round limits, and saved conversation.
 Does not own: Query execution or provider calls.
 """
 
 from dataclasses import dataclass, field
 
+from pydantic_ai.messages import ModelMessage
+
+from acquirer_engine.deps import Deps
 from acquirer_engine.errors import BudgetExceeded
 from acquirer_engine.evidence.context import EvidenceContext
 from acquirer_engine.evidence.pack import CorePack
@@ -61,3 +64,19 @@ class ToolState:
             ),
             statistics=tuple(stat for result in self.results for stat in result.statistics),
         )
+
+
+@dataclass
+class PageDeps:
+    """One page's retrieval state with references to shared run resources."""
+
+    shared: Deps
+    state: ToolState
+
+
+@dataclass
+class PageSession:
+    """A revision reuses evidence already retrieved for the original draft."""
+
+    state: ToolState
+    messages: list[ModelMessage]

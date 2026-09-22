@@ -1,134 +1,19 @@
-"""Compose and run a typed analyst using injected execution resources.
+"""Generate, validate, and route one buyer page to its final outcome.
 
-Owns: Agent construction, output validation, and per-page failure isolation.
-Does not own: Ranking, portfolio review, escalation, or client construction.
+Owns: The bounded draft, repair, and escalation loop and failure isolation.
+Does not own: Resource construction, batch scheduling, or portfolio review.
 """
 
-from dataclasses import dataclass, field
-from pathlib import Path
 from time import perf_counter
 
-from pydantic_ai import Agent, RunContext, ToolOutput
-from pydantic_ai.models import Model
-from pydantic_ai.models.anthropic import AnthropicModelSettings
-
-from acquirer_engine.data.schema import Transaction
 from acquirer_engine.deps import Deps
 from acquirer_engine.evidence.pack import CorePack
-from acquirer_engine.llm import bindings
 from acquirer_engine.llm.attempts import generate
-from acquirer_engine.llm.cache import ResponseCache
-from acquirer_engine.llm.cost import CostLedger, ExecutionMode
-from acquirer_engine.llm.framing import data_block
-from acquirer_engine.llm.page_deps import PageDeps
-from acquirer_engine.llm.recording import RecordedModel
+from acquirer_engine.llm.context import PageSession, ToolState
 from acquirer_engine.llm.results import PageAttempt, PageResult
-from acquirer_engine.llm.review_schema import PortfolioVerdicts
-from acquirer_engine.llm.reviewer import build_reviewer
 from acquirer_engine.llm.router import next_route
-from acquirer_engine.llm.session import PageSession
-from acquirer_engine.llm.tool_state import ToolState
-from acquirer_engine.llm.tools import EvidenceTools
-from acquirer_engine.llm.trace import TraceWriter
-from acquirer_engine.llm.trace_replay import ResponseArchive
-from acquirer_engine.validation.claims import validate_rationale, verified_claim_count
 from acquirer_engine.validation.repair import repair_history
 from acquirer_engine.validation.schema import AcquirerRationale
-
-
-@dataclass(frozen=True)
-class AnalystServices:
-    """Run-wide resources constructed once before any page tasks start."""
-
-    agent: Agent[PageDeps, AcquirerRationale]
-    model: RecordedModel
-    tools: EvidenceTools
-    trace: TraceWriter
-    sparse_agent: Agent[PageDeps, AcquirerRationale] | None = None
-    reviewer: Agent[tuple[str, ...], PortfolioVerdicts] | None = None
-    sessions: dict[str, PageSession] = field(default_factory=dict)
-
-
-def _validate(ctx: RunContext[PageDeps], output: AcquirerRationale) -> AcquirerRationale:
-    state = ctx.deps.state
-    config = ctx.deps.shared.settings.evidence.validation
-    state.claims_total = len(output.claims)
-    state.claims_verified = verified_claim_count(output, state.context(), config)
-    runtime = ctx.deps.shared.runtime
-    assert runtime is not None
-    runtime.trace.write("draft_received", state.core.ranking.acquirer, rationale=output)
-    return validate_rationale(
-        output.model_dump(), ctx.deps.state.context(), ctx.deps.shared.settings.evidence.validation
-    )
-
-
-def build_services(
-    deps: Deps,
-    model: Model | None,
-    rows: tuple[Transaction, ...],
-    root: Path,
-    prompt: str,
-    *,
-    mode: ExecutionMode,
-    cache_root: Path | None = None,
-    archive: ResponseArchive | None = None,
-    escalation_model: Model | None = None,
-    auxiliary_prompts: dict[str, str] | None = None,
-) -> AnalystServices:
-    """Compose all agents and shared execution resources before fan-out.
-
-    Args:
-        deps: Loaded configuration and logger.
-        model: Injected analyst model, or None for replay.
-        rows: Eligible evidence history.
-        root: Artifact directory.
-        prompt: Primary instructions.
-        mode: Live, replay, or test execution.
-        cache_root: Shared response store.
-        archive: Historical response source.
-        escalation_model: Injected higher-tier model.
-        auxiliary_prompts: Frozen sparse and reviewer instructions.
-    Returns:
-        Agents sharing one recording, cost, and evidence boundary.
-    """
-    trace = TraceWriter(root / "trace.jsonl")
-    recorded = RecordedModel(
-        model,
-        deps,
-        ResponseCache(cache_root or root / "cache"),
-        CostLedger(deps.settings.models.roles["analyst"]),
-        trace,
-        mode=mode,
-        archive=archive,
-        escalation_model=escalation_model,
-    )
-    return _agents(recorded, deps, rows, prompt, auxiliary_prompts or {})
-
-
-def _agents(
-    recorded: RecordedModel,
-    deps: Deps,
-    rows: tuple[Transaction, ...],
-    prompt: str,
-    auxiliary: dict[str, str],
-) -> AnalystServices:
-    config = deps.settings.analyst
-    sparse, review = auxiliary.get("sparse"), auxiliary.get("reviewer")
-    reviewer = (
-        build_reviewer(
-            recorded, review, config.reviewer_max_output_tokens or config.max_output_tokens
-        )
-        if review
-        else None
-    )
-    return AnalystServices(
-        _build_agent(recorded, deps, prompt),
-        recorded,
-        EvidenceTools(rows, config),
-        recorded.trace,
-        _build_agent(recorded, deps, prompt + "\n" + sparse) if sparse else None,
-        reviewer,
-    )
 
 
 async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
@@ -175,47 +60,6 @@ async def analyze_one(pack: CorePack, deps: Deps) -> PageResult:
             )
     runtime.sessions[pack.ranking.acquirer] = PageSession(state, outcome.messages)
     return _page_result(pack, deps, state, outcome.output, attempts, started)
-
-
-def _build_agent(
-    recorded: RecordedModel, deps: Deps, prompt: str
-) -> Agent[PageDeps, AcquirerRationale]:
-    config = deps.settings.analyst
-    model_settings = AnthropicModelSettings(
-        max_tokens=config.max_output_tokens,
-        anthropic_cache_instructions=True,
-        anthropic_cache_tool_definitions=True,
-    )
-    if config.temperature is not None:
-        model_settings["temperature"] = config.temperature
-    agent = Agent(
-        recorded,
-        output_type=ToolOutput(AcquirerRationale, strict=True),
-        deps_type=PageDeps,
-        instructions=lambda ctx: (
-            prompt
-            + "\n"
-            + data_block("target_profile", ctx.deps.state.core.target)
-            + "\n"
-            + data_block("execution_policy", config, exclude_unset=True)
-            + "\n"
-            + data_block("validation_policy", deps.settings.evidence.validation)
-        ),
-        validation_context=deps.settings.evidence.validation,
-        model_settings=model_settings,
-        retries={"output": config.output_retries, "tools": config.output_retries},
-        tools=[]
-        if not config.tools_enabled
-        else [
-            bindings.get_comparable_deals,
-            bindings.get_sector_stats,
-            bindings.get_adjacent_sector_activity,
-            bindings.get_sponsor_platform_history,
-            bindings.get_failed_deals,
-        ],
-    )
-    agent.output_validator(_validate)
-    return agent
 
 
 def _page_result(

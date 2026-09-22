@@ -10,19 +10,16 @@ from pathlib import Path
 from time import perf_counter
 
 from pydantic_ai.models import Model
-from pydantic_ai.models.anthropic import AnthropicModel
-from pydantic_ai.providers.anthropic import AnthropicProvider
 
+from acquirer_engine.bootstrap import AnalystServices, build_services, model_resources
 from acquirer_engine.data.loader import load_transactions
 from acquirer_engine.data.schema import Transaction
 from acquirer_engine.deps import Deps
 from acquirer_engine.evidence.pack import CorePack, build_core_pack
 from acquirer_engine.features.acquirer import fit_features
-from acquirer_engine.llm.analyst import AnalystServices, build_services
 from acquirer_engine.llm.archive import RunSnapshot, save_snapshot
-from acquirer_engine.llm.client import create_client
+from acquirer_engine.llm.batch import run_analysts
 from acquirer_engine.llm.cost import ExecutionMode
-from acquirer_engine.llm.pipeline import run_analysts
 from acquirer_engine.llm.results import AnalystRun, PageResult
 from acquirer_engine.llm.review_schema import ReviewResult
 from acquirer_engine.llm.reviewer import review_portfolio
@@ -80,24 +77,13 @@ async def execute_run(
         history=history,
         packs=tuple(packs),
     )
-    if replay:
-        return await execute_prepared(
-            snapshot, directory, deps, mode="replay", cache_root=root / "cache"
-        )
-    async with create_client(deps.settings.analyst) as client:
-        provider = AnthropicProvider(anthropic_client=client)
-        model = AnthropicModel(deps.settings.models.roles["analyst"].model_id, provider=provider)
-        escalation = (
-            AnthropicModel(deps.settings.models.roles["escalation"].model_id, provider=provider)
-            if deps.settings.analyst.escalation_enabled
-            else None
-        )
+    async with model_resources(deps, replay=replay) as (model, escalation):
         return await execute_prepared(
             snapshot,
             directory,
             deps,
             model=model,
-            mode="live",
+            mode="replay" if replay else "live",
             escalation_model=escalation,
             cache_root=root / "cache",
         )
