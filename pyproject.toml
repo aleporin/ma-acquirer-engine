@@ -6,10 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "anthropic==1.7.0",
+    "google-genai==2.24.0",
     "httpx2==2.13.0",
+    "openai==3.16.2",
     "pandas==3.0.6",
     "pydantic==2.13.5",
-    "pydantic-ai-slim[anthropic]==2.46.0",
+    "pydantic-ai-slim[anthropic,google,openai]==2.46.0",
     "PyYAML==6.0.3",
     "structlog==26.1.0",
     "typer==0.27.2",
