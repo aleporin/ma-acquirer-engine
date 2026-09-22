@@ -1,6 +1,6 @@
 phase: p7
 seed: 42
-prompt_version: analyst_v9+sparse_v1+reviewer_v1
+prompt_version: analyst_v10+sparse_v1+reviewer_v1
 quality:
   max_file_lines: 300
   max_function_lines: 50
