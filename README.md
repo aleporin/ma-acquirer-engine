@@ -82,19 +82,13 @@ cover the execution flow, libraries, and alternatives.
 | Keyless replay | 21 recorded responses, 10/10 pages, $0 new spend |
 | Historical recall@10 | 38.0%, versus 40.8% global and 43.7% sector popularity |
 
-Ranking has **not demonstrated lift over popularity**. Independent human/judge
-calibration is unmeasured. The live sample was selected after multiple iterations;
-numeric verification does not prove the quality of an investment thesis.
-[Evaluation results](docs/EVALS.md) contain the methods, intervals, and run history.
-
-- The supplied 500-row dataset is synthetic. Stated multiples and margins are used
-  despite ratio inconsistencies; buyer type takes precedence over deal-type labels.
-- Default target: Healthcare Services, $200M EV, Private, Regional. An omitted
-  margin uses the sector's upper-tercile boundary; the size band is 0.5×–2× EV.
-- Rumored deals do not affect fitting; only Closed deals support valuation.
-  All default top-ten convictions are Medium under fixed thresholds.
-- Ranking is deterministic; fresh prose can vary. Replay reproduces recorded
-  responses through current validation, not a new live measurement.
+The default target is a $200M regional healthcare-services company. Ranking uses
+fixed, explainable rules on the supplied synthetic dataset and has not outperformed
+popularity baselines. All ten default buyers receive Medium conviction. Numbers
+and citations are checked automatically; banker-quality assessment remains
+unmeasured. Rankings are repeatable, while fresh writing can vary. Replay reproduces
+saved responses without API calls. [Evaluation results](docs/EVALS.md) contain the
+methods and measurements; [design decisions](docs/DECISIONS.md) explain data policies.
 
 ## Development
 
