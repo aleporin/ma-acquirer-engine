@@ -62,5 +62,5 @@ calibration is still unfinished. Those limits are in the scorecards.”
 - Why can numeric validation pass while the economic thesis remains weak?
 - How would you isolate users, redact identifiers, and store traces at higher volume?
 
-Use [the execution map](../EXECUTION.md), [decision records](DECISIONS.md),
+Use [the execution map](EXECUTION.md), [decision records](DECISIONS.md),
 and [evaluation evidence](EVALS.md) to check each answer against the implementation.

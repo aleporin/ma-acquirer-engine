@@ -8,7 +8,7 @@ configuration or regenerates buyer pages.
 
 ## The protocol
 
-The protocol is frozen in [ranking_experiment.yaml](config/ranking_experiment.yaml).
+The protocol is frozen in [ranking_experiment.yaml](../config/ranking_experiment.yaml).
 
 ```text
 Eligible history through 2018

@@ -29,8 +29,8 @@ The HTML contains ten buyer sections plus an index and evidence appendix;
 browser printing can use more than ten sheets. You can also open the committed
 [sample report](sample_output/index.html) immediately.
 
-See [report, target, and comparison commands](REPORTING.md),
-[the demo walkthrough](docs/DEMO.md), and [follow one run in code](EXECUTION.md).
+See [report, target, and comparison commands](docs/REPORTING.md),
+[the demo walkthrough](docs/DEMO.md), and [follow one run in code](docs/EXECUTION.md).
 
 ## What the measurements say
 
@@ -87,7 +87,7 @@ stage files: [`select.py`](src/acquirer_engine/stages/select.py) →
 [`render.py`](src/acquirer_engine/stages/render.py). Review is optional.
 
 [`factory.py`](src/acquirer_engine/factory.py) constructs shared resources before
-model stages receive required `RuntimeDeps`. The [execution map](EXECUTION.md)
+model stages receive required `RuntimeDeps`. The [execution map](docs/EXECUTION.md)
 connects the stages to data, ranking, evidence, replay, and the ten model-support
 modules. Evaluation enters separately through [`evals/command.py`](evals/command.py).
 The structure changes no measured result or model behavior described above.
@@ -161,10 +161,10 @@ The generation admission cap is $10; it is distinct from the under-$1 measuremen
 goal. Reservations account for worst-case tokens and SDK retries. Missing returned
 usage remains an uncertain charge, never an invented zero.
 
-[REPORTING.md](REPORTING.md) covers custom targets and persisted flags.
-[JUDGING.md](JUDGING.md) covers blind labels, separate paid judging, and replay.
-[ROUTING.md](ROUTING.md) records recovery and ablation evidence.
-[RANKING_EXPERIMENT.md](RANKING_EXPERIMENT.md) describes an optional recorded
+[REPORTING.md](docs/REPORTING.md) covers custom targets and persisted flags.
+[JUDGING.md](docs/JUDGING.md) covers blind labels, separate paid judging, and replay.
+[ROUTING.md](docs/ROUTING.md) records recovery and ablation evidence.
+[RANKING_EXPERIMENT.md](docs/RANKING_EXPERIMENT.md) describes an optional recorded
 weight-proposal experiment with chronological selection. It does not change the
 shipped ranking or treat the already-inspected benchmark as independent evidence.
 
@@ -180,6 +180,6 @@ contract could serve a Salesforce component without changing scoring or validati
 typed evidence tools could be exposed over MCP when there is an actual client.
 Those integrations are intentionally not implemented.
 
-For review, start with the [demo](docs/DEMO.md), [execution map](EXECUTION.md), and
+For review, start with the [demo](docs/DEMO.md), [execution map](docs/EXECUTION.md), and
 [decision records](docs/DECISIONS.md). The [submission guide](docs/SUBMISSION.md)
 identifies the evidence and the remaining human checks.

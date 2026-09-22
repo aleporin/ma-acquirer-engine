@@ -2,11 +2,11 @@
 
 ## Current generation policy
 
-The execution loop is in [`stages/draft.py`](src/acquirer_engine/stages/draft.py):
+The execution loop is in [`stages/draft.py`](../src/acquirer_engine/stages/draft.py):
 `draft_pages` schedules buyers; `draft_one`, `generate`, `next_route`, and
 `repair_history` drive each page. Optional portfolio review is in
-[`stages/review.py`](src/acquirer_engine/stages/review.py).
-[`factory.py`](src/acquirer_engine/factory.py) constructs shared services once;
+[`stages/review.py`](../src/acquirer_engine/stages/review.py).
+[`factory.py`](../src/acquirer_engine/factory.py) constructs shared services once;
 the pipeline binds them into required `RuntimeDeps` before these stages run.
 
 The analyst now uses the stronger Opus 5 model previously reserved for escalation,
@@ -29,14 +29,14 @@ Two earlier stronger-model observations illustrate the quality/cost tradeoff:
 
 | Prompt | Seconds | Returned USD | Factual read-through |
 | --- | --- | --- | --- |
-| [v6](evals/results/p7-f12ac9adc5c49079dd40c1b402aabad0b6a55c40/iteration.md) | 44.823 | 1.914185 | Rejected unsupported qualitative claims |
-| [v7](evals/results/p7-0a63cfe438c161aef46b0502ca13c941ec1779e2/iteration.md) | 50.613 | 1.940530 | Rejected remaining factual phrases |
+| [v6](../evals/results/p7-f12ac9adc5c49079dd40c1b402aabad0b6a55c40/iteration.md) | 44.823 | 1.914185 | Rejected unsupported qualitative claims |
+| [v7](../evals/results/p7-0a63cfe438c161aef46b0502ca13c941ec1779e2/iteration.md) | 50.613 | 1.940530 | Rejected remaining factual phrases |
 
 Both completed ten pages through numeric/schema validation and met the speed
 target in that observation, but neither qualified as a shipping sample. They
 exceeded the cost goal.
 
-The [selected v13 observation](evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md)
+The [selected v13 observation](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md)
 produced 10/10 final pages and 54/54 matched numeric claims in 48.176 seconds for
 $1.863930, across 21 responses. Nine pages passed first try; GTCR passed one
 numeric repair. A source-based read-through found no concrete factual
@@ -60,13 +60,13 @@ independent quality calibration remains unmeasured.
 
 ## Historical routing evidence
 
-The [Phase 4 exit scorecard](evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md)
+The [Phase 4 exit scorecard](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/summary.md)
 passes the routing gate on the original matched ablation cohort. A
-[separate historical verification](evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/fresh_verification.json)
+[separate historical verification](../evals/results/p4-7213c62852810996a2b9a759e16418f65cebdb2c/fresh_verification.json)
 recorded 10/10 pages, 79/79 final claims, 72.645s, and $1.022239 under the
 then-current admission configuration. Its 27 responses and outcomes replayed
 exactly. It missed the 60-second goal. The
-[original comparison](evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/ablation_summary.json)
+[original comparison](../evals/results/p4-2b2d4904ec157d707e4eef0aa04dbbc84ba9b3b8/ablation_summary.json)
 records all variants at identical source, data, and prompt-file versions:
 
 | Variant | Verified pages | Final matched claims | Seconds | Recorded USD |

@@ -30,8 +30,8 @@ map in [EXECUTION.md](EXECUTION.md).
 
 ## Blind labeling
 
-Start with [the reading packet](evals/labels/README.md) and its labeling guide.
-Fill [human_labels.csv](evals/labels/human_labels.csv) with Pass, Fail, or Unknown
+Start with [the reading packet](../evals/labels/README.md) and its labeling guide.
+Fill [human_labels.csv](../evals/labels/human_labels.csv) with Pass, Fail, or Unknown
 for all five dimensions on all twenty pages. Do this before seeing judge output.
 The runner refuses incomplete, duplicate, or foreign rows.
 

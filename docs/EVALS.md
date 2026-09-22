@@ -137,7 +137,7 @@ buyers. These are evaluation examples, not twenty buyers in the product report.
 A person must rate all five dimensions before seeing judge output. The CLI rejects
 blank, duplicate, or foreign rows. It never fills missing votes.
 
-[Judge execution](../JUDGING.md) isolates five rubric questions and name-masked
+[Judge execution](JUDGING.md) isolates five rubric questions and name-masked
 identification for two provider families. The current free plan has 360 outcomes
 and 240 unique requests. Its conservative maximum-token estimate is $20.14;
 the configured $10 admission cap may stop it before completion.

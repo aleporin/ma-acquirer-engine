@@ -6,7 +6,7 @@
 2. Run `make run` without keys and open the printed report path.
 3. Inspect one buyer's thesis, precedent IDs, valuation comps, risks, and conviction.
    Follow its citations into the evidence appendix.
-4. Read [EXECUTION.md](../EXECUTION.md) in order, then
+4. Read [EXECUTION.md](EXECUTION.md) in order, then
    [DECISIONS.md](DECISIONS.md) and [EVALS.md](EVALS.md).
 5. Inspect the conventional-commit history and the separate test/implementation
    commits. Historical scorecards retain failed measurements.

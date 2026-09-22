@@ -16,7 +16,7 @@ appendix, not a promise of exactly ten printed sheets.
 Each run also writes `buyers/01.md` through `buyers/10.md`, plus `run.json`,
 `snapshot.json`, `trace.jsonl`, and diagnostics. Markdown citations link back to the
 HTML appendix. Copy the entire output directory to preserve those links. The
-[committed sample](sample_output/index.html) opens directly after cloning.
+[committed sample](../sample_output/index.html) opens directly after cloning.
 
 The visible pages omit internal working notes. `run.json` remains the full
 structured contract, including those notes; it is intended for inspection or a
