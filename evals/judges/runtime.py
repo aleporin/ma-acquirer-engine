@@ -109,6 +109,14 @@ async def _scheduled_job(deps: JudgeDeps, job: Job, failures: Mapping[str, Outco
     return outcome
 
 
+def _write_plan(plan: JudgePlan, directory: Path) -> None:
+    directory.mkdir(parents=True, exist_ok=True)
+    if any(p.name != "log.jsonl" for p in directory.iterdir()):
+        raise EvaluationError("Judge archive already exists")
+    with (directory / "plan.json").open("x") as stream:
+        stream.write(plan.model_dump_json(indent=2) + "\n")
+
+
 def _resources(
     plan: JudgePlan,
     directory: Path,
@@ -157,8 +165,7 @@ async def execute(
         raise EvaluationError("Judge output schema changed; use the original evaluator")
     if mode != "replay" and set(models) != set(plan.config.roles):
         raise EvaluationError("Every configured judge must be injected")
-    directory.mkdir(parents=True, exist_ok=False)
-    (directory / "plan.json").write_text(plan.model_dump_json(indent=2) + "\n")
+    _write_plan(plan, directory)
     deps = _resources(plan, directory, models, logger, mode, cache_root)
     outcomes = await asyncio.gather(
         *(_scheduled_job(deps, job, recorded_failures or {}) for job in plan.jobs)

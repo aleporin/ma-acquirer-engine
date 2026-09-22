@@ -24,7 +24,8 @@ from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.pipeline import execute_replay, execute_run
 from acquirer_engine.settings import load_settings
-from evals.command import eval_judges, run_evaluation
+from evals.command import run_evaluation
+from evals.judges.command import eval_judges, prepare_judges
 
 
 def run_product(
@@ -142,6 +143,7 @@ def build_app() -> typer.Typer:
     app.command("eval")(run_evaluation)
     app.command("eval-diff")(eval_diff)
     app.command("eval-judges")(eval_judges)
+    app.command("prepare-judges")(prepare_judges)
     app.command("run")(run_product)
     app.command("replay")(replay_product)
     app.command("runs")(show_runs)

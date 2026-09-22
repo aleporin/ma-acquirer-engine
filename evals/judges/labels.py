@@ -51,7 +51,7 @@ def export_packet(corpus: Corpus, directory: Path) -> Path:
             lines = [
                 "# Blind page labels",
                 "",
-                "Read each page before viewing any judge output.",
+                "Read [the labeling guide](RUBRIC.md), then each page before any judge output.",
                 "Enter Pass, Fail, or Unknown for each dimension; leave no blanks.",
                 "",
             ]
@@ -60,6 +60,7 @@ def export_packet(corpus: Corpus, directory: Path) -> Path:
                 (staging / "pages" / name).write_text(_page(case), encoding="utf-8")
                 lines.append(f"{i}. [{case.case_id}](pages/{name})")
             lines.extend(["", f"Corpus digest: {corpus.digest}", ""])
+            (staging / "RUBRIC.md").write_text(Path(__file__).with_name("rubric.md").read_text())
             (staging / "README.md").write_text("\n".join(lines), encoding="utf-8")
             with (staging / "human_labels.csv").open("w", newline="", encoding="utf-8") as stream:
                 writer = csv.DictWriter(stream, fieldnames=["case_id", *Dimension])

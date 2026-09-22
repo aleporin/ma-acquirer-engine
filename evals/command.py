@@ -111,13 +111,3 @@ def run_evaluation(
     except (AcquirerEngineError, OSError, ValidationError) as error:
         typer.echo(f"Evaluation failed: {error}", err=True)
         raise typer.Exit(1) from error
-
-
-def eval_judges() -> None:
-    """Report that live evaluation is unavailable.
-
-    Raises:
-        typer.Exit: Live judging is not implemented.
-    """
-    typer.echo("Live judge evaluation is not implemented.", err=True)
-    raise typer.Exit(2)
