@@ -14,12 +14,10 @@ from pydantic_ai.usage import UsageLimits
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import AcquirerEngineError
-from acquirer_engine.llm.attempts import generate
+from acquirer_engine.llm.analyst import generate, repair_history
 from acquirer_engine.llm.framing import data_block
-from acquirer_engine.llm.output import output_errors
-from acquirer_engine.llm.results import PageResult
-from acquirer_engine.llm.review_schema import ReviewResult, ReviewVerdict
-from acquirer_engine.validation.repair import repair_history
+from acquirer_engine.llm.provider import output_errors
+from acquirer_engine.llm.results import PageResult, ReviewResult, ReviewVerdict
 from acquirer_engine.validation.schema import AcquirerRationale
 
 

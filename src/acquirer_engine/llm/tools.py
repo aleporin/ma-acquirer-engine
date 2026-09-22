@@ -1,17 +1,22 @@
-"""Query bounded evidence for analyst-selected questions.
+"""Query source evidence and retain what each page actually retrieved.
 
-Owns: Five deterministic queries and canonical closed-deal statistics.
-Does not own: Model decisions or recording which results a page received.
+Owns: Bounded evidence queries, page-local provenance, and continuation state.
+Does not own: Agent construction, provider calls, or accepting rationale prose.
 """
 
+from dataclasses import dataclass, field
 from statistics import median
 from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, FiniteFloat, model_validator
+from pydantic_ai.messages import ModelMessage
 
 from acquirer_engine.data.schema import Transaction
+from acquirer_engine.deps import Deps
+from acquirer_engine.errors import BudgetExceeded
+from acquirer_engine.evidence.context import EvidenceContext
 from acquirer_engine.evidence.ids import stat_id
-from acquirer_engine.evidence.pack import Statistic
+from acquirer_engine.evidence.pack import CorePack, Statistic
 from acquirer_engine.llm.config import AnalystConfig
 
 type ToolName = Literal[
@@ -169,3 +174,70 @@ class EvidenceTools:
             if r.acquirer == acquirer and r.outcome in {"Withdrawn", "Terminated"}
         )
         return self._result("get_failed_deals", rows)
+
+
+@dataclass
+class ToolState:
+    """Mutable state belongs to one page; shared clients remain outside it."""
+
+    core: CorePack
+    max_rounds: int
+    rounds: set[tuple[int, int]] = field(default_factory=set)
+    results: list[ToolResult] = field(default_factory=list)
+    generation: int = 0
+    claims_total: int = 0
+    claims_verified: int = 0
+
+    def record(self, step: int, result: ToolResult) -> None:
+        """Add only results within the bounded tool loop.
+
+        Args:
+            step: Model-response step that requested the tool.
+            result: The rows actually returned, excluding truncated matches.
+        Raises:
+            BudgetExceeded: Another tool round would exceed policy.
+        """
+        key = (self.generation, step)
+        if key not in self.rounds and len(self.rounds) >= self.max_rounds:
+            raise BudgetExceeded("Maximum tool rounds exceeded")
+        self.rounds.add(key)
+        self.results.append(result)
+
+    def context(self) -> EvidenceContext:
+        """Build validation context without inventing retrieval provenance.
+
+        Returns:
+            Core plus only tool-returned rows and computed statistics.
+        """
+        return EvidenceContext(
+            core=self.core,
+            comparable_deals=tuple(
+                row
+                for result in self.results
+                if result.tool == "get_comparable_deals"
+                for row in result.rows
+            ),
+            retrieved_deals=tuple(
+                row
+                for result in self.results
+                if result.tool != "get_comparable_deals"
+                for row in result.rows
+            ),
+            statistics=tuple(stat for result in self.results for stat in result.statistics),
+        )
+
+
+@dataclass
+class PageDeps:
+    """One page's retrieval state with references to shared run resources."""
+
+    shared: Deps
+    state: ToolState
+
+
+@dataclass
+class PageSession:
+    """A revision reuses evidence already retrieved for the original draft."""
+
+    state: ToolState
+    messages: list[ModelMessage]

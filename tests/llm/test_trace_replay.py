@@ -10,8 +10,7 @@ import pytest
 from pydantic_ai.messages import ModelMessage, ModelRequest, ModelResponse, TextPart, UserPromptPart
 
 from acquirer_engine.errors import LLMInvalidOutput
-from acquirer_engine.llm.trace import TraceWriter
-from acquirer_engine.llm.trace_replay import ResponseArchive
+from acquirer_engine.llm.trace import ResponseArchive, TraceWriter
 
 
 def exchange(trace: TraceWriter, buyer: str, reply: str | None) -> None:

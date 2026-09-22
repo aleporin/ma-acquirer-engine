@@ -25,7 +25,7 @@ from tests.llm.test_routing import routing_deps
 
 @pytest.mark.asyncio
 async def test_shared_budget_waits_for_inflight_reservations_and_reconciles_usage() -> None:
-    budget = import_module("acquirer_engine.llm.budget").RunBudget(1.0)
+    budget = import_module("acquirer_engine.llm.cost").RunBudget(1.0)
     await budget.reserve(0.7)
     waiting = asyncio.create_task(budget.reserve(0.7))
     await asyncio.sleep(0)
@@ -39,7 +39,7 @@ async def test_shared_budget_waits_for_inflight_reservations_and_reconciles_usag
 
 @pytest.mark.asyncio
 async def test_uncertain_failed_request_retains_its_reservation() -> None:
-    budget = import_module("acquirer_engine.llm.budget").RunBudget(1.0)
+    budget = import_module("acquirer_engine.llm.cost").RunBudget(1.0)
     await budget.reserve(0.7)
     await budget.settle(0.7, None)
     with pytest.raises(BudgetExceeded):

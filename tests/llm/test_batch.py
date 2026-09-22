@@ -16,7 +16,7 @@ from pydantic_ai.usage import RequestUsage
 from acquirer_engine.bootstrap import build_services
 from acquirer_engine.deps import Deps
 from acquirer_engine.evidence.pack import CorePack
-from acquirer_engine.llm.batch import run_analysts
+from acquirer_engine.llm.analyst import run_analysts
 from acquirer_engine.llm.results import PageResult
 from tests.fixtures.rationale import evidence_context, rationale_payload
 
@@ -95,7 +95,7 @@ async def test_first_page_failure_does_not_block_later_pages(deps: Deps, tmp_pat
 async def test_failed_warmup_stays_serial_until_a_response(
     deps: Deps, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import acquirer_engine.llm.batch as pipeline
+    import acquirer_engine.llm.analyst as pipeline
 
     context = evidence_context(deps.settings)
     names = ["First", "Second", "Third", "Fourth"]

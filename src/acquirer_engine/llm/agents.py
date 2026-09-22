@@ -1,19 +1,18 @@
-"""Declare typed agents and register their output validators.
+"""Bind typed agents to evidence tools and output validators.
 
-Owns: Agent instructions, tool registration, and validation bindings.
-Does not own: Resource construction, scheduling, or page routing.
+Owns: Agent construction, tool signatures, retrieval provenance, and validation
+Does not own: Query arithmetic, shared resource lifetime, or page routing.
 """
 
-from pydantic_ai import Agent, RunContext, ToolOutput
+from pydantic_ai import Agent, RunContext, ToolOutput, ToolReturn
 from pydantic_ai.models.anthropic import AnthropicModelSettings
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import ValidationFailure
-from acquirer_engine.llm import bindings
-from acquirer_engine.llm.context import PageDeps
 from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.recording import RecordedModel
-from acquirer_engine.llm.review_schema import PortfolioVerdicts
+from acquirer_engine.llm.results import PortfolioVerdicts
+from acquirer_engine.llm.tools import NumericBand, PageDeps, ToolResult
 from acquirer_engine.validation.claims import validate_rationale, verified_claim_count
 from acquirer_engine.validation.schema import AcquirerRationale
 
@@ -70,11 +69,11 @@ def build_analyst(
         tools=[]
         if not config.tools_enabled
         else [
-            bindings.get_comparable_deals,
-            bindings.get_sector_stats,
-            bindings.get_adjacent_sector_activity,
-            bindings.get_sponsor_platform_history,
-            bindings.get_failed_deals,
+            get_comparable_deals,
+            get_sector_stats,
+            get_adjacent_sector_activity,
+            get_sponsor_platform_history,
+            get_failed_deals,
         ],
     )
     agent.output_validator(_validate)
@@ -110,3 +109,128 @@ def build_reviewer(
     )
     agent.output_validator(_coverage)
     return agent
+
+
+def _record(ctx: RunContext[PageDeps], result: ToolResult, arguments: object) -> ToolReturn:
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    ctx.deps.state.record(ctx.run_step, result)
+    buyer = ctx.deps.state.core.ranking.acquirer
+    runtime.trace.write(
+        "tool_returned", buyer, round=ctx.run_step, arguments=arguments, result=result
+    )
+    ctx.deps.shared.logger.info(
+        "tool_called",
+        acquirer=buyer,
+        stage="analyst",
+        tool=result.tool,
+        round=ctx.run_step,
+        rows=len(result.rows),
+        truncated=result.truncated,
+    )
+    return ToolReturn(return_value=data_block("tool_evidence", result))
+
+
+async def get_comparable_deals(
+    ctx: RunContext[PageDeps],
+    sector: str,
+    size_band: NumericBand,
+    margin_band: NumericBand | None = None,
+    geography: str | None = None,
+) -> ToolReturn:
+    """Retrieve Closed valuation comps; omit optional filters to widen sparse results.
+
+    Args:
+        ctx: Current page context.
+        sector: Exact dataset sector.
+        size_band: Enterprise value bounds in millions.
+        margin_band: Optional EBITDA margin percentage bounds.
+        geography: Optional exact region, or null for all regions.
+    Returns:
+        Bounded comparable rows and truncation metadata.
+    """
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    result = runtime.tools.comparable_deals(sector, size_band, margin_band, geography)
+    return _record(
+        ctx,
+        result,
+        {
+            "sector": sector,
+            "size_band": size_band,
+            "margin_band": margin_band,
+            "geography": geography,
+        },
+    )
+
+
+async def get_sector_stats(ctx: RunContext[PageDeps], sector: str) -> ToolReturn:
+    """Retrieve full-population Closed-sector benchmarks with stable stat IDs.
+
+    Args:
+        ctx: Current page context.
+        sector: Exact sector to benchmark.
+    Returns:
+        Closed counts and canonical medians, plus bounded supporting rows.
+    """
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    return _record(ctx, runtime.tools.sector_stats(sector), {"sector": sector})
+
+
+async def get_adjacent_sector_activity(
+    ctx: RunContext[PageDeps],
+    acquirer: str,
+    sectors: tuple[str, ...],
+) -> ToolReturn:
+    """Retrieve buyer precedents in selected adjacent sectors.
+
+    Args:
+        ctx: Current page context.
+        acquirer: Exact buyer identity.
+        sectors: Sector labels relevant to the thesis.
+    Returns:
+        Bounded historical activity with evidence IDs.
+    """
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    return _record(
+        ctx,
+        runtime.tools.adjacent_activity(acquirer, sectors),
+        {"acquirer": acquirer, "sectors": sectors},
+    )
+
+
+async def get_sponsor_platform_history(
+    ctx: RunContext[PageDeps], acquirer: str, sector: str
+) -> ToolReturn:
+    """Retrieve Closed sponsor platforms to distinguish a platform from an add-on.
+
+    Args:
+        ctx: Current page context.
+        acquirer: Exact sponsor identity.
+        sector: Requested platform sector.
+    Returns:
+        Bounded sponsor Platform Investment precedents.
+    """
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    return _record(
+        ctx,
+        runtime.tools.platform_history(acquirer, sector),
+        {"acquirer": acquirer, "sector": sector},
+    )
+
+
+async def get_failed_deals(ctx: RunContext[PageDeps], acquirer: str) -> ToolReturn:
+    """Retrieve failed deals to support execution-risk flags.
+
+    Args:
+        ctx: Current page context.
+        acquirer: Exact buyer identity.
+    Returns:
+        Bounded Withdrawn and Terminated deals.
+    """
+    runtime = ctx.deps.shared.runtime
+    assert runtime is not None
+    return _record(ctx, runtime.tools.failed_deals(acquirer), {"acquirer": acquirer})

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import TypedDict
 
 from acquirer_engine.errors import EvaluationError
-from acquirer_engine.llm.budget import request_bound
+from acquirer_engine.llm.cost import request_bound
 from acquirer_engine.settings import ModelsConfig, ModelSpec
 from evals.judges.cases import identify_input
 from evals.judges.config import JudgeConfig

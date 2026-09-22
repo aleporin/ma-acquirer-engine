@@ -1,18 +1,50 @@
-"""Prepare structured output and retain specific rejection reasons.
+"""Adapt provider transport and structured output to the application boundary.
 
-Owns: Provider-compatible output schemas, truncation checks, and schema diagnostics.
-Does not own: Repair, evidence validation, client construction, or usage accounting.
+Owns: Client configuration, supported output schemas, and safe response diagnostics.
+Does not own: Client lifetime, repair routing, evidence validation, or accounting.
 """
 
 from dataclasses import replace
 from typing import Any
 
-from anthropic import transform_schema
+import httpx2
+from anthropic import AsyncAnthropic, transform_schema
 from pydantic import ValidationError
 from pydantic_ai.messages import ModelResponse
 from pydantic_ai.models import ModelRequestParameters
 
 from acquirer_engine.errors import AcquirerEngineError, LLMInvalidOutput
+from acquirer_engine.llm.config import AnalystConfig
+
+
+class AnalystClient(AsyncAnthropic):
+    """Keep SDK backoff/jitter while excluding nontransient client statuses."""
+
+    def _should_retry(self, response: httpx2.Response) -> bool:
+        return response.status_code in {408, 429} or response.status_code >= 500
+
+
+def create_client(
+    config: AnalystConfig,
+    *,
+    http_client: httpx2.AsyncClient | None = None,
+    api_key: str | None = None,
+) -> AsyncAnthropic:
+    """Build the client's complete lifecycle once before task fan-out.
+
+    Args:
+        config: Timeout and SDK retry limits.
+        http_client: Optional injected transport for offline integration tests.
+        api_key: Test credential override; live SDK reads its environment normally.
+    Returns:
+        An owned async client, to be closed by the command boundary.
+    """
+    return AnalystClient(
+        api_key=api_key,
+        http_client=http_client,
+        max_retries=config.sdk_retries,
+        timeout=config.request_timeout_seconds,
+    )
 
 
 def _output_schema(schema: dict[str, Any]) -> dict[str, Any]:

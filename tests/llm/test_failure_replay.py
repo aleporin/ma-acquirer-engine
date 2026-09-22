@@ -14,8 +14,7 @@ from pydantic_ai.models.function import AgentInfo, FunctionModel
 
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import BudgetExceeded, LLMInvalidOutput
-from acquirer_engine.llm.trace import TraceWriter
-from acquirer_engine.llm.trace_replay import ResponseArchive
+from acquirer_engine.llm.trace import ResponseArchive, TraceWriter
 from acquirer_engine.pipeline import execute_prepared, execute_replay
 from tests.llm.test_routing import routing_deps
 from tests.llm.test_run_archive import inputs

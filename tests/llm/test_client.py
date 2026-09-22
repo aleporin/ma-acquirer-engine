@@ -8,7 +8,7 @@ import httpx2
 import pytest
 from anthropic import APIStatusError
 
-from acquirer_engine.llm.client import create_client
+from acquirer_engine.llm.provider import create_client
 from acquirer_engine.settings import Settings
 
 
