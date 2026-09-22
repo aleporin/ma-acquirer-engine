@@ -78,7 +78,7 @@ def test_validation_stability_requires_all_five_runs_and_preserves_ranking_failu
     settings: Settings,
 ) -> None:
     layer = LayerSpec(id=5, name="stability")
-    ranking = stability.grade(layer, stability.RankingStability(1, 1, 1, 2))
+    ranking = stability.grade(layer, stability.RankingStability(0.5, 1, 1, 2))
     runs = [observation(settings, i) for i in range(5)]
     result = stability.with_validation(ranking, runs, settings.analyst)
     assert result.status == "failed"

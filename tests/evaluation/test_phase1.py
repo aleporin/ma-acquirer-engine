@@ -30,7 +30,9 @@ def test_junit_and_coverage_are_measured_from_artifacts(tmp_path: Path) -> None:
     assert report.coverage == 0.75
 
 
-def test_phase_one_produces_measurements_and_reports_unmet_conviction_gate(deps: Deps) -> None:
+def test_phase_one_produces_measurements_and_reports_conviction_diversity_without_forcing_it(
+    deps: Deps,
+) -> None:
     rows = [
         transaction(1, sector="Healthcare Services"),
         transaction(2, sector="Healthcare Services", deal_year=2022),
@@ -49,7 +51,8 @@ def test_phase_one_produces_measurements_and_reports_unmet_conviction_gate(deps:
     assert "ranker_recall_at_k" in backtest.metrics
     assert stability.metrics["top_k_identity"].value == 1
     assert stability.metrics["conviction_levels"].value == 1
-    assert stability.status == "failed"
+    assert stability.status == "passed"
+    assert stability.metrics["conviction_diversity_target_met"].value == 0
     assert {"backtest.json", "data_quality.json", "top10.json"} <= set(prepared.artifacts)
     snapshot = json.loads(prepared.artifacts["top10.json"])
     assert snapshot["stability_runs"] == 5
