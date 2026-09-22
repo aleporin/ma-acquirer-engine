@@ -71,6 +71,8 @@ heuristic, not a trained feedback model or a demonstrated predictive improvement
 The run freezes flags, policy, base score, and multiplier. Conviction is recomputed
 from the adjusted score using the existing thresholds. The report displays the
 feedback and base score; evaluation continues to measure the unchanged base ranker.
+Portable replays require the recorded feedback policy whenever it was saved or
+feedback flags were present; legacy archives without either remain compatible.
 
 ## Compare two profiles
 

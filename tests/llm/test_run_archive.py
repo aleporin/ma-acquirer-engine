@@ -137,3 +137,18 @@ def test_saved_snapshot_preserves_legacy_execution_policy_fields(
     save_snapshot(directory, snapshot)
     restored = load_snapshot(directory).settings.analyst
     assert restored.model_dump(exclude_unset=True) == old.model_dump(exclude_unset=True)
+
+
+def test_snapshot_without_feedback_fields_loads_as_empty_legacy_state(
+    deps: Deps, tmp_path: Path
+) -> None:
+    snapshot = inputs(deps, "a" * 32)
+    directory = tmp_path / snapshot.run_id
+    directory.mkdir()
+    payload = snapshot.model_dump(mode="json")
+    payload.pop("feedback")
+    payload.pop("feedback_policy")
+    (directory / "snapshot.json").write_text(json.dumps(payload) + "\n")
+    restored = load_snapshot(directory)
+    assert not restored.feedback.flags
+    assert restored.feedback_policy is None

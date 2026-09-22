@@ -73,6 +73,13 @@ def select_replay(root: Path, deps: Deps, selected: Selection) -> tuple[Path, Ru
             "Portable replay has no matching target or feedback selection; "
             "use a matching historical replay or explicitly request --fresh"
         )
+    if (snapshot.feedback_policy is not None or snapshot.feedback.flags) and (
+        snapshot.feedback_policy != selected.feedback_policy
+    ):
+        raise LLMInvalidOutput(
+            "Portable replay feedback policy differs; "
+            "use a matching historical replay or explicitly request --fresh"
+        )
     _check_policy(root, deps, snapshot)
     return source, snapshot
 
