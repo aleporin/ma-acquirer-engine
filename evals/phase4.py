@@ -9,7 +9,7 @@ from pathlib import Path
 
 from acquirer_engine.llm.results import AnalystRun, PageAttempt, PageResult
 from acquirer_engine.settings import LayerSpec, Settings
-from evals.graders import distinct
+from evals.graders import distinct, ops
 from evals.observations import load_runs
 from evals.phase1 import PreparedEvaluation
 from evals.phase3 import prepare_phase3
@@ -92,8 +92,15 @@ def _complete(run: AnalystRun, expected: int) -> bool:
             p.status == "verified" and p.claims_total > 0 and p.claims_verified == p.claims_total
             for p in [*run.pages, *repaired]
         )
-        and (not run.reviewer_enabled or (run.review is not None and not run.review.errors))
+        and (not run.reviewer_enabled or _review_complete(run))
     )
+
+
+def _review_complete(run: AnalystRun) -> bool:
+    if run.review is None or run.review.errors:
+        return False
+    names = [v.acquirer for v in run.review.verdicts]
+    return len(names) == len(set(names)) and set(names) == {p.acquirer for p in run.pages}
 
 
 def _phase_gate(runs: list[AnalystRun], settings: Settings) -> bool:
@@ -144,13 +151,11 @@ def prepare_phase4(
         if run.tools_enabled and run.reviewer_enabled == settings.analyst.reviewer_enabled
     ]
     combined = prepare_phase3(prepared, baseline_paths, settings)
-    if not baseline_paths:
-        return combined
     graders = dict(combined.graders)
-    original_ops = graders[6]
+    original_ops = graders.get(6, ops.grade)
     graders[6] = lambda layer: _operations(original_ops(layer), runs, settings)
     full = [r for r in runs if r.tools_enabled and r.reviewer_enabled]
-    original_distinct = graders[3]
+    original_distinct = graders.get(3, distinct.grade)
     graders[3] = lambda layer: _review_overlap(original_distinct(layer), layer, full, settings)
     artifacts = combined.artifacts | {
         "routing_observations.json": json.dumps(

@@ -7,6 +7,7 @@ Does not own: Estimating unreported billing or running providers.
 from collections import Counter
 
 from acquirer_engine.llm.config import AnalystConfig
+from acquirer_engine.llm.cost import CallRecord
 from acquirer_engine.llm.results import AnalystRun
 from acquirer_engine.settings import LayerSpec
 from evals.scorecard import LayerResult, Metric
@@ -38,6 +39,7 @@ def _metrics(
     if calls:
         values["request_p50_ms"] = percentile([c.latency_ms for c in calls], 0.5)
         values["request_p95_ms"] = percentile([c.latency_ms for c in calls], 0.95)
+    values.update(_timing_metrics(calls))
     populations = Counter(page.acquirer_type for page in pages)
     selections = Counter((p.acquirer_type, tool) for p in pages for tool in set(p.tools))
     for (kind, tool), count in selections.items():
@@ -59,6 +61,15 @@ def _metrics(
         )
         for name, value in values.items()
     }
+
+
+def _timing_metrics(calls: list[CallRecord]) -> dict[str, float]:
+    timings = [c.timing for c in calls if c.timing is not None]
+    values: dict[str, float] = {"timed_responses": len(timings)}
+    if timings:
+        for name in ("token_count", "admission", "provider"):
+            values[f"{name}_p95_ms"] = percentile([getattr(t, f"{name}_ms") for t in timings], 0.95)
+    return values
 
 
 def grade(
