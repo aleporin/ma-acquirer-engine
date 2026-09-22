@@ -14,8 +14,7 @@ from evals.harness import PreparedEvaluation
 from evals.judges.plan import JudgePlan
 from evals.judges.prepare import validate_cohort
 from evals.judges.reporting import JudgeSummary, summarize
-from evals.judges.results import JudgeRun
-from evals.judges.schema import Dimension
+from evals.judges.schema import Dimension, JudgeRun
 from evals.scorecard import LayerResult, Metric
 
 

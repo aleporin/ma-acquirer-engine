@@ -9,8 +9,7 @@ import pytest
 from acquirer_engine.deps import Deps
 from acquirer_engine.errors import EvaluationError
 from evals.judges.reporting import summarize
-from evals.judges.results import JudgeRun, Outcome
-from evals.judges.schema import IdentificationAnswer, RubricAnswer, Vote
+from evals.judges.schema import IdentificationAnswer, JudgeRun, Outcome, RubricAnswer, Vote
 from tests.evaluation.test_judge_runner import plan_for_test
 
 

@@ -11,8 +11,14 @@ from evals.harness import PreparedEvaluation
 from evals.judges.cases import seal_corpus
 from evals.judges.grading import prepare_judges
 from evals.judges.plan import JudgePlan, build_plan
-from evals.judges.results import JudgeRun, Outcome
-from evals.judges.schema import Dimension, HumanLabel, IdentificationAnswer, RubricAnswer
+from evals.judges.schema import (
+    Dimension,
+    HumanLabel,
+    IdentificationAnswer,
+    JudgeRun,
+    Outcome,
+    RubricAnswer,
+)
 from tests.evaluation.test_judge_cases import example_case
 from tests.evaluation.test_judge_runner import plan_for_test
 

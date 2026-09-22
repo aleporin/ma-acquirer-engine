@@ -27,8 +27,7 @@ from acquirer_engine.llm.framing import data_block
 from acquirer_engine.llm.trace import TraceWriter
 from evals.judges.plan import Job, JudgePlan, output_schemas
 from evals.judges.recording import JudgeDeps, RecordedJudge
-from evals.judges.results import JudgeRun, Outcome
-from evals.judges.schema import IdentificationAnswer, RubricAnswer
+from evals.judges.schema import IdentificationAnswer, JudgeRun, Outcome, RubricAnswer
 
 
 def _settings(deps: JudgeDeps, job: Job) -> ModelSettings:

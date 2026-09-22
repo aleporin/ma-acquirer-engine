@@ -6,28 +6,37 @@ Does not own: Generating new pages or choosing human votes.
 
 import asyncio
 import json
+import os
 import sys
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 from uuid import uuid4
 
 import typer
+from google import genai
+from google.genai.types import HttpOptions, HttpRetryOptions
+from openai import AsyncOpenAI
 from pydantic import ValidationError
+from pydantic_ai.models import Model
+from pydantic_ai.models.google import GoogleModel
+from pydantic_ai.models.openai import OpenAIResponsesModel
+from pydantic_ai.providers.google import GoogleProvider
+from pydantic_ai.providers.openai import OpenAIProvider
 from structlog.stdlib import BoundLogger
 
-from acquirer_engine.errors import AcquirerEngineError, EvaluationError
+from acquirer_engine.errors import AcquirerEngineError, ConfigError, EvaluationError
 from acquirer_engine.logging_setup import run_logger
 from acquirer_engine.replay import git_state
 from acquirer_engine.settings import load_settings
-from evals.judges.clients import clients
 from evals.judges.config import load_judge_config
 from evals.judges.labels import read_labels
 from evals.judges.plan import JudgePlan, build_plan, estimate_plan
 from evals.judges.prepare import prepare, validate_cohort
 from evals.judges.reporting import summarize
-from evals.judges.results import JudgeRun
 from evals.judges.runtime import execute, replay
-from evals.judges.schema import Corpus
+from evals.judges.schema import Corpus, JudgeRun
 
 
 def _plan(root: Path, fresh: bool) -> JudgePlan:
@@ -39,6 +48,45 @@ def _plan(root: Path, fresh: bool) -> JudgePlan:
     return build_plan(
         corpus, config, load_settings(root / "config").models, root / "prompts/judges", labels
     )
+
+
+@asynccontextmanager
+async def clients(plan: JudgePlan) -> AsyncIterator[dict[str, Model]]:
+    """Construct each provider once, only after explicit fresh execution is selected.
+
+    Args:
+        plan: Frozen identities, limits, and SDK retry policy.
+    Yields:
+        Both independent judge models sharing their respective provider clients.
+    Raises:
+        ConfigError: Required environment variables are absent.
+    """
+    if not all(os.environ.get(key) for key in ("OPENAI_API_KEY", "GEMINI_API_KEY")):
+        raise ConfigError("Fresh judging requires OPENAI_API_KEY and GEMINI_API_KEY")
+    config = plan.config
+    with genai.Client(
+        api_key=os.environ["GEMINI_API_KEY"],
+        http_options=HttpOptions(
+            timeout=int(config.request_timeout_seconds * 1000),
+            retry_options=HttpRetryOptions(attempts=config.sdk_retries + 1),
+        ),
+    ) as google:
+        async with (
+            google.aio,
+            AsyncOpenAI(
+                max_retries=config.sdk_retries, timeout=config.request_timeout_seconds
+            ) as openai,
+        ):
+            models: dict[str, Model] = {}
+            for role, spec in plan.models.items():
+                models[role] = (
+                    OpenAIResponsesModel(
+                        spec.model_id, provider=OpenAIProvider(openai_client=openai)
+                    )
+                    if spec.provider == "openai"
+                    else GoogleModel(spec.model_id, provider=GoogleProvider(client=google))
+                )
+            yield models
 
 
 async def _fresh(plan: JudgePlan, directory: Path, logger: BoundLogger, sha: str) -> JudgeRun:
