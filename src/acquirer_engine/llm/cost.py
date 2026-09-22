@@ -114,11 +114,13 @@ class CostLedger:
             ),
             None,
         )
-        if price is None or price.cache_write_usd_per_million is None:
+        if price is None or (
+            usage.cache_write_tokens and price.cache_write_usd_per_million is None
+        ):
             raise ConfigError("No complete price band for request usage")
         return (
             uncached * price.input_usd_per_million
             + usage.output_tokens * price.output_usd_per_million
             + usage.cache_read_tokens * price.cache_read_usd_per_million
-            + usage.cache_write_tokens * price.cache_write_usd_per_million
+            + usage.cache_write_tokens * (price.cache_write_usd_per_million or 0)
         ) / 1_000_000
