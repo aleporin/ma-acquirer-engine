@@ -101,7 +101,7 @@ def test_failed_proposal_replays_through_fixed_validation_without_another_call(
     first = runner.invoke(build_app(), ["propose-weights", "--fresh", "--project", str(tmp_path)])
     assert first.exit_code == 1
     source = next((tmp_path / "runs/weight-proposals").iterdir())
-    saved = {p.name: p.read_bytes() for p in source.iterdir()}
+    saved = {p.relative_to(source): p.read_bytes() for p in source.rglob("*") if p.is_file()}
     call_count = len(calls)
     with pytest.raises(EvaluationError, match="failed"):
         weight_command._load(source)
@@ -118,4 +118,6 @@ def test_failed_proposal_replays_through_fixed_validation_without_another_call(
     assert report.candidates[0].name == "size_scale_emphasis"
     assert len(report.calls) == 1 and report.calls[0].cost_usd == 0
     assert len(calls) == call_count
-    assert saved == {p.name: p.read_bytes() for p in source.iterdir()}
+    assert saved == {
+        p.relative_to(source): p.read_bytes() for p in source.rglob("*") if p.is_file()
+    }
