@@ -129,6 +129,11 @@ unmeasured. Rankings are repeatable, while fresh writing can vary. Replay reprod
 saved responses without API calls. [Evaluation results](docs/EVALS.md) contain the
 methods and measurements; [design decisions](docs/DECISIONS.md) explain data policies.
 
+An [LLM weight experiment](docs/EVALS.md#weight-experiment) tested alternative
+buyer-type weights and buyer-specific adjustments. Its selected proposal improved
+observed recall but showed no clear lift over the existing weights, so defaults
+remain unchanged. Run `make eval-weights` to reproduce the comparison without keys.
+
 ## Development
 
 ```sh

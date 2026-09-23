@@ -128,16 +128,40 @@ undefined kappa remains null. Twenty pages from one non-banker rater are only a
 sanity check. No completed live judge baseline or measured judge-prompt iteration
 is present; generation prompt revisions do not substitute for calibration.
 
-### Optional weight experiment
+### Weight experiment
 
 The [frozen protocol](../config/ranking_experiment.yaml) asks for at most three
 weight hypotheses from anonymous aggregates through 2018. Compare unchanged
 weights with type-only and shrunk buyer-adjusted variants, select chronologically
 on 2019/2020/2021, then freeze the winner before measuring 2022–2024. That benchmark
-has already been inspected, so results are exploratory. No alternative-weight
-performance is measured yet, and this experiment never changes product scoring.
+has already been inspected, so results are exploratory. The completed experiment
+does not change product scoring.
+
+One provider request ($0.104540, no retries) returned three hypotheses. Selection
+across 223 transactions from 2019–2021 chose stronger sector emphasis for strategics
+and more size/margin emphasis for sponsors. Buyer-specific adjustments did not win.
+
+| Method | Recall@10 on 142 later transactions | MRR | nDCG@10 |
+| --- | --- | --- | --- |
+| Shipped shared weights | 54/142 (38.03%) | 0.1711 | 0.1973 |
+| Selected proposed type weights | 58/142 (40.85%) | 0.1811 | 0.2116 |
+| Shared weights with buyer adjustments | 55/142 (38.73%) | 0.1679 | 0.1968 |
+| Global popularity | 58/142 (40.85%) | 0.1264 | 0.1761 |
+| Sector popularity | 62/142 (43.66%) | 0.1366 | 0.1819 |
+
+The selected proposal gains 2.82 percentage points over shipped weights; its paired
+95% bootstrap interval is −2.11 to +7.75 points. It ties global popularity and trails
+sector popularity on recall. Keep the shipped weights: this is not clear evidence
+of predictive improvement, and no repeat-generation claim is made from one request.
+
+The original response used readable candidate names that the local parser rejected.
+After an identifier-normalization fix, offline replay recovered the same weights
+and explanations without another provider call. The original failure, raw response,
+successful replay, all selection trials, and later benchmark results are retained
+in the [recorded experiment](../evals/results/p7-47f238dc8605d755ee5c8554e6e2220cd940e8de/weight-experiment/manifest.json).
 
 ```sh
+make eval-weights                                               # Free; reproduce recorded benchmark
 uv run acquirers propose-weights --fresh                         # Paid; at most $0.50 reserved
 uv run acquirers propose-weights --source runs/weight-proposals/ID # Free proposal replay
 uv run acquirers experiment-weights runs/weight-proposals/ID       # Free selection and measurement
@@ -146,6 +170,11 @@ uv run acquirers experiment-weights runs/weight-proposals/ID       # Free select
 Fresh proposals need the analyst credential, allow zero retries, and record the
 aggregate input, hypotheses, usage, and trace. Experiments save all trials,
 per-query results, intervals, and provenance; mismatched inputs are rejected.
+`make eval-weights WEIGHT_PROPOSAL=runs/weight-proposals/ID` evaluates another
+saved proposal using the same protocol. Buyer-specific adjustments are computed
+from historical concentration and shrunk toward the proposed type weights; the
+model does not invent named-company mandates. Full results and intervals are in
+the [measurement summary](../evals/results/p7-47f238dc8605d755ee5c8554e6e2220cd940e8de/weight-experiment/summary.md).
 The implementation is in [`evals/ranking/`](../evals/ranking/).
 
 ## Evidence trail
