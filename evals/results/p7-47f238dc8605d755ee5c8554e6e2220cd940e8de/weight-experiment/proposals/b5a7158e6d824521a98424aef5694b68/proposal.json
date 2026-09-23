@@ -1,0 +1,110 @@
+{
+  "run_id": "b5a7158e6d824521a98424aef5694b68",
+  "replay_of": "3f6d89baef6e4b3b90ce9cab3fac40b1",
+  "git_sha": "79229e52a85c1840154136d8c8802463dd55d6a6",
+  "source_dirty": false,
+  "packet_sha256": "1a6b10c5ce4af8218f7060f914ac5c09b8919c78d928d46a70cf85a1d0402b6a",
+  "snapshot_sha256": "2f20840f186b06660c86f116196ac9b12650ae5a6cef4e8d70b6d808ff77678f",
+  "candidates": [
+    {
+      "name": "sector_anchored_strategics_breadth_tolerant_sponsors",
+      "explanation": "Hypothesis: sector alignment should be weighted asymmetrically by buyer type. In the pre-2018 packet, Strategic buyer histories are overwhelmingly single-sector (most records show sector_count = 1 and sector_hhi = 1.0, though many are singletons), while Financial Sponsor histories are more diversified (per-buyer sector_hhi roughly 0.19-0.44 for the multi-deal sponsors, population HHI 0.140). This candidate raises sector_fit and tag_fit for Strategic buyers and reduces sector_fit modestly for Sponsors, shifting sponsor emphasis toward size and margin/profile similarity instead. Limitations: the apparent Strategic concentration is largely an artifact of sparse, mostly single-transaction histories, which cannot establish any mandate, and the two populations have similar aggregate sector counts (9 vs 10), so the contrast may not survive in later periods. Nothing here implies willingness to pay or that any buyer declined other opportunities.",
+      "multipliers": {
+        "Financial Sponsor": {
+          "sector_fit": 0.8,
+          "size_fit": 1.3,
+          "recency": 1.1,
+          "completion": 1.0,
+          "profile_fit": 1.25,
+          "tag_fit": 0.9,
+          "geography_fit": 0.9,
+          "deal_type_fit": 1.0
+        },
+        "Strategic": {
+          "sector_fit": 1.5,
+          "size_fit": 0.9,
+          "recency": 0.9,
+          "completion": 0.9,
+          "profile_fit": 0.9,
+          "tag_fit": 1.4,
+          "geography_fit": 1.0,
+          "deal_type_fit": 1.0
+        }
+      }
+    },
+    {
+      "name": "size_scale_emphasis",
+      "explanation": "Hypothesis: acquisition scale is the most separating observable, so size_fit deserves more weight for both types, with sector_fit trimmed to make room after normalization. The packet shows very different size centers (Sponsor EV median ~113mm vs Strategic ~266mm) and wide but comparable log-EV dispersion (population ln SD ~1.62 for both), plus long right tails (up to ~5.96bn Sponsor, ~7.16bn Strategic). Several individual Strategic records cluster tightly in log-EV (e.g. per-buyer ln SD ~0.11-0.22), suggesting size bands may be informative for repeat buyers. Limitations: aggregate log dispersion is large, so size may be weakly discriminating overall; tight per-buyer ranges come from two- or three-deal histories with near-zero degrees of freedom and are not evidence of a size mandate. This candidate deliberately under-weights sector to test whether scale alone carries the signal.",
+      "multipliers": {
+        "Financial Sponsor": {
+          "sector_fit": 0.75,
+          "size_fit": 1.9,
+          "recency": 1.0,
+          "completion": 0.9,
+          "profile_fit": 1.1,
+          "tag_fit": 0.8,
+          "geography_fit": 0.9,
+          "deal_type_fit": 1.0
+        },
+        "Strategic": {
+          "sector_fit": 0.8,
+          "size_fit": 1.9,
+          "recency": 0.95,
+          "completion": 0.9,
+          "profile_fit": 1.1,
+          "tag_fit": 0.8,
+          "geography_fit": 0.9,
+          "deal_type_fit": 1.0
+        }
+      }
+    },
+    {
+      "name": "activity_and_execution_tilt",
+      "explanation": "Hypothesis: recent observed activity and completion behavior should carry more weight, since scoring candidates that were active near the cutoff may rank better in the immediately following periods. Sponsor year_counts rise monotonically (11, 13, 18, 28 across 2015-2018) and Strategic counts peak mid-window (5, 15, 24, 19), so recency is emphasized for both, slightly more for Sponsors. Completion is also raised for Strategic buyers because that population contains several records with completion_rate 0.0 or 0.5 alongside a population rate of 0.887, implying more variance in resolved outcomes than the Sponsor population (0.884 with fewer zero-rate records). Margin similarity is held near baseline given the modest population CVs (0.437 Sponsor, 0.354 Strategic). Limitations: rising deal counts may reflect data coverage rather than behavior; completion rates computed on one or two resolved deals are extremely noisy, and a zero rate does not indicate an inability or unwillingness to close.",
+      "multipliers": {
+        "Financial Sponsor": {
+          "sector_fit": 0.9,
+          "size_fit": 0.95,
+          "recency": 1.8,
+          "completion": 1.2,
+          "profile_fit": 1.0,
+          "tag_fit": 0.95,
+          "geography_fit": 0.95,
+          "deal_type_fit": 1.1
+        },
+        "Strategic": {
+          "sector_fit": 0.95,
+          "size_fit": 0.95,
+          "recency": 1.5,
+          "completion": 1.6,
+          "profile_fit": 1.0,
+          "tag_fit": 0.95,
+          "geography_fit": 0.95,
+          "deal_type_fit": 1.1
+        }
+      }
+    }
+  ],
+  "calls": [
+    {
+      "acquirer": "weight-proposals",
+      "stage": "ranking_proposal",
+      "model": "claude-opus-5",
+      "attempt": 1,
+      "mode": "replay",
+      "input_tokens": 12073,
+      "output_tokens": 1767,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0,
+      "latency_ms": 0.05220901221036911,
+      "timing": {
+        "token_count_ms": 0.002458924427628517,
+        "admission_ms": 0.0070410314947366714,
+        "provider_ms": 0.04270905628800392
+      }
+    }
+  ],
+  "errors": [],
+  "uncertain_cost_bound_usd": 0.0
+}

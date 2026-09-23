@@ -1,0 +1,23 @@
+{
+  "measurement_git_sha": "47f238dc8605d755ee5c8554e6e2220cd940e8de",
+  "live_source_git_sha": "79229e52a85c1840154136d8c8802463dd55d6a6",
+  "live_proposal_run": "3f6d89baef6e4b3b90ce9cab3fac40b1",
+  "recovered_proposal_run": "b5a7158e6d824521a98424aef5694b68",
+  "experiment_run": "e0f91937f08e4b23a001783a8c70fe05",
+  "provider_requests": 1,
+  "total_recorded_usd": 0.10454,
+  "uncertain_cost_bound_usd": 0,
+  "recovery": "Human-readable proposal names normalized to identifiers; saved weight multipliers and explanations unchanged. Original failed run preserved.",
+  "production_policy_changed": false,
+  "files": {
+    "experiment.json": "02d3a0cf0cf71e2f7119c7239a70db6d9809673f28239fdfa78a4f4ff9767858",
+    "proposals/3f6d89baef6e4b3b90ce9cab3fac40b1/input.json": "2f20840f186b06660c86f116196ac9b12650ae5a6cef4e8d70b6d808ff77678f",
+    "proposals/3f6d89baef6e4b3b90ce9cab3fac40b1/proposal.json": "ed38d2400969f7361f6b615e4f14775cfe3356d548df25d432015a45e75bcd90",
+    "proposals/3f6d89baef6e4b3b90ce9cab3fac40b1/trace.jsonl": "2fa28fc9c925c02faa697529f53ea5b30ad9408b3749efc467861f055584cff0",
+    "proposals/b5a7158e6d824521a98424aef5694b68/input.json": "2f20840f186b06660c86f116196ac9b12650ae5a6cef4e8d70b6d808ff77678f",
+    "proposals/b5a7158e6d824521a98424aef5694b68/proposal.json": "5475ca2640b03b63d731111a58b9a1a120e9b4fbd507b301c44f4bdcfd5de250",
+    "proposals/b5a7158e6d824521a98424aef5694b68/trace.jsonl": "bd06387b926ab16381260189de4913b2e06cbaf0e86f7baa8c7d641ad01a4f38",
+    "provenance.json": "269a29f75e77c1c113c863eb21863c2e7d85f9187f50efe9e60459f75c790ac0",
+    "summary.md": "2b26fd323fd85f155d8cd714f9d9655ecb2c94a513d45fb4eeb1061913415255"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "run_id": "3f6d89baef6e4b3b90ce9cab3fac40b1",
+  "replay_of": null,
+  "git_sha": "79229e52a85c1840154136d8c8802463dd55d6a6",
+  "source_dirty": false,
+  "packet_sha256": "1a6b10c5ce4af8218f7060f914ac5c09b8919c78d928d46a70cf85a1d0402b6a",
+  "snapshot_sha256": "2f20840f186b06660c86f116196ac9b12650ae5a6cef4e8d70b6d808ff77678f",
+  "candidates": [],
+  "calls": [
+    {
+      "acquirer": "weight-proposals",
+      "stage": "ranking_proposal",
+      "model": "claude-opus-5",
+      "attempt": 1,
+      "mode": "live",
+      "input_tokens": 12073,
+      "output_tokens": 1767,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.10454,
+      "latency_ms": 27144.089666893706,
+      "timing": {
+        "token_count_ms": 156.6537090111524,
+        "admission_ms": 0.027790898457169533,
+        "provider_ms": 26987.408166984096
+      }
+    }
+  ],
+  "errors": [
+    "UnexpectedModelBehavior"
+  ],
+  "uncertain_cost_bound_usd": 0.0
+}
