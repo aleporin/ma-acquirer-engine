@@ -59,6 +59,11 @@ def _case(
     target = target_from_transaction(row)
     methods = baseline_rankings(fitted, target.sector, seed=seed, query_id=row.transaction_id)
     methods["ranker"] = [item.acquirer for item in rank_acquirers(fitted, target, scoring)]
+    if scoring.type_weights:
+        shared = scoring.model_copy(update={"type_weights": {}})
+        methods["shared_weights"] = [
+            item.acquirer for item in rank_acquirers(fitted, target, shared)
+        ]
     for feature in scoring.weights:
         methods[f"without_{feature}"] = [
             item.acquirer for item in rank_acquirers(fitted, target, scoring, drop=feature)
@@ -79,7 +84,7 @@ def run_backtest(
 
     Args:
         rows: Validated source data.
-        scoring: Policy fixed before inspecting holdout results.
+        scoring: Versioned policy; selection provenance determines the proof boundary.
         config: Temporal split and uncertainty policy.
         seed: Bootstrap and random-baseline seed.
     Returns:

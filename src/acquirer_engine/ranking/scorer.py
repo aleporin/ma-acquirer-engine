@@ -157,7 +157,8 @@ def _candidate(
     config: RankingConfig,
     drop: FeatureName | None,
 ) -> RankedAcquirer:
-    weights = {name: (0 if name == drop else weight) for name, weight in config.weights.items()}
+    policy = config.type_weights.get(buyer.acquirer_type, config.weights)
+    weights = {name: (0 if name == drop else weight) for name, weight in policy.items()}
     total = sum(weights.values())
     signals = {}
     for name in sorted(weights):

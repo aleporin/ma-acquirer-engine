@@ -116,7 +116,8 @@ def proposal_settings(settings: Settings, policy: ExperimentPolicy) -> Settings:
             "tools_enabled": False,
         }
     )
-    return settings.model_copy(update={"analyst": analyst})
+    shared = settings.scoring.model_copy(update={"type_weights": {}})
+    return settings.model_copy(update={"analyst": analyst, "scoring": shared})
 
 
 async def request_proposals(

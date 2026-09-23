@@ -62,7 +62,7 @@ def aggregate_cases(
         method: {name: fmean(item[name] for item in values) for name in names}
         for method, values in measurements.items()
     }
-    lift = {
+    lift: dict[str, dict[str, Interval]] = {
         method: {
             name: paired_lift(
                 [item[name] for item in measurements["ranker"]],
@@ -73,6 +73,7 @@ def aggregate_cases(
             )
             for name in names
         }
-        for method in ("global_popularity", "sector_popularity", "random")
+        for method in ("global_popularity", "sector_popularity", "random", "shared_weights")
+        if method in measurements
     }
     return metrics, lift

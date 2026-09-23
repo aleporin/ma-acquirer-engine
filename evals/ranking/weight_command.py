@@ -75,7 +75,9 @@ def checked_proposal(
 ) -> tuple[ProposalSnapshot, ProposalRun]:
     """Reject changed data or policy before selecting any candidate."""
     snapshot, run = _load(directory)
-    if snapshot.policy != policy or snapshot.settings.scoring != settings.scoring:
+    original = snapshot.settings.scoring.model_copy(update={"type_weights": {}})
+    current = settings.scoring.model_copy(update={"type_weights": {}})
+    if snapshot.policy != policy or original != current:
         raise EvaluationError("Proposal configuration differs from the frozen experiment")
     if snapshot.packet_sha256 != packet_digest(build_packet(rows, policy, settings.scoring)):
         raise EvaluationError("Proposal history differs from the current dataset")
@@ -197,7 +199,7 @@ def summary(report: ExperimentReport) -> str:
         "# Exploratory ranking weights",
         "",
         "The 2022–2024 benchmark was already inspected during development. These results",
-        "are exploratory, not proof of generalization. Production weights are unchanged.",
+        "are exploratory, not proof of generalization. This command does not change weights.",
         "",
         f"Frozen selection: `{report.selection.selected}`; "
         f"objective: pooled recall@{report.top_k}, then MRR.",
@@ -246,7 +248,8 @@ def experiment_weights(
         policy = load_policy(root / "config/ranking_experiment.yaml")
         rows = load_transactions(root / "data/ma_transactions_500.csv")
         snapshot, run = checked_proposal(proposal, rows, settings, policy)
-        report = run_experiment(rows, run.candidates, settings.scoring, policy)
+        shared = settings.scoring.model_copy(update={"type_weights": {}})
+        report = run_experiment(rows, run.candidates, shared, policy)
         directory = root / "runs/weight-experiments" / uuid4().hex
         sha, dirty = git_state(root)
         provenance = dict(

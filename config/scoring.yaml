@@ -1,4 +1,4 @@
-# Fixed before evaluating the temporal holdout; no buyer quotas.
+# Original shared baseline retained for comparison. No buyer quotas.
 weights:
   sector_fit: 0.30
   size_fit: 0.17
@@ -8,6 +8,26 @@ weights:
   tag_fit: 0.06
   geography_fit: 0.08
   deal_type_fit: 0.03
+# Adopted from the recorded type-only experiment; exploratory, not calibrated.
+type_weights:
+  Financial Sponsor:
+    sector_fit: 0.23552502453385668
+    size_fit: 0.2168792934249264
+    recency: 0.1295387634936212
+    completion: 0.11776251226692834
+    profile_fit: 0.14720314033366041
+    tag_fit: 0.052993130520117754
+    geography_fit: 0.07065750736015701
+    deal_type_fit: 0.029440628066732085
+  Strategic:
+    sector_fit: 0.4014272970561998
+    size_fit: 0.13648528099910795
+    recency: 0.09634255129348795
+    completion: 0.09634255129348795
+    profile_fit: 0.09634255129348795
+    tag_fit: 0.07493309545049062
+    geography_fit: 0.07136485280999108
+    deal_type_fit: 0.026761819803746655
 size_band: [0.5, 2.0]
 soft_size_band: [0.25, 4.0]
 reference_year: 2024

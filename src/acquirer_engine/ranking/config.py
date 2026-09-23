@@ -8,6 +8,8 @@ from typing import Annotated, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, PositiveInt, model_validator
 
+from acquirer_engine.data import AcquirerType
+
 type FeatureName = Literal[
     "sector_fit",
     "size_fit",
@@ -34,10 +36,11 @@ class TargetDefaults(BaseModel):
 
 
 class RankingConfig(BaseModel):
-    """A fixed policy chosen before the temporal holdout is evaluated."""
+    """A versioned policy with optional buyer-type overrides and a shared baseline."""
 
     model_config = ConfigDict(extra="forbid", frozen=True, allow_inf_nan=False)
     weights: dict[FeatureName, UnitFloat]
+    type_weights: dict[AcquirerType, dict[FeatureName, UnitFloat]] = Field(default_factory=dict)
     size_band: tuple[PositiveFloat, PositiveFloat]
     soft_size_band: tuple[PositiveFloat, PositiveFloat]
     reference_year: PositiveInt
@@ -57,6 +60,18 @@ class RankingConfig(BaseModel):
     margin_tolerance: PositiveFloat
     top_k: PositiveInt
     default_target: TargetDefaults
+
+    @model_validator(mode="after")
+    def validate_type_weights(self) -> Self:
+        """Allow legacy shared policies or complete normalized policies for both types."""
+        if not self.type_weights:
+            return self
+        if set(self.type_weights) != {"Financial Sponsor", "Strategic"}:
+            raise ValueError("Both buyer type weights must be present")
+        for weights in self.type_weights.values():
+            if set(weights) != set(self.weights) or abs(sum(weights.values()) - 1) > 1e-9:
+                raise ValueError("All type weights must be present and sum to one")
+        return self
 
     @model_validator(mode="after")
     def validate_policy(self) -> Self:
