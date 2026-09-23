@@ -4,6 +4,7 @@ Owns: One typed proposal request, frozen inputs, and explicit replay provenance.
 Does not own: Client construction, statistical selection, or production scoring.
 """
 
+import re
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, PositiveFloat, RootModel
@@ -63,8 +64,11 @@ class ProposalResponse(BaseModel):
     candidates: list[ProposedProfile]
 
     def hypotheses(self) -> ProposalSet:
-        """Convert explicit wire fields into the internal bounded candidate contract."""
-        return ProposalSet.model_validate(self.model_dump(by_alias=True))
+        """Normalize display names while preserving every proposed feature multiplier."""
+        payload = self.model_dump(by_alias=True)
+        for candidate in payload["candidates"]:
+            candidate["name"] = re.sub(r"[^a-z0-9]+", "_", candidate["name"].casefold()).strip("_")
+        return ProposalSet.model_validate(payload)
 
 
 class ProposalSnapshot(BaseModel):

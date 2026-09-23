@@ -48,7 +48,7 @@ def _write(path: Path, text: str) -> None:
         stream.write(text)
 
 
-def _load(directory: Path) -> tuple[ProposalSnapshot, ProposalRun]:
+def _load(directory: Path, *, allow_failed: bool = False) -> tuple[ProposalSnapshot, ProposalRun]:
     encoded = (directory / "input.json").read_text("utf-8")
     snapshot = ProposalSnapshot.model_validate_json(encoded)
     run = ProposalRun.model_validate_json((directory / "proposal.json").read_bytes())
@@ -60,9 +60,10 @@ def _load(directory: Path) -> tuple[ProposalSnapshot, ProposalRun]:
         raise EvaluationError("Proposal input digest mismatch")
     if run.run_id != directory.name or run.git_sha != snapshot.git_sha:
         raise EvaluationError("Proposal source identity mismatch")
-    if run.errors:
+    if run.errors and not allow_failed:
         raise EvaluationError("The proposal run failed; no hypotheses are eligible")
-    validate_proposals(run.candidates, snapshot.policy, snapshot.settings.scoring)
+    if not run.errors:
+        validate_proposals(run.candidates, snapshot.policy, snapshot.settings.scoring)
     return snapshot, run
 
 
@@ -164,7 +165,9 @@ def propose_weights(
         if not fresh and source is None:
             raise EvaluationError("Replay requires --source; --fresh permits one paid request")
         root = project.resolve()
-        snapshot = _load(source)[0] if source is not None else _fresh_snapshot(root)
+        snapshot = (
+            _load(source, allow_failed=True)[0] if source is not None else _fresh_snapshot(root)
+        )
         directory = root / "runs/weight-proposals" / uuid4().hex
         with run_logger(
             directory.parent,
