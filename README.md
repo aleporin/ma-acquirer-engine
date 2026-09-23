@@ -116,9 +116,9 @@ cover the execution flow, libraries, and alternatives.
 
 | Measurement | Result |
 | --- | --- |
-| Selected live run | 10/10 pages, 54/54 final numeric claims; one repair |
-| Time and returned usage | 48.18 seconds, $1.863930; under-$1 goal unmet |
-| Keyless replay | 21 recorded responses, 10/10 pages, $0 new spend |
+| Selected live run | 10/10 first-pass pages, 56/56 numeric claims; no repairs |
+| Time and returned usage | 42.52 seconds, $1.930780; under-$1 goal unmet |
+| Keyless replay | 20 recorded responses, 10/10 pages, $0 new spend |
 | Historical recall@10 | 40.8%, versus 38.0% original weights, 40.8% global and 43.7% sector popularity |
 
 The default target is a $200M regional healthcare-services company. Ranking uses

@@ -10,19 +10,21 @@
 | Lift versus sector | −2.82 points; 95% CI −11.97 to +5.63 |
 | Ranking and conviction stability | Identical across five deterministic runs; ten Medium convictions |
 | Verifier fixtures | Three valid accepted; six planted-invalid rejected |
-| Selected live first pass | 9/10 pages; all parsed numeric claims matched |
-| Selected live final | 10/10 pages, 54/54 claims, one successful repair |
-| Live time and returned usage | 48.176 seconds, $1.863930; under-$1 goal unmet |
-| Replay | 21 recorded responses, 10/10 pages, $0 new spend |
+| Selected live first pass | 10/10 pages; all parsed numeric claims matched |
+| Selected live final | 10/10 pages, 56/56 claims, no repairs |
+| Live time and returned usage | 42.516 seconds, $1.930780; under-$1 goal unmet |
+| Replay | 20 recorded responses, 10/10 pages, $0 new spend |
 | Independent human/judge calibration | Unmeasured |
 
-The [selected live run](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md)
-was selected after multiple prompt iterations and checked against source evidence.
-It is not an unbiased reliability estimate or independent banker validation.
-Its [scorecard](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/summary.md)
-records the intervals; the [sample manifest](../sample_output/manifest.json) binds
-output to its archive. GTCR's first draft had an unclaimed prose number; repair
-replaced its claim list, so all-attempt and final-page denominators differ.
+The [current live run](../cache/replay/9007acfd898f4c5abf3e734da58430d6/run.json)
+uses the adopted buyer-type weights and the previously refined generation prompt.
+All ten pages passed on their first draft; the [live scorecard](../evals/results/p7-31406ff07a3b4fbb4ee63a7e311dd91a47836e72/summary.md)
+records this observation. It is one run after development iterations, not an
+unbiased reliability estimate or independent banker validation. The
+[sample manifest](../sample_output/manifest.json) binds output to its archive.
+The [previous sample](../evals/results/p7-8d5ffa583cd6dd8a84685b443dd19200ba714b25/iteration.md)
+remains recorded separately: 54/54 final claims, one GTCR repair, 48.176 seconds,
+and $1.863930 under the original shared weights.
 
 An earlier sample inverted the target-versus-sector margin comparison. The target
 was 16.53%, above the eligible-sector median of 15.7% (Closed-only: 15.3%). The
@@ -43,7 +45,7 @@ cannot certify arbitrary economic reasoning. Original failures remain archived.
 | 6 | Usage, latency, recovery, and controlled ablations | Requires controls from the relevant model/prompt cohort |
 
 The [shipping replay scorecard](../evals/results/p7-e9e45db11ab88f824f2ea06a5e5ca4e22663fff4/summary.md)
-passes layers 0/1/2/3/5/6; 4 is unmeasured. The selected live scorecard passes
+passes layers 0/1/2/3/5/6; 4 is unmeasured. The current live scorecard passes
 0/1/2/3/5, leaves 4 unmeasured, and fails 6 because current matched controls are
 missing, although that run meets the latency goal. Historical controls cannot
 supply them. The legacy `not_implemented` status also denotes missing observations
