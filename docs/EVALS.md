@@ -44,7 +44,7 @@ cannot certify arbitrary economic reasoning. Original failures remain archived.
 | 5 | Repeated ranks, convictions, and page validity | Replay stability is not fresh-model stability |
 | 6 | Usage, latency, recovery, and controlled ablations | Requires controls from the relevant model/prompt cohort |
 
-The [shipping replay scorecard](../evals/results/p7-e9e45db11ab88f824f2ea06a5e5ca4e22663fff4/summary.md)
+The [shipping replay scorecard](../evals/results/p7-dc6cde216ea6e2d7ada5ee2ed6731c156bdba871/summary.md)
 passes layers 0/1/2/3/5/6; 4 is unmeasured. The current live scorecard passes
 0/1/2/3/5, leaves 4 unmeasured, and fails 6 because current matched controls are
 missing, although that run meets the latency goal. Historical controls cannot

@@ -1,0 +1,2710 @@
+{
+  "train_rows": 358,
+  "eligible_train_rows": 353,
+  "test_rows": 142,
+  "candidate_count": 93,
+  "unseen_labels": 17,
+  "training_sha256": "2484c4bbccf5833023665da772ef95e4056c6067f8574e442c98fdf9418bac0b",
+  "seed": 42,
+  "train_end_year": 2021,
+  "test_end_year": 2024,
+  "bootstrap_samples": 2000,
+  "confidence": 0.95,
+  "metrics": {
+    "global_popularity": {
+      "recall_at_k": 0.4084507042253521,
+      "mrr": 0.12638088710953088,
+      "ndcg_at_k": 0.17608466439481535
+    },
+    "sector_popularity": {
+      "recall_at_k": 0.43661971830985913,
+      "mrr": 0.13661683119492465,
+      "ndcg_at_k": 0.1819267449000178
+    },
+    "random": {
+      "recall_at_k": 0.1267605633802817,
+      "mrr": 0.06700699766553846,
+      "ndcg_at_k": 0.06672387863358178
+    },
+    "ranker": {
+      "recall_at_k": 0.4084507042253521,
+      "mrr": 0.18112740496687518,
+      "ndcg_at_k": 0.21156182750829794
+    },
+    "shared_weights": {
+      "recall_at_k": 0.38028169014084506,
+      "mrr": 0.17108930221607932,
+      "ndcg_at_k": 0.197307251757508
+    }
+  },
+  "lift": {
+    "global_popularity": {
+      "recall_at_k": {
+        "mean": 0.0,
+        "low": -0.11971830985915492,
+        "high": 0.10580985915492862
+      },
+      "mrr": {
+        "mean": 0.05474651785734431,
+        "low": 0.004229037928292079,
+        "high": 0.10441732490474807
+      },
+      "ndcg_at_k": {
+        "mean": 0.03547716311348259,
+        "low": -0.028004406665711794,
+        "high": 0.09715256355071117
+      }
+    },
+    "sector_popularity": {
+      "recall_at_k": {
+        "mean": -0.028169014084507043,
+        "low": -0.11971830985915492,
+        "high": 0.056338028169014086
+      },
+      "mrr": {
+        "mean": 0.04451057377195054,
+        "low": 0.009294232424610797,
+        "high": 0.0809632874740034
+      },
+      "ndcg_at_k": {
+        "mean": 0.029635082608280128,
+        "low": -0.0132828803966159,
+        "high": 0.07164221245629351
+      }
+    },
+    "random": {
+      "recall_at_k": {
+        "mean": 0.28169014084507044,
+        "low": 0.19014084507042253,
+        "high": 0.3732394366197183
+      },
+      "mrr": {
+        "mean": 0.11412040730133673,
+        "low": 0.0657328826585266,
+        "high": 0.16522620046777822
+      },
+      "ndcg_at_k": {
+        "mean": 0.14483794887471615,
+        "low": 0.08679999844811384,
+        "high": 0.20328635196497216
+      }
+    },
+    "shared_weights": {
+      "recall_at_k": {
+        "mean": 0.028169014084507043,
+        "low": -0.02112676056338028,
+        "high": 0.07746478873239436
+      },
+      "mrr": {
+        "mean": 0.010038102750795891,
+        "low": -0.008706717469797285,
+        "high": 0.029123322312223452
+      },
+      "ndcg_at_k": {
+        "mean": 0.014254575750789965,
+        "low": -0.005802482710786879,
+        "high": 0.03444967975023837
+      }
+    }
+  },
+  "ablations": {
+    "sector_fit": {
+      "recall_at_k": 0.3380281690140845,
+      "mrr": 0.13984209020421406,
+      "ndcg_at_k": 0.1663003123062914
+    },
+    "size_fit": {
+      "recall_at_k": 0.43661971830985913,
+      "mrr": 0.17674298554619478,
+      "ndcg_at_k": 0.21436443412678347
+    },
+    "recency": {
+      "recall_at_k": 0.44366197183098594,
+      "mrr": 0.18232915139736486,
+      "ndcg_at_k": 0.22933320768256063
+    },
+    "completion": {
+      "recall_at_k": 0.4014084507042254,
+      "mrr": 0.15786574448560275,
+      "ndcg_at_k": 0.1925188971161953
+    },
+    "profile_fit": {
+      "recall_at_k": 0.3873239436619718,
+      "mrr": 0.17399415482787803,
+      "ndcg_at_k": 0.20092673516720505
+    },
+    "tag_fit": {
+      "recall_at_k": 0.4014084507042254,
+      "mrr": 0.18036379239905265,
+      "ndcg_at_k": 0.20891213226328315
+    },
+    "geography_fit": {
+      "recall_at_k": 0.3873239436619718,
+      "mrr": 0.16987870697434734,
+      "ndcg_at_k": 0.19689389497855372
+    },
+    "deal_type_fit": {
+      "recall_at_k": 0.38028169014084506,
+      "mrr": 0.16306206880381446,
+      "ndcg_at_k": 0.19006399709919783
+    }
+  },
+  "cases": [
+    {
+      "transaction_id": "MA-2022-0007",
+      "ranks": {
+        "global_popularity": 14,
+        "sector_popularity": 29,
+        "random": 55,
+        "ranker": 19,
+        "shared_weights": 21,
+        "without_sector_fit": 10,
+        "without_size_fit": 26,
+        "without_recency": 33,
+        "without_completion": 20,
+        "without_profile_fit": 16,
+        "without_tag_fit": 19,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 16
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0012",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0024",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 4,
+        "random": 69,
+        "ranker": 5,
+        "shared_weights": 4,
+        "without_sector_fit": 5,
+        "without_size_fit": 3,
+        "without_recency": 5,
+        "without_completion": 8,
+        "without_profile_fit": 6,
+        "without_tag_fit": 5,
+        "without_geography_fit": 6,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0038",
+      "ranks": {
+        "global_popularity": 35,
+        "sector_popularity": 7,
+        "random": 17,
+        "ranker": 2,
+        "shared_weights": 1,
+        "without_sector_fit": 9,
+        "without_size_fit": 9,
+        "without_recency": 2,
+        "without_completion": 2,
+        "without_profile_fit": 3,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0039",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 12,
+        "random": 88,
+        "ranker": 13,
+        "shared_weights": 14,
+        "without_sector_fit": 8,
+        "without_size_fit": 11,
+        "without_recency": 46,
+        "without_completion": 18,
+        "without_profile_fit": 15,
+        "without_tag_fit": 13,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0045",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 10,
+        "random": 3,
+        "ranker": 14,
+        "shared_weights": 14,
+        "without_sector_fit": 8,
+        "without_size_fit": 3,
+        "without_recency": 52,
+        "without_completion": 23,
+        "without_profile_fit": 20,
+        "without_tag_fit": 14,
+        "without_geography_fit": 15,
+        "without_deal_type_fit": 13
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0055",
+      "ranks": {
+        "global_popularity": 33,
+        "sector_popularity": 8,
+        "random": 2,
+        "ranker": 4,
+        "shared_weights": 6,
+        "without_sector_fit": 30,
+        "without_size_fit": 7,
+        "without_recency": 3,
+        "without_completion": 5,
+        "without_profile_fit": 4,
+        "without_tag_fit": 4,
+        "without_geography_fit": 4,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0056",
+      "ranks": {
+        "global_popularity": 14,
+        "sector_popularity": 15,
+        "random": 82,
+        "ranker": 17,
+        "shared_weights": 24,
+        "without_sector_fit": 36,
+        "without_size_fit": 15,
+        "without_recency": 48,
+        "without_completion": 17,
+        "without_profile_fit": 18,
+        "without_tag_fit": 17,
+        "without_geography_fit": 15,
+        "without_deal_type_fit": 17
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0062",
+      "ranks": {
+        "global_popularity": 9,
+        "sector_popularity": 12,
+        "random": 67,
+        "ranker": 7,
+        "shared_weights": 10,
+        "without_sector_fit": 6,
+        "without_size_fit": 6,
+        "without_recency": 14,
+        "without_completion": 6,
+        "without_profile_fit": 7,
+        "without_tag_fit": 8,
+        "without_geography_fit": 8,
+        "without_deal_type_fit": 7
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0071",
+      "ranks": {
+        "global_popularity": 15,
+        "sector_popularity": 10,
+        "random": 5,
+        "ranker": 20,
+        "shared_weights": 13,
+        "without_sector_fit": 15,
+        "without_size_fit": 3,
+        "without_recency": 20,
+        "without_completion": 21,
+        "without_profile_fit": 20,
+        "without_tag_fit": 20,
+        "without_geography_fit": 21,
+        "without_deal_type_fit": 21
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0075",
+      "ranks": {
+        "global_popularity": 2,
+        "sector_popularity": 1,
+        "random": 93,
+        "ranker": 3,
+        "shared_weights": 3,
+        "without_sector_fit": 1,
+        "without_size_fit": 1,
+        "without_recency": 4,
+        "without_completion": 3,
+        "without_profile_fit": 3,
+        "without_tag_fit": 3,
+        "without_geography_fit": 3,
+        "without_deal_type_fit": 3
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0080",
+      "ranks": {
+        "global_popularity": 2,
+        "sector_popularity": 5,
+        "random": 56,
+        "ranker": 11,
+        "shared_weights": 12,
+        "without_sector_fit": 11,
+        "without_size_fit": 3,
+        "without_recency": 36,
+        "without_completion": 18,
+        "without_profile_fit": 10,
+        "without_tag_fit": 12,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 14
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0082",
+      "ranks": {
+        "global_popularity": 33,
+        "sector_popularity": 8,
+        "random": 71,
+        "ranker": 5,
+        "shared_weights": 4,
+        "without_sector_fit": 28,
+        "without_size_fit": 9,
+        "without_recency": 4,
+        "without_completion": 5,
+        "without_profile_fit": 4,
+        "without_tag_fit": 5,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 5
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0084",
+      "ranks": {
+        "global_popularity": 26,
+        "sector_popularity": 6,
+        "random": 29,
+        "ranker": 12,
+        "shared_weights": 12,
+        "without_sector_fit": 49,
+        "without_size_fit": 6,
+        "without_recency": 2,
+        "without_completion": 9,
+        "without_profile_fit": 9,
+        "without_tag_fit": 11,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0086",
+      "ranks": {
+        "global_popularity": 21,
+        "sector_popularity": 2,
+        "random": 93,
+        "ranker": 2,
+        "shared_weights": 3,
+        "without_sector_fit": 35,
+        "without_size_fit": 4,
+        "without_recency": 1,
+        "without_completion": 2,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0096",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 2,
+        "random": 65,
+        "ranker": 1,
+        "shared_weights": 1,
+        "without_sector_fit": 5,
+        "without_size_fit": 1,
+        "without_recency": 1,
+        "without_completion": 2,
+        "without_profile_fit": 2,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0103",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 11,
+        "random": 11,
+        "ranker": 1,
+        "shared_weights": 2,
+        "without_sector_fit": 2,
+        "without_size_fit": 5,
+        "without_recency": 6,
+        "without_completion": 7,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0107",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 9,
+        "random": 11,
+        "ranker": 14,
+        "shared_weights": 12,
+        "without_sector_fit": 12,
+        "without_size_fit": 10,
+        "without_recency": 17,
+        "without_completion": 19,
+        "without_profile_fit": 11,
+        "without_tag_fit": 14,
+        "without_geography_fit": 11,
+        "without_deal_type_fit": 14
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0112",
+      "ranks": {
+        "global_popularity": 8,
+        "sector_popularity": 21,
+        "random": 32,
+        "ranker": 10,
+        "shared_weights": 12,
+        "without_sector_fit": 4,
+        "without_size_fit": 11,
+        "without_recency": 19,
+        "without_completion": 11,
+        "without_profile_fit": 5,
+        "without_tag_fit": 11,
+        "without_geography_fit": 10,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0165",
+      "ranks": {
+        "global_popularity": 4,
+        "sector_popularity": 8,
+        "random": 43,
+        "ranker": 14,
+        "shared_weights": 14,
+        "without_sector_fit": 11,
+        "without_size_fit": 11,
+        "without_recency": 18,
+        "without_completion": 13,
+        "without_profile_fit": 15,
+        "without_tag_fit": 14,
+        "without_geography_fit": 14,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0172",
+      "ranks": {
+        "global_popularity": 8,
+        "sector_popularity": 22,
+        "random": 57,
+        "ranker": 32,
+        "shared_weights": 41,
+        "without_sector_fit": 32,
+        "without_size_fit": 16,
+        "without_recency": 91,
+        "without_completion": 37,
+        "without_profile_fit": 26,
+        "without_tag_fit": 31,
+        "without_geography_fit": 42,
+        "without_deal_type_fit": 35
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0176",
+      "ranks": {
+        "global_popularity": 24,
+        "sector_popularity": 6,
+        "random": 44,
+        "ranker": 7,
+        "shared_weights": 11,
+        "without_sector_fit": 74,
+        "without_size_fit": 15,
+        "without_recency": 5,
+        "without_completion": 5,
+        "without_profile_fit": 6,
+        "without_tag_fit": 7,
+        "without_geography_fit": 5,
+        "without_deal_type_fit": 7
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0183",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0187",
+      "ranks": {
+        "global_popularity": 87,
+        "sector_popularity": 20,
+        "random": 2,
+        "ranker": 23,
+        "shared_weights": 22,
+        "without_sector_fit": 68,
+        "without_size_fit": 22,
+        "without_recency": 11,
+        "without_completion": 23,
+        "without_profile_fit": 20,
+        "without_tag_fit": 23,
+        "without_geography_fit": 18,
+        "without_deal_type_fit": 22
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0207",
+      "ranks": {
+        "global_popularity": 48,
+        "sector_popularity": 12,
+        "random": 85,
+        "ranker": 15,
+        "shared_weights": 16,
+        "without_sector_fit": 45,
+        "without_size_fit": 17,
+        "without_recency": 8,
+        "without_completion": 15,
+        "without_profile_fit": 14,
+        "without_tag_fit": 15,
+        "without_geography_fit": 16,
+        "without_deal_type_fit": 15
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0210",
+      "ranks": {
+        "global_popularity": 46,
+        "sector_popularity": 6,
+        "random": 69,
+        "ranker": 7,
+        "shared_weights": 2,
+        "without_sector_fit": 32,
+        "without_size_fit": 20,
+        "without_recency": 3,
+        "without_completion": 2,
+        "without_profile_fit": 6,
+        "without_tag_fit": 7,
+        "without_geography_fit": 4,
+        "without_deal_type_fit": 8
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0212",
+      "ranks": {
+        "global_popularity": 52,
+        "sector_popularity": 15,
+        "random": 32,
+        "ranker": 18,
+        "shared_weights": 19,
+        "without_sector_fit": 50,
+        "without_size_fit": 17,
+        "without_recency": 8,
+        "without_completion": 18,
+        "without_profile_fit": 18,
+        "without_tag_fit": 18,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 18
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0213",
+      "ranks": {
+        "global_popularity": 25,
+        "sector_popularity": 3,
+        "random": 80,
+        "ranker": 3,
+        "shared_weights": 2,
+        "without_sector_fit": 33,
+        "without_size_fit": 2,
+        "without_recency": 2,
+        "without_completion": 2,
+        "without_profile_fit": 3,
+        "without_tag_fit": 3,
+        "without_geography_fit": 3,
+        "without_deal_type_fit": 3
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0215",
+      "ranks": {
+        "global_popularity": 41,
+        "sector_popularity": 8,
+        "random": 85,
+        "ranker": 11,
+        "shared_weights": 11,
+        "without_sector_fit": 71,
+        "without_size_fit": 8,
+        "without_recency": 3,
+        "without_completion": 11,
+        "without_profile_fit": 15,
+        "without_tag_fit": 11,
+        "without_geography_fit": 9,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0219",
+      "ranks": {
+        "global_popularity": 10,
+        "sector_popularity": 24,
+        "random": 49,
+        "ranker": 35,
+        "shared_weights": 50,
+        "without_sector_fit": 37,
+        "without_size_fit": 24,
+        "without_recency": 93,
+        "without_completion": 31,
+        "without_profile_fit": 32,
+        "without_tag_fit": 34,
+        "without_geography_fit": 35,
+        "without_deal_type_fit": 36
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0222",
+      "ranks": {
+        "global_popularity": 17,
+        "sector_popularity": 2,
+        "random": 48,
+        "ranker": 2,
+        "shared_weights": 3,
+        "without_sector_fit": 33,
+        "without_size_fit": 1,
+        "without_recency": 1,
+        "without_completion": 3,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 4,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0229",
+      "ranks": {
+        "global_popularity": 36,
+        "sector_popularity": 10,
+        "random": 29,
+        "ranker": 10,
+        "shared_weights": 4,
+        "without_sector_fit": 19,
+        "without_size_fit": 15,
+        "without_recency": 2,
+        "without_completion": 8,
+        "without_profile_fit": 6,
+        "without_tag_fit": 10,
+        "without_geography_fit": 3,
+        "without_deal_type_fit": 10
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0233",
+      "ranks": {
+        "global_popularity": 42,
+        "sector_popularity": 11,
+        "random": 54,
+        "ranker": 5,
+        "shared_weights": 8,
+        "without_sector_fit": 39,
+        "without_size_fit": 12,
+        "without_recency": 5,
+        "without_completion": 7,
+        "without_profile_fit": 5,
+        "without_tag_fit": 5,
+        "without_geography_fit": 8,
+        "without_deal_type_fit": 5
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0245",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0252",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 10,
+        "random": 89,
+        "ranker": 22,
+        "shared_weights": 27,
+        "without_sector_fit": 13,
+        "without_size_fit": 19,
+        "without_recency": 56,
+        "without_completion": 22,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 23,
+        "without_deal_type_fit": 22
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0254",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0259",
+      "ranks": {
+        "global_popularity": 1,
+        "sector_popularity": 19,
+        "random": 53,
+        "ranker": 10,
+        "shared_weights": 13,
+        "without_sector_fit": 5,
+        "without_size_fit": 20,
+        "without_recency": 17,
+        "without_completion": 10,
+        "without_profile_fit": 11,
+        "without_tag_fit": 10,
+        "without_geography_fit": 10,
+        "without_deal_type_fit": 10
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0272",
+      "ranks": {
+        "global_popularity": 11,
+        "sector_popularity": 18,
+        "random": 92,
+        "ranker": 8,
+        "shared_weights": 8,
+        "without_sector_fit": 3,
+        "without_size_fit": 10,
+        "without_recency": 8,
+        "without_completion": 11,
+        "without_profile_fit": 6,
+        "without_tag_fit": 8,
+        "without_geography_fit": 7,
+        "without_deal_type_fit": 7
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0273",
+      "ranks": {
+        "global_popularity": 12,
+        "sector_popularity": 17,
+        "random": 52,
+        "ranker": 12,
+        "shared_weights": 10,
+        "without_sector_fit": 9,
+        "without_size_fit": 8,
+        "without_recency": 16,
+        "without_completion": 14,
+        "without_profile_fit": 12,
+        "without_tag_fit": 12,
+        "without_geography_fit": 16,
+        "without_deal_type_fit": 13
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0281",
+      "ranks": {
+        "global_popularity": 65,
+        "sector_popularity": 17,
+        "random": 49,
+        "ranker": 33,
+        "shared_weights": 52,
+        "without_sector_fit": 92,
+        "without_size_fit": 25,
+        "without_recency": 28,
+        "without_completion": 28,
+        "without_profile_fit": 31,
+        "without_tag_fit": 33,
+        "without_geography_fit": 32,
+        "without_deal_type_fit": 31
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0282",
+      "ranks": {
+        "global_popularity": 12,
+        "sector_popularity": 12,
+        "random": 10,
+        "ranker": 7,
+        "shared_weights": 7,
+        "without_sector_fit": 5,
+        "without_size_fit": 5,
+        "without_recency": 18,
+        "without_completion": 8,
+        "without_profile_fit": 7,
+        "without_tag_fit": 7,
+        "without_geography_fit": 9,
+        "without_deal_type_fit": 6
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0285",
+      "ranks": {
+        "global_popularity": 41,
+        "sector_popularity": 8,
+        "random": 29,
+        "ranker": 1,
+        "shared_weights": 2,
+        "without_sector_fit": 14,
+        "without_size_fit": 9,
+        "without_recency": 1,
+        "without_completion": 1,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 1
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0290",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0294",
+      "ranks": {
+        "global_popularity": 15,
+        "sector_popularity": 5,
+        "random": 18,
+        "ranker": 1,
+        "shared_weights": 1,
+        "without_sector_fit": 1,
+        "without_size_fit": 2,
+        "without_recency": 2,
+        "without_completion": 1,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 1
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0296",
+      "ranks": {
+        "global_popularity": 91,
+        "sector_popularity": 22,
+        "random": 83,
+        "ranker": 28,
+        "shared_weights": 42,
+        "without_sector_fit": 89,
+        "without_size_fit": 29,
+        "without_recency": 15,
+        "without_completion": 21,
+        "without_profile_fit": 28,
+        "without_tag_fit": 28,
+        "without_geography_fit": 27,
+        "without_deal_type_fit": 28
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0299",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 20,
+        "random": 49,
+        "ranker": 16,
+        "shared_weights": 18,
+        "without_sector_fit": 8,
+        "without_size_fit": 14,
+        "without_recency": 22,
+        "without_completion": 17,
+        "without_profile_fit": 13,
+        "without_tag_fit": 16,
+        "without_geography_fit": 14,
+        "without_deal_type_fit": 14
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0311",
+      "ranks": {
+        "global_popularity": 63,
+        "sector_popularity": 16,
+        "random": 68,
+        "ranker": 22,
+        "shared_weights": 27,
+        "without_sector_fit": 65,
+        "without_size_fit": 21,
+        "without_recency": 9,
+        "without_completion": 22,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 22
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0317",
+      "ranks": {
+        "global_popularity": 80,
+        "sector_popularity": 18,
+        "random": 67,
+        "ranker": 8,
+        "shared_weights": 5,
+        "without_sector_fit": 15,
+        "without_size_fit": 13,
+        "without_recency": 4,
+        "without_completion": 7,
+        "without_profile_fit": 12,
+        "without_tag_fit": 8,
+        "without_geography_fit": 10,
+        "without_deal_type_fit": 8
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0319",
+      "ranks": {
+        "global_popularity": 2,
+        "sector_popularity": 20,
+        "random": 87,
+        "ranker": 21,
+        "shared_weights": 22,
+        "without_sector_fit": 11,
+        "without_size_fit": 11,
+        "without_recency": 31,
+        "without_completion": 22,
+        "without_profile_fit": 21,
+        "without_tag_fit": 21,
+        "without_geography_fit": 22,
+        "without_deal_type_fit": 22
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0323",
+      "ranks": {
+        "global_popularity": 35,
+        "sector_popularity": 7,
+        "random": 80,
+        "ranker": 17,
+        "shared_weights": 18,
+        "without_sector_fit": 74,
+        "without_size_fit": 15,
+        "without_recency": 4,
+        "without_completion": 17,
+        "without_profile_fit": 16,
+        "without_tag_fit": 17,
+        "without_geography_fit": 17,
+        "without_deal_type_fit": 16
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0332",
+      "ranks": {
+        "global_popularity": 31,
+        "sector_popularity": 6,
+        "random": 11,
+        "ranker": 2,
+        "shared_weights": 3,
+        "without_sector_fit": 17,
+        "without_size_fit": 4,
+        "without_recency": 3,
+        "without_completion": 2,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0333",
+      "ranks": {
+        "global_popularity": 13,
+        "sector_popularity": 9,
+        "random": 16,
+        "ranker": 12,
+        "shared_weights": 11,
+        "without_sector_fit": 16,
+        "without_size_fit": 2,
+        "without_recency": 23,
+        "without_completion": 13,
+        "without_profile_fit": 15,
+        "without_tag_fit": 12,
+        "without_geography_fit": 18,
+        "without_deal_type_fit": 13
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0345",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0348",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 12,
+        "random": 85,
+        "ranker": 14,
+        "shared_weights": 15,
+        "without_sector_fit": 6,
+        "without_size_fit": 9,
+        "without_recency": 46,
+        "without_completion": 19,
+        "without_profile_fit": 14,
+        "without_tag_fit": 14,
+        "without_geography_fit": 15,
+        "without_deal_type_fit": 13
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0350",
+      "ranks": {
+        "global_popularity": 8,
+        "sector_popularity": 23,
+        "random": 66,
+        "ranker": 10,
+        "shared_weights": 11,
+        "without_sector_fit": 5,
+        "without_size_fit": 13,
+        "without_recency": 19,
+        "without_completion": 11,
+        "without_profile_fit": 6,
+        "without_tag_fit": 10,
+        "without_geography_fit": 11,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0353",
+      "ranks": {
+        "global_popularity": 71,
+        "sector_popularity": 18,
+        "random": 61,
+        "ranker": 26,
+        "shared_weights": 28,
+        "without_sector_fit": 80,
+        "without_size_fit": 24,
+        "without_recency": 15,
+        "without_completion": 27,
+        "without_profile_fit": 27,
+        "without_tag_fit": 26,
+        "without_geography_fit": 24,
+        "without_deal_type_fit": 25
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0377",
+      "ranks": {
+        "global_popularity": 4,
+        "sector_popularity": 8,
+        "random": 74,
+        "ranker": 11,
+        "shared_weights": 13,
+        "without_sector_fit": 9,
+        "without_size_fit": 9,
+        "without_recency": 14,
+        "without_completion": 8,
+        "without_profile_fit": 15,
+        "without_tag_fit": 11,
+        "without_geography_fit": 11,
+        "without_deal_type_fit": 9
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0389",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0390",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0393",
+      "ranks": {
+        "global_popularity": 4,
+        "sector_popularity": 8,
+        "random": 45,
+        "ranker": 12,
+        "shared_weights": 12,
+        "without_sector_fit": 9,
+        "without_size_fit": 10,
+        "without_recency": 16,
+        "without_completion": 10,
+        "without_profile_fit": 11,
+        "without_tag_fit": 12,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0398",
+      "ranks": {
+        "global_popularity": 11,
+        "sector_popularity": 5,
+        "random": 56,
+        "ranker": 2,
+        "shared_weights": 4,
+        "without_sector_fit": 2,
+        "without_size_fit": 2,
+        "without_recency": 6,
+        "without_completion": 5,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0402",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 12,
+        "random": 66,
+        "ranker": 10,
+        "shared_weights": 13,
+        "without_sector_fit": 7,
+        "without_size_fit": 15,
+        "without_recency": 13,
+        "without_completion": 9,
+        "without_profile_fit": 9,
+        "without_tag_fit": 10,
+        "without_geography_fit": 11,
+        "without_deal_type_fit": 10
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0416",
+      "ranks": {
+        "global_popularity": 13,
+        "sector_popularity": 14,
+        "random": 4,
+        "ranker": 14,
+        "shared_weights": 14,
+        "without_sector_fit": 14,
+        "without_size_fit": 13,
+        "without_recency": 16,
+        "without_completion": 14,
+        "without_profile_fit": 14,
+        "without_tag_fit": 14,
+        "without_geography_fit": 14,
+        "without_deal_type_fit": 14
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0419",
+      "ranks": {
+        "global_popularity": 9,
+        "sector_popularity": 12,
+        "random": 20,
+        "ranker": 6,
+        "shared_weights": 7,
+        "without_sector_fit": 2,
+        "without_size_fit": 6,
+        "without_recency": 10,
+        "without_completion": 4,
+        "without_profile_fit": 5,
+        "without_tag_fit": 6,
+        "without_geography_fit": 8,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0424",
+      "ranks": {
+        "global_popularity": 1,
+        "sector_popularity": 1,
+        "random": 93,
+        "ranker": 12,
+        "shared_weights": 10,
+        "without_sector_fit": 13,
+        "without_size_fit": 5,
+        "without_recency": 13,
+        "without_completion": 11,
+        "without_profile_fit": 12,
+        "without_tag_fit": 12,
+        "without_geography_fit": 10,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0428",
+      "ranks": {
+        "global_popularity": 14,
+        "sector_popularity": 16,
+        "random": 31,
+        "ranker": 20,
+        "shared_weights": 24,
+        "without_sector_fit": 21,
+        "without_size_fit": 16,
+        "without_recency": 55,
+        "without_completion": 21,
+        "without_profile_fit": 21,
+        "without_tag_fit": 20,
+        "without_geography_fit": 22,
+        "without_deal_type_fit": 20
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0450",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 12,
+        "random": 1,
+        "ranker": 19,
+        "shared_weights": 27,
+        "without_sector_fit": 22,
+        "without_size_fit": 17,
+        "without_recency": 55,
+        "without_completion": 18,
+        "without_profile_fit": 19,
+        "without_tag_fit": 19,
+        "without_geography_fit": 19,
+        "without_deal_type_fit": 19
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0457",
+      "ranks": {
+        "global_popularity": 17,
+        "sector_popularity": 2,
+        "random": 68,
+        "ranker": 2,
+        "shared_weights": 2,
+        "without_sector_fit": 30,
+        "without_size_fit": 1,
+        "without_recency": 1,
+        "without_completion": 3,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 3,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0458",
+      "ranks": {
+        "global_popularity": 71,
+        "sector_popularity": 18,
+        "random": 27,
+        "ranker": 12,
+        "shared_weights": 8,
+        "without_sector_fit": 36,
+        "without_size_fit": 22,
+        "without_recency": 5,
+        "without_completion": 12,
+        "without_profile_fit": 15,
+        "without_tag_fit": 11,
+        "without_geography_fit": 10,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2022-0473",
+      "ranks": {
+        "global_popularity": 51,
+        "sector_popularity": 8,
+        "random": 7,
+        "ranker": 16,
+        "shared_weights": 16,
+        "without_sector_fit": 76,
+        "without_size_fit": 19,
+        "without_recency": 5,
+        "without_completion": 9,
+        "without_profile_fit": 18,
+        "without_tag_fit": 16,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 16
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0004",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0021",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 12,
+        "random": 5,
+        "ranker": 9,
+        "shared_weights": 10,
+        "without_sector_fit": 5,
+        "without_size_fit": 11,
+        "without_recency": 26,
+        "without_completion": 13,
+        "without_profile_fit": 11,
+        "without_tag_fit": 9,
+        "without_geography_fit": 8,
+        "without_deal_type_fit": 9
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0022",
+      "ranks": {
+        "global_popularity": 10,
+        "sector_popularity": 5,
+        "random": 13,
+        "ranker": 19,
+        "shared_weights": 19,
+        "without_sector_fit": 33,
+        "without_size_fit": 11,
+        "without_recency": 85,
+        "without_completion": 14,
+        "without_profile_fit": 18,
+        "without_tag_fit": 19,
+        "without_geography_fit": 18,
+        "without_deal_type_fit": 19
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0037",
+      "ranks": {
+        "global_popularity": 91,
+        "sector_popularity": 22,
+        "random": 67,
+        "ranker": 24,
+        "shared_weights": 23,
+        "without_sector_fit": 57,
+        "without_size_fit": 29,
+        "without_recency": 10,
+        "without_completion": 17,
+        "without_profile_fit": 25,
+        "without_tag_fit": 24,
+        "without_geography_fit": 22,
+        "without_deal_type_fit": 25
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0049",
+      "ranks": {
+        "global_popularity": 4,
+        "sector_popularity": 20,
+        "random": 93,
+        "ranker": 19,
+        "shared_weights": 20,
+        "without_sector_fit": 11,
+        "without_size_fit": 18,
+        "without_recency": 38,
+        "without_completion": 18,
+        "without_profile_fit": 18,
+        "without_tag_fit": 19,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 19
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0058",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0089",
+      "ranks": {
+        "global_popularity": 43,
+        "sector_popularity": 4,
+        "random": 6,
+        "ranker": 2,
+        "shared_weights": 2,
+        "without_sector_fit": 18,
+        "without_size_fit": 3,
+        "without_recency": 2,
+        "without_completion": 2,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 4,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0108",
+      "ranks": {
+        "global_popularity": 9,
+        "sector_popularity": 11,
+        "random": 50,
+        "ranker": 11,
+        "shared_weights": 12,
+        "without_sector_fit": 4,
+        "without_size_fit": 12,
+        "without_recency": 14,
+        "without_completion": 11,
+        "without_profile_fit": 9,
+        "without_tag_fit": 12,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0110",
+      "ranks": {
+        "global_popularity": 8,
+        "sector_popularity": 9,
+        "random": 1,
+        "ranker": 4,
+        "shared_weights": 6,
+        "without_sector_fit": 1,
+        "without_size_fit": 9,
+        "without_recency": 4,
+        "without_completion": 6,
+        "without_profile_fit": 6,
+        "without_tag_fit": 4,
+        "without_geography_fit": 4,
+        "without_deal_type_fit": 5
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0116",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 13,
+        "random": 66,
+        "ranker": 19,
+        "shared_weights": 18,
+        "without_sector_fit": 11,
+        "without_size_fit": 17,
+        "without_recency": 35,
+        "without_completion": 19,
+        "without_profile_fit": 19,
+        "without_tag_fit": 19,
+        "without_geography_fit": 16,
+        "without_deal_type_fit": 17
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0117",
+      "ranks": {
+        "global_popularity": 80,
+        "sector_popularity": 18,
+        "random": 44,
+        "ranker": 22,
+        "shared_weights": 25,
+        "without_sector_fit": 70,
+        "without_size_fit": 22,
+        "without_recency": 10,
+        "without_completion": 23,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 21,
+        "without_deal_type_fit": 20
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0161",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0166",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 2,
+        "random": 24,
+        "ranker": 3,
+        "shared_weights": 1,
+        "without_sector_fit": 5,
+        "without_size_fit": 1,
+        "without_recency": 9,
+        "without_completion": 5,
+        "without_profile_fit": 3,
+        "without_tag_fit": 4,
+        "without_geography_fit": 7,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0174",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0177",
+      "ranks": {
+        "global_popularity": 15,
+        "sector_popularity": 13,
+        "random": 91,
+        "ranker": 8,
+        "shared_weights": 8,
+        "without_sector_fit": 11,
+        "without_size_fit": 4,
+        "without_recency": 9,
+        "without_completion": 10,
+        "without_profile_fit": 8,
+        "without_tag_fit": 8,
+        "without_geography_fit": 11,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0191",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 12,
+        "random": 78,
+        "ranker": 15,
+        "shared_weights": 16,
+        "without_sector_fit": 17,
+        "without_size_fit": 15,
+        "without_recency": 24,
+        "without_completion": 15,
+        "without_profile_fit": 15,
+        "without_tag_fit": 15,
+        "without_geography_fit": 15,
+        "without_deal_type_fit": 15
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0197",
+      "ranks": {
+        "global_popularity": 15,
+        "sector_popularity": 10,
+        "random": 73,
+        "ranker": 2,
+        "shared_weights": 3,
+        "without_sector_fit": 1,
+        "without_size_fit": 8,
+        "without_recency": 5,
+        "without_completion": 2,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 3
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0209",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 12,
+        "random": 77,
+        "ranker": 25,
+        "shared_weights": 27,
+        "without_sector_fit": 19,
+        "without_size_fit": 21,
+        "without_recency": 91,
+        "without_completion": 26,
+        "without_profile_fit": 23,
+        "without_tag_fit": 25,
+        "without_geography_fit": 19,
+        "without_deal_type_fit": 26
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0218",
+      "ranks": {
+        "global_popularity": 31,
+        "sector_popularity": 6,
+        "random": 3,
+        "ranker": 2,
+        "shared_weights": 4,
+        "without_sector_fit": 27,
+        "without_size_fit": 3,
+        "without_recency": 2,
+        "without_completion": 3,
+        "without_profile_fit": 3,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 5
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0221",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 4,
+        "random": 19,
+        "ranker": 9,
+        "shared_weights": 9,
+        "without_sector_fit": 9,
+        "without_size_fit": 9,
+        "without_recency": 18,
+        "without_completion": 8,
+        "without_profile_fit": 8,
+        "without_tag_fit": 9,
+        "without_geography_fit": 7,
+        "without_deal_type_fit": 9
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0236",
+      "ranks": {
+        "global_popularity": 11,
+        "sector_popularity": 15,
+        "random": 6,
+        "ranker": 14,
+        "shared_weights": 12,
+        "without_sector_fit": 10,
+        "without_size_fit": 10,
+        "without_recency": 53,
+        "without_completion": 17,
+        "without_profile_fit": 13,
+        "without_tag_fit": 14,
+        "without_geography_fit": 14,
+        "without_deal_type_fit": 14
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0255",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 2,
+        "random": 38,
+        "ranker": 1,
+        "shared_weights": 1,
+        "without_sector_fit": 5,
+        "without_size_fit": 1,
+        "without_recency": 1,
+        "without_completion": 5,
+        "without_profile_fit": 2,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0263",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 11,
+        "random": 48,
+        "ranker": 10,
+        "shared_weights": 12,
+        "without_sector_fit": 8,
+        "without_size_fit": 15,
+        "without_recency": 29,
+        "without_completion": 8,
+        "without_profile_fit": 9,
+        "without_tag_fit": 10,
+        "without_geography_fit": 7,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0265",
+      "ranks": {
+        "global_popularity": 46,
+        "sector_popularity": 6,
+        "random": 89,
+        "ranker": 2,
+        "shared_weights": 3,
+        "without_sector_fit": 21,
+        "without_size_fit": 9,
+        "without_recency": 1,
+        "without_completion": 2,
+        "without_profile_fit": 3,
+        "without_tag_fit": 2,
+        "without_geography_fit": 3,
+        "without_deal_type_fit": 3
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0278",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 8,
+        "random": 74,
+        "ranker": 9,
+        "shared_weights": 9,
+        "without_sector_fit": 9,
+        "without_size_fit": 11,
+        "without_recency": 9,
+        "without_completion": 10,
+        "without_profile_fit": 12,
+        "without_tag_fit": 9,
+        "without_geography_fit": 8,
+        "without_deal_type_fit": 9
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0279",
+      "ranks": {
+        "global_popularity": 13,
+        "sector_popularity": 14,
+        "random": 39,
+        "ranker": 12,
+        "shared_weights": 12,
+        "without_sector_fit": 11,
+        "without_size_fit": 12,
+        "without_recency": 12,
+        "without_completion": 12,
+        "without_profile_fit": 12,
+        "without_tag_fit": 12,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0280",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 2,
+        "random": 69,
+        "ranker": 1,
+        "shared_weights": 1,
+        "without_sector_fit": 3,
+        "without_size_fit": 1,
+        "without_recency": 1,
+        "without_completion": 1,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 1
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0293",
+      "ranks": {
+        "global_popularity": 13,
+        "sector_popularity": 24,
+        "random": 34,
+        "ranker": 22,
+        "shared_weights": 26,
+        "without_sector_fit": 14,
+        "without_size_fit": 20,
+        "without_recency": 32,
+        "without_completion": 23,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 21,
+        "without_deal_type_fit": 21
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0298",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0307",
+      "ranks": {
+        "global_popularity": 60,
+        "sector_popularity": 10,
+        "random": 18,
+        "ranker": 6,
+        "shared_weights": 4,
+        "without_sector_fit": 48,
+        "without_size_fit": 12,
+        "without_recency": 2,
+        "without_completion": 7,
+        "without_profile_fit": 8,
+        "without_tag_fit": 6,
+        "without_geography_fit": 5,
+        "without_deal_type_fit": 5
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0330",
+      "ranks": {
+        "global_popularity": 37,
+        "sector_popularity": 7,
+        "random": 67,
+        "ranker": 1,
+        "shared_weights": 1,
+        "without_sector_fit": 17,
+        "without_size_fit": 12,
+        "without_recency": 2,
+        "without_completion": 2,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0336",
+      "ranks": {
+        "global_popularity": 68,
+        "sector_popularity": 16,
+        "random": 48,
+        "ranker": 9,
+        "shared_weights": 6,
+        "without_sector_fit": 18,
+        "without_size_fit": 18,
+        "without_recency": 5,
+        "without_completion": 8,
+        "without_profile_fit": 9,
+        "without_tag_fit": 9,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 9
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0354",
+      "ranks": {
+        "global_popularity": 7,
+        "sector_popularity": 13,
+        "random": 86,
+        "ranker": 12,
+        "shared_weights": 13,
+        "without_sector_fit": 11,
+        "without_size_fit": 10,
+        "without_recency": 22,
+        "without_completion": 13,
+        "without_profile_fit": 15,
+        "without_tag_fit": 12,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0355",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 9,
+        "random": 45,
+        "ranker": 10,
+        "shared_weights": 11,
+        "without_sector_fit": 4,
+        "without_size_fit": 3,
+        "without_recency": 13,
+        "without_completion": 14,
+        "without_profile_fit": 12,
+        "without_tag_fit": 10,
+        "without_geography_fit": 8,
+        "without_deal_type_fit": 10
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0365",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0368",
+      "ranks": {
+        "global_popularity": 39,
+        "sector_popularity": 13,
+        "random": 65,
+        "ranker": 17,
+        "shared_weights": 16,
+        "without_sector_fit": 38,
+        "without_size_fit": 19,
+        "without_recency": 8,
+        "without_completion": 18,
+        "without_profile_fit": 16,
+        "without_tag_fit": 17,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 17
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0378",
+      "ranks": {
+        "global_popularity": 2,
+        "sector_popularity": 1,
+        "random": 89,
+        "ranker": 1,
+        "shared_weights": 2,
+        "without_sector_fit": 1,
+        "without_size_fit": 1,
+        "without_recency": 5,
+        "without_completion": 1,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 1
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0379",
+      "ranks": {
+        "global_popularity": 14,
+        "sector_popularity": 15,
+        "random": 5,
+        "ranker": 4,
+        "shared_weights": 5,
+        "without_sector_fit": 3,
+        "without_size_fit": 7,
+        "without_recency": 8,
+        "without_completion": 5,
+        "without_profile_fit": 3,
+        "without_tag_fit": 4,
+        "without_geography_fit": 9,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0391",
+      "ranks": {
+        "global_popularity": 15,
+        "sector_popularity": 11,
+        "random": 6,
+        "ranker": 2,
+        "shared_weights": 2,
+        "without_sector_fit": 1,
+        "without_size_fit": 6,
+        "without_recency": 1,
+        "without_completion": 1,
+        "without_profile_fit": 1,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0421",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 10,
+        "random": 81,
+        "ranker": 16,
+        "shared_weights": 17,
+        "without_sector_fit": 9,
+        "without_size_fit": 20,
+        "without_recency": 26,
+        "without_completion": 14,
+        "without_profile_fit": 15,
+        "without_tag_fit": 16,
+        "without_geography_fit": 16,
+        "without_deal_type_fit": 16
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0438",
+      "ranks": {
+        "global_popularity": 75,
+        "sector_popularity": 17,
+        "random": 14,
+        "ranker": 21,
+        "shared_weights": 30,
+        "without_sector_fit": 65,
+        "without_size_fit": 21,
+        "without_recency": 15,
+        "without_completion": 21,
+        "without_profile_fit": 22,
+        "without_tag_fit": 21,
+        "without_geography_fit": 19,
+        "without_deal_type_fit": 21
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0445",
+      "ranks": {
+        "global_popularity": 87,
+        "sector_popularity": 20,
+        "random": 24,
+        "ranker": 21,
+        "shared_weights": 32,
+        "without_sector_fit": 62,
+        "without_size_fit": 23,
+        "without_recency": 8,
+        "without_completion": 21,
+        "without_profile_fit": 22,
+        "without_tag_fit": 21,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 21
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0456",
+      "ranks": {
+        "global_popularity": 2,
+        "sector_popularity": 17,
+        "random": 17,
+        "ranker": 19,
+        "shared_weights": 18,
+        "without_sector_fit": 11,
+        "without_size_fit": 10,
+        "without_recency": 31,
+        "without_completion": 19,
+        "without_profile_fit": 19,
+        "without_tag_fit": 19,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 20
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0459",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0466",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 10,
+        "random": 19,
+        "ranker": 9,
+        "shared_weights": 10,
+        "without_sector_fit": 4,
+        "without_size_fit": 2,
+        "without_recency": 22,
+        "without_completion": 16,
+        "without_profile_fit": 13,
+        "without_tag_fit": 9,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 11
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0467",
+      "ranks": {
+        "global_popularity": 72,
+        "sector_popularity": 22,
+        "random": 93,
+        "ranker": 30,
+        "shared_weights": 62,
+        "without_sector_fit": 92,
+        "without_size_fit": 25,
+        "without_recency": 19,
+        "without_completion": 25,
+        "without_profile_fit": 29,
+        "without_tag_fit": 30,
+        "without_geography_fit": 28,
+        "without_deal_type_fit": 29
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0481",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 10,
+        "random": 16,
+        "ranker": 22,
+        "shared_weights": 28,
+        "without_sector_fit": 15,
+        "without_size_fit": 20,
+        "without_recency": 54,
+        "without_completion": 22,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 24,
+        "without_deal_type_fit": 22
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0499",
+      "ranks": {
+        "global_popularity": 12,
+        "sector_popularity": 6,
+        "random": 70,
+        "ranker": 2,
+        "shared_weights": 2,
+        "without_sector_fit": 2,
+        "without_size_fit": 2,
+        "without_recency": 2,
+        "without_completion": 2,
+        "without_profile_fit": 2,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2023-0500",
+      "ranks": {
+        "global_popularity": 10,
+        "sector_popularity": 23,
+        "random": 20,
+        "ranker": 25,
+        "shared_weights": 27,
+        "without_sector_fit": 15,
+        "without_size_fit": 25,
+        "without_recency": 93,
+        "without_completion": 21,
+        "without_profile_fit": 24,
+        "without_tag_fit": 25,
+        "without_geography_fit": 25,
+        "without_deal_type_fit": 24
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0002",
+      "ranks": {
+        "global_popularity": 14,
+        "sector_popularity": 15,
+        "random": 3,
+        "ranker": 6,
+        "shared_weights": 8,
+        "without_sector_fit": 4,
+        "without_size_fit": 13,
+        "without_recency": 5,
+        "without_completion": 5,
+        "without_profile_fit": 7,
+        "without_tag_fit": 6,
+        "without_geography_fit": 11,
+        "without_deal_type_fit": 5
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0020",
+      "ranks": {
+        "global_popularity": 10,
+        "sector_popularity": 12,
+        "random": 60,
+        "ranker": 22,
+        "shared_weights": 21,
+        "without_sector_fit": 17,
+        "without_size_fit": 15,
+        "without_recency": 35,
+        "without_completion": 20,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 19,
+        "without_deal_type_fit": 21
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0030",
+      "ranks": {
+        "global_popularity": 12,
+        "sector_popularity": 12,
+        "random": 41,
+        "ranker": 4,
+        "shared_weights": 3,
+        "without_sector_fit": 1,
+        "without_size_fit": 3,
+        "without_recency": 5,
+        "without_completion": 4,
+        "without_profile_fit": 4,
+        "without_tag_fit": 4,
+        "without_geography_fit": 4,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0035",
+      "ranks": {
+        "global_popularity": 33,
+        "sector_popularity": 8,
+        "random": 71,
+        "ranker": 8,
+        "shared_weights": 7,
+        "without_sector_fit": 40,
+        "without_size_fit": 9,
+        "without_recency": 4,
+        "without_completion": 7,
+        "without_profile_fit": 7,
+        "without_tag_fit": 8,
+        "without_geography_fit": 5,
+        "without_deal_type_fit": 8
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0042",
+      "ranks": {
+        "global_popularity": 9,
+        "sector_popularity": 4,
+        "random": 61,
+        "ranker": 13,
+        "shared_weights": 9,
+        "without_sector_fit": 19,
+        "without_size_fit": 6,
+        "without_recency": 48,
+        "without_completion": 16,
+        "without_profile_fit": 11,
+        "without_tag_fit": 13,
+        "without_geography_fit": 16,
+        "without_deal_type_fit": 14
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0079",
+      "ranks": {
+        "global_popularity": 15,
+        "sector_popularity": 20,
+        "random": 86,
+        "ranker": 22,
+        "shared_weights": 21,
+        "without_sector_fit": 14,
+        "without_size_fit": 10,
+        "without_recency": 43,
+        "without_completion": 22,
+        "without_profile_fit": 22,
+        "without_tag_fit": 22,
+        "without_geography_fit": 20,
+        "without_deal_type_fit": 22
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0098",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0120",
+      "ranks": {
+        "global_popularity": 9,
+        "sector_popularity": 24,
+        "random": 68,
+        "ranker": 13,
+        "shared_weights": 13,
+        "without_sector_fit": 9,
+        "without_size_fit": 9,
+        "without_recency": 23,
+        "without_completion": 14,
+        "without_profile_fit": 12,
+        "without_tag_fit": 13,
+        "without_geography_fit": 17,
+        "without_deal_type_fit": 13
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0128",
+      "ranks": {
+        "global_popularity": 84,
+        "sector_popularity": 21,
+        "random": 79,
+        "ranker": 20,
+        "shared_weights": 15,
+        "without_sector_fit": 35,
+        "without_size_fit": 25,
+        "without_recency": 9,
+        "without_completion": 19,
+        "without_profile_fit": 20,
+        "without_tag_fit": 20,
+        "without_geography_fit": 18,
+        "without_deal_type_fit": 19
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0129",
+      "ranks": {
+        "global_popularity": 52,
+        "sector_popularity": 15,
+        "random": 4,
+        "ranker": 14,
+        "shared_weights": 14,
+        "without_sector_fit": 36,
+        "without_size_fit": 18,
+        "without_recency": 7,
+        "without_completion": 16,
+        "without_profile_fit": 13,
+        "without_tag_fit": 14,
+        "without_geography_fit": 15,
+        "without_deal_type_fit": 15
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0152",
+      "ranks": {
+        "global_popularity": 19,
+        "sector_popularity": 3,
+        "random": 60,
+        "ranker": 7,
+        "shared_weights": 12,
+        "without_sector_fit": 41,
+        "without_size_fit": 1,
+        "without_recency": 4,
+        "without_completion": 9,
+        "without_profile_fit": 8,
+        "without_tag_fit": 7,
+        "without_geography_fit": 6,
+        "without_deal_type_fit": 6
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0186",
+      "ranks": {
+        "global_popularity": 6,
+        "sector_popularity": 12,
+        "random": 41,
+        "ranker": 16,
+        "shared_weights": 18,
+        "without_sector_fit": 13,
+        "without_size_fit": 17,
+        "without_recency": 41,
+        "without_completion": 16,
+        "without_profile_fit": 17,
+        "without_tag_fit": 16,
+        "without_geography_fit": 18,
+        "without_deal_type_fit": 16
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0190",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 13,
+        "random": 75,
+        "ranker": 19,
+        "shared_weights": 18,
+        "without_sector_fit": 13,
+        "without_size_fit": 15,
+        "without_recency": 33,
+        "without_completion": 18,
+        "without_profile_fit": 19,
+        "without_tag_fit": 19,
+        "without_geography_fit": 16,
+        "without_deal_type_fit": 19
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0216",
+      "ranks": {
+        "global_popularity": 4,
+        "sector_popularity": 5,
+        "random": 59,
+        "ranker": 4,
+        "shared_weights": 6,
+        "without_sector_fit": 4,
+        "without_size_fit": 6,
+        "without_recency": 5,
+        "without_completion": 4,
+        "without_profile_fit": 5,
+        "without_tag_fit": 4,
+        "without_geography_fit": 6,
+        "without_deal_type_fit": 4
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0225",
+      "ranks": {
+        "global_popularity": 29,
+        "sector_popularity": 5,
+        "random": 66,
+        "ranker": 2,
+        "shared_weights": 2,
+        "without_sector_fit": 17,
+        "without_size_fit": 8,
+        "without_recency": 2,
+        "without_completion": 2,
+        "without_profile_fit": 3,
+        "without_tag_fit": 2,
+        "without_geography_fit": 2,
+        "without_deal_type_fit": 2
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0251",
+      "ranks": {
+        "global_popularity": 3,
+        "sector_popularity": 4,
+        "random": 43,
+        "ranker": 16,
+        "shared_weights": 20,
+        "without_sector_fit": 19,
+        "without_size_fit": 12,
+        "without_recency": 48,
+        "without_completion": 17,
+        "without_profile_fit": 16,
+        "without_tag_fit": 16,
+        "without_geography_fit": 12,
+        "without_deal_type_fit": 17
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0267",
+      "ranks": {
+        "global_popularity": null,
+        "sector_popularity": null,
+        "random": null,
+        "ranker": null,
+        "shared_weights": null,
+        "without_sector_fit": null,
+        "without_size_fit": null,
+        "without_recency": null,
+        "without_completion": null,
+        "without_profile_fit": null,
+        "without_tag_fit": null,
+        "without_geography_fit": null,
+        "without_deal_type_fit": null
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0339",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 10,
+        "random": 13,
+        "ranker": 3,
+        "shared_weights": 3,
+        "without_sector_fit": 2,
+        "without_size_fit": 3,
+        "without_recency": 6,
+        "without_completion": 3,
+        "without_profile_fit": 3,
+        "without_tag_fit": 3,
+        "without_geography_fit": 3,
+        "without_deal_type_fit": 3
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0347",
+      "ranks": {
+        "global_popularity": 2,
+        "sector_popularity": 10,
+        "random": 90,
+        "ranker": 13,
+        "shared_weights": 15,
+        "without_sector_fit": 6,
+        "without_size_fit": 9,
+        "without_recency": 39,
+        "without_completion": 17,
+        "without_profile_fit": 14,
+        "without_tag_fit": 13,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 15
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0405",
+      "ranks": {
+        "global_popularity": 1,
+        "sector_popularity": 2,
+        "random": 1,
+        "ranker": 15,
+        "shared_weights": 20,
+        "without_sector_fit": 13,
+        "without_size_fit": 12,
+        "without_recency": 42,
+        "without_completion": 16,
+        "without_profile_fit": 16,
+        "without_tag_fit": 15,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 16
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0431",
+      "ranks": {
+        "global_popularity": 5,
+        "sector_popularity": 2,
+        "random": 76,
+        "ranker": 1,
+        "shared_weights": 1,
+        "without_sector_fit": 2,
+        "without_size_fit": 1,
+        "without_recency": 1,
+        "without_completion": 2,
+        "without_profile_fit": 1,
+        "without_tag_fit": 1,
+        "without_geography_fit": 1,
+        "without_deal_type_fit": 1
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0448",
+      "ranks": {
+        "global_popularity": 49,
+        "sector_popularity": 7,
+        "random": 91,
+        "ranker": 12,
+        "shared_weights": 15,
+        "without_sector_fit": 56,
+        "without_size_fit": 9,
+        "without_recency": 5,
+        "without_completion": 15,
+        "without_profile_fit": 14,
+        "without_tag_fit": 12,
+        "without_geography_fit": 13,
+        "without_deal_type_fit": 12
+      }
+    },
+    {
+      "transaction_id": "MA-2024-0460",
+      "ranks": {
+        "global_popularity": 44,
+        "sector_popularity": 8,
+        "random": 72,
+        "ranker": 17,
+        "shared_weights": 25,
+        "without_sector_fit": 82,
+        "without_size_fit": 16,
+        "without_recency": 9,
+        "without_completion": 9,
+        "without_profile_fit": 16,
+        "without_tag_fit": 17,
+        "without_geography_fit": 14,
+        "without_deal_type_fit": 18
+      }
+    }
+  ]
+}

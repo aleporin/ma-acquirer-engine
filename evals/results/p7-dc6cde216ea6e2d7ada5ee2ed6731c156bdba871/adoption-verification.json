@@ -1,0 +1,43 @@
+{
+  "source": "dc6cde216ea6e2d7ada5ee2ed6731c156bdba871",
+  "runtime_source": "b4339ad67300d301f4362f1ee941f2d294624125",
+  "environment": {
+    "uv": "0.12.17",
+    "python": "3.12.14",
+    "dependencies": "uv.lock"
+  },
+  "commands": [
+    {
+      "command": "make test",
+      "result": "379 passed in 8.62s",
+      "applies": "runtime/config unchanged since measurement"
+    },
+    {
+      "command": "make lint",
+      "result": "Ruff317files, mypy177sources and length checks pass"
+    },
+    {
+      "command": "make eval-weights",
+      "result": "Recorded experiment JSON byte-identical; no API calls"
+    },
+    {
+      "command": "acquirers run --fresh",
+      "run_id": "9007acfd898f4c5abf3e734da58430d6",
+      "result": "10/10 first-pass pages,56/56 numeric claims,20responses,42.51619575009681seconds,$1.930780"
+    },
+    {
+      "command": "make run",
+      "run_id": "5263cca6490049dead862941cb4bc3a5",
+      "result": "10/10pages,20responses,$0"
+    },
+    {
+      "command": "make eval --analyst-run (through EVAL_FLAGS)",
+      "result": "Replay layers0/1/2/3/5/6pass;4unmeasured. Live layers0/1/2/3/5pass;4unmeasured;6fails missing matched controls and cost goal remains unmet."
+    }
+  ],
+  "limits": [
+    "One fresh observation; no independent quality calibration.",
+    "Historical benchmark already inspected; four extra matches do not establish lift.",
+    "No buyer-specific adjustments adopted."
+  ]
+}

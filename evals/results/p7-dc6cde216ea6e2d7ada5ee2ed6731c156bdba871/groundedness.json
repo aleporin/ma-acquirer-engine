@@ -1,0 +1,98 @@
+{
+  "scope": "hand_written_fixtures",
+  "fixture_sha256": "54392a0f27911a6f6acdd33cc9c328e3d527f04ffcb292dc0cb9b624fead532f",
+  "cases": [
+    {
+      "name": "good_rounding",
+      "expected_error": null,
+      "accepted": true,
+      "errors": [],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "good_units",
+      "expected_error": null,
+      "accepted": true,
+      "errors": [],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "good_outside_notes",
+      "expected_error": null,
+      "accepted": true,
+      "errors": [],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "bad_wrong_number",
+      "expected_error": "value mismatch",
+      "accepted": false,
+      "errors": [
+        "claims[MA-2020-0010:ev_ebitda_multiple]: value mismatch (claimed 99.0, evidence 13.64)"
+      ],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "bad_missing_evidence",
+      "expected_error": "unknown evidence",
+      "accepted": false,
+      "errors": [
+        "claims[MA-2020-9999:ev_ebitda_multiple]: unknown evidence",
+        "valuation_context: MA-2020-0010 requires stated multiple claims"
+      ],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "bad_stray_number",
+      "expected_error": "stray number",
+      "accepted": false,
+      "errors": [
+        "strategic_fit_thesis: stray number 999M"
+      ],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "bad_banned_phrase",
+      "expected_error": "banned phrase",
+      "accepted": false,
+      "errors": [
+        "acquirer_overview: banned phrase 'leading healthcare company'"
+      ],
+      "expectation_met": true,
+      "claim_count": 4
+    },
+    {
+      "name": "bad_one_risk",
+      "expected_error": "risk_flags",
+      "accepted": false,
+      "errors": [
+        "risk_flags: Tuple should have at least 2 items after validation, not 1"
+      ],
+      "expectation_met": true,
+      "claim_count": 0
+    },
+    {
+      "name": "bad_no_comps",
+      "expected_error": "valuation_context",
+      "accepted": false,
+      "errors": [
+        "valuation_context.comps: Tuple should have at least 1 item after validation, not 0"
+      ],
+      "expectation_met": true,
+      "claim_count": 0
+    }
+  ],
+  "positive_cases": 3,
+  "positive_accepted": 3,
+  "negative_cases": 6,
+  "negative_rejected": 6,
+  "positive_claims": 12,
+  "verified_positive_claims": 12,
+  "stray_numbers_detected": 1
+}
