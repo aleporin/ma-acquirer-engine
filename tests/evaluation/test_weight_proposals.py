@@ -47,7 +47,7 @@ async def test_proposal_is_one_recorded_call_and_replays_without_provider(
     weighting, policy = module_and_policy()
     module = import_module("evals.ranking.proposals")
     candidate = weighting.shared_candidate(deps.settings.scoring).model_copy(
-        update={"name": "hypothesis"}
+        update={"name": "Size-Scale Emphasis"}
     )
     calls = 0
 
@@ -73,6 +73,8 @@ async def test_proposal_is_one_recorded_call_and_replays_without_provider(
     )
     second = await module.request_proposals(packet, deps.with_runtime(replay), "propose", policy)
     assert first == second
+    assert first.candidates[0].name == "size_scale_emphasis"
+    assert first.candidates[0].multipliers == candidate.multipliers
     assert calls == 1
     assert len(replay.model.ledger.entries) == 1
     assert replay.model.ledger.entries[0].cost_usd == 0
