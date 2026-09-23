@@ -8,6 +8,7 @@ from acquirer_engine.ranking.config import BacktestConfig
 from acquirer_engine.settings import Settings
 from evals.ranking.backtest import run_backtest, split_transactions, target_from_transaction
 from tests.fixtures.ranking import transaction
+from tests.ranking.test_type_weights import type_policy
 
 
 def config() -> BacktestConfig:
@@ -36,7 +37,10 @@ def test_temporal_split_and_unseen_buyers_remain_misses(settings: Settings) -> N
     assert report.unseen_labels == 1
     assert report.candidate_count == 2
     assert report.metrics["ranker"]["recall_at_k"] == 0.5
-    assert set(report.lift) == {"global_popularity", "sector_popularity", "random"}
+    expected = {"global_popularity", "sector_popularity", "random"}
+    if settings.scoring.model_dump().get("type_weights"):
+        expected.add("shared_weights")
+    assert set(report.lift) == expected
     assert set(report.ablations) == set(settings.scoring.weights)
 
 
@@ -81,3 +85,13 @@ def test_backtest_is_independent_of_input_order(settings: Settings) -> None:
     assert run_backtest(rows, settings.scoring, config(), seed=7) == run_backtest(
         rows[::-1], settings.scoring, config(), seed=7
     )
+
+
+def test_adopted_policy_retains_original_shared_baseline(settings: Settings) -> None:
+    policy = type_policy(settings)
+    rows = [transaction(1, deal_year=2020), transaction(2, deal_year=2022)]
+    adopted = run_backtest(rows, policy, config(), seed=7)
+    shared = run_backtest(rows, policy.model_copy(update={"type_weights": {}}), config(), seed=7)
+    assert adopted.metrics["shared_weights"] == shared.metrics["ranker"]
+    assert adopted.cases[0].ranks["shared_weights"] == shared.cases[0].ranks["ranker"]
+    assert "shared_weights" in adopted.lift

@@ -24,6 +24,7 @@ from evals.ranking.packet import build_packet, packet_digest
 from evals.ranking.proposals import ProposalRun, ProposalSnapshot
 from tests.evaluation.test_weighting import module_and_policy
 from tests.fixtures.ranking import transaction
+from tests.ranking.test_type_weights import type_policy
 
 
 @pytest.mark.asyncio
@@ -119,6 +120,8 @@ def test_experiment_rejects_tampered_or_mismatched_inputs(
     )
     with pytest.raises(EvaluationError, match="configuration"):
         module.checked_proposal(tmp_path, rows, changed, policy)
+    adopted = settings.model_copy(update={"scoring": type_policy(settings)})
+    assert module.checked_proposal(tmp_path, rows, adopted, policy) == (snapshot, run)
     (tmp_path / "input.json").write_text(encoded.replace('"propose"', '"different"'))
     with pytest.raises(EvaluationError, match="digest"):
         module.checked_proposal(tmp_path, rows, settings, policy)
