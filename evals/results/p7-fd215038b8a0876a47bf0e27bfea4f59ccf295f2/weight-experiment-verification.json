@@ -1,0 +1,51 @@
+{
+  "git_sha": "fd215038b8a0876a47bf0e27bfea4f59ccf295f2",
+  "python": "3.12.14",
+  "uv": "0.12.17",
+  "commands": {
+    "make test": {
+      "exit_code": 0,
+      "passed": 372,
+      "seconds": 8.45
+    },
+    "make lint": {
+      "exit_code": 0,
+      "mypy_files": 176
+    },
+    "make run": {
+      "exit_code": 0,
+      "verified_pages": 10,
+      "responses": 21,
+      "cost_usd": 0,
+      "run_id": "e4a9d441bd1149dbb0a0fe6fc87e73c0"
+    },
+    "make eval": {
+      "exit_code": 0,
+      "passed_layers": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6
+      ],
+      "unmeasured_layers": [
+        4
+      ]
+    },
+    "make eval-weights": {
+      "exit_code": 0,
+      "byte_identical_to_recorded_experiment": true
+    }
+  },
+  "clean_clone": {
+    "git_sha": "fd215038b8a0876a47bf0e27bfea4f59ccf295f2",
+    "no_credentials": true,
+    "manifest_hashes_verified": 9,
+    "experiment_byte_identical": true,
+    "proposal_replay_candidates": 3,
+    "provider_cost": 0
+  },
+  "relative_documentation_links": 49,
+  "original_response_vectors_and_explanations_preserved": true
+}
