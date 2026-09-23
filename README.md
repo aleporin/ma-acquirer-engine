@@ -119,7 +119,7 @@ cover the execution flow, libraries, and alternatives.
 | Selected live run | 10/10 pages, 54/54 final numeric claims; one repair |
 | Time and returned usage | 48.18 seconds, $1.863930; under-$1 goal unmet |
 | Keyless replay | 21 recorded responses, 10/10 pages, $0 new spend |
-| Historical recall@10 | 38.0%, versus 40.8% global and 43.7% sector popularity |
+| Historical recall@10 | 40.8%, versus 38.0% original weights, 40.8% global and 43.7% sector popularity |
 
 The default target is a $200M regional healthcare-services company. Ranking uses
 fixed, explainable rules on the supplied synthetic dataset and has not outperformed
@@ -130,9 +130,11 @@ saved responses without API calls. [Evaluation results](docs/EVALS.md) contain t
 methods and measurements; [design decisions](docs/DECISIONS.md) explain data policies.
 
 An [LLM weight experiment](docs/EVALS.md#weight-experiment) tested alternative
-buyer-type weights and buyer-specific adjustments. Its selected proposal improved
-observed recall but showed no clear lift over the existing weights, so defaults
-remain unchanged. Run `make eval-weights` to reproduce the comparison without keys.
+buyer-type weights and buyer-specific adjustments. The selected type-only proposal
+is now the default: 58 rather than 54 correct buyers in 142 historical top-ten
+lists. This is a preliminary improvement, not statistically established lift.
+Python applies the frozen weights; no proposal call is needed during a normal run.
+Run `make eval-weights` to reproduce the original comparison without keys.
 
 ## Development
 

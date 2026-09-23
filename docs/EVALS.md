@@ -4,9 +4,10 @@
 
 | Measurement | Result |
 | --- | --- |
-| Ranking recall@10 | 54/142 (38.03%); global popularity 40.85%, sector popularity 43.66% |
-| Lift versus global | −2.82 percentage points; 95% CI −14.79 to +8.45 |
-| Lift versus sector | −5.63 points; 95% CI −14.08 to +2.82 |
+| Ranking recall@10 | 58/142 (40.85%); original weights 38.03%, global popularity 40.85%, sector popularity 43.66% |
+| Lift versus original weights | +2.82 percentage points; 95% CI −2.11 to +7.75 |
+| Lift versus global | 0.00 points; 95% CI −11.97 to +10.58 |
+| Lift versus sector | −2.82 points; 95% CI −11.97 to +5.63 |
 | Ranking and conviction stability | Identical across five deterministic runs; ten Medium convictions |
 | Verifier fixtures | Three valid accepted; six planted-invalid rejected |
 | Selected live first pass | 9/10 pages; all parsed numeric claims matched |
@@ -58,8 +59,9 @@ deal types, and rationale tags do not enter query features.
 All methods share candidates and denominators. Report recall@10, full-list MRR,
 and nDCG@10 with one relevant buyer per query. Paired bootstrap intervals resample
 transactions with a fixed seed, not buyer clusters. Feature ablations renormalize
-remaining weights; initial weights and conviction thresholds were not tuned on
-these results.
+remaining weights. The original shared weights and conviction thresholds were
+not tuned on these results. The adopted type policy was selected on earlier years,
+but its adoption followed inspection of this benchmark; its results are exploratory.
 
 This is retrospective: query EV is the actual transaction EV, final outcomes lack
 historical change dates, and synthetic assignments limit external validity.
@@ -134,8 +136,9 @@ The [frozen protocol](../config/ranking_experiment.yaml) asks for at most three
 weight hypotheses from anonymous aggregates through 2018. Compare unchanged
 weights with type-only and shrunk buyer-adjusted variants, select chronologically
 on 2019/2020/2021, then freeze the winner before measuring 2022–2024. That benchmark
-has already been inspected, so results are exploratory. The completed experiment
-does not change product scoring.
+has already been inspected, so results are exploratory. Running the experiment
+does not modify product scoring; the selected type-only policy was subsequently
+adopted explicitly in `config/scoring.yaml`.
 
 One provider request ($0.104540, no retries) returned three hypotheses. Selection
 across 223 transactions from 2019–2021 chose stronger sector emphasis for strategics
@@ -143,16 +146,19 @@ and more size/margin emphasis for sponsors. Buyer-specific adjustments did not w
 
 | Method | Recall@10 on 142 later transactions | MRR | nDCG@10 |
 | --- | --- | --- | --- |
-| Shipped shared weights | 54/142 (38.03%) | 0.1711 | 0.1973 |
+| Original shared weights | 54/142 (38.03%) | 0.1711 | 0.1973 |
 | Selected proposed type weights | 58/142 (40.85%) | 0.1811 | 0.2116 |
 | Shared weights with buyer adjustments | 55/142 (38.73%) | 0.1679 | 0.1968 |
 | Global popularity | 58/142 (40.85%) | 0.1264 | 0.1761 |
 | Sector popularity | 62/142 (43.66%) | 0.1366 | 0.1819 |
 
-The selected proposal gains 2.82 percentage points over shipped weights; its paired
+The selected proposal gains 2.82 percentage points over original weights; its paired
 95% bootstrap interval is −2.11 to +7.75 points. It ties global popularity and trails
-sector popularity on recall. Keep the shipped weights: this is not clear evidence
-of predictive improvement, and no repeat-generation claim is made from one request.
+sector popularity on recall. We adopted it as a preliminary prototype improvement:
+it also won earlier chronological selection (89/223 versus 86/223 for shared
+weights), adds no ranking-time API call, and retains the original policy as a
+baseline. This does not establish predictive lift or proposal repeatability.
+Buyer-specific adjustments remain experimental.
 
 The original response used readable candidate names that the local parser rejected.
 After an identifier-normalization fix, offline replay recovered the same weights

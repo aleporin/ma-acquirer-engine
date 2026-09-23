@@ -33,6 +33,21 @@ services; each buyer gets its own evidence and conversation state.
 **Consequence:** stage order is visible in Python, and dependencies can be replaced
 in tests without creating clients inside the call path.
 
+## 2026-09-22 — Adopt the measured buyer-type proposal
+
+**Context:** one recorded proposal request suggested three bounded alternatives
+using anonymous historical aggregates. Chronological selection favored stronger
+sector emphasis for strategic buyers and stronger size/margin emphasis for sponsors.
+**Decision:** freeze that type-only policy in `config/scoring.yaml`. Keep the original
+shared weights as a backtest baseline and as the reference for the frozen experiment.
+Apply the selected vector in Python, including each score's contribution breakdown.
+**Alternatives:** retain the original shared policy, apply individual buyer tilts,
+or ask a model to rerank every target. Buyer tilts did not win selection.
+**Consequence:** exploratory recall increases from 54/142 to 58/142, but the paired
+95% interval includes zero. Adoption is a prototype choice, not proof of lift;
+sector popularity still retrieves more observed buyers. No new ranking-time model
+call, named-company mandate, or conviction threshold is introduced.
+
 ## 2026-09-22 — Use a stronger writer with bounded recovery
 
 **Context:** schema-valid drafts could still misinterpret the evidence.
@@ -67,8 +82,9 @@ independent evaluation. Complete history does not by itself prove an exclusive c
 sparse histories.
 **Decision:** combine sector, size, recency, completion, margin, geography,
 rationale-tag, and deal-type signals. Shrink sparse signals toward buyer-type
-priors; use fixed weights, tie-breaks, and conviction thresholds. The weights are
-initial design assumptions, not an established banking framework.
+priors; use fixed weights, tie-breaks, and conviction thresholds. The original
+shared weights were design assumptions; the later type-policy decision above
+records their measured replacement. Neither is an established banking framework.
 Use stated multiples and margins; report source discrepancies instead of silently
 recalculating them. Exclude Rumored deals from fitting and Pending deals from the
 completion denominator. Closed deals alone support valuation. Sponsor co-activity
